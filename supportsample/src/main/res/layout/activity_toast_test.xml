@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.sample.ToastTestActivity">
+
+        <RadioGroup
+            android:id="@+id/reuse_toast_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/open_reuse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/open_toast_reuse" />
+
+            <RadioButton
+                android:id="@+id/close_reuse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/close_toast_reuse" />
+        </RadioGroup>
+
+    <Button
+        android:id="@+id/long_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/long_time" />
+
+    <Button
+        android:id="@+id/short_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/short_time" />
+
+    <Button
+        android:id="@+id/time_100"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/time_100" />
+
+    <Button
+        android:id="@+id/time_500"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/time_500" />
+</LinearLayout>

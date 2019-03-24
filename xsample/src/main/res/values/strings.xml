@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">BaseSample</string>
+    <string name="press_home_btn_test">Press home button test</string>
+    <string name="all_purpose_adapter">AllPurposeAdapter</string>
+    <string name="base_appcompat_activity">BaseAppcompatActivity</string>
+    <string name="base_drawer_activity">BaseDrawerActivity</string>
+    <string name="base_fragment">BaseFragment</string>
+    <string name="base_popup_window">BasePopupWindow</string>
+    <string name="home_watcher">Home Button Watcher</string>
+    <string name="toast_test">Toast test</string>
+    <string name="get_fragment_visibility">Get the visible state of the Fragment</string>
+    <string name="show_popup_window">Show Popup Window</string>
+    <string name="open_toast_reuse">Open reuse</string>
+    <string name="close_toast_reuse">Close reuse</string>
+    <string name="long_time">Long time</string>
+    <string name="short_time">Short time</string>
+    <string name="time_100">100ms</string>
+    <string name="time_500">500ms</string>
+    <string name="no_permission_exits">No permission, the program exits</string>
+    <string name="no_permission">No Permission</string>
+    <string name="settings">Settings</string>
+    <string name="cancel">Cancel</string>
+</resources>
