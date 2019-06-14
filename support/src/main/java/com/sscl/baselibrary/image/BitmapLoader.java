@@ -64,7 +64,7 @@ public class BitmapLoader implements Runnable {
             return;
         }
         Bitmap bmp = imageLoader.getBitmap(bitmapHolder.url);
-        imageLoader.memoryCache.put(bitmapHolder.url, bmp);
+        imageLoader.getMemoryCache().put(bitmapHolder.url, bmp);
 
         if (imageLoader.imageViewReused(bitmapHolder)) {
             return;

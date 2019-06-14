@@ -40,7 +40,7 @@ public class FragmentViewPagerAdapter extends FragmentPagerAdapter {
         this.pageTitles = pageTitles;
     }
 
-    /*--------------------------------公开方法--------------------------------*/
+    /*--------------------------------重写方法--------------------------------*/
 
     /**
      * Return the Fragment associated with a specified position.
@@ -69,8 +69,8 @@ public class FragmentViewPagerAdapter extends FragmentPagerAdapter {
      * @param position The position of the title requested
      * @return a title for the requested page
      */
-    @Nullable
     @Override
+    @Nullable
     public CharSequence getPageTitle(int position) {
         return pageTitles[position];
     }

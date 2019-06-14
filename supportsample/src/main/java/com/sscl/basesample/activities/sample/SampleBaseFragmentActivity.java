@@ -23,6 +23,8 @@ import com.sscl.basesample.fragment.SampleFragment2;
  */
 public class SampleBaseFragmentActivity extends AppCompatActivity {
 
+
+
     private static final String TAG = SampleBaseFragmentActivity.class.getSimpleName();
     private ViewPager viewPager;
     private TabLayout tabLayout;

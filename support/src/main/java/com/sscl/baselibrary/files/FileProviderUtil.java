@@ -23,8 +23,6 @@ public class FileProviderUtil {
 
     /*--------------------------------静态常量--------------------------------*/
 
-    private static final String TAG = "FileProviderUtil";
-
     private static final String CONTENT = "content";
     private static final String ROOT_PATH = "/root";
 

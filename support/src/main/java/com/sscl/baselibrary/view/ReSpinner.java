@@ -37,8 +37,7 @@ public class ReSpinner extends AppCompatSpinner {
     /*---------------------------------------重写父类方法---------------------------------------*/
 
     @Override
-    public void
-    setSelection(int position, boolean animate) {
+    public void setSelection(int position, boolean animate) {
         boolean sameSelected = position == getSelectedItemPosition();
         super.setSelection(position, animate);
         if (sameSelected) {

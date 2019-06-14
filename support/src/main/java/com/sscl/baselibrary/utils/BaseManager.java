@@ -47,6 +47,8 @@ public class BaseManager {
         return THREAD_FACTORY;
     }
 
+    /*--------------------------------public method--------------------------------*/
+
     private static ThreadFactory newThreadFactory() {
         return new ThreadFactory() {
             /**

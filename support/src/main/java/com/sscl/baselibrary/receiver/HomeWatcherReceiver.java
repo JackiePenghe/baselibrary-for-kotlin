@@ -116,7 +116,6 @@ public class HomeWatcherReceiver extends BroadcastReceiver {
         mListener = listener;
     }
 
-
     /**
      * Home键的接口
      */

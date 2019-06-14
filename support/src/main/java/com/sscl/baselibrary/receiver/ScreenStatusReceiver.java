@@ -16,9 +16,6 @@ import android.os.Handler;
  */
 public class ScreenStatusReceiver extends BroadcastReceiver {
 
-    /*---------------------------------------静态常量---------------------------------------*/
-
-    private static final String TAG = ScreenStatusReceiver.class.getSimpleName();
 
     /*---------------------------------------成员变量---------------------------------------*/
 

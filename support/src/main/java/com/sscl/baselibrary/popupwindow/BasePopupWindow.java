@@ -192,6 +192,8 @@ public abstract class BasePopupWindow extends PopupWindow {
         return context;
     }
 
+    /*--------------------------------公开方法--------------------------------*/
+
     /**
      * 显示popup window
      *

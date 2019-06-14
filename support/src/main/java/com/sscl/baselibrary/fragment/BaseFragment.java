@@ -480,6 +480,8 @@ public abstract class BaseFragment extends Fragment {
         statusView.setVisibility(View.VISIBLE);
     }
 
+    /*---------------自定义公开函数---------------*/
+
     /**
      * 判断当前的Fragment是否对用户可见
      *

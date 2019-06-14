@@ -17,6 +17,7 @@ public class AllPurposeAdapterActivity extends BaseAppCompatActivity {
 
     private ListView listView;
     private ArrayList<String> dataList = new ArrayList<>();
+    private SampleAdapter adapter = new SampleAdapter(dataList);
 
     /**
      * 标题栏的返回按钮被按下的时候回调此函数
@@ -66,7 +67,6 @@ public class AllPurposeAdapterActivity extends BaseAppCompatActivity {
      */
     @Override
     protected void initViewData() {
-        SampleAdapter adapter = new SampleAdapter(dataList);
         listView.setAdapter(adapter);
     }
 

@@ -42,7 +42,7 @@ public class ImageLoader {
     /**
      * 内存缓存工具
      */
-    MemoryCache memoryCache = new MemoryCache();
+    private MemoryCache memoryCache = new MemoryCache();
 
     /**
      * 文件缓存工具
@@ -143,6 +143,10 @@ public class ImageLoader {
             // 若没有的话则开启新线程加载图片
             loadBitmapFromNet(url, imageView);
         }
+    }
+
+    MemoryCache getMemoryCache() {
+        return memoryCache;
     }
 
     /**
@@ -323,7 +327,6 @@ public class ImageLoader {
         paint.setAntiAlias(true);
 
         // 创建一张空图片, 这张图片只有宽高，没有内容
-        //noinspection SuspiciousNameCombination
         Bitmap target = Bitmap.createBitmap((int) width, (int) width, Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(target);

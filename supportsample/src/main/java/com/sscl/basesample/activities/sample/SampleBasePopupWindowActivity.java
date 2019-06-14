@@ -12,6 +12,9 @@ import com.sscl.basesample.R;
 import com.sscl.basesample.popupwindow.SamplePopupWindow;
 
 
+/**
+ * @author jackie
+ */
 public class SampleBasePopupWindowActivity extends AppCompatActivity {
 
     private static final String TAG = "SampleBasePopupWindowAc";
@@ -42,7 +45,6 @@ public class SampleBasePopupWindowActivity extends AppCompatActivity {
         samplePopupWindow.setHeight(point.y * 7 / 8);
         samplePopupWindow.setFocusable(true);
         samplePopupWindow.setOutsideTouchable(true);
-//        samplePopupWindow.showAtLocation(content, Gravity.CENTER, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         samplePopupWindow.show(content);
     }
 }
