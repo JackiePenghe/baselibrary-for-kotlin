@@ -3,6 +3,7 @@ package com.sscl.baselibrary.utils;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Size;
@@ -213,6 +214,124 @@ public class ConversionUtil {
             ret[i] = (byte) integer;
         }
         return ret;
+    }
+
+    /**
+     * byte数组转为long
+     *
+     * @param bytes byte数组
+     * @return long
+     */
+    public static long bytesToLong(byte[] bytes) {
+        int length = bytes.length;
+        byte cache0;
+        byte cache1;
+        byte cache2;
+        byte cache3;
+        byte cache4;
+        byte cache5;
+        byte cache6;
+        byte cache7;
+
+        long value0;
+        long value1;
+        long value2;
+        long value3;
+        long value4;
+        long value5;
+        long value6;
+        long value7;
+        switch (length) {
+            case 1:
+                cache0 = bytes[0];
+                return 0x00FF & getUnsignedByte(cache0);
+            case 2:
+                cache0 = bytes[0];
+                cache1 = bytes[1];
+                value0 = getUnsignedByte(cache0);
+                value1 = getUnsignedByte(cache1);
+                return value0 << 8 | value1;
+            case 3:
+                cache0 = bytes[0];
+                cache1 = bytes[1];
+                cache2 = bytes[2];
+                value0 = getUnsignedByte(cache0) << 16;
+                value1 = getUnsignedByte(cache1) << 8;
+                value2 = getUnsignedByte(cache2);
+                return value0 | value1 | value2;
+            case 4:
+                cache0 = bytes[0];
+                cache1 = bytes[1];
+                cache2 = bytes[2];
+                cache3 = bytes[3];
+                value0 = getUnsignedByte(cache0) << 24;
+                value1 = getUnsignedByte(cache1) << 16;
+                value2 = getUnsignedByte(cache2) << 8;
+                value3 = getUnsignedByte(cache3);
+                return value0 | value1 | value2 | value3;
+            case 5:
+                cache0 = bytes[0];
+                cache1 = bytes[1];
+                cache2 = bytes[2];
+                cache3 = bytes[3];
+                cache4 = bytes[4];
+                value0 = getUnsignedInt(getUnsignedByte(cache0)) << 32;
+                value1 = getUnsignedByte(cache1) << 24;
+                value2 = getUnsignedByte(cache2) << 16;
+                value3 = getUnsignedByte(cache3) << 8;
+                value4 = getUnsignedByte(cache4);
+                return value0 | value1 | value2 | value3 | value4;
+            case 6:
+                cache0 = bytes[0];
+                cache1 = bytes[1];
+                cache2 = bytes[2];
+                cache3 = bytes[3];
+                cache4 = bytes[4];
+                cache5 = bytes[5];
+                value0 = getUnsignedInt(getUnsignedByte(cache0)) << 40;
+                value1 = getUnsignedInt(getUnsignedByte(cache1)) << 32;
+                value2 = getUnsignedByte(cache2) << 24;
+                value3 = getUnsignedByte(cache3) << 16;
+                value4 = getUnsignedByte(cache4) << 8;
+                value5 = getUnsignedByte(cache5);
+                return value0 | value1 | value2 | value3 | value4 | value5;
+            case 7:
+                cache0 = bytes[0];
+                cache1 = bytes[1];
+                cache2 = bytes[2];
+                cache3 = bytes[3];
+                cache4 = bytes[4];
+                cache5 = bytes[5];
+                cache6 = bytes[6];
+                value0 = getUnsignedInt(getUnsignedByte(cache0)) << 48;
+                value1 = getUnsignedInt(getUnsignedByte(cache1)) << 40;
+                value2 = getUnsignedInt(getUnsignedByte(cache2)) << 32;
+                value3 = getUnsignedByte(cache3) << 24;
+                value4 = getUnsignedByte(cache4) << 16;
+                value5 = getUnsignedByte(cache5) << 8;
+                value6 = getUnsignedByte(cache6);
+                return value0 | value1 | value2 | value3 | value4 | value5 | value6;
+            case 8:
+                cache0 = bytes[0];
+                cache1 = bytes[1];
+                cache2 = bytes[2];
+                cache3 = bytes[3];
+                cache4 = bytes[4];
+                cache5 = bytes[5];
+                cache6 = bytes[6];
+                cache7 = bytes[7];
+                value0 = getUnsignedInt(getUnsignedByte(cache0)) << 56;
+                value1 = getUnsignedInt(getUnsignedByte(cache1)) << 48;
+                value2 = getUnsignedInt(getUnsignedByte(cache2)) << 40;
+                value3 = getUnsignedInt(getUnsignedByte(cache3)) << 32;
+                value4 = getUnsignedByte(cache4) << 24;
+                value5 = getUnsignedByte(cache5) << 16;
+                value6 = getUnsignedByte(cache6) << 8;
+                value7 = getUnsignedByte(cache7);
+                return value0 | value1 | value2 | value3 | value4 | value5 | value6 | value7;
+            default:
+                throw new WrongByteArrayLengthException("byte array length must be more than 0 and less than 8");
+        }
     }
 
     /**

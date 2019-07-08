@@ -31,4 +31,5 @@
         <item name="elevation">0dp</item>
     </style>
 
+    <style name="Widget.GifView" parent="@android:style/Widget" />
 </resources>

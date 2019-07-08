@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.utils.OSHelper;
 import com.sscl.baselibrary.utils.StatusBarUtil;
+import com.sscl.baselibrary.view.GifView;
 import com.sscl.basesample.R;
 
 /**
@@ -16,6 +17,8 @@ import com.sscl.basesample.R;
 public class SampleBaseAppcompatActivity extends BaseAppCompatActivity {
 
     private static final String TAG = SampleBaseAppcompatActivity.class.getSimpleName();
+
+    private GifView gifView;
 
 
     /**
@@ -41,6 +44,7 @@ public class SampleBaseAppcompatActivity extends BaseAppCompatActivity {
             StatusBarUtil.setColor(this, Color.WHITE, 60);
         } else {
             Log.w(TAG, "不是miui或者flyme,不设置状态栏字体深色");
+            StatusBarUtil.setColor(this, Color.WHITE, 60);
         }
     }
 
@@ -67,6 +71,7 @@ public class SampleBaseAppcompatActivity extends BaseAppCompatActivity {
     @Override
     protected void initViews() {
         //通常在这里findViewById()
+        gifView = findViewById(R.id.gif_view);
     }
 
     /**
@@ -121,5 +126,20 @@ public class SampleBaseAppcompatActivity extends BaseAppCompatActivity {
     @Override
     protected boolean optionsItemSelected(MenuItem item) {
         return false;
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        gifView.play();
+    }
+
+    /**
+     * Dispatch onPause() to fragments.
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        gifView.pause();
     }
 }
