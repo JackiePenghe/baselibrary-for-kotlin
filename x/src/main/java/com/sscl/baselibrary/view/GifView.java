@@ -6,9 +6,10 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Movie;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.annotation.NonNull;
 
 import com.sscl.baselibrary.R;
 
