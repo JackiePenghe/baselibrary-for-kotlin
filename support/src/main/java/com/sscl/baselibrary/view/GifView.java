@@ -15,6 +15,8 @@ import com.sscl.baselibrary.R;
 
 /**
  * 自定义用于显示gif动画的控件
+ *
+ * @author jackie
  */
 public class GifView extends View {
 
