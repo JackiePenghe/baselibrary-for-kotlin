@@ -1,121 +1,191 @@
 package com.sscl.baselibrary.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Movie;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-
 import com.sscl.baselibrary.R;
 
+
 /**
- * 用于显示GIF图片的控件
+ * 自定义用于显示gif动画的控件
  *
- * @author jackie
  */
 public class GifView extends View {
 
-    /*--------------------------------静态常量--------------------------------*/
+    /**
+     * 默认为1秒
+     */
+    private static final int DEFAULT_MOVIE_DURATION = 1000;
 
-    private static final int DEFAULT_MOVIE_VIEW_DURATION = 1000;
+    private int mMovieResourceId;
 
-    /*--------------------------------成员变量--------------------------------*/
+    private Movie mMovie;
 
-    private int movieMovieResourceId;
-    private Movie movie;
-    private long movieStart;
-    private int currentAnimationTime;
+    private long mMovieStart;
 
-    private float movieLeft;
-    private float movieTop;
-    private float movieScale;
+    private int mCurrentAnimationTime = 0;
 
-    private int movieMeasuredMovieWidth;
-    private int movieMeasuredMovieHeight;
+    private float mLeft;
 
-    private boolean isPaused;
+    private float mTop;
 
-    private boolean isVisible = true;
+    private float mScale;
 
-    /*--------------------------------构造方法--------------------------------*/
+    private int mMeasuredMovieWidth;
 
+    private int mMeasuredMovieHeight;
+
+    private boolean mVisible = true;
+
+    private volatile boolean mPaused = false;
+
+    /**
+     * 构造方法
+     *
+     * @param context 上下文
+     */
     public GifView(Context context) {
         this(context, null);
     }
 
+    /**
+     * 构造方法
+     *
+     * @param context 上下文
+     * @param attrs   参数
+     */
     public GifView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public GifView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        setViewAttributes(context, attrs, defStyleAttr);
+    /**
+     * 构造方法
+     *
+     * @param context  上下文
+     * @param attrs    参数
+     * @param defStyle 默认风格
+     */
+    public GifView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        setViewAttributes(context, attrs, defStyle);
     }
 
-    /*--------------------------------重写父类方法--------------------------------*/
+    @SuppressLint("NewApi")
+    private void setViewAttributes(Context context, AttributeSet attrs,
+                                   int defStyle) {
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        // 从描述文件中读出gif的值，创建出Movie实例
+        final TypedArray array = context.obtainStyledAttributes(attrs,
+                R.styleable.GifView, defStyle, R.style.Widget_GifView);
+        mMovieResourceId = array.getResourceId(R.styleable.GifView_gif, -1);
+        mPaused = array.getBoolean(R.styleable.GifView_paused, false);
+        array.recycle();
+        if (mMovieResourceId != -1) {
+            mMovie = Movie.decodeStream(getResources().openRawResource(
+                    mMovieResourceId));
+        }
+    }
+
+    /**
+     * 设置gif图资源
+     *
+     * @param movieResId 要设置的gif图资源
+     */
+    public void setMovieResource(int movieResId) {
+        this.mMovieResourceId = movieResId;
+        mMovie = Movie.decodeStream(getResources().openRawResource(
+                mMovieResourceId));
+        requestLayout();
+    }
+
+    /**
+     * 设置gif的动画(视频)
+     *
+     * @param movie 要设置的gif动画(视频)
+     */
+    public void setMovie(Movie movie) {
+        this.mMovie = movie;
+        requestLayout();
+    }
+
+    /**
+     * 获取gif的动画(视频)
+     *
+     * @return gif的动画(视频)
+     */
+    public Movie getMovie() {
+        return mMovie;
+    }
+
+    /**
+     * 设置gif的动画(视频)的时间
+     *
+     * @param time 要设置的gif动画(视频)时间
+     */
+    public void setMovieTime(int time) {
+        mCurrentAnimationTime = time;
+        invalidate();
+    }
+
+    /**
+     * 设置暂停
+     *
+     * @param paused 要设置的暂停标识(true表示暂停，false表示播放)
+     */
+    public void setPaused(boolean paused) {
+        this.mPaused = paused;
+        if (!paused) {
+            mMovieStart = android.os.SystemClock.uptimeMillis()
+                    - mCurrentAnimationTime;
+        }
+        invalidate();
+    }
+
+    /**
+     * 判断gif图是否停止了
+     *
+     * @return true表示已经停止了，false表示没有停止
+     */
+    public boolean isPaused() {
+        return this.mPaused;
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (movie != null) {
-            int movieWidth = movie.width();
-            int movieHeight = movie.height();
-            /*
-             * Calculate horizontal scaling
-             */
-            float scaleHeight = 1f;
-            int measureModeWidth = View.MeasureSpec.getMode(widthMeasureSpec);
-
-            if (measureModeWidth != View.MeasureSpec.UNSPECIFIED) {
-                int maximumWidth = View.MeasureSpec.getSize(widthMeasureSpec);
-                if (movieWidth > maximumWidth) {
-                    scaleHeight = ((float) movieWidth) / maximumWidth;
-                }
-            }
-            /*
-             * calculate vertical scaling
-             */
-            float scaleWidth = 1f;
-            int measureModeHeight = View.MeasureSpec.getMode(heightMeasureSpec);
-
-            if (measureModeHeight != View.MeasureSpec.UNSPECIFIED) {
-                int maximumHeight = View.MeasureSpec.getSize(heightMeasureSpec);
-                if (movieHeight > maximumHeight) {
-                    scaleWidth = ((float) movieHeight) / maximumHeight;
-                }
-            }
-            /*
-             * calculate overall scale
-             */
-            movieScale = 1f / Math.max(scaleHeight, scaleWidth);
-            movieMeasuredMovieWidth = (int) (movieWidth * movieScale);
-            movieMeasuredMovieHeight = (int) (movieHeight * movieScale);
-            setMeasuredDimension(movieMeasuredMovieWidth, movieMeasuredMovieHeight);
+        if (mMovie != null) {
+            int movieWidth = mMovie.width();
+            int movieHeight = mMovie.height();
+            int maximumWidth = MeasureSpec.getSize(widthMeasureSpec);
+            float scaleW = (float) movieWidth / (float) maximumWidth;
+            mScale = 1f / scaleW;
+            mMeasuredMovieWidth = maximumWidth;
+            mMeasuredMovieHeight = (int) (movieHeight * mScale);
+            setMeasuredDimension(mMeasuredMovieWidth, mMeasuredMovieHeight);
         } else {
-            /*
-             * No movie set, just set minimum available size.
-             */
-            setMeasuredDimension(getSuggestedMinimumWidth(), getSuggestedMinimumHeight());
+            setMeasuredDimension(getSuggestedMinimumWidth(),
+                    getSuggestedMinimumHeight());
         }
     }
 
     @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        // Calculate movieLeft / movieTop for drawing in center
-        movieLeft = (getWidth() - movieMeasuredMovieWidth) / 2f;
-        movieTop = (getHeight() - movieMeasuredMovieHeight) / 2f;
-        isVisible = getVisibility() == View.VISIBLE;
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        mLeft = (getWidth() - mMeasuredMovieWidth) / 2f;
+        mTop = (getHeight() - mMeasuredMovieHeight) / 2f;
+        mVisible = getVisibility() == View.VISIBLE;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        if (movie != null) {
-            if (!isPaused) {
+        if (mMovie != null) {
+            if (!mPaused) {
                 updateAnimationTime();
                 drawMovieFrame(canvas);
                 invalidateView();
@@ -125,121 +195,9 @@ public class GifView extends View {
         }
     }
 
-    @Override
-    public void onScreenStateChanged(int screenState) {
-        super.onScreenStateChanged(screenState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            isVisible = screenState == View.SCREEN_STATE_ON;
-            invalidateView();
-        } else {
-            isVisible = screenState == 1;
-        }
-    }
-
-    @Override
-    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
-        super.onVisibilityChanged(changedView, visibility);
-        isVisible = visibility == View.VISIBLE;
-        invalidateView();
-    }
-
-    @Override
-    protected void onWindowVisibilityChanged(int visibility) {
-        super.onWindowVisibilityChanged(visibility);
-        isVisible = visibility == View.VISIBLE;
-        invalidateView();
-    }
-
-    /*--------------------------------自定义公开方法--------------------------------*/
-
-    public void play() {
-        if (this.isPaused) {
-            this.isPaused = false;
-            //Calculate new movie start time, so that it resumes from the same frame.
-            movieStart = android.os.SystemClock.uptimeMillis() - currentAnimationTime;
-            invalidate();
-        }
-    }
-
-    public void pause() {
-        if (!this.isPaused) {
-            this.isPaused = true;
-            invalidate();
-        }
-    }
-
-    public int getGifResource() {
-        return movieMovieResourceId;
-    }
-
-    public void setGifRecource(int movieResourceId) {
-        movieMovieResourceId = movieResourceId;
-        movie = Movie.decodeStream(getResources().openRawResource(movieMovieResourceId));
-        requestLayout();
-    }
-
-    public boolean isPlaying() {
-        return !isPaused;
-    }
-
-    /*--------------------------------自定义私有方法--------------------------------*/
-
-    /**
-     * 初始化控件属性
-     *
-     * @param context      上下文
-     * @param attrs        控件属性
-     * @param defStyleAttr 默认的属性定义
-     */
-    private void setViewAttributes(Context context, AttributeSet attrs, int defStyleAttr) {
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.GifView, defStyleAttr, R.style.Widget_GifView);
-
-
-        //-1 is default value
-        movieMovieResourceId = array.getResourceId(R.styleable.GifView_gif, -1);
-        isPaused = array.getBoolean(R.styleable.GifView_paused, false);
-
-        array.recycle();
-
-        if (movieMovieResourceId != -1) {
-            movie = Movie.decodeStream(getResources().openRawResource(movieMovieResourceId));
-        }
-    }
-
-    /**
-     * Calculate current animation time
-     */
-    private void updateAnimationTime() {
-        long now = android.os.SystemClock.uptimeMillis();
-
-        if (movieStart == 0L) {
-            movieStart = now;
-        }
-
-        int duration = movie.duration();
-
-        if (duration == 0) {
-            duration = DEFAULT_MOVIE_VIEW_DURATION;
-        }
-
-        currentAnimationTime = (int) ((now - movieStart) % duration);
-    }
-
-    /**
-     * Draw current GIF frame
-     */
-    private void drawMovieFrame(Canvas canvas) {
-        movie.setTime(currentAnimationTime);
-        canvas.save();
-        canvas.scale(movieScale, movieScale);
-        movie.draw(canvas, movieLeft / movieScale, movieTop / movieScale);
-        canvas.restore();
-    }
-
+    @SuppressLint("NewApi")
     private void invalidateView() {
-        if (isVisible) {
+        if (mVisible) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 postInvalidateOnAnimation();
             } else {
@@ -247,4 +205,53 @@ public class GifView extends View {
             }
         }
     }
+
+    private void updateAnimationTime() {
+        long now = android.os.SystemClock.uptimeMillis();
+        // 如果第一帧，记录起始时间
+        if (mMovieStart == 0) {
+            mMovieStart = now;
+        }
+        // 取出动画的时长
+        int dur = mMovie.duration();
+        if (dur == 0) {
+            dur = DEFAULT_MOVIE_DURATION;
+        }
+        // 算出需要显示第几帧
+        mCurrentAnimationTime = (int) ((now - mMovieStart) % dur);
+    }
+
+    private void drawMovieFrame(Canvas canvas) {
+        // 设置要显示的帧，绘制即可
+        mMovie.setTime(mCurrentAnimationTime);
+//        canvas.save(Canvas.MATRIX_SAVE_FLAG);
+        canvas.save();
+        canvas.scale(mScale, mScale);
+        mMovie.draw(canvas, mLeft / mScale, mTop / mScale);
+        canvas.restore();
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    public void onScreenStateChanged(int screenState) {
+        super.onScreenStateChanged(screenState);
+        mVisible = screenState == SCREEN_STATE_ON;
+        invalidateView();
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        mVisible = visibility == View.VISIBLE;
+        invalidateView();
+    }
+
+    @Override
+    protected void onWindowVisibilityChanged(int visibility) {
+        super.onWindowVisibilityChanged(visibility);
+        mVisible = visibility == View.VISIBLE;
+        invalidateView();
+    }
+
 }
