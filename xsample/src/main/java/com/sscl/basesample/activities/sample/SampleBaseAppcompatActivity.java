@@ -131,7 +131,7 @@ public class SampleBaseAppcompatActivity extends BaseAppCompatActivity {
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        gifView.play();
+        gifView.setPaused(false);
     }
 
     /**
@@ -140,6 +140,7 @@ public class SampleBaseAppcompatActivity extends BaseAppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        gifView.pause();
+
+        gifView.setPaused(true);
     }
 }

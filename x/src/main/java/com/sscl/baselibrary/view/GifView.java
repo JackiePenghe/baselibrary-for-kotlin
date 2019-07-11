@@ -165,8 +165,8 @@ public class GifView extends View {
             int movieWidth = mMovie.width();
             int movieHeight = mMovie.height();
             int maximumWidth = MeasureSpec.getSize(widthMeasureSpec);
-            float scaleW = (float) movieWidth / (float) maximumWidth;
-            mScale = 1f / scaleW;
+            float scaleWidth = (float) movieWidth / (float) maximumWidth;
+            mScale = 1f / scaleWidth;
             mMeasuredMovieWidth = maximumWidth;
             mMeasuredMovieHeight = (int) (movieHeight * mScale);
             setMeasuredDimension(mMeasuredMovieWidth, mMeasuredMovieHeight);
