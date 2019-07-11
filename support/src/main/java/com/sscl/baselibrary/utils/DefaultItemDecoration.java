@@ -1,4 +1,4 @@
-package com.sscl.baselibrary.view.utils;
+package com.sscl.baselibrary.utils;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -17,7 +17,8 @@ import java.util.List;
 
 
 /**
- *  RecyclerView的装饰（分割线）
+ * RecyclerView的装饰（分割线）
+ *
  * @author jacke
  */
 
@@ -78,17 +79,6 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
-    public static DefaultItemDecoration getDefaultItemDecoration(@ColorInt int color,int orientation){
-        switch (orientation){
-            case ORIENTATION_HORIZONTAL:
-                return new DefaultItemDecoration(color,2, ViewGroup.LayoutParams.MATCH_PARENT,-1);
-            case ORIENTATION_VERTICAL:
-                return new DefaultItemDecoration(color, ViewGroup.LayoutParams.MATCH_PARENT,2,-1);
-            default:
-                return new DefaultItemDecoration(color);
-        }
-    }
-
     /*--------------------------------重写父类方法--------------------------------*/
 
     /**
@@ -118,7 +108,7 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
             return;
         }
         RecyclerView.Adapter adapter = parent.getAdapter();
-        if (adapter == null){
+        if (adapter == null) {
             return;
         }
         if (mViewTypeList.contains(adapter.getItemViewType(position))) {
@@ -197,10 +187,41 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
         drawVertical(c, parent);
     }
 
+    /*--------------------------------静态公开方法--------------------------------*/
+
+    /**
+     * 创建新的分割线
+     *
+     * @param color 分割线颜色
+     * @return 分割线
+     */
+    public static DefaultItemDecoration newLine(@ColorInt int color) {
+        return newLine(color, ORIENTATION_VERTICAL);
+    }
+
+    /**
+     * 创建新的分割线
+     *
+     * @param color       分割线颜色
+     * @param orientation 列表的排列方式
+     * @return 分割线
+     */
+    public static DefaultItemDecoration newLine(@ColorInt int color, int orientation) {
+        switch (orientation) {
+            case ORIENTATION_HORIZONTAL:
+                return new DefaultItemDecoration(color, 2, ViewGroup.LayoutParams.MATCH_PARENT, -1);
+            case ORIENTATION_VERTICAL:
+                return new DefaultItemDecoration(color, ViewGroup.LayoutParams.MATCH_PARENT, 2, -1);
+            default:
+                return new DefaultItemDecoration(color);
+        }
+    }
+
     /*--------------------------------私有方法--------------------------------*/
 
     /**
      * 根据不同的LayoutManager获取SpanCount
+     *
      * @param parent RecyclerView
      * @return SpanCount
      */
@@ -216,7 +237,8 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
 
     /**
      * 检查是不是第一行
-     * @param position 位置
+     *
+     * @param position    位置
      * @param columnCount 列数
      * @return true代表该位置在第一行
      */
@@ -226,9 +248,10 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
 
     /**
      * 检查是不是最后一行
-     * @param position 位置
+     *
+     * @param position    位置
      * @param columnCount 列数
-     * @param childCount 子项数量
+     * @param childCount  子项数量
      * @return true代表该位置在最后一行
      */
     private boolean isLastRaw(int position, int columnCount, int childCount) {
@@ -251,7 +274,8 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
 
     /**
      * 检查是不是第一列
-     * @param position 位置
+     *
+     * @param position    位置
      * @param columnCount 列数
      * @return true代表该位置在第一列
      */
@@ -261,7 +285,8 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
 
     /**
      * 检查是不是最后一列
-     * @param position 位置
+     *
+     * @param position    位置
      * @param columnCount 列数
      * @return true代表该位置在最后一列
      */
@@ -271,7 +296,8 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
 
     /**
      * 画横线
-     * @param c  Canvas
+     *
+     * @param c      Canvas
      * @param parent RecyclerView
      */
     private void drawHorizontal(Canvas c, RecyclerView parent) {
@@ -284,7 +310,7 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
                 continue;
             }
             RecyclerView.Adapter adapter = parent.getAdapter();
-            if (adapter == null){
+            if (adapter == null) {
                 return;
             }
             if (mViewTypeList.contains(adapter.getItemViewType(childPosition))) {
@@ -302,7 +328,8 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
 
     /**
      * 画竖线
-     * @param c Canvas
+     *
+     * @param c      Canvas
      * @param parent RecyclerView
      */
     private void drawVertical(Canvas c, RecyclerView parent) {
@@ -315,7 +342,7 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
                 continue;
             }
             RecyclerView.Adapter adapter = parent.getAdapter();
-            if (adapter == null){
+            if (adapter == null) {
                 return;
             }
             if (mViewTypeList.contains(adapter.getItemViewType(childPosition))) {
