@@ -22,7 +22,7 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="SplashTheme" parent="AppTheme">
-        <item name="android:windowBackground">@xml/splash</item>
+        <item name="android:windowBackground">@drawable/baselibrary_default_main</item>
         <item name="android:windowFullscreen">true</item>
     </style>
 
