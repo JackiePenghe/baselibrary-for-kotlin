@@ -24,20 +24,16 @@ import com.sscl.basesample.fragment.SampleFragment2;
 public class SampleBaseFragmentActivity extends AppCompatActivity {
 
     private static final String TAG = SampleBaseFragmentActivity.class.getSimpleName();
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
-    private Button button;
-    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample_base_fragment);
 
-        viewPager = findViewById(R.id.view_pager);
-        tabLayout = findViewById(R.id.tab_layout);
-        button = findViewById(R.id.button);
-        toolbar = findViewById(R.id.toolbar);
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        Button button = findViewById(R.id.button);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
         toolbar.setTitle(R.string.app_title);
         toolbar.setBackgroundResource(R.color.colorPrimary);
@@ -49,12 +45,7 @@ public class SampleBaseFragmentActivity extends AppCompatActivity {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setDisplayShowHomeEnabled(true);
         }
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
         final SampleFragment1 sampleFragment1 = new SampleFragment1();
         final SampleFragment2 sampleFragment2 = new SampleFragment2();
         Fragment[] fragments = new Fragment[]{sampleFragment1, sampleFragment2};
@@ -63,20 +54,17 @@ public class SampleBaseFragmentActivity extends AppCompatActivity {
         viewPager.setAdapter(fragmentViewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (sampleFragment1.isVisibilityForUser()){
-                    DebugUtil.warnOut(TAG,"sampleFragment1 可见");
-                }else{
-                    DebugUtil.warnOut(TAG,"sampleFragment1 不可见");
-                }
+        button.setOnClickListener(view -> {
+            if (sampleFragment1.isVisibilityForUser()){
+                DebugUtil.warnOut(TAG,"sampleFragment1 可见");
+            }else{
+                DebugUtil.warnOut(TAG,"sampleFragment1 不可见");
+            }
 
-                if (sampleFragment2.isVisibilityForUser()){
-                    DebugUtil.warnOut(TAG,"sampleFragment2 可见");
-                }else{
-                    DebugUtil.warnOut(TAG,"sampleFragment2 不可见");
-                }
+            if (sampleFragment2.isVisibilityForUser()){
+                DebugUtil.warnOut(TAG,"sampleFragment2 可见");
+            }else{
+                DebugUtil.warnOut(TAG,"sampleFragment2 不可见");
             }
         });
     }

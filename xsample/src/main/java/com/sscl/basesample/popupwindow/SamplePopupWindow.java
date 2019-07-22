@@ -2,10 +2,10 @@ package com.sscl.basesample.popupwindow;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import androidx.annotation.NonNull;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.sscl.baselibrary.popupwindow.BasePopupWindow;
 import com.sscl.basesample.R;
@@ -17,7 +17,6 @@ import com.sscl.basesample.R;
  * PopupWindow
  */
 
-@SuppressWarnings("WeakerAccess")
 public class SamplePopupWindow extends BasePopupWindow {
 
     private Button button;
@@ -62,12 +61,7 @@ public class SamplePopupWindow extends BasePopupWindow {
 
     @Override
     protected void initEvents() {
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        button.setOnClickListener(v -> dismiss());
     }
 
     @Override

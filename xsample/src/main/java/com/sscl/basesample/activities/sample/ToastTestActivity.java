@@ -23,37 +23,32 @@ public class ToastTestActivity extends BaseAppCompatActivity {
     private Button time500Btn;
 
     private RadioGroup reuseRadioGroup;
-    private View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.long_time:
-                    ToastUtil.toastL(ToastTestActivity.this, R.string.long_time);
-                    break;
-                case R.id.short_time:
-                    ToastUtil.toastS(ToastTestActivity.this, R.string.short_time);
-                    break;
-                case R.id.time_100:
-                    ToastUtil.toast(ToastTestActivity.this, R.string.time_100, 100);
-                    break;
-                case R.id.time_500:
-                    ToastUtil.toast(ToastTestActivity.this, R.string.time_500, 500);
-                    break;
-                default:
-                    break;
-            }
+    private View.OnClickListener onClickListener = v -> {
+        switch (v.getId()) {
+            case R.id.long_time:
+                ToastUtil.toastL(ToastTestActivity.this, R.string.long_time);
+                break;
+            case R.id.short_time:
+                ToastUtil.toastS(ToastTestActivity.this, R.string.short_time);
+                break;
+            case R.id.time_100:
+                ToastUtil.toast(ToastTestActivity.this, R.string.time_100, 100);
+                break;
+            case R.id.time_500:
+                ToastUtil.toast(ToastTestActivity.this, R.string.time_500, 500);
+                break;
+            default:
+                break;
         }
     };
-    private RadioGroup.OnCheckedChangeListener onCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
-            switch (group.getId()) {
-                case R.id.reuse_toast_group:
-                    onReuseGroupButtonCheckedChanged(checkedId);
-                    break;
-                default:
-                    break;
-            }
+    private RadioGroup.OnCheckedChangeListener onCheckedChangeListener = (group, checkedId) -> {
+        //noinspection SwitchStatementWithTooFewBranches
+        switch (group.getId()) {
+            case R.id.reuse_toast_group:
+                onReuseGroupButtonCheckedChanged(checkedId);
+                break;
+            default:
+                break;
         }
     };
 
