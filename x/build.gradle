@@ -38,7 +38,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0-alpha08'
 }
 
-version = "0.0.6"
+version = "0.0.7"
 
 def siteUrl = 'https://github.com/JackiePenghe/BaseSample'
 def gitUrl = 'https://github.com/JackiePenghe/BaseSample.git'
