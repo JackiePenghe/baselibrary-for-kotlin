@@ -22,6 +22,8 @@ import com.sscl.baselibrary.receiver.ScreenStatusReceiver;
 
 import java.lang.reflect.Field;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 工具类
@@ -35,6 +37,8 @@ public class Tool {
      * 屏幕状态的监听广播接收者
      */
     private static final ScreenStatusReceiver SCREEN_STATUS_RECEIVER = new ScreenStatusReceiver();
+
+    private static final String IP_V4_REGEX = "^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$";
 
 
     /**
@@ -137,6 +141,14 @@ public class Tool {
         }
     }
 
+    /**
+     * 设置文本到粘贴板
+     *
+     * @param context 上下文
+     * @param label   文本说明
+     * @param data    文本内容
+     * @return true表示设置成功
+     */
     public static boolean setDataToClipboard(@NonNull Context context, String label, @NonNull String data) {
         ClipboardManager clipboardManager = (ClipboardManager) context.getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
         if (clipboardManager == null) {
@@ -147,8 +159,26 @@ public class Tool {
         return true;
     }
 
-    @Nullable
+    /**
+     * 从粘贴板获取文本
+     *
+     * @param context 上下文
+     * @return 粘贴板文本
+     */
     public static String getDataFromClipboard(@NonNull Context context) {
+        return getDataFromClipboard(context, 0);
+    }
+
+    /**
+     * 从粘贴板获取文本
+     *
+     * @param context 上下文
+     * @param index   粘贴板中的文本索引
+     * @return 粘贴板文本
+     */
+    @SuppressWarnings("WeakerAccess")
+    @Nullable
+    public static String getDataFromClipboard(@NonNull Context context, int index) {
         ClipboardManager clipboardManager = (ClipboardManager) context.getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
         if (clipboardManager == null) {
             return null;
@@ -157,16 +187,21 @@ public class Tool {
         if (primaryClip == null) {
             return null;
         }
-        ClipData.Item itemAt = primaryClip.getItemAt(0);
+        ClipData.Item itemAt = primaryClip.getItemAt(index);
         return itemAt.getText().toString();
     }
 
-
+    /**
+     * 获取本机信息
+     *
+     * @param context 上下文
+     * @return 本机信息
+     */
     @Nullable
     @SuppressLint("HardwareIds")
     public static PhoneInfo getPhoneInfo(@NonNull Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int selfPermission = ContextCompat.checkSelfPermission(context,Manifest.permission.READ_PHONE_STATE);
+            int selfPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE);
             if (PackageManager.PERMISSION_GRANTED != selfPermission) {
                 return null;
             }
@@ -179,11 +214,24 @@ public class Tool {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             phoneImei = telephonyManager.getImei();
         } else {
+            //noinspection AliDeprecation
             phoneImei = telephonyManager.getDeviceId();
         }
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
-        return new PhoneInfo(manufacturer,model,phoneImei);
+        return new PhoneInfo(manufacturer, model, phoneImei);
+    }
+
+    /**
+     * 检查是否符合IPv4格式文本
+     *
+     * @param ipv4String 字符串
+     * @return true表示符合
+     */
+    public static boolean checkIpv4String(String ipv4String) {
+        Pattern pattern = Pattern.compile(IP_V4_REGEX);
+        Matcher matcher = pattern.matcher(ipv4String);
+        return matcher.matches();
     }
 
     private static IntentFilter getScreenStatusReceiverIntentFilter() {
