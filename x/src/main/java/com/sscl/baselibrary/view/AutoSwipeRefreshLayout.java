@@ -1,11 +1,12 @@
 package com.sscl.baselibrary.view;
 
 import android.content.Context;
+import android.util.AttributeSet;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import android.util.AttributeSet;
-import android.view.View;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -47,7 +48,9 @@ public class AutoSwipeRefreshLayout extends SwipeRefreshLayout {
             Field mCircleView = SwipeRefreshLayout.class.getDeclaredField("mCircleView");
             mCircleView.setAccessible(true);
             View progress = (View) mCircleView.get(this);
-            progress.setVisibility(VISIBLE);
+            if (progress != null) {
+                progress.setVisibility(VISIBLE);
+            }
 
             Method setRefreshing = SwipeRefreshLayout.class.getDeclaredMethod("setRefreshing", boolean.class, boolean.class);
             setRefreshing.setAccessible(true);
