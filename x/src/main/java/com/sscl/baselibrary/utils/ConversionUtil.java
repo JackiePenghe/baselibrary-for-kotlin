@@ -65,6 +65,7 @@ public class ConversionUtil {
      * @param bytesLength 数组长度的最大值（数组长度超过该值会被截取，长度不足该值为数组原长度）
      * @return 转换后获得的byte[]
      */
+    @SuppressWarnings("WeakerAccess")
     public static byte[] getBytes(String s, int bytesLength) {
         return getBytes(s, Charset.defaultCharset(), bytesLength);
     }
@@ -78,6 +79,7 @@ public class ConversionUtil {
      * @return 转换后获得的byte[]
      * @throws UnsupportedCharsetException 不支持的编码类型
      */
+    @SuppressWarnings("WeakerAccess")
     public static byte[] getBytes(String s, String charsetName, int bytesLength) throws UnsupportedCharsetException {
         Charset charset = Charset.forName(charsetName);
         return getBytes(s, charset, bytesLength);
@@ -91,6 +93,7 @@ public class ConversionUtil {
      * @param bytesLength 数组长度的最大值（数组长度超过该值会被截取，长度不足该值为数组原长度）
      * @return 转换后获得的byte[]
      */
+    @SuppressWarnings("WeakerAccess")
     public static byte[] getBytes(String s, Charset charset, int bytesLength) {
         if (s == null) {
             return null;
@@ -170,6 +173,7 @@ public class ConversionUtil {
      * @param value 长整形
      * @return byte数组
      */
+    @SuppressWarnings("WeakerAccess")
     public static byte[] longToBytes(long value) {
 
         String hexString = Long.toHexString(value);
@@ -194,6 +198,23 @@ public class ConversionUtil {
             }
             return bytes;
         }
+    }
+
+    /**
+     * 将long类型数（0~0x0000FFFFFFFFFFFF之间）转为6字节byte数组
+     *
+     * @param value 0~0x0000FFFFFFFFFFFF之间的long类型数
+     * @return 6字节byte数组
+     */
+    @Size(6)
+    public static byte[] longToBytesLength6(@Size(min = 0, max = 0x0000FFFFFFFFFFFFL) long value) {
+        byte[] bytes = longToBytes(value);
+        if (bytes.length == 6) {
+            return bytes;
+        }
+        byte[] result = new byte[6];
+        System.arraycopy(bytes, 0, result, 6 - bytes.length, bytes.length);
+        return result;
     }
 
     /**
@@ -477,6 +498,7 @@ public class ConversionUtil {
      * @param i 整数
      * @return 16进制字符串
      */
+    @SuppressWarnings("WeakerAccess")
     public static String intToHexStr(int i) {
         return Integer.toHexString(i);
     }
