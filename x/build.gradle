@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 29
-        versionCode 9
-        versionName "0.0.9"
+        versionCode 10
+        versionName "0.0.10"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -36,7 +36,7 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02'
 }
 
-version = "0.0.9"
+version = "0.0.10"
 
 def siteUrl = 'https://github.com/JackiePenghe/BaseSample'
 def gitUrl = 'https://github.com/JackiePenghe/BaseSample.git'
