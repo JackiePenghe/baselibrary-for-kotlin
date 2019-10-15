@@ -1,8 +1,0 @@
-<resources>
-    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
-    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
-    <string name="app_title">Default Title</string>
-    <string name="_null" translatable="false" />
-    <string name="exit_with_error">An unknown exception occurs and the program is about to exit.</string>
-    <string name="file_not_found_or_use_unrecognized_characters">Wrong file path or file USES unrecognized characters</string>
-</resources>

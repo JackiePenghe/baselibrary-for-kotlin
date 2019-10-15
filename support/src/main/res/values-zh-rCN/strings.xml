@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_title">默认的标题</string>
-    <string name="exit_with_error">出现未知异常，程序即将退出！</string>
-    <string name="file_not_found_or_use_unrecognized_characters">错误的文件路径，或使用了无效的字符</string>
-</resources>
