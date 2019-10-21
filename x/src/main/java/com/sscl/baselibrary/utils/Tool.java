@@ -47,7 +47,8 @@ public class Tool {
      *
      * @param context 上下文
      */
-    public static Intent startScreenStatusListener(Context context) {
+    @SuppressWarnings("UnusedReturnValue")
+    public static Intent startScreenStatusListener(@NonNull Context context) {
         return context.registerReceiver(SCREEN_STATUS_RECEIVER, getScreenStatusReceiverIntentFilter());
     }
 
@@ -56,7 +57,7 @@ public class Tool {
      *
      * @param context 上下文
      */
-    public static void stopScreenStatusListener(Context context) {
+    public static void stopScreenStatusListener(@NonNull Context context) {
         context.unregisterReceiver(SCREEN_STATUS_RECEIVER);
     }
 
@@ -65,7 +66,7 @@ public class Tool {
      *
      * @param onScreenStatusChangedListener 屏幕状态更改的监听
      */
-    public static void setOnScreenStatusChangedListener(ScreenStatusReceiver.OnScreenStatusChangedListener onScreenStatusChangedListener) {
+    public static void setOnScreenStatusChangedListener(@NonNull ScreenStatusReceiver.OnScreenStatusChangedListener onScreenStatusChangedListener) {
         SCREEN_STATUS_RECEIVER.setOnScreenStatusChangedListener(onScreenStatusChangedListener);
     }
 
@@ -75,7 +76,7 @@ public class Tool {
      * @return true表示为中文简体
      */
     @SuppressWarnings("WeakerAccess")
-    public static boolean isZhCN() {
+    public static boolean isZhCn() {
         Locale aDefault = Locale.getDefault();
         String aDefaultStr = aDefault.toString();
         String zhCn = "zh_CN";
@@ -88,7 +89,7 @@ public class Tool {
      * @param activity Activity
      */
     @SuppressWarnings("unused")
-    public static void releaseInputMethodManagerMemory(Activity activity) {
+    public static void releaseInputMethodManagerMemory(@NonNull Activity activity) {
         //解除输入法内存泄漏
         InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         try {
@@ -150,7 +151,8 @@ public class Tool {
      * @param data    文本内容
      * @return true表示设置成功
      */
-    public static boolean setDataToClipboard(@NonNull Context context, String label, @NonNull String data) {
+    @SuppressWarnings("unused")
+    public static boolean setDataToClipboard(@NonNull Context context, @NonNull String label, @NonNull String data) {
         ClipboardManager clipboardManager = (ClipboardManager) context.getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
         if (clipboardManager == null) {
             return false;
@@ -166,6 +168,7 @@ public class Tool {
      * @param context 上下文
      * @return 粘贴板文本
      */
+    @SuppressWarnings("unused")
     public static String getDataFromClipboard(@NonNull Context context) {
         return getDataFromClipboard(context, 0);
     }
@@ -198,6 +201,7 @@ public class Tool {
      * @param context 上下文
      * @return 本机信息
      */
+    @SuppressWarnings("unused")
     @Nullable
     @SuppressLint("HardwareIds")
     public static PhoneInfo getPhoneInfo(@NonNull Context context) {
@@ -215,7 +219,6 @@ public class Tool {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             phoneImei = telephonyManager.getImei();
         } else {
-            //noinspection AliDeprecation
             phoneImei = telephonyManager.getDeviceId();
         }
         String manufacturer = Build.MANUFACTURER;
@@ -229,7 +232,8 @@ public class Tool {
      * @param ipv4String 字符串
      * @return true表示符合
      */
-    public static boolean checkIpv4String(String ipv4String) {
+    @SuppressWarnings("unused")
+    public static boolean checkIpv4String(@NonNull String ipv4String) {
         Pattern pattern = Pattern.compile(IP_V4_REGEX);
         Matcher matcher = pattern.matcher(ipv4String);
         return matcher.matches();

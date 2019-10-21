@@ -4,6 +4,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import com.sscl.baselibrary.activity.BaseDrawerActivity;
 import com.sscl.baselibrary.utils.DebugUtil;
 import com.sscl.baselibrary.utils.ToastUtil;
@@ -92,7 +94,7 @@ public class SampleBaseDrawerActivity extends BaseDrawerActivity {
      * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
      */
     @Override
-    protected boolean createOptionsMenu(Menu menu) {
+    protected boolean createOptionsMenu(@NonNull Menu menu) {
         return false;
     }
 
@@ -103,7 +105,7 @@ public class SampleBaseDrawerActivity extends BaseDrawerActivity {
      * @return true表示处理了监听事件
      */
     @Override
-    protected boolean optionsItemSelected(MenuItem item) {
+    protected boolean optionsItemSelected(@NonNull MenuItem item) {
         return false;
     }
 
@@ -129,7 +131,7 @@ public class SampleBaseDrawerActivity extends BaseDrawerActivity {
      */
     @Override
     protected void drawerOpened(View drawerView) {
-        ToastUtil.toastL(this,"侧边栏完全打开了");
+        ToastUtil.toastLong(this,"侧边栏完全打开了");
     }
 
     /**
@@ -139,7 +141,7 @@ public class SampleBaseDrawerActivity extends BaseDrawerActivity {
      */
     @Override
     protected void drawerClosed(View drawerView) {
-        ToastUtil.toastL(this,"侧边栏完全关闭了");
+        ToastUtil.toastLong(this,"侧边栏完全关闭了");
     }
 
     /**
@@ -149,7 +151,7 @@ public class SampleBaseDrawerActivity extends BaseDrawerActivity {
      */
     @Override
     protected void drawerStateChanged(int newState) {
-        ToastUtil.toastL(this,"侧边栏的状态改变了：" + newState);
+        ToastUtil.toastLong(this,"侧边栏的状态改变了：" + newState);
     }
 
     /**

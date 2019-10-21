@@ -1,5 +1,7 @@
 package com.sscl.baselibrary.bean;
 
+import androidx.annotation.Nullable;
+
 /**
  * 手机信息Bean类
  *
@@ -31,7 +33,7 @@ public class PhoneInfo {
      * @param model        手机型号
      * @param phoneImei    手机IMEI
      */
-    public PhoneInfo(String manufacturer, String model, String phoneImei) {
+    public PhoneInfo(@Nullable String manufacturer,@Nullable String model, @Nullable String phoneImei) {
         this.manufacturer = manufacturer;
         this.model = model;
         this.phoneImei = phoneImei;
@@ -39,14 +41,20 @@ public class PhoneInfo {
 
     /*--------------------------------getter--------------------------------*/
 
+    @SuppressWarnings("unused")
+    @Nullable
     public String getManufacturer() {
         return manufacturer;
     }
 
+    @SuppressWarnings("unused")
+    @Nullable
     public String getModel() {
         return model;
     }
 
+    @SuppressWarnings("unused")
+    @Nullable
     public String getPhoneImei() {
         return phoneImei;
     }

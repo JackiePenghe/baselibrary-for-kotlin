@@ -38,7 +38,7 @@ public class SplashActivity extends BaseSplashActivity {
 
 
     private long getVerificationCode(String address, byte[] appId) {
-        DebugUtil.warnOut(TAG, "appID = " + ConversionUtil.bytesToHexStr(appId));
+        DebugUtil.warnOut(TAG, "appID = " + ConversionUtil.byteArrayToHexStr(appId));
         String[] split = address.split(":");
         byte[] cache = new byte[6];
 

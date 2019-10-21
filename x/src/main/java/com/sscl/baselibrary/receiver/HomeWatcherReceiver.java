@@ -3,6 +3,8 @@ package com.sscl.baselibrary.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.sscl.baselibrary.utils.HomeWatcher;
@@ -19,8 +21,6 @@ public class HomeWatcherReceiver extends BroadcastReceiver {
     /*--------------------------------静态常量--------------------------------*/
 
     final String SYSTEM_DIALOG_REASON_KEY = "reason";
-
-    final String SYSTEM_DIALOG_REASON_GLOBAL_ACTIONS = "globalactions";
 
     final String SYSTEM_DIALOG_REASON_RECENT_APPS = "recentapps";
     final String SYSTEM_DIALOG_REASON_HOME_KEY = "homekey";
@@ -43,7 +43,7 @@ public class HomeWatcherReceiver extends BroadcastReceiver {
      *
      * @param homeWatcher HomeWatcher对象
      */
-    public HomeWatcherReceiver(HomeWatcher homeWatcher) {
+    public HomeWatcherReceiver(@NonNull HomeWatcher homeWatcher) {
         homeWatcherWeakReference = new WeakReference<>(homeWatcher);
     }
 
@@ -86,7 +86,10 @@ public class HomeWatcherReceiver extends BroadcastReceiver {
      */
     @SuppressWarnings({"JavadocReference", "JavaDoc"})
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(@Nullable Context context,@Nullable Intent intent) {
+        if (intent == null){
+            return;
+        }
         String action = intent.getAction();
         HomeWatcher homeWatcher = homeWatcherWeakReference.get();
         if (homeWatcher == null) {

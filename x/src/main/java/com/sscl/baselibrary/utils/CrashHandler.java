@@ -8,6 +8,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Looper;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.util.Log;
 import android.widget.Toast;
 
@@ -40,7 +42,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     /*--------------------------------静态常量--------------------------------*/
 
-    private static final String TAG = "CrashHandler";
+    private static final String TAG = CrashHandler.class.getSimpleName();
 
     /*--------------------------------成员变量--------------------------------*/
 
@@ -106,7 +108,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      * @param ex     Throwable
      */
     @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
+    public void uncaughtException(@NonNull Thread thread, @NonNull Throwable ex) {
         if (!handleException(ex) && mDefaultHandler != null) {
             //如果用户没有处理则让系统默认的异常处理器来处理
             mDefaultHandler.uncaughtException(thread, ex);
@@ -130,7 +132,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      * @param context 上下文
      */
     @SuppressWarnings("WeakerAccess")
-    public void init(Context context, String crashFileDirPath) {
+    public void init(@NonNull Context context,@NonNull String crashFileDirPath) {
         mContext = context;
         //获取系统默认的UncaughtException处理器
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
@@ -144,7 +146,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      *
      * @param context 上下文
      */
-    public void init(Context context) {
+    public void init(@NonNull Context context) {
         File crashDir = FileUtil.getCrashDir();
         if (crashDir == null) {
             throw new NullPointerException("crashDir == null");
@@ -160,7 +162,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      * @param ex 错误
      * @return true:如果处理了该异常信息;否则返回false.
      */
-    private boolean handleException(Throwable ex) {
+    private boolean handleException(@Nullable Throwable ex) {
         if (ex == null) {
             return false;
         }
@@ -205,8 +207,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      *
      * @param context 上下文
      */
-    @SuppressLint("NewApi")
-    private void collectDeviceInfo(Context context) {
+    private void collectDeviceInfo(@NonNull Context context) {
         try {
             PackageManager pm = context.getPackageManager();
             PackageInfo pi = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_ACTIVITIES);
@@ -230,8 +231,14 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         for (Field field : fields) {
             try {
                 field.setAccessible(true);
-                stringStringHashMap.put(field.getName(), field.get(null).toString());
-                Log.d(TAG, field.getName() + " : " + field.get(null));
+                Object o = field.get(null);
+                if (o == null){
+                    stringStringHashMap.put(field.getName(),"");
+                    Log.d(TAG, field.getName() + " : " + o);
+                    return;
+                }
+                stringStringHashMap.put(field.getName(), o.toString());
+                Log.d(TAG, field.getName() + " : " + o);
             } catch (Exception e) {
                 Log.e(TAG, "an error occured when collect crash info", e);
             }
@@ -243,7 +250,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      *
      * @param ex 异常
      */
-    private synchronized void saveCrashInfo2File(Throwable ex) {
+    private synchronized void saveCrashInfo2File(@NonNull Throwable ex) {
 
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry : stringStringHashMap.entrySet()) {

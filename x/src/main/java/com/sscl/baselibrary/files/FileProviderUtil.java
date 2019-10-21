@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
+
+import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
 
@@ -23,8 +25,6 @@ public class FileProviderUtil {
 
     /*--------------------------------静态常量--------------------------------*/
 
-    private static final String TAG = "FileProviderUtil";
-
     private static final String CONTENT = "content";
     private static final String ROOT_PATH = "/root";
 
@@ -37,8 +37,9 @@ public class FileProviderUtil {
      * @param file    File对象
      * @return 文件Uri
      */
+    @NonNull
     @SuppressWarnings("WeakerAccess")
-    public static Uri getUriFromFile(Context context, File file) {
+    public static Uri getUriFromFile(@NonNull Context context, @NonNull File file) {
         Uri fileUri;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             fileUri = getUriFromFile24(context, file);
@@ -57,11 +58,8 @@ public class FileProviderUtil {
      * @param file     文件
      * @param canWrite 是否可写
      */
-    public static void setIntentDataAndType(Context context,
-                                            Intent intent,
-                                            String type,
-                                            File file,
-                                            boolean canWrite) {
+    @SuppressWarnings("unused")
+    public static void setIntentDataAndType(@NonNull Context context, @NonNull Intent intent, @NonNull String type, @NonNull File file, boolean canWrite) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.setDataAndType(getUriFromFile24(context, file), type);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -81,10 +79,8 @@ public class FileProviderUtil {
      * @param file     文件
      * @param canWrite 是否可写
      */
-    public static void setIntentData(Context context,
-                                     Intent intent,
-                                     File file,
-                                     boolean canWrite) {
+    @SuppressWarnings("unused")
+    public static void setIntentData(@NonNull Context context, @NonNull Intent intent, @NonNull File file, boolean canWrite) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.setData(getUriFromFile24(context, file));
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -104,7 +100,8 @@ public class FileProviderUtil {
      * @param uri      文件Uri
      * @param canWrite 是否可写
      */
-    public static void grantPermissions(Context context, Intent intent, Uri uri, boolean canWrite) {
+    @SuppressWarnings("unused")
+    public static void grantPermissions(@NonNull Context context, @NonNull Intent intent, @NonNull Uri uri, boolean canWrite) {
 
         int flag = Intent.FLAG_GRANT_READ_URI_PERMISSION;
         if (canWrite) {
@@ -125,7 +122,9 @@ public class FileProviderUtil {
      * @param uri 文件Uri
      * @return 文件路径
      */
-    public static String getPath(Uri uri) {
+    @SuppressWarnings("unused")
+    @NonNull
+    public static String getPath(@NonNull Uri uri) {
         String scheme = uri.getScheme();
         if (!CONTENT.equals(scheme)) {
             throw new RuntimeException("Uri scheme error! Need " + CONTENT + ",find " + scheme + ".");
@@ -134,7 +133,7 @@ public class FileProviderUtil {
             throw new RuntimeException("Uri must be absolute");
         }
         String path = uri.getPath();
-        if (path == null){
+        if (path == null) {
             return "";
         }
         if (path.startsWith(ROOT_PATH)) {
@@ -152,8 +151,9 @@ public class FileProviderUtil {
      * @param file    File对象
      * @return 文件Uri
      */
+    @NonNull
     @TargetApi(Build.VERSION_CODES.N)
-    private static Uri getUriFromFile24(Context context, File file) {
+    private static Uri getUriFromFile24(@NonNull Context context,@NonNull File file) {
         String authority = context.getPackageName() + ".fileprovider";
         return FileProvider.getUriForFile(context, authority, file);
     }

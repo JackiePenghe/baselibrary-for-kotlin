@@ -1,6 +1,9 @@
 package com.sscl.baselibrary.view;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
 import android.util.AttributeSet;
 
@@ -21,15 +24,15 @@ public class ReSpinner extends AppCompatSpinner {
 
     /*---------------------------------------构造方法---------------------------------------*/
 
-    public ReSpinner(Context context) {
+    public ReSpinner(@NonNull Context context) {
         super(context);
     }
 
-    public ReSpinner(Context context, AttributeSet attrs) {
+    public ReSpinner(@NonNull Context context,@Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ReSpinner(Context context, AttributeSet attrs, int defStyle) {
+    public ReSpinner(@NonNull Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
@@ -75,10 +78,12 @@ public class ReSpinner extends AppCompatSpinner {
 
     /*---------------------------------------公开方法---------------------------------------*/
 
+    @SuppressWarnings("unused")
     public boolean isDropDownMenuShown() {
         return isDropDownMenuShown;
     }
 
+    @SuppressWarnings("unused")
     public void setDropDownMenuShown(boolean isDropDownMenuShown) {
         this.isDropDownMenuShown = isDropDownMenuShown;
     }

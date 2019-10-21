@@ -11,6 +11,9 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.sscl.baselibrary.R;
 import com.sscl.baselibrary.utils.ToastUtil;
 
@@ -25,9 +28,10 @@ import java.io.IOException;
  *
  * @author ALM
  */
+@SuppressWarnings("unused")
 public class FileSystemUtil {
 
-    /*--------------------------------静态常量--------------------------------*/
+    /*--------------------------------私有静态常量--------------------------------*/
 
     private static final String PRIMARY = "primary";
     private static final String IMAGE = "image";
@@ -35,6 +39,12 @@ public class FileSystemUtil {
     private static final String AUDIO = "audio";
     private static final String CONTENT = "content";
     private static final String FILE = "file";
+
+
+    /*--------------------------------公开静态常量--------------------------------*/
+
+    @SuppressWarnings("WeakerAccess")
+    public static final String FILE_TYPE_ALL = "*/*";
 
     /*--------------------------------公开静态方法--------------------------------*/
 
@@ -45,7 +55,9 @@ public class FileSystemUtil {
      * @param uri     uri
      * @return 文件路径
      */
-    public static String getPath(final Context context, final Uri uri) {
+    @Nullable
+    @SuppressWarnings("unused")
+    public static String getPath(@NonNull final Context context, @NonNull final Uri uri) {
 
         // DocumentProvider
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && DocumentsContract.isDocumentUri(context, uri)) {
@@ -113,9 +125,10 @@ public class FileSystemUtil {
      * @param requestCode 请求码
      * @return true表示打开成功
      */
-    public static boolean openSystemFile(Activity activity, int requestCode) {
+    @SuppressWarnings("unused")
+    public static boolean openSystemFile(@NonNull Activity activity, int requestCode) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("*/*");
+        intent.setType(FILE_TYPE_ALL);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
 
         try {
@@ -135,7 +148,7 @@ public class FileSystemUtil {
      * @param fileType 文件类型
      */
     @SuppressWarnings("WeakerAccess")
-    public static void openFile(Context context, File file, @SuppressWarnings("SameParameterValue") String fileType) {
+    public static void openFile(@NonNull Context context,@NonNull File file,@NonNull String fileType) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         Uri uriFromFile = FileProviderUtil.getUriFromFile(context, file.getAbsoluteFile());
         intent.addCategory(Intent.CATEGORY_DEFAULT);
@@ -150,8 +163,9 @@ public class FileSystemUtil {
      * @param context 上下文
      * @param file    文件
      */
-    public static void openFile(Context context, File file) {
-        openFile(context, file, "*/*");
+    @SuppressWarnings("unused")
+    public static void openFile(@NonNull Context context,@NonNull File file) {
+        openFile(context, file, FILE_TYPE_ALL);
     }
 
     /**
@@ -159,10 +173,12 @@ public class FileSystemUtil {
      *
      * @param context    上下文
      * @param filePath   文件路径
-     * @param byteLength 要读取的文件内容长度(为0则全部读完)
+     * @param byteLength 要读取的文件内容长度(为0，则表示全部读完)
      * @return 读取的文件内容
      */
-    public static byte[] readFileFromPath(Context context, String filePath, int byteLength) {
+    @Nullable
+    @SuppressWarnings("unused")
+    public static byte[] readFileFromPath(@NonNull Context context,@NonNull String filePath, int byteLength) {
         //若果SD卡存在
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             FileInputStream fileInputStream = null;
@@ -184,7 +200,7 @@ public class FileSystemUtil {
 
                 return buffer;
             } catch (FileNotFoundException e) {
-                ToastUtil.toastL(context, R.string.file_not_found_or_use_unrecognized_characters);
+                ToastUtil.toastLong(context, R.string.file_not_found_or_use_unrecognized_characters);
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -209,7 +225,8 @@ public class FileSystemUtil {
      * @param filePath 文件绝对路径
      * @return 文件大小(Byte)
      */
-    public static int getFileSizeFromRealPath(String filePath) {
+    @SuppressWarnings("unused")
+    public static int getFileSizeFromRealPath(@NonNull String filePath) {
         //若果SD卡存在
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             File file = new File(filePath);
@@ -246,7 +263,8 @@ public class FileSystemUtil {
      * @param selectionArgs (Optional) Selection arguments used in the query.
      * @return 数据列的值, 通常是一个文件路径
      */
-    private static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+    @Nullable
+    private static String getDataColumn(@NonNull Context context, @Nullable Uri uri, @Nullable String selection,@Nullable String[] selectionArgs) {
 
         Cursor cursor = null;
         final String column = "_data";
@@ -254,6 +272,9 @@ public class FileSystemUtil {
                 column
         };
 
+        if (uri == null){
+            return null;
+        }
         //noinspection TryFinallyCanBeTryWithResources
         try {
             cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
@@ -277,7 +298,7 @@ public class FileSystemUtil {
      * @param uri 要检测的Uri
      * @return uri是否指向外部存储
      */
-    private static boolean isExternalStorageDocument(Uri uri) {
+    private static boolean isExternalStorageDocument(@NonNull Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
 
@@ -287,7 +308,7 @@ public class FileSystemUtil {
      * @param uri 要检测的Uri
      * @return 是否属于下载uri
      */
-    private static boolean isDownloadsDocument(Uri uri) {
+    private static boolean isDownloadsDocument(@NonNull Uri uri) {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
     }
 
@@ -297,7 +318,7 @@ public class FileSystemUtil {
      * @param uri Uri
      * @return 是否是多媒体uri
      */
-    private static boolean isMediaDocument(Uri uri) {
+    private static boolean isMediaDocument(@NonNull Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 }

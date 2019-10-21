@@ -3,23 +3,25 @@ package com.sscl.baselibrary.activity;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.ColorInt;
-import androidx.annotation.ColorRes;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.annotation.StringRes;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.sscl.baselibrary.R;
 import com.sscl.baselibrary.utils.StatusBarUtil;
@@ -115,7 +117,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      * @see #onOptionsItemSelected
      */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         //创建菜单选项
         return createOptionsMenu(menu);
     }
@@ -137,7 +139,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      * @see #onCreateOptionsMenu
      */
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         //菜单的选项被点击时的处理
         return optionsItemSelected(item);
     }
@@ -208,7 +210,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      * @param menu 菜单
      * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
      */
-    protected abstract boolean createOptionsMenu(Menu menu);
+    protected abstract boolean createOptionsMenu(@NonNull Menu menu);
 
     /**
      * 设置菜单监听
@@ -216,7 +218,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      * @param item 菜单的item
      * @return true表示处理了监听事件
      */
-    protected abstract boolean optionsItemSelected(MenuItem item);
+    protected abstract boolean optionsItemSelected(@NonNull MenuItem item);
 
     /*--------------------------------私有方法--------------------------------*/
 
@@ -266,7 +268,8 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      *
      * @param titleBackButtonOnClickListener 返回按钮的处理事件
      */
-    protected void setTitleBackOnClickListener(View.OnClickListener titleBackButtonOnClickListener) {
+    @SuppressWarnings("unused")
+    protected void setTitleBackOnClickListener(@Nullable View.OnClickListener titleBackButtonOnClickListener) {
         mTitleBackButtonOnClickListener = titleBackButtonOnClickListener;
     }
 
@@ -287,6 +290,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     /**
      * 显示标题栏的返回按钮
      */
+    @SuppressWarnings("unused")
     protected void showTitleBackButton() {
         ActionBar supportActionBar = getSupportActionBar();
         if (null == supportActionBar) {
@@ -303,7 +307,8 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      *
      * @param drawableRes 背景色
      */
-    protected void setRootBackGroundResource(int drawableRes) {
+    @SuppressWarnings("unused")
+    protected void setRootBackGroundResource(@DrawableRes int drawableRes) {
         rootView.setBackgroundResource(drawableRes);
     }
 
@@ -312,6 +317,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      *
      * @param color 背景色
      */
+    @SuppressWarnings("unused")
     protected void setRootBackGroundColor(@ColorInt int color) {
         rootView.setBackgroundColor(color);
     }
@@ -330,6 +336,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     /**
      * 显示标题栏
      */
+    @SuppressWarnings("unused")
     protected void showTitleBar() {
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
@@ -342,20 +349,12 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      *
      * @param titleRes 标题栏的资源id
      */
+    @SuppressWarnings("unused")
     protected void setTitleText(@StringRes int titleRes) {
         if (null == titleView) {
             throw new RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"");
         }
         titleView.setText(titleRes);
-//        if (null == collapsingToolbarLayout) {
-//            throw new RuntimeException("collapsingToolbarLayout is null!Please invoke this method after method \"setLayout()\"");
-//        }
-//        collapsingToolbarLayout.setTitle(getString(titleRes));
-//        ActionBar supportActionBar = getSupportActionBar();
-//        if (null ==supportActionBar){
-//            throw new RuntimeException("toolbar is null!Please invoke this method after method \"setLayout()\"");
-//        }
-//        supportActionBar.setTitle(titleRes);
     }
 
     /**
@@ -363,6 +362,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      *
      * @param titleText 标题栏的文本
      */
+    @SuppressWarnings("unused")
     protected void setTitleText(String titleText) {
         if (null == titleView) {
             throw new RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"");
@@ -387,6 +387,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      *
      * @param color 标题栏的背景色
      */
+    @SuppressWarnings("unused")
     protected void setTitleBackgroundColor(@ColorInt int color) {
         if (toolbar == null) {
             throw new RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"");
@@ -399,6 +400,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      *
      * @param drawable 标题栏的背景
      */
+    @SuppressWarnings("unused")
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     protected void setTitleBackgroundDrawable(Drawable drawable) {
         if (toolbar == null) {
@@ -412,6 +414,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      *
      * @param drawableRes 标题栏的背景
      */
+    @SuppressWarnings("unused")
     protected void setTitleBackgroundResource(@DrawableRes int drawableRes) {
         if (toolbar == null) {
             throw new RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"");
@@ -424,6 +427,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      *
      * @param colorRes 文本颜色
      */
+    @SuppressWarnings("unused")
     protected void setTitleTextColorRes(@ColorRes int colorRes) {
         int color = ContextCompat.getColor(this, colorRes);
         setTitleTextColor(color);
@@ -434,6 +438,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      *
      * @param drawableId 标题栏左边的图片资源id
      */
+    @SuppressWarnings("unused")
     protected void setTitleBackIcon(@DrawableRes int drawableId) {
         toolbar.setNavigationIcon(drawableId);
     }
@@ -443,6 +448,8 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      *
      * @return Activity布局的整个布局
      */
+    @SuppressWarnings("unused")
+    @NonNull
     protected FrameLayout getContentView() {
         return content;
     }

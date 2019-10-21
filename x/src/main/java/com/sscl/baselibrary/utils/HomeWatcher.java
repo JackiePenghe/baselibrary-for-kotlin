@@ -3,6 +3,8 @@ package com.sscl.baselibrary.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.sscl.baselibrary.receiver.HomeWatcherReceiver;
@@ -37,7 +39,7 @@ public class HomeWatcher {
      *
      * @param context 上下文
      */
-    public HomeWatcher(Context context) {
+    public HomeWatcher(@NonNull Context context) {
         mContext = context;
         mFilter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
         mReceiver = new HomeWatcherReceiver(this);

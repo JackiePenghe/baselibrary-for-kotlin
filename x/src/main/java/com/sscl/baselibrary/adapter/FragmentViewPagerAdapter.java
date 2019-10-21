@@ -6,11 +6,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
+import androidx.viewpager.widget.PagerAdapter;
 
 /**
  * @author jackie
  */
-public class FragmentViewPagerAdapter extends FragmentPagerAdapter {
+public class FragmentViewPagerAdapter extends FragmentStatePagerAdapter {
 
     /*--------------------------------成员变量--------------------------------*/
 
@@ -32,7 +36,7 @@ public class FragmentViewPagerAdapter extends FragmentPagerAdapter {
      * @param pageTitles Fragment数组对应的标题
      */
     public FragmentViewPagerAdapter(FragmentManager fm, @NonNull Fragment[] fragments, @NonNull String[] pageTitles) {
-        super(fm);
+        super(fm, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         if (fragments.length > pageTitles.length){
             throw new IllegalStateException("The length of array parameter \"pageTitles\" must be equals or more than array parameter \"fragments\"");
         }
@@ -48,6 +52,7 @@ public class FragmentViewPagerAdapter extends FragmentPagerAdapter {
      * @param position 当前的位置
      */
     @Override
+    @NonNull
     public Fragment getItem(int position) {
         return fragments[position];
     }

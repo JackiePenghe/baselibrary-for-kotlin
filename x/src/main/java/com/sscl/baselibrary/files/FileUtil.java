@@ -8,6 +8,9 @@ import android.os.Environment;
 import android.util.Log;
 
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,11 +23,6 @@ import java.io.IOException;
 public class FileUtil {
 
     /*--------------------------------静态常量--------------------------------*/
-
-    /**
-     * TAG
-     */
-    private static final String TAG = "FileUtil";
 
     /**
      * 在文件管理器中的程序文件夹名（默认值，未执行初始化函数就是这个值）
@@ -47,15 +45,29 @@ public class FileUtil {
 
     /**
      * 初始化
+     *
      * @param context 上下文
      */
-    public static void init(Context context) {
+    public static void init(@NonNull Context context) {
+        init(context, true);
+    }
+
+    /**
+     * 初始化
+     *
+     * @param context            上下文
+     * @param withOutPackageName 是否需要包名
+     */
+    @SuppressWarnings("WeakerAccess")
+    public static void init(@NonNull Context context, boolean withOutPackageName) {
         File filesDir = context.getFilesDir();
         String absolutePath = filesDir.getAbsolutePath();
         String[] split = absolutePath.split("/");
         String appName = split[split.length - 2];
-        String[] split1 = appName.split("\\.");
-        appName = split1[split1.length - 1];
+        if (withOutPackageName) {
+            String[] split1 = appName.split("\\.");
+            appName = split1[split1.length - 1];
+        }
         FileUtil.APP_NAME = appName;
         init = true;
     }
@@ -65,14 +77,15 @@ public class FileUtil {
      *
      * @return 获取SD卡路径
      */
-    public static File getSDCardDir() {
+    @SuppressWarnings("WeakerAccess")
+    @NonNull
+    public static File getSdCardDir() {
         //获取挂载状态
         String state = Environment.getExternalStorageState();
 
         //如果是已挂载,说明了有内存卡
         if (Environment.MEDIA_MOUNTED.equals(state)) {
-            File externalStorageDirectory = Environment.getExternalStorageDirectory();
-            return externalStorageDirectory;
+            return Environment.getExternalStorageDirectory();
         }
         throw new NullPointerException("No SD card was found!");
     }
@@ -82,6 +95,7 @@ public class FileUtil {
      *
      * @return 本项目文件目录
      */
+    @Nullable
     public static File getAppDir() {
 
         if (!init) {
@@ -90,7 +104,7 @@ public class FileUtil {
         if (null == APP_NAME || "".equals(APP_NAME)) {
             throw new ExceptionInInitializerError("File name invalid");
         }
-        File file = new File(getSDCardDir(), APP_NAME);
+        File file = new File(getSdCardDir(), APP_NAME);
         boolean mkdirs;
         if (!file.exists()) {
             mkdirs = file.mkdirs();
@@ -108,6 +122,8 @@ public class FileUtil {
      *
      * @return 项目缓存文件目录
      */
+    @SuppressWarnings("WeakerAccess")
+    @Nullable
     public static File getCacheDir() {
         File file = new File(getAppDir(), "cache");
         boolean mkdirs;
@@ -127,6 +143,7 @@ public class FileUtil {
      *
      * @return 项目的异常日志目录
      */
+    @Nullable
     public static File getCrashDir() {
         File file = new File(getAppDir(), "crash");
         boolean mkdirs;
@@ -146,6 +163,8 @@ public class FileUtil {
      *
      * @return apk存储目录
      */
+    @SuppressWarnings("unused")
+    @Nullable
     public static File getApkDir() {
         File file = new File(getAppDir(), "apk");
         boolean mkdirs;
@@ -165,6 +184,8 @@ public class FileUtil {
      *
      * @return 图片目录
      */
+    @SuppressWarnings("unused")
+    @Nullable
     public static File getImageDir() {
         File file = new File(getAppDir(), "images");
         boolean mkdirs;
@@ -183,9 +204,10 @@ public class FileUtil {
      * 安装apk
      *
      * @param context 上下文
-     * @param apkFile    文件
+     * @param apkFile 文件
      */
-    public static void installApk(Context context, File apkFile) {
+    @SuppressWarnings("unused")
+    public static void installApk(@NonNull Context context,@NonNull File apkFile) {
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);
@@ -199,6 +221,8 @@ public class FileUtil {
      *
      * @return 项目数据目录
      */
+    @SuppressWarnings("unused")
+    @Nullable
     public static File getDataDir() {
         File file = new File(getAppDir(), "data");
         boolean mkdirs;
@@ -218,7 +242,8 @@ public class FileUtil {
      *
      * @param fileName 文件名
      */
-    public static boolean delFile(String fileName) {
+    @SuppressWarnings("unused")
+    public static boolean delFile(@NonNull String fileName) {
         File file = new File(getAppDir(), fileName);
         if (file.isFile()) {
             //noinspection ResultOfMethodCallIgnored
@@ -236,7 +261,8 @@ public class FileUtil {
      * @param bm      位图图片
      * @param picName 文件名
      */
-    public static void saveBitmap(Bitmap bm, String picName) {
+    @SuppressWarnings("unused")
+    public static void saveBitmap(@NonNull Bitmap bm,@NonNull String picName) {
         Log.e("", "保存图片");
         try {
 
@@ -262,7 +288,8 @@ public class FileUtil {
      * @param fileName 文件名
      * @return true表示文件存在
      */
-    public static boolean isFileExist(String fileName) {
+    @SuppressWarnings("unused")
+    public static boolean isFileExist(@NonNull String fileName) {
         File file = new File(getAppDir(), fileName);
         //noinspection ResultOfMethodCallIgnored
         file.isFile();
@@ -275,7 +302,8 @@ public class FileUtil {
      * @param path 文件路径
      * @return true表示文件存在
      */
-    public static boolean fileIsExists(String path) {
+    @SuppressWarnings("unused")
+    public static boolean fileIsExists(@NonNull String path) {
         try {
             File file = new File(path);
             if (!file.exists()) {

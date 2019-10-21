@@ -1,6 +1,5 @@
 package com.sscl.basesample.activities;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import androidx.annotation.Nullable;
@@ -15,7 +14,6 @@ import com.sscl.basesample.R;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Rationale;
-import com.yanzhenjie.permission.RequestExecutor;
 import com.yanzhenjie.permission.runtime.Permission;
 
 import java.util.List;
@@ -29,70 +27,39 @@ import java.util.List;
  */
 public class WelcomeActivity extends BaseWelcomeActivity {
     private static final int REQUEST_CODE_SETTING = 1;
-    private Action<List<String>> onGrantedListener = new Action<List<String>>() {
-        @Override
-        public void onAction(List<String> grantPermissions) {
-            toNext();
-        }
-    };
-    private Action<List<String>> onDeniedListener = new Action<List<String>>() {
-        @Override
-        public void onAction(List<String> deniedPermissions) {
-            if (!AndPermission.hasAlwaysDeniedPermission(WelcomeActivity.this, deniedPermissions)) {
-                ToastUtil.toastL(WelcomeActivity.this, R.string.no_permission_exits);
-                finish();
-            } else {
-                List<String> strings = Permission.transformText(WelcomeActivity.this, deniedPermissions);
-                String permissionText = TextUtils.join(",\n", strings);
-                new AlertDialog.Builder(WelcomeActivity.this)
-                        .setTitle(R.string.no_permission)
-                        .setMessage(permissionText)
-                        .setPositiveButton(R.string.settings, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                AndPermission.with(WelcomeActivity.this)
-                                        .runtime()
-                                        .setting()
-                                        .start(REQUEST_CODE_SETTING);
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                finish();
-                            }
-                        })
-                        .setCancelable(false)
-                        .show();
-            }
-        }
-    };
-    private Rationale<List<String>> rationaleListener = new Rationale<List<String>>() {
-        @Override
-        public void showRationale(Context context, List<String> data, RequestExecutor executor) {
-            List<String> strings = Permission.transformText(WelcomeActivity.this, data);
+    private Action<List<String>> onGrantedListener = grantPermissions -> toNext();
+    private Action<List<String>> onDeniedListener = deniedPermissions -> {
+        if (!AndPermission.hasAlwaysDeniedPermission(WelcomeActivity.this, deniedPermissions)) {
+            ToastUtil.toastLong(WelcomeActivity.this, R.string.no_permission_exits);
+            finish();
+        } else {
+            List<String> strings = Permission.transformText(WelcomeActivity.this, deniedPermissions);
             String permissionText = TextUtils.join(",\n", strings);
             new AlertDialog.Builder(WelcomeActivity.this)
                     .setTitle(R.string.no_permission)
                     .setMessage(permissionText)
-                    .setPositiveButton(R.string.settings, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            AndPermission.with(WelcomeActivity.this)
-                                    .runtime()
-                                    .setting()
-                                    .start(REQUEST_CODE_SETTING);
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    })
+                    .setPositiveButton(R.string.settings, (dialog, which) -> AndPermission.with(WelcomeActivity.this)
+                            .runtime()
+                            .setting()
+                            .start(REQUEST_CODE_SETTING))
+                    .setNegativeButton(R.string.cancel, (dialog, which) -> finish())
                     .setCancelable(false)
                     .show();
         }
+    };
+    private Rationale<List<String>> rationaleListener = (context, data, executor) -> {
+        List<String> strings = Permission.transformText(WelcomeActivity.this, data);
+        String permissionText = TextUtils.join(",\n", strings);
+        new AlertDialog.Builder(WelcomeActivity.this)
+                .setTitle(R.string.no_permission)
+                .setMessage(permissionText)
+                .setPositiveButton(R.string.settings, (dialog, which) -> AndPermission.with(WelcomeActivity.this)
+                        .runtime()
+                        .setting()
+                        .start(REQUEST_CODE_SETTING))
+                .setNegativeButton(R.string.cancel, (dialog, which) -> finish())
+                .setCancelable(false)
+                .show();
     };
 
     @Override
@@ -112,13 +79,10 @@ public class WelcomeActivity extends BaseWelcomeActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        switch (requestCode) {
-            case REQUEST_CODE_SETTING:
-                requestPermission();
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-                break;
+        if (requestCode == REQUEST_CODE_SETTING) {
+            requestPermission();
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -132,7 +96,7 @@ public class WelcomeActivity extends BaseWelcomeActivity {
     private void requestPermission() {
         AndPermission.with(this)
                 .runtime()
-                .permission(Permission.Group.STORAGE)
+                .permission(Permission.READ_EXTERNAL_STORAGE,Permission.WRITE_EXTERNAL_STORAGE)
                 .onGranted(onGrantedListener)
                 .onDenied(onDeniedListener)
                 .rationale(rationaleListener)

@@ -1,5 +1,7 @@
 package com.sscl.baselibrary.utils;
 
+import androidx.annotation.NonNull;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -8,11 +10,13 @@ import java.security.NoSuchAlgorithmException;
  *
  * @author jackie
  */
+@SuppressWarnings("unused")
 public class Md5Util {
     private static final char[] HEX_DIGITS = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
             'a', 'b', 'c', 'd', 'e', 'f' };
 
-    public static String encrypt(String sourceText) {
+    @SuppressWarnings("unused")
+    public static String encrypt(@NonNull String sourceText) {
 
         byte[] btInput = sourceText.getBytes();
         // 获得MD5摘要算法的 MessageDigest 对象

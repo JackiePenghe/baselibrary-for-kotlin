@@ -132,6 +132,10 @@ public abstract class BasePopupWindow extends PopupWindow {
 
     /*--------------------------------抽象方法--------------------------------*/
 
+    /**
+     * 设置布局
+     * @return 布局文件资源ID
+     */
     @LayoutRes
     protected abstract int setLayout();
 
@@ -197,7 +201,7 @@ public abstract class BasePopupWindow extends PopupWindow {
      *
      * @param parent 父布局
      */
-    public void show(View parent) {
+    public void show(@NonNull View parent) {
         show(parent, Gravity.CENTER);
     }
 
@@ -208,7 +212,7 @@ public abstract class BasePopupWindow extends PopupWindow {
      * @param gravity Gravity
      */
     @SuppressWarnings("WeakerAccess")
-    public void show(View parent, int gravity) {
+    public void show(@NonNull View parent, int gravity) {
         show(parent, gravity, 0, 0);
     }
 
@@ -221,7 +225,7 @@ public abstract class BasePopupWindow extends PopupWindow {
      * @param y       y坐标
      */
     @SuppressWarnings("WeakerAccess")
-    public void show(View parent, int gravity, int x, int y) {
+    public void show(@NonNull View parent, int gravity, int x, int y) {
         showAtLocation(parent, gravity, x, y);
     }
 }

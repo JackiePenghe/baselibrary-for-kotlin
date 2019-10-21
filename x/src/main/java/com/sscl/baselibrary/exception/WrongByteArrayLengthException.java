@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi;
  *
  * @author jackie
  */
-public class WrongByteArrayLengthException extends RuntimeException {
+public class WrongByteArrayLengthException extends Exception {
 
     /*--------------------------------构造方法--------------------------------*/
 
@@ -47,6 +47,7 @@ public class WrongByteArrayLengthException extends RuntimeException {
      *                unknown.)
      * @since 1.4
      */
+    @SuppressWarnings("unused")
     public WrongByteArrayLengthException(String message, Throwable cause) {
         super(message, cause);
     }
@@ -64,6 +65,7 @@ public class WrongByteArrayLengthException extends RuntimeException {
      *              unknown.)
      * @since 1.4
      */
+    @SuppressWarnings("unused")
     public WrongByteArrayLengthException(Throwable cause) {
         super(cause);
     }
@@ -82,6 +84,7 @@ public class WrongByteArrayLengthException extends RuntimeException {
      *                           be writable
      * @since 1.7
      */
+    @SuppressWarnings("unused")
     @RequiresApi(api = Build.VERSION_CODES.N)
     public WrongByteArrayLengthException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);

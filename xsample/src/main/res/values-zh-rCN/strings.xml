@@ -8,7 +8,6 @@
     <string name="base_popup_window">BasePopupWindow</string>
     <string name="home_watcher">Home按键监听</string>
     <string name="toast_test">吐丝测试</string>
-    <string name="get_fragment_visibility">获取Fragment的可见状态</string>
     <string name="show_popup_window">显示PopupWindow</string>
     <string name="open_toast_reuse">开启重用</string>
     <string name="close_toast_reuse">关闭重用</string>

@@ -3,6 +3,9 @@ package com.sscl.baselibrary.utils;
 import android.content.Context;
 import android.os.Environment;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.sscl.baselibrary.files.FileUtil;
 
 import java.io.File;
@@ -19,6 +22,7 @@ import java.util.List;
  *
  * @author ALM Sound Technology
  */
+@SuppressWarnings("unused")
 public class InputUtil<T> {
 
     /*--------------------------------公开方法--------------------------------*/
@@ -26,12 +30,13 @@ public class InputUtil<T> {
     /**
      * 读取本地对象
      *
-     * @param context 上下文
+     * @param context  上下文
      * @param fileName 文件名
      * @return 读取到的对象
      */
+    @Nullable
     @SuppressWarnings("unchecked")
-    public T readObjectFromLocal(Context context, String fileName) {
+    public T readObjectFromLocal(@NonNull Context context, @NonNull String fileName) {
         T bean;
         try {
             //获得输入流
@@ -65,8 +70,9 @@ public class InputUtil<T> {
      * @param fileName 文件名
      * @return 泛型对象
      */
+    @Nullable
     @SuppressWarnings("unchecked")
-    public T readObjectFromSdCard(String fileName) {
+    public T readObjectFromSdCard(@NonNull String fileName) {
         //检测sd卡是否存在
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             T bean;
@@ -106,8 +112,9 @@ public class InputUtil<T> {
      * @param fileName 文件名
      * @return 读取到的list
      */
+    @Nullable
     @SuppressWarnings("unchecked")
-    public List<T> readListFromSdCard(String fileName) {
+    public List<T> readListFromSdCard(@NonNull String fileName) {
         //检测sd卡是否存在
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             List<T> list;

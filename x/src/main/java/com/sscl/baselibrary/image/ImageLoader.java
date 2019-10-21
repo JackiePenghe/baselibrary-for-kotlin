@@ -7,11 +7,16 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.widget.ImageView;
 
 import com.sscl.baselibrary.R;
 import com.sscl.baselibrary.files.FileCache;
+import com.sscl.baselibrary.utils.BaseManager;
+import com.sscl.baselibrary.utils.DebugUtil;
 import com.sscl.baselibrary.utils.MemoryCache;
 
 import java.io.File;
@@ -33,9 +38,14 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 图片加载类
- * Created by ALM on 2016/7/7.
+ *
+ * @author pengh
  */
 public class ImageLoader {
+
+    /*--------------------------------静态变量--------------------------------*/
+
+    private static final String TAG = ImageLoader.class.getSimpleName();
 
     /*--------------------------------成员变量--------------------------------*/
 
@@ -92,15 +102,9 @@ public class ImageLoader {
      *
      * @param context 上下文
      */
-    private ImageLoader(Context context) {
+    private ImageLoader(@NonNull Context context) {
         fileCache = new FileCache(context);
-        ThreadFactory threadFactory = new ThreadFactory() {
-            @Override
-            public Thread newThread(@NonNull Runnable r) {
-                return new Thread(r);
-            }
-        };
-        threadPoolExecutor = new ThreadPoolExecutor(2, 10, 0, TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(1024), threadFactory, new ThreadPoolExecutor.AbortPolicy());
+        threadPoolExecutor = new ThreadPoolExecutor(2, 10, 0, TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(1024), BaseManager.getThreadFactory(), new ThreadPoolExecutor.AbortPolicy());
     }
 
     /*--------------------------------公开静态函数--------------------------------*/
@@ -111,7 +115,7 @@ public class ImageLoader {
      * @param context 上下文对象
      * @return 当前ImageLoader对象
      */
-    public static ImageLoader getInstance(Context context) {
+    public static ImageLoader getInstance(@NonNull Context context) {
         if (instance == null) {
             synchronized (ImageLoader.class) {
                 if (instance == null) {
@@ -131,7 +135,7 @@ public class ImageLoader {
      * @param imageView ImageView
      * @param circle    是否显示圆形图片
      */
-    public void displayImage(String url, ImageView imageView, boolean circle) {
+    public void displayImage(@NonNull String url, @NonNull ImageView imageView, boolean circle) {
         isCircle = circle;
         imageViews.put(imageView, url);
         // 先从内存缓存中查找
@@ -151,8 +155,9 @@ public class ImageLoader {
      * @param url 图片地址
      * @return 位图图片
      */
+    @Nullable
     @SuppressWarnings("WeakerAccess")
-    public Bitmap getBitmap(String url) {
+    public Bitmap getBitmap(@NonNull String url) {
         File f = fileCache.getFile(url);
 
         // 先从文件缓存中查找是否有
@@ -184,6 +189,7 @@ public class ImageLoader {
     /**
      * 清除缓存
      */
+    @SuppressWarnings("unused")
     public void clearCache() {
         memoryCache.clear();
         fileCache.clear();
@@ -194,6 +200,7 @@ public class ImageLoader {
      *
      * @param isCompress 要设置是否压缩图片的标志
      */
+    @SuppressWarnings("unused")
     public void setCompress(boolean isCompress) {
         compress = isCompress;
     }
@@ -203,6 +210,7 @@ public class ImageLoader {
      *
      * @return 边线的宽度
      */
+    @SuppressWarnings("unused")
     public int getStrokeWidth() {
         return strokeWidth;
     }
@@ -212,6 +220,7 @@ public class ImageLoader {
      *
      * @param strokeWidth 边线的宽度
      */
+    @SuppressWarnings("unused")
     public void setStrokeWidth(int strokeWidth) {
         this.strokeWidth = strokeWidth;
     }
@@ -224,7 +233,7 @@ public class ImageLoader {
      * @param holder BitmapHolder
      * @return false表示错位
      */
-    boolean imageViewReused(BitmapHolder holder) {
+    boolean imageViewReused(@NonNull BitmapHolder holder) {
         String tag = imageViews.get(holder.imageView);
 
         return tag == null || !tag.equals(holder.url);
@@ -238,7 +247,7 @@ public class ImageLoader {
      * @param is InputStream
      * @param os OutputStream
      */
-    private void copyStream(InputStream is, OutputStream os) {
+    private void copyStream(@NonNull InputStream is, @NonNull OutputStream os) {
         final int bufferSize = 1024;
         try {
             byte[] bytes = new byte[bufferSize];
@@ -250,7 +259,7 @@ public class ImageLoader {
                 os.write(bytes, 0, count);
             }
         } catch (Exception e) {
-            // e.printStackTrace();
+            DebugUtil.warnOut(TAG, "copyStream with exception! " + e.getMessage());
         }
     }
 
@@ -323,7 +332,6 @@ public class ImageLoader {
         paint.setAntiAlias(true);
 
         // 创建一张空图片, 这张图片只有宽高，没有内容
-        //noinspection SuspiciousNameCombination
         Bitmap target = Bitmap.createBitmap((int) width, (int) width, Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(target);

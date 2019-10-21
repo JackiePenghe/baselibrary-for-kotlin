@@ -2,6 +2,9 @@ package com.sscl.baselibrary.utils;
 
 import android.graphics.Bitmap;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -97,7 +100,8 @@ public class MemoryCache {
      * @param key 链表对应的key
      * @return 位图图片
      */
-    public Bitmap get(String key) {
+    @Nullable
+    public Bitmap get(@NonNull String key) {
         try {
             if (!cache.containsKey(key)) {
                 return null;
@@ -114,7 +118,7 @@ public class MemoryCache {
      * @param key    链表对应的key
      * @param bitmap 位图图片
      */
-    public void put(String key, Bitmap bitmap) {
+    public void put(@NonNull String key,@NonNull Bitmap bitmap) {
         try {
             if (cache.containsKey(key)) {
                 size -= getSizeInBytes(cache.get(key));

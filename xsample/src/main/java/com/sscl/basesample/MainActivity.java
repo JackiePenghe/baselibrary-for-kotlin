@@ -6,6 +6,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
+
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.receiver.ScreenStatusReceiver;
 import com.sscl.baselibrary.utils.DebugUtil;
@@ -34,44 +36,41 @@ public class MainActivity extends BaseAppCompatActivity {
     private Button homeWatcherBtn;
     private Button toastTestBtn;
 
-    private View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent intent = null;
-            switch (view.getId()) {
-                case R.id.all_purpose_adapter:
-                    intent = new Intent(MainActivity.this, AllPurposeAdapterActivity.class);
-                    break;
-                case R.id.base_appcompat_activity:
-                    intent = new Intent(MainActivity.this, SampleBaseAppcompatActivity.class);
-                    break;
-                case R.id.base_drawer_activity:
-                    intent = new Intent(MainActivity.this, SampleBaseDrawerActivity.class);
-                    break;
-                case R.id.base_fragment:
-                    intent = new Intent(MainActivity.this, SampleBaseFragmentActivity.class);
-                    break;
-                case R.id.base_popup_window:
-                    intent = new Intent(MainActivity.this, SampleBasePopupWindowActivity.class);
-                    break;
-                case R.id.home_watcher:
-                    intent = new Intent(MainActivity.this, HomeWatcherActivity.class);
-                    break;
-                case R.id.toast_test:
-                    intent = new Intent(MainActivity.this, ToastTestActivity.class);
-                    break;
-                case R.id.title_left_text:
-                    DebugUtil.warnOut(TAG, "文字左被点击");
-                    break;
-                case R.id.title_right_text:
-                    DebugUtil.warnOut(TAG, "文字右被点击");
-                    break;
-                default:
-                    break;
-            }
-            if (intent != null) {
-                startActivity(intent);
-            }
+    private View.OnClickListener onClickListener = view -> {
+        Intent intent = null;
+        switch (view.getId()) {
+            case R.id.all_purpose_adapter:
+                intent = new Intent(MainActivity.this, AllPurposeAdapterActivity.class);
+                break;
+            case R.id.base_appcompat_activity:
+                intent = new Intent(MainActivity.this, SampleBaseAppcompatActivity.class);
+                break;
+            case R.id.base_drawer_activity:
+                intent = new Intent(MainActivity.this, SampleBaseDrawerActivity.class);
+                break;
+            case R.id.base_fragment:
+                intent = new Intent(MainActivity.this, SampleBaseFragmentActivity.class);
+                break;
+            case R.id.base_popup_window:
+                intent = new Intent(MainActivity.this, SampleBasePopupWindowActivity.class);
+                break;
+            case R.id.home_watcher:
+                intent = new Intent(MainActivity.this, HomeWatcherActivity.class);
+                break;
+            case R.id.toast_test:
+                intent = new Intent(MainActivity.this, ToastTestActivity.class);
+                break;
+            case R.id.title_left_text:
+                DebugUtil.warnOut(TAG, "文字左被点击");
+                break;
+            case R.id.title_right_text:
+                DebugUtil.warnOut(TAG, "文字右被点击");
+                break;
+            default:
+                break;
+        }
+        if (intent != null) {
+            startActivity(intent);
         }
     };
     private ScreenStatusReceiver.OnScreenStatusChangedListener onScreenStatusChangedListener = new ScreenStatusReceiver.OnScreenStatusChangedListener() {
@@ -101,39 +100,6 @@ public class MainActivity extends BaseAppCompatActivity {
      */
     @Override
     protected void doBeforeSetLayout() {
-//        Tool.isZhCN();
-//        /* 设置白色背景状态栏，仅支持MIUI6以上，Flyme4.0以上
-//         * 安卓6.0以上，深色字体通过style配置
-//         */
-//        if (OSHelper.isEMUI()) {
-//            OSHelper.miuiSetStatusBarLightMode(getWindow(), true);
-//            StatusBarUtil.setColor(this, Color.WHITE, 60);
-//        } else if (OSHelper.isFlyme()) {
-//            OSHelper.flymeSetStatusBarLightMode(getWindow(), true);
-//            StatusBarUtil.setColor(this, Color.WHITE, 60);
-//        } else {
-////            Log.w(TAG, "不是miui或者flyme,不设置状态栏字体深色");
-//        }
-        //noinspection JavadocReference
-//        new Thread() {
-//            /**
-//             * If this thread was constructed using a separate
-//             * <code>Runnable</code> run object, then that
-//             * <code>Runnable</code> object's <code>run</code> method is called;
-//             * otherwise, this method does nothing and returns.
-//             * <p>
-//             * Subclasses of <code>Thread</code> should override this method.
-//             *
-//             * @see #start()
-//             * @see #stop()
-//             * @see #Thread(ThreadGroup, Runnable, String)
-//             */
-//            @Override
-//            public void run() {
-//                super.run();
-//                Tool.toastL(MainActivity.this, "测试在线程中弹出吐司");
-//            }
-//        }.start();
     }
 
     /**
@@ -220,7 +186,7 @@ public class MainActivity extends BaseAppCompatActivity {
      * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
      */
     @Override
-    protected boolean createOptionsMenu(Menu menu) {
+    protected boolean createOptionsMenu(@NonNull Menu menu) {
         return false;
     }
 
@@ -231,7 +197,7 @@ public class MainActivity extends BaseAppCompatActivity {
      * @return true表示处理了监听事件
      */
     @Override
-    protected boolean optionsItemSelected(MenuItem item) {
+    protected boolean optionsItemSelected(@NonNull MenuItem item) {
         return false;
     }
 

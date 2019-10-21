@@ -4,6 +4,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -35,7 +37,7 @@ public class Ip4AddressTextWatcher implements TextWatcher {
      *
      * @param editText 文本输入框
      */
-    public Ip4AddressTextWatcher(EditText editText) {
+    public Ip4AddressTextWatcher(@NonNull EditText editText) {
         this.editText = editText;
     }
 

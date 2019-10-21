@@ -43,6 +43,7 @@ public class AutoSwipeRefreshLayout extends SwipeRefreshLayout {
     /**
      * 自动刷新
      */
+    @SuppressWarnings("unused")
     public void autoRefresh() {
         try {
             Field mCircleView = SwipeRefreshLayout.class.getDeclaredField("mCircleView");

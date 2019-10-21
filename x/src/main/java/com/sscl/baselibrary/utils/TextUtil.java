@@ -5,6 +5,11 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 
+/**
+ * 文本工具类
+ *
+ * @author pengh
+ */
 public class TextUtil {
 
     public static void showEditTextPassword(@NonNull EditText passwordEt, boolean showPassword){

@@ -15,6 +15,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 
@@ -40,8 +41,9 @@ public class ConversionUtil {
      * @param str 待转换的ASCII字符串
      * @return String 每个Byte之间空格分隔，如: [61 6C 6B]
      */
+    @NonNull
     @SuppressWarnings("unused")
-    public static String strToHexStr(String str) {
+    public static String strToHexStr(@NonNull String str) {
 
         char[] chars = "0123456789ABCDEF".toCharArray();
         StringBuilder sb = new StringBuilder();
@@ -59,53 +61,50 @@ public class ConversionUtil {
     }
 
     /**
-     * 字符串转换成byte数组（数组长度最长为bytesLength）
+     * 字符串转换成byte数组（数组长度最长为byteArrayLength）
      *
-     * @param s           要转换成byte[]的字符串
-     * @param bytesLength 数组长度的最大值（数组长度超过该值会被截取，长度不足该值为数组原长度）
+     * @param s               要转换成byte[]的字符串
+     * @param byteArrayLength 数组长度的最大值（数组长度超过该值会被截取，长度不足该值为数组原长度）
      * @return 转换后获得的byte[]
      */
+    @NonNull
     @SuppressWarnings("WeakerAccess")
-    public static byte[] getBytes(String s, int bytesLength) {
-        return getBytes(s, Charset.defaultCharset(), bytesLength);
+    public static byte[] getByteArray(@NonNull String s, @Size(min = 0) int byteArrayLength) {
+        return getByteArray(s, Charset.defaultCharset(), byteArrayLength);
     }
 
     /**
-     * 字符串转换成byte数组（数组长度最长为bytesLength）
+     * 字符串转换成byte数组（数组长度最长为byteArrayLength）
      *
-     * @param s           要转换成byte[]的字符串
-     * @param charsetName 编码方式的名字
-     * @param bytesLength 数组长度的最大值（数组长度超过该值会被截取，长度不足该值为数组原长度）
+     * @param s               要转换成byte[]的字符串
+     * @param charsetName     编码方式的名字
+     * @param byteArrayLength 数组长度的最大值（数组长度超过该值会被截取，长度不足该值为数组原长度）
      * @return 转换后获得的byte[]
      * @throws UnsupportedCharsetException 不支持的编码类型
      */
+    @NonNull
     @SuppressWarnings("WeakerAccess")
-    public static byte[] getBytes(String s, String charsetName, int bytesLength) throws UnsupportedCharsetException {
+    public static byte[] getByteArray(@NonNull String s, @NonNull String charsetName, @Size(min = 0) int byteArrayLength) throws UnsupportedCharsetException {
         Charset charset = Charset.forName(charsetName);
-        return getBytes(s, charset, bytesLength);
+        return getByteArray(s, charset, byteArrayLength);
     }
 
     /**
-     * 字符串转换成byte数组（数组长度最长为bytesLength）
+     * 字符串转换成byte数组（数组长度最长为byteArrayLength）
      *
-     * @param s           要转换成byte[]的字符串
-     * @param charset     编码方式
-     * @param bytesLength 数组长度的最大值（数组长度超过该值会被截取，长度不足该值为数组原长度）
+     * @param s               要转换成byte[]的字符串
+     * @param charset         编码方式
+     * @param byteArrayLength 数组长度的最大值（数组长度超过该值会被截取，长度不足该值为数组原长度）
      * @return 转换后获得的byte[]
      */
+    @NonNull
     @SuppressWarnings("WeakerAccess")
-    public static byte[] getBytes(String s, Charset charset, int bytesLength) {
-        if (s == null) {
-            return null;
-        }
-        if (bytesLength < 0) {
-            throw new UnsupportedOperationException("bytesLength cannot be negative");
-        }
+    public static byte[] getByteArray(@NonNull String s, @NonNull Charset charset, @Size(min = 0) int byteArrayLength) {
         byte[] data;
-        if (bytesLength > 0) {
-            if (s.length() > bytesLength) {
-                data = new byte[bytesLength];
-                System.arraycopy(s.getBytes(charset), 0, data, 0, bytesLength);
+        if (byteArrayLength > 0) {
+            if (s.length() > byteArrayLength) {
+                data = new byte[byteArrayLength];
+                System.arraycopy(s.getBytes(charset), 0, data, 0, byteArrayLength);
             } else {
                 data = s.getBytes(charset);
             }
@@ -116,17 +115,19 @@ public class ConversionUtil {
     }
 
     /**
-     * 字符串转换成byte数组，自动判断中文简体语言环境，在中文简体下，自动以GBK方式转换（数组长度最长为bytesLength）
+     * 字符串转换成byte数组，自动判断中文简体语言环境，在中文简体下，自动以GBK方式转换（数组长度最长为byteArrayLength）
      *
-     * @param s           要转换成byte[]的字符串
-     * @param bytesLength 数组长度的最大值（数组长度超过该值会被截取，长度不足该值为数组原长度）
+     * @param s               要转换成byte[]的字符串
+     * @param byteArrayLength 数组长度的最大值（数组长度超过该值会被截取，长度不足该值为数组原长度）
      * @return 转换后获得的byte[]
      */
-    public static byte[] getBytesAutoGBK(String s, int bytesLength) {
-        if (Tool.isZhCN()) {
-            return getBytes(s, "GBK", bytesLength);
+    @SuppressWarnings("unused")
+    @NonNull
+    public static byte[] getByteArrayAutoGbk(@NonNull String s, int byteArrayLength) {
+        if (Tool.isZhCn()) {
+            return getByteArray(s, "GBK", byteArrayLength);
         } else {
-            return getBytes(s, bytesLength);
+            return getByteArray(s, byteArrayLength);
         }
     }
 
@@ -136,30 +137,33 @@ public class ConversionUtil {
      * @param hexStr Byte字符串(Byte之间无分隔符 如:[616C6B])
      * @return String 对应的字符串
      */
-    public static String hexStrToStr(String hexStr) {
+    @SuppressWarnings("unused")
+    @NonNull
+    public static String hexStrToStr(@NonNull String hexStr) {
         String str = "0123456789ABCDEF";
-        char[] hexs = hexStr.toCharArray();
-        byte[] bytes = new byte[hexStr.length() / 2];
+        char[] cache = hexStr.toCharArray();
+        byte[] byteArray = new byte[hexStr.length() / 2];
         int n;
 
-        for (int i = 0; i < bytes.length; i++) {
-            n = str.indexOf(hexs[2 * i]) * 16;
-            n += str.indexOf(hexs[2 * i + 1]);
-            bytes[i] = (byte) (n & 0xff);
+        for (int i = 0; i < byteArray.length; i++) {
+            n = str.indexOf(cache[2 * i]) * 16;
+            n += str.indexOf(cache[2 * i + 1]);
+            byteArray[i] = (byte) (n & 0xff);
         }
-        return new String(bytes);
+        return new String(byteArray);
     }
 
     /**
-     * bytes转换成十六进制字符串
+     * byteArray转换成十六进制字符串
      *
-     * @param bytes byte数组
+     * @param byteArray byte数组
      * @return String 每个Byte值之间空格分隔
      */
-    public static String bytesToHexStr(byte[] bytes) {
+    @NonNull
+    public static String byteArrayToHexStr(@NonNull byte[] byteArray) {
         String stmp;
         StringBuilder sb = new StringBuilder();
-        for (byte aByte : bytes) {
+        for (byte aByte : byteArray) {
             stmp = Integer.toHexString(aByte & 0xFF);
             sb.append((stmp.length() == 1) ? "0" + stmp : stmp);
             sb.append(" ");
@@ -173,30 +177,31 @@ public class ConversionUtil {
      * @param value 长整形
      * @return byte数组
      */
+    @NonNull
     @SuppressWarnings("WeakerAccess")
-    public static byte[] longToBytes(long value) {
-
+    public static byte[] longToByteArray(long value) {
+        int byteLength = 2;
         String hexString = Long.toHexString(value);
         int length = hexString.length();
-        if (length % 2 == 0) {
-            byte[] bytes = new byte[length / 2];
-            for (int i = 0; i < bytes.length; i++) {
-                String cacheString = hexString.substring(i * 2, i * 2 + 2);
+        if (length % byteLength == 0) {
+            byte[] byteArray = new byte[length / byteLength];
+            for (int i = 0; i < byteArray.length; i++) {
+                String cacheString = hexString.substring(i * byteLength, i * byteLength + 2);
                 short cache = Short.parseShort(cacheString, 16);
-                bytes[i] = (byte) cache;
+                byteArray[i] = (byte) cache;
             }
-            return bytes;
+            return byteArray;
         } else {
-            byte[] bytes = new byte[length / 2 + 1];
+            byte[] byteArray = new byte[length / byteLength + 1];
             String substring = hexString.substring(0, 1);
-            bytes[0] = (byte) Short.parseShort(substring, 16);
+            byteArray[0] = (byte) Short.parseShort(substring, 16);
             hexString = hexString.substring(1);
-            for (int i = 0; i < bytes.length - 1; i++) {
-                String cacheString = hexString.substring(i * 2, i * 2 + 2);
+            for (int i = 0; i < byteArray.length - 1; i++) {
+                String cacheString = hexString.substring(i * byteLength, i * byteLength + 2);
                 short cache = Short.parseShort(cacheString, 16);
-                bytes[i + 1] = (byte) cache;
+                byteArray[i + 1] = (byte) cache;
             }
-            return bytes;
+            return byteArray;
         }
     }
 
@@ -206,24 +211,29 @@ public class ConversionUtil {
      * @param value 0~0x0000FFFFFFFFFFFF之间的long类型数
      * @return 6字节byte数组
      */
+    @SuppressWarnings("unused")
+    @NonNull
     @Size(6)
-    public static byte[] longToBytesLength6(@Size(min = 0, max = 0x0000FFFFFFFFFFFFL) long value) {
-        byte[] bytes = longToBytes(value);
-        if (bytes.length == 6) {
-            return bytes;
+    public static byte[] longToByteArrayLength6(@Size(min = 0, max = 0x0000FFFFFFFFFFFFL) long value) {
+        int byteArrayLength = 6;
+        byte[] byteArray = longToByteArray(value);
+        if (byteArray.length == byteArrayLength) {
+            return byteArray;
         }
-        byte[] result = new byte[6];
-        System.arraycopy(bytes, 0, result, 6 - bytes.length, bytes.length);
+        byte[] result = new byte[byteArrayLength];
+        System.arraycopy(byteArray, 0, result, 6 - byteArray.length, byteArray.length);
         return result;
     }
 
     /**
-     * bytes字符串转换为Byte值
+     * byteArray字符串转换为Byte值
      *
      * @param src Byte字符串，每个Byte之间没有分隔符
      * @return byte[]
      */
-    public static byte[] hexStrToBytes(String src) throws NumberFormatException {
+    @SuppressWarnings("unused")
+    @NonNull
+    public static byte[] hexStrToByteArray(@NonNull String src) throws NumberFormatException {
         int m, n;
         int l = src.length() / 2;
         System.out.println(l);
@@ -240,120 +250,136 @@ public class ConversionUtil {
     /**
      * byte数组转为long
      *
-     * @param bytes byte数组
+     * @param byteArray byte数组
      * @return long
      */
-    public static long bytesToLong(byte[] bytes) {
-        int length = bytes.length;
-        byte cache0;
-        byte cache1;
-        byte cache2;
-        byte cache3;
-        byte cache4;
-        byte cache5;
-        byte cache6;
-        byte cache7;
-
-        long value0;
-        long value1;
-        long value2;
-        long value3;
-        long value4;
-        long value5;
-        long value6;
-        long value7;
-        switch (length) {
-            case 1:
-                cache0 = bytes[0];
-                return 0x00FF & getUnsignedByte(cache0);
-            case 2:
-                cache0 = bytes[0];
-                cache1 = bytes[1];
-                value0 = getUnsignedByte(cache0);
-                value1 = getUnsignedByte(cache1);
-                return value0 << 8 | value1;
-            case 3:
-                cache0 = bytes[0];
-                cache1 = bytes[1];
-                cache2 = bytes[2];
-                value0 = getUnsignedByte(cache0) << 16;
-                value1 = getUnsignedByte(cache1) << 8;
-                value2 = getUnsignedByte(cache2);
-                return value0 | value1 | value2;
-            case 4:
-                cache0 = bytes[0];
-                cache1 = bytes[1];
-                cache2 = bytes[2];
-                cache3 = bytes[3];
-                value0 = getUnsignedByte(cache0) << 24;
-                value1 = getUnsignedByte(cache1) << 16;
-                value2 = getUnsignedByte(cache2) << 8;
-                value3 = getUnsignedByte(cache3);
-                return value0 | value1 | value2 | value3;
-            case 5:
-                cache0 = bytes[0];
-                cache1 = bytes[1];
-                cache2 = bytes[2];
-                cache3 = bytes[3];
-                cache4 = bytes[4];
-                value0 = getUnsignedInt(getUnsignedByte(cache0)) << 32;
-                value1 = getUnsignedByte(cache1) << 24;
-                value2 = getUnsignedByte(cache2) << 16;
-                value3 = getUnsignedByte(cache3) << 8;
-                value4 = getUnsignedByte(cache4);
-                return value0 | value1 | value2 | value3 | value4;
-            case 6:
-                cache0 = bytes[0];
-                cache1 = bytes[1];
-                cache2 = bytes[2];
-                cache3 = bytes[3];
-                cache4 = bytes[4];
-                cache5 = bytes[5];
-                value0 = getUnsignedInt(getUnsignedByte(cache0)) << 40;
-                value1 = getUnsignedInt(getUnsignedByte(cache1)) << 32;
-                value2 = getUnsignedByte(cache2) << 24;
-                value3 = getUnsignedByte(cache3) << 16;
-                value4 = getUnsignedByte(cache4) << 8;
-                value5 = getUnsignedByte(cache5);
-                return value0 | value1 | value2 | value3 | value4 | value5;
-            case 7:
-                cache0 = bytes[0];
-                cache1 = bytes[1];
-                cache2 = bytes[2];
-                cache3 = bytes[3];
-                cache4 = bytes[4];
-                cache5 = bytes[5];
-                cache6 = bytes[6];
-                value0 = getUnsignedInt(getUnsignedByte(cache0)) << 48;
-                value1 = getUnsignedInt(getUnsignedByte(cache1)) << 40;
-                value2 = getUnsignedInt(getUnsignedByte(cache2)) << 32;
-                value3 = getUnsignedByte(cache3) << 24;
-                value4 = getUnsignedByte(cache4) << 16;
-                value5 = getUnsignedByte(cache5) << 8;
-                value6 = getUnsignedByte(cache6);
-                return value0 | value1 | value2 | value3 | value4 | value5 | value6;
-            case 8:
-                cache0 = bytes[0];
-                cache1 = bytes[1];
-                cache2 = bytes[2];
-                cache3 = bytes[3];
-                cache4 = bytes[4];
-                cache5 = bytes[5];
-                cache6 = bytes[6];
-                cache7 = bytes[7];
-                value0 = getUnsignedInt(getUnsignedByte(cache0)) << 56;
-                value1 = getUnsignedInt(getUnsignedByte(cache1)) << 48;
-                value2 = getUnsignedInt(getUnsignedByte(cache2)) << 40;
-                value3 = getUnsignedInt(getUnsignedByte(cache3)) << 32;
-                value4 = getUnsignedByte(cache4) << 24;
-                value5 = getUnsignedByte(cache5) << 16;
-                value6 = getUnsignedByte(cache6) << 8;
-                value7 = getUnsignedByte(cache7);
-                return value0 | value1 | value2 | value3 | value4 | value5 | value6 | value7;
-            default:
-                throw new WrongByteArrayLengthException("byte array length must be more than 0 and less than 8");
+    @SuppressWarnings("unused")
+    public static long byteArrayToLong(@NonNull byte[] byteArray) throws WrongByteArrayLengthException {
+        int length = byteArray.length;
+        int maxLongByteArrayLength = 8;
+        int byteBits = 8;
+        if (byteArray.length == 0 || byteArray.length > maxLongByteArrayLength) {
+            throw new WrongByteArrayLengthException("byteArray length must be in range 1 ~ 8");
         }
+
+        long cache = 0;
+        for (int i = 0; i < length; i++) {
+            byte aByte = byteArray[i];
+            int unsignedByte = getUnsignedByte(aByte);
+            cache = cache | unsignedByte << byteBits * (length - i);
+        }
+        return cache;
+
+//        byte cache0;
+//        byte cache1;
+//        byte cache2;
+//        byte cache3;
+//        byte cache4;
+//        byte cache5;
+//        byte cache6;
+//        byte cache7;
+//
+//        long value0;
+//        long value1;
+//        long value2;
+//        long value3;
+//        long value4;
+//        long value5;
+//        long value6;
+//        long value7;
+//
+//        switch (length) {
+//            case 1:
+//                cache0 = bytes[0];
+//                return 0x00FF & getUnsignedByte(cache0);
+//            case 2:
+//                cache0 = bytes[0];
+//                cache1 = bytes[1];
+//                value0 = getUnsignedByte(cache0);
+//                value1 = getUnsignedByte(cache1);
+//                return value0 << 8 | value1;
+//            case 3:
+//                cache0 = bytes[0];
+//                cache1 = bytes[1];
+//                cache2 = bytes[2];
+//                value0 = getUnsignedByte(cache0) << 16;
+//                value1 = getUnsignedByte(cache1) << 8;
+//                value2 = getUnsignedByte(cache2);
+//                return value0 | value1 | value2;
+//            case 4:
+//                cache0 = bytes[0];
+//                cache1 = bytes[1];
+//                cache2 = bytes[2];
+//                cache3 = bytes[3];
+//                value0 = getUnsignedByte(cache0) << 24;
+//                value1 = getUnsignedByte(cache1) << 16;
+//                value2 = getUnsignedByte(cache2) << 8;
+//                value3 = getUnsignedByte(cache3);
+//                return value0 | value1 | value2 | value3;
+//            case 5:
+//                cache0 = bytes[0];
+//                cache1 = bytes[1];
+//                cache2 = bytes[2];
+//                cache3 = bytes[3];
+//                cache4 = bytes[4];
+//                value0 = getUnsignedInt(getUnsignedByte(cache0)) << 32;
+//                value1 = getUnsignedByte(cache1) << 24;
+//                value2 = getUnsignedByte(cache2) << 16;
+//                value3 = getUnsignedByte(cache3) << 8;
+//                value4 = getUnsignedByte(cache4);
+//                return value0 | value1 | value2 | value3 | value4;
+//            case 6:
+//                cache0 = bytes[0];
+//                cache1 = bytes[1];
+//                cache2 = bytes[2];
+//                cache3 = bytes[3];
+//                cache4 = bytes[4];
+//                cache5 = bytes[5];
+//                value0 = getUnsignedInt(getUnsignedByte(cache0)) << 40;
+//                value1 = getUnsignedInt(getUnsignedByte(cache1)) << 32;
+//                value2 = getUnsignedByte(cache2) << 24;
+//                value3 = getUnsignedByte(cache3) << 16;
+//                value4 = getUnsignedByte(cache4) << 8;
+//                value5 = getUnsignedByte(cache5);
+//                return value0 | value1 | value2 | value3 | value4 | value5;
+//            case 7:
+//                cache0 = bytes[0];
+//                cache1 = bytes[1];
+//                cache2 = bytes[2];
+//                cache3 = bytes[3];
+//                cache4 = bytes[4];
+//                cache5 = bytes[5];
+//                cache6 = bytes[6];
+//                value0 = getUnsignedInt(getUnsignedByte(cache0)) << 48;
+//                value1 = getUnsignedInt(getUnsignedByte(cache1)) << 40;
+//                value2 = getUnsignedInt(getUnsignedByte(cache2)) << 32;
+//                value3 = getUnsignedByte(cache3) << 24;
+//                value4 = getUnsignedByte(cache4) << 16;
+//                value5 = getUnsignedByte(cache5) << 8;
+//                value6 = getUnsignedByte(cache6);
+//                return value0 | value1 | value2 | value3 | value4 | value5 | value6;
+//            case 8:
+//                cache0 = bytes[0];
+//                cache1 = bytes[1];
+//                cache2 = bytes[2];
+//                cache3 = bytes[3];
+//                cache4 = bytes[4];
+//                cache5 = bytes[5];
+//                cache6 = bytes[6];
+//                cache7 = bytes[7];
+//                value0 = getUnsignedInt(getUnsignedByte(cache0)) << 56;
+//                value1 = getUnsignedInt(getUnsignedByte(cache1)) << 48;
+//                value2 = getUnsignedInt(getUnsignedByte(cache2)) << 40;
+//                value3 = getUnsignedInt(getUnsignedByte(cache3)) << 32;
+//                value4 = getUnsignedByte(cache4) << 24;
+//                value5 = getUnsignedByte(cache5) << 16;
+//                value6 = getUnsignedByte(cache6) << 8;
+//                value7 = getUnsignedByte(cache7);
+//                return value0 | value1 | value2 | value3 | value4 | value5 | value6 | value7;
+//            default:
+//                throw new WrongByteArrayLengthException("byte array length must be more than 0 and less than 8");
     }
+
 
     /**
      * String的字符串转换成unicode的String
@@ -361,7 +387,9 @@ public class ConversionUtil {
      * @param strText 全角字符串
      * @return String 每个unicode之间无分隔符
      */
-    public static String strToUnicode(String strText) {
+    @SuppressWarnings("unused")
+    @NonNull
+    public static String strToUnicode(@NonNull String strText) {
         char c;
         StringBuilder str = new StringBuilder();
         int intAsc;
@@ -387,7 +415,9 @@ public class ConversionUtil {
      * @param hex 16进制值字符串 （一个unicode为2byte）
      * @return String 全角字符串
      */
-    public static String unicodeToString(String hex) {
+    @SuppressWarnings("unused")
+    @NonNull
+    public static String unicodeToString(@NonNull String hex) {
         int t = hex.length() / 6;
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < t; i++) {
@@ -408,51 +438,66 @@ public class ConversionUtil {
     /**
      * 将一个byte数组拼接为一个int型数
      *
-     * @param bytes byte数组长度不超过4
+     * @param byteArray byte数组长度不超过4
      * @return int型数
      */
-    public static int bytesToInt(@NonNull @Size(max = 4) byte[] bytes) {
-        byte cache0;
-        byte cache1;
-        byte cache2;
-        byte cache3;
-
-        int value0;
-        int value1;
-        int value2;
-        int value3;
-        int length = bytes.length;
-        switch (length) {
-            case 1:
-                cache0 = bytes[0];
-                return 0x00FF & getUnsignedByte(cache0);
-            case 2:
-                cache0 = bytes[0];
-                cache1 = bytes[1];
-                value0 = getUnsignedByte(cache0) << 8;
-                value1 = getUnsignedByte(cache1);
-                return value0 | value1;
-            case 3:
-                cache0 = bytes[0];
-                cache1 = bytes[1];
-                cache2 = bytes[2];
-                value0 = getUnsignedByte(cache0) << 16;
-                value1 = getUnsignedByte(cache1) << 8;
-                value2 = getUnsignedByte(cache2);
-                return value0 | value1 | value2;
-            case 4:
-                cache0 = bytes[0];
-                cache1 = bytes[1];
-                cache2 = bytes[2];
-                cache3 = bytes[3];
-                value0 = getUnsignedByte(cache0) << 24;
-                value1 = getUnsignedByte(cache1) << 16;
-                value2 = getUnsignedByte(cache2) << 8;
-                value3 = getUnsignedByte(cache3);
-                return value0 | value1 | value2 | value3;
-            default:
-                throw new WrongByteArrayLengthException("byte array length must be less than 4");
+    @SuppressWarnings("unused")
+    public static int byteArrayToInt(@NonNull @Size(max = 4) byte[] byteArray) throws WrongByteArrayLengthException {
+        int length = byteArray.length;
+        int maxLongByteArrayLength = 4;
+        int byteBits = 8;
+        if (byteArray.length == 0 || byteArray.length > maxLongByteArrayLength) {
+            throw new WrongByteArrayLengthException("byteArray length must be in range 1 ~ 8");
         }
+
+        int cache = 0;
+        for (int i = 0; i < length; i++) {
+            byte aByte = byteArray[i];
+            int unsignedByte = getUnsignedByte(aByte);
+            cache = cache | unsignedByte << byteBits * (length - i);
+        }
+        return cache;
+//        byte cache0;
+//        byte cache1;
+//        byte cache2;
+//        byte cache3;
+//
+//        int value0;
+//        int value1;
+//        int value2;
+//        int value3;
+//        int length = byteArray.length;
+//        switch (length) {
+//            case 1:
+//                cache0 = byteArray[0];
+//                return 0x00FF & getUnsignedByte(cache0);
+//            case 2:
+//                cache0 = byteArray[0];
+//                cache1 = byteArray[1];
+//                value0 = getUnsignedByte(cache0) << 8;
+//                value1 = getUnsignedByte(cache1);
+//                return value0 | value1;
+//            case 3:
+//                cache0 = byteArray[0];
+//                cache1 = byteArray[1];
+//                cache2 = byteArray[2];
+//                value0 = getUnsignedByte(cache0) << 16;
+//                value1 = getUnsignedByte(cache1) << 8;
+//                value2 = getUnsignedByte(cache2);
+//                return value0 | value1 | value2;
+//            case 4:
+//                cache0 = byteArray[0];
+//                cache1 = byteArray[1];
+//                cache2 = byteArray[2];
+//                cache3 = byteArray[3];
+//                value0 = getUnsignedByte(cache0) << 24;
+//                value1 = getUnsignedByte(cache1) << 16;
+//                value2 = getUnsignedByte(cache2) << 8;
+//                value3 = getUnsignedByte(cache3);
+//                return value0 | value1 | value2 | value3;
+//            default:
+//                throw new WrongByteArrayLengthException("byte array length must be less than 4");
+//        }
     }
 
     /**
@@ -461,7 +506,10 @@ public class ConversionUtil {
      * @param i 整数
      * @return 2个字节的byte数组
      */
-    public static byte[] intToBytesLength2(int i) {
+    @SuppressWarnings("unused")
+    @Size(2)
+    @NonNull
+    public static byte[] intToByteArrayLength2(int i) {
         String hexString = intToHexStr(i);
         byte highByte;
         byte lowByte;
@@ -484,7 +532,10 @@ public class ConversionUtil {
      * @param n 整数
      * @return 4个字节的byte数组
      */
-    public static byte[] intToBytesLength4(int n) {
+    @SuppressWarnings("unused")
+    @Size(4)
+    @NonNull
+    public static byte[] intToByteArrayLength4(int n) {
         byte[] b = new byte[4];
         for (int i = 0; i < b.length; ++i) {
             b[i] = (byte) (n >>> 24 - i * 8);
@@ -498,6 +549,7 @@ public class ConversionUtil {
      * @param i 整数
      * @return 16进制字符串
      */
+    @NonNull
     @SuppressWarnings("WeakerAccess")
     public static String intToHexStr(int i) {
         return Integer.toHexString(i);
@@ -507,7 +559,6 @@ public class ConversionUtil {
      * 将字节型数据转换为0~255 (0xFF 即BYTE)
      *
      * @param data data字节型数据
-     *             *
      * @return 无符号的整型
      */
     public static int getUnsignedByte(byte data) {
@@ -520,6 +571,7 @@ public class ConversionUtil {
      * @param data 字节型数据
      * @return 无符号的整型
      */
+    @SuppressWarnings("unused")
     public static int getUnsignedShort(short data) {
         return data & 0x0FFFF;
     }
@@ -530,6 +582,7 @@ public class ConversionUtil {
      * @param hexStr 带空格的十六进制字符串
      * @return byte数组
      */
+    @SuppressWarnings("unused")
     @Nullable
     public static byte[] hexStringToByteArray(@NonNull String hexStr) {
         //将获取到的数据以空格为间隔截取成数组
@@ -577,6 +630,7 @@ public class ConversionUtil {
      *              *
      * @return 对应的结果
      */
+    @SuppressWarnings("unused")
     public static boolean intToBoolean(int value) {
         switch (value) {
             case 0:
@@ -595,6 +649,7 @@ public class ConversionUtil {
      *          *
      * @return 对应的int值
      */
+    @SuppressWarnings("unused")
     public static int booleanToInt(boolean b) {
         if (b) {
             return 1;
@@ -608,7 +663,8 @@ public class ConversionUtil {
      *
      * @param context 上下文
      */
-    public static void pressHomeButton(Context context) {
+    @SuppressWarnings("unused")
+    public static void pressHomeButton(@NonNull Context context) {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         // 注意:必须加上这句代码，否则就不是单例了
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -619,11 +675,12 @@ public class ConversionUtil {
     /**
      * 检测byte数组中的内容有效性（全0为无效）
      *
-     * @param bytes byte数组
+     * @param byteArray byte数组
      * @return true表示有效
      */
-    public static boolean checkByteValid(@NonNull byte[] bytes) {
-        for (byte aByte : bytes) {
+    @SuppressWarnings("unused")
+    public static boolean checkByteValid(@NonNull byte[] byteArray) {
+        for (byte aByte : byteArray) {
             if (aByte != 0) {
                 return true;
             }
@@ -637,14 +694,16 @@ public class ConversionUtil {
      * @param o 任意对象
      * @return byte数组
      */
-    public static byte[] objectToByteArray(Object o) {
-        byte[] bytes = null;
+    @SuppressWarnings("unused")
+    @Nullable
+    public static byte[] objectToByteArray(@NonNull Object o) {
+        byte[] byteArray = null;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream = null;
         try {
             objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(o);
-            bytes = byteArrayOutputStream.toByteArray();
+            byteArray = byteArrayOutputStream.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -661,21 +720,20 @@ public class ConversionUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return bytes;
+        return byteArray;
     }
 
     /**
      * 将数组类型转为指定的对象
      *
-     * @param bytes 数组类
+     * @param byteArray 数组类
      * @return T 指定对象
      */
-    public static <T> T byteArrayToObject(byte[] bytes) {
-        if (bytes == null) {
-            return null;
-        }
+    @SuppressWarnings("unused")
+    @Nullable
+    public static <T extends Serializable> T byteArrayToObject(@NonNull byte[] byteArray) {
         Object o = null;
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArray);
         ObjectInputStream objectInputStream = null;
         try {
             objectInputStream = new ObjectInputStream(byteArrayInputStream);
@@ -708,10 +766,9 @@ public class ConversionUtil {
      * @param address 设备地址
      * @return byte数组
      */
-    public static byte[] bluetoothAddressStringToByteArray(String address) {
-        if (address == null) {
-            return null;
-        }
+    @SuppressWarnings("unused")
+    @Nullable
+    public static byte[] bluetoothAddressStringToByteArray(@NonNull String address) {
 
         if (!BluetoothAdapter.checkBluetoothAddress(address)) {
             return null;
@@ -740,15 +797,14 @@ public class ConversionUtil {
      * @param addressByteArray 设备地址数组
      * @return 设备地址字符串（AA:AA:AA:AA:AA:AA）
      */
-    public static String bluetoothAddressByteArrayToString(byte[] addressByteArray) {
-        if (addressByteArray == null) {
-            return null;
-        }
+    @SuppressWarnings("unused")
+    @Nullable
+    public static String bluetoothAddressByteArrayToString(@NonNull byte[] addressByteArray) {
         if (addressByteArray.length != ADDRESS_BYTE_LENGTH) {
             return null;
         }
 
-        String addressCacheString = bytesToHexStr(addressByteArray);
+        String addressCacheString = byteArrayToHexStr(addressByteArray);
         String addressCache = addressCacheString.replace(" ", ":");
         return addressCache.toUpperCase();
     }
@@ -759,6 +815,8 @@ public class ConversionUtil {
      * @param ip int型的Ip地址
      * @return 点分式字符串
      */
+    @SuppressWarnings("unused")
+    @NonNull
     public static String intIp4ToStringIp4(int ip) {
         return (ip & 0xFF) + "." + ((ip >> 8) & 0xFF) + "." + ((ip >> 16) & 0xFF) + "." + ((ip >> 24) & 0xFF);
     }
@@ -769,6 +827,8 @@ public class ConversionUtil {
      * @param ip int型的Ip地址
      * @return 点分式字符串
      */
+    @SuppressWarnings("unused")
+    @NonNull
     public static String intIp4ToReverseStringIp4(int ip) {
         return ((ip >> 24) & 0xFF) + "."
                 + ((ip >> 16) & 0xFF) + "."

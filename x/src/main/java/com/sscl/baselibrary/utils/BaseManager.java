@@ -39,15 +39,19 @@ public class BaseManager {
 
     /*--------------------------------getter--------------------------------*/
 
+    @NonNull
     public static Handler getHandler() {
         return HANDLER;
     }
 
-    static ThreadFactory getThreadFactory() {
+    @NonNull
+    public static ThreadFactory getThreadFactory() {
         return THREAD_FACTORY;
     }
 
-    private static ThreadFactory newThreadFactory() {
+    @NonNull
+    @SuppressWarnings("WeakerAccess")
+    public static ThreadFactory newThreadFactory() {
         return new ThreadFactory() {
             /**
              * Constructs a new {@code Thread}.  Implementations may also initialize
@@ -64,11 +68,15 @@ public class BaseManager {
         };
     }
 
-    static ScheduledExecutorService getScheduledThreadPoolExecutor() {
+    @NonNull
+    @SuppressWarnings("unused")
+    public static ScheduledExecutorService getScheduledThreadPoolExecutor() {
         return SCHEDULED_THREAD_POOL_EXECUTOR;
     }
 
-    static ScheduledExecutorService newScheduledExecutorService() {
+    @SuppressWarnings("WeakerAccess")
+    @NonNull
+    public static ScheduledExecutorService newScheduledExecutorService() {
         return new ScheduledThreadPoolExecutor(1, newThreadFactory());
     }
 }

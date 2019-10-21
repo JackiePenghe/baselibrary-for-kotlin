@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
@@ -13,7 +14,9 @@ import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+
 import com.google.android.material.navigation.NavigationView;
+
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -21,6 +24,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -108,7 +112,6 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
                     drawerOpen = true;
                     break;
                 case DrawerLayout.STATE_IDLE:
-                    break;
                 default:
                     break;
             }
@@ -172,7 +175,7 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(onNavigationItemSelectedListener);
         content = findViewById(R.id.base_frame_content);
         int layoutResId = setLayout();
-        if (layoutResId == 0){
+        if (layoutResId == 0) {
             throw new RuntimeException("setLayout with wrong layout resource id");
         }
         View view = getLayoutInflater().inflate(layoutResId, null);
@@ -213,12 +216,12 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         return createOptionsMenu(menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return optionsItemSelected(item);
     }
 
@@ -273,7 +276,7 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
      * @param menu 菜单
      * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
      */
-    protected abstract boolean createOptionsMenu(Menu menu);
+    protected abstract boolean createOptionsMenu(@NonNull Menu menu);
 
     /**
      * 设置菜单监听
@@ -281,7 +284,7 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
      * @param item 菜单的item
      * @return true表示处理了监听事件
      */
-    protected abstract boolean optionsItemSelected(MenuItem item);
+    protected abstract boolean optionsItemSelected(@NonNull MenuItem item);
 
     /**
      * DrawerLayout的滑动监听
@@ -360,6 +363,7 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
      *
      * @param titleText 标题栏内容
      */
+    @SuppressWarnings("unused")
     protected void setTitleText(String titleText) {
         titleView.setText(titleText);
     }
@@ -381,6 +385,7 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
      *
      * @param colorRes 文本颜色
      */
+    @SuppressWarnings("SameParameterValue")
     protected void setTitleTextColorRes(@ColorRes int colorRes) {
         int color = ContextCompat.getColor(this, colorRes);
         setTitleTextColor(color);
@@ -391,6 +396,7 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
      *
      * @param color 标题栏背景色
      */
+    @SuppressWarnings("unused")
     protected void setTitleBackgroundColor(@ColorInt int color) {
         if (toolbar == null) {
             throw new RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"");
@@ -403,6 +409,7 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
      *
      * @param drawable 标题栏背景
      */
+    @SuppressWarnings("unused")
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     protected void setTitleBackgroundDrawable(Drawable drawable) {
         if (toolbar == null) {
@@ -416,6 +423,7 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
      *
      * @param drawableRes 标题栏背景
      */
+    @SuppressWarnings("unused")
     protected void setTitleBackgroundResource(@DrawableRes int drawableRes) {
         if (toolbar == null) {
             throw new RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"");
@@ -428,6 +436,7 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
      *
      * @return 当前侧边栏的打开状态
      */
+    @SuppressWarnings("unused")
     protected boolean isDrawerOpen() {
         return drawerOpen;
     }
@@ -437,6 +446,7 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
      *
      * @return 整个抽屉布局
      */
+    @SuppressWarnings("unused")
     protected DrawerLayout getDrawerLayout() {
         return findViewById(R.id.drawer_layout);
     }
@@ -446,6 +456,7 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
      *
      * @return 整个侧边栏
      */
+    @SuppressWarnings("unused")
     protected NavigationView getNavigationView() {
         return findViewById(R.id.nav_view);
     }
@@ -455,6 +466,7 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
      *
      * @return Activity布局的整个布局
      */
+    @SuppressWarnings("unused")
     protected FrameLayout getContentView() {
         return content;
     }

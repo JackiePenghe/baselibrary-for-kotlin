@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
 
+import androidx.annotation.NonNull;
+
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.utils.ToastUtil;
 import com.sscl.basesample.R;
@@ -26,10 +28,10 @@ public class ToastTestActivity extends BaseAppCompatActivity {
     private View.OnClickListener onClickListener = v -> {
         switch (v.getId()) {
             case R.id.long_time:
-                ToastUtil.toastL(ToastTestActivity.this, R.string.long_time);
+                ToastUtil.toastLong(ToastTestActivity.this, R.string.long_time);
                 break;
             case R.id.short_time:
-                ToastUtil.toastS(ToastTestActivity.this, R.string.short_time);
+                ToastUtil.toastShort(ToastTestActivity.this, R.string.short_time);
                 break;
             case R.id.time_100:
                 ToastUtil.toast(ToastTestActivity.this, R.string.time_100, 100);
@@ -154,7 +156,7 @@ public class ToastTestActivity extends BaseAppCompatActivity {
      * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
      */
     @Override
-    protected boolean createOptionsMenu(Menu menu) {
+    protected boolean createOptionsMenu(@NonNull Menu menu) {
         return false;
     }
 
@@ -165,7 +167,7 @@ public class ToastTestActivity extends BaseAppCompatActivity {
      * @return true表示处理了监听事件
      */
     @Override
-    protected boolean optionsItemSelected(MenuItem item) {
+    protected boolean optionsItemSelected(@NonNull MenuItem item) {
         return false;
     }
 }

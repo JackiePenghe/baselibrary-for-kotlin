@@ -226,7 +226,7 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
      * @param parent RecyclerView
      * @return SpanCount
      */
-    private int getSpanCount(RecyclerView parent) {
+    private int getSpanCount(@NonNull RecyclerView parent) {
         RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
         if (layoutManager instanceof GridLayoutManager) {
             return ((GridLayoutManager) layoutManager).getSpanCount();
@@ -301,7 +301,7 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
      * @param c      Canvas
      * @param parent RecyclerView
      */
-    private void drawHorizontal(Canvas c, RecyclerView parent) {
+    private void drawHorizontal(@NonNull Canvas c,@NonNull RecyclerView parent) {
         c.save();
         int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
@@ -333,7 +333,7 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
      * @param c      Canvas
      * @param parent RecyclerView
      */
-    private void drawVertical(Canvas c, RecyclerView parent) {
+    private void drawVertical(@NonNull Canvas c,@NonNull RecyclerView parent) {
         c.save();
         final int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {

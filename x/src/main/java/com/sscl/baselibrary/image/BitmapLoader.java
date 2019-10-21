@@ -2,6 +2,8 @@ package com.sscl.baselibrary.image;
 
 import android.graphics.Bitmap;
 
+import androidx.annotation.NonNull;
+
 import java.lang.ref.WeakReference;
 
 /**
@@ -27,11 +29,12 @@ public class BitmapLoader implements Runnable {
     /*--------------------------------构造方法--------------------------------*/
 
     /**
-     *  构造方法
+     * 构造方法
+     *
      * @param bitmapHolder 位图图像Holder
-     * @param imageLoader ImageLoader
+     * @param imageLoader  ImageLoader
      */
-    public BitmapLoader(BitmapHolder bitmapHolder, ImageLoader imageLoader) {
+    public BitmapLoader(@NonNull BitmapHolder bitmapHolder, @NonNull ImageLoader imageLoader) {
         bitmapHolderWeakReference = new WeakReference<>(bitmapHolder);
         imageLoaderWeakReference = new WeakReference<>(imageLoader);
     }
@@ -64,6 +67,9 @@ public class BitmapLoader implements Runnable {
             return;
         }
         Bitmap bmp = imageLoader.getBitmap(bitmapHolder.url);
+        if (bmp == null){
+            return;
+        }
         imageLoader.memoryCache.put(bitmapHolder.url, bmp);
 
         if (imageLoader.imageViewReused(bitmapHolder)) {

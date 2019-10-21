@@ -2,15 +2,15 @@ package com.sscl.basesample.activities.sample;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import com.google.android.material.tabs.TabLayout;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
+import android.widget.Button;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import android.view.View;
-import android.widget.Button;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.sscl.baselibrary.adapter.FragmentViewPagerAdapter;
 import com.sscl.baselibrary.utils.DebugUtil;
 import com.sscl.basesample.R;
@@ -32,7 +32,6 @@ public class SampleBaseFragmentActivity extends AppCompatActivity {
 
         ViewPager viewPager = findViewById(R.id.view_pager);
         TabLayout tabLayout = findViewById(R.id.tab_layout);
-        Button button = findViewById(R.id.button);
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         toolbar.setTitle(R.string.app_title);
@@ -53,19 +52,5 @@ public class SampleBaseFragmentActivity extends AppCompatActivity {
         FragmentViewPagerAdapter fragmentViewPagerAdapter = new FragmentViewPagerAdapter(getSupportFragmentManager(), fragments, titles);
         viewPager.setAdapter(fragmentViewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
-
-        button.setOnClickListener(view -> {
-            if (sampleFragment1.isVisibilityForUser()){
-                DebugUtil.warnOut(TAG,"sampleFragment1 可见");
-            }else{
-                DebugUtil.warnOut(TAG,"sampleFragment1 不可见");
-            }
-
-            if (sampleFragment2.isVisibilityForUser()){
-                DebugUtil.warnOut(TAG,"sampleFragment2 可见");
-            }else{
-                DebugUtil.warnOut(TAG,"sampleFragment2 不可见");
-            }
-        });
     }
 }

@@ -3,6 +3,8 @@ package com.sscl.baselibrary.utils;
 import android.content.Context;
 import android.os.Environment;
 
+import androidx.annotation.NonNull;
+
 import com.sscl.baselibrary.files.FileUtil;
 
 import java.io.File;
@@ -17,11 +19,8 @@ import java.util.List;
  *
  * @author ALM Sound Technology
  */
+@SuppressWarnings("unused")
 public class OutputUtil<T> {
-
-    /*--------------------------------静态常量--------------------------------*/
-
-    private static final String TAG = "OutputUtil";
 
     /*--------------------------------公开方法--------------------------------*/
 
@@ -33,7 +32,8 @@ public class OutputUtil<T> {
      * @param bean     对象
      * @return true 保存成功
      */
-    public boolean writeObjectIntoLocal(Context context, String fileName, T bean) {
+    @SuppressWarnings("unused")
+    public boolean writeObjectIntoLocal(@NonNull Context context,@NonNull String fileName,@NonNull T bean) {
         try {
             // 通过openFileOutput方法得到一个输出流，方法参数为创建的文件名（不能有斜杠），操作模式
             FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
@@ -59,7 +59,8 @@ public class OutputUtil<T> {
      * @param bean     对象
      * @return true 保存成功
      */
-    public boolean writeObjectIntoSDcard(String fileName, T bean) {
+    @SuppressWarnings("unused")
+    public boolean writeObjectIntoSdCard(@NonNull String fileName, @NonNull T bean) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             File appDir = FileUtil.getAppDir();
             File sdFile = new File(appDir, fileName);
@@ -90,7 +91,8 @@ public class OutputUtil<T> {
      * @param list     集合
      * @return true 保存成功
      */
-    public boolean writeListIntoSDcard(String fileName, List<T> list) {
+    @SuppressWarnings("unused")
+    public boolean writeListIntoSdCard(@NonNull String fileName, @NonNull List<T> list) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             File appDir = FileUtil.getAppDir();
             File sdFile = new File(appDir, fileName);

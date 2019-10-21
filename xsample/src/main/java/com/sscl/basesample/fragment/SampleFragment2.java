@@ -69,20 +69,4 @@ public class SampleFragment2 extends BaseFragment {
     protected void doAfterAll() {
 
     }
-
-    /**
-     * 当fragment可见时调用此方法
-     */
-    @Override
-    protected void onVisibleHint() {
-
-    }
-
-    /**
-     * 当fragment不可见时调用此方法
-     */
-    @Override
-    protected void onUnVisibleHint() {
-
-    }
 }

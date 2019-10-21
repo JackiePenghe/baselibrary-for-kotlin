@@ -6,6 +6,8 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -60,7 +62,7 @@ public class ViewHolder {
      * @param itemLayoutId 布局文件资源id
      * @param position     当前位置
      */
-    private ViewHolder(Context context, ViewGroup parent, @LayoutRes int itemLayoutId, int position) {
+    private ViewHolder(@NonNull Context context, @NonNull ViewGroup parent, @LayoutRes int itemLayoutId, int position) {
         mPosition = position;
         viewSparseArray = new SparseArray<>();
         convertView = LayoutInflater.from(context).inflate(itemLayoutId, parent, false);
@@ -80,7 +82,7 @@ public class ViewHolder {
      * @param position     当前位置
      * @return ViewHolder本类实例
      */
-    public static ViewHolder get(Context context, View convertView, ViewGroup parent, @LayoutRes int itemLayoutId, int position) {
+    public static ViewHolder get(@NonNull Context context, @Nullable View convertView, @NonNull ViewGroup parent, @LayoutRes int itemLayoutId, int position) {
         if (convertView == null) {
             return new ViewHolder(context, parent, itemLayoutId, position);
         }
@@ -104,6 +106,7 @@ public class ViewHolder {
      * @param viewId 控件的Id
      * @return 对应的控件
      */
+    @Nullable
     public View getView(@IdRes int viewId) {
         View view = viewSparseArray.get(viewId);
         if (view == null) {
@@ -120,7 +123,8 @@ public class ViewHolder {
      * @param text   要设置的文本内容
      * @return ViewHolder本类
      */
-    public ViewHolder setText(@IdRes int viewId, CharSequence text) {
+    @NonNull
+    public ViewHolder setText(@IdRes int viewId,@NonNull CharSequence text) {
         View view = getView(viewId);
         if (view instanceof TextView) {
             TextView textView = (TextView) view;
@@ -136,6 +140,7 @@ public class ViewHolder {
      * @param checked 选中状态
      * @return ViewHolder本类
      */
+    @NonNull
     public ViewHolder setChecked(@IdRes int viewId, boolean checked) {
         View view = getView(viewId);
         if (view instanceof CompoundButton) {
@@ -152,6 +157,7 @@ public class ViewHolder {
      * @param textRes 要设置的文本内容资源ID
      * @return ViewHolder本类
      */
+    @NonNull
     public ViewHolder setText(@IdRes int viewId, @StringRes int textRes) {
         View view = getView(viewId);
         if (view instanceof TextView) {
@@ -167,6 +173,7 @@ public class ViewHolder {
      * @param viewId 控件的Id
      * @return editText的文本
      */
+    @Nullable
     public CharSequence getEditText(@IdRes int viewId) {
         View view = getView(viewId);
         if (view instanceof EditText) {
@@ -183,6 +190,7 @@ public class ViewHolder {
      * @param drawableResId 图片的资源Id
      * @return ViewHolder本类
      */
+    @NonNull
     public ViewHolder setImageResource(@IdRes int viewId, @DrawableRes int drawableResId) {
         View view = getView(viewId);
         if (view instanceof ImageView) {
@@ -199,7 +207,8 @@ public class ViewHolder {
      * @param bitmap 位图图片
      * @return ViewHolder本类
      */
-    public ViewHolder setImageBitmap(@IdRes int viewId, Bitmap bitmap) {
+    @NonNull
+    public ViewHolder setImageBitmap(@IdRes int viewId, @NonNull Bitmap bitmap) {
         View view = getView(viewId);
         if (view instanceof ImageView) {
             ImageView imageView = (ImageView) view;
@@ -216,7 +225,8 @@ public class ViewHolder {
      * @param isCircle 是否将图片显示为圆形
      * @return ViewHolder本类
      */
-    public ViewHolder setImageByUrl(@IdRes int viewId, String url, boolean isCircle) {
+    @NonNull
+    public ViewHolder setImageByUrl(@IdRes int viewId,@NonNull String url, boolean isCircle) {
         View view = getView(viewId);
         if (view instanceof ImageView) {
             ImageView imageView = (ImageView) view;
@@ -232,9 +242,12 @@ public class ViewHolder {
      * @param color  背景色
      * @return ViewHolder本类
      */
+    @NonNull
     public ViewHolder setBackgroundColor(@IdRes int viewId, @ColorInt int color) {
         View view = getView(viewId);
-        view.setBackgroundColor(color);
+        if (view != null) {
+            view.setBackgroundColor(color);
+        }
         return this;
     }
 

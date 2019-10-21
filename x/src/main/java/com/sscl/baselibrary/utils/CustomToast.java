@@ -3,6 +3,8 @@ package com.sscl.baselibrary.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Message;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -73,7 +75,7 @@ class CustomToast {
      * @param messageText Toast文本内容
      * @param duration    Toast持续时间（单位：毫秒）
      */
-    private CustomToast(Context context, String messageText, int duration) {
+    private CustomToast(@NonNull Context context,@NonNull String messageText, int duration) {
         this.context = context;
         this.messageText = messageText;
         this.duration = duration;
@@ -89,7 +91,7 @@ class CustomToast {
      * @param duration    Toast持续时间（单位：毫秒）
      */
     @SuppressLint("ShowToast")
-    private static void showMyToast(final Context context, final String messageText, int duration) {
+    private static void showMyToast(@NonNull final Context context,@NonNull final String messageText, int duration) {
         if (toastHandler == null) {
             toastHandler = new ToastHandler(context.getApplicationContext());
         }
@@ -136,7 +138,7 @@ class CustomToast {
      * @param messageText Toast文本内容
      * @param arg         是否为定时器保持消息显示
      */
-    private static void handlerShowToast(String messageText, int arg) {
+    private static void handlerShowToast(@NonNull String messageText, int arg) {
         Message message = new Message();
         message.obj = messageText;
         message.what = ToastHandler.MESSAGE;
@@ -168,7 +170,6 @@ class CustomToast {
     /**
      * 显示吐司
      */
-    @SuppressWarnings("TryWithIdenticalCatches")
     void show() {
         showMyToast(context, messageText, duration);
     }
@@ -178,7 +179,6 @@ class CustomToast {
      *
      * @param reuse true表示开启重用
      */
-    @SuppressWarnings("WeakerAccess")
     static void setReuse(boolean reuse) {
         CustomToast.reuse = reuse;
     }
@@ -193,7 +193,8 @@ class CustomToast {
      * @param duration 吐司显示时长
      * @return CustomToast本类
      */
-    static CustomToast makeText(Context context, String message, int duration) {
+    @NonNull
+    static CustomToast makeText(@NonNull Context context,@NonNull String message, int duration) {
         if (customToast == null) {
             synchronized (CustomToast.class) {
                 if (customToast == null) {
@@ -218,7 +219,8 @@ class CustomToast {
      * @param duration   吐司显示时长
      * @return CustomToast本类
      */
-    static CustomToast makeText(Context context, @StringRes int messageRes, int duration) {
+    @NonNull
+    static CustomToast makeText(@NonNull Context context, @StringRes int messageRes, int duration) {
         String message = context.getString(messageRes);
         if (customToast == null) {
             synchronized (CustomToast.class) {

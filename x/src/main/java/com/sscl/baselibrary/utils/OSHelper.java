@@ -6,6 +6,9 @@ import android.os.Environment;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -42,7 +45,7 @@ public class OSHelper {
     public static boolean isFlyme() {
         try {
             //noinspection JavaReflectionMemberAccess
-            final Method method = Build.class.getMethod("hasSmartBar");
+            Build.class.getMethod("hasSmartBar");
             return true;
         } catch (final Exception e) {
             return false;
@@ -54,7 +57,7 @@ public class OSHelper {
      *
      * @return true表示当前为Emui系统
      */
-    public static boolean isEMUI() {
+    public static boolean isEmui() {
         return isPropertiesExist(KEY_EMUI_VERSION_CODE);
     }
 
@@ -63,7 +66,8 @@ public class OSHelper {
      *
      * @return true表示当前为Miui系统
      */
-    public static boolean isMIUI() {
+    @SuppressWarnings("unused")
+    public static boolean isMiui() {
         return isPropertiesExist(KEY_MIUI_VERSION_CODE, KEY_MIUI_VERSION_NAME, KEY_MIUI_INTERNAL_STORAGE);
     }
 
@@ -75,22 +79,11 @@ public class OSHelper {
      * @param keys 属性
      * @return true表示存在
      */
-    private static boolean isPropertiesExist(String... keys) {
+    private static boolean isPropertiesExist(@Nullable String... keys) {
         if (keys == null || keys.length == 0) {
             return false;
         }
-        try {
-            BuildProperties properties = BuildProperties.newInstance();
-            for (String key : keys) {
-                String value = properties.getProperty(key);
-                if (value != null) {
-                    return true;
-                }
-            }
-            return false;
-        } catch (IOException e) {
-            return false;
-        }
+        return true;
     }
 
     /*--------------------------------公开静态方法--------------------------------*/
@@ -103,30 +96,29 @@ public class OSHelper {
      * @param dark   是否把状态栏字体及图标颜色设置为深色
      * @return boolean 成功执行返回true
      */
-    public static boolean flymeSetStatusBarLightMode(Window window, boolean dark) {
+    @SuppressWarnings("UnusedReturnValue")
+    public static boolean flymeSetStatusBarLightMode(@NonNull Window window, boolean dark) {
         boolean result = false;
-        if (window != null) {
-            try {
-                WindowManager.LayoutParams lp = window.getAttributes();
-                @SuppressWarnings("JavaReflectionMemberAccess") Field darkFlag = WindowManager.LayoutParams.class
-                        .getDeclaredField(MEIZU_FLAG_DARK_STATUS_BAR_ICON);
-                @SuppressWarnings("JavaReflectionMemberAccess") Field meizuFlags = WindowManager.LayoutParams.class
-                        .getDeclaredField("meizuFlags");
-                darkFlag.setAccessible(true);
-                meizuFlags.setAccessible(true);
-                int bit = darkFlag.getInt(null);
-                int value = meizuFlags.getInt(lp);
-                if (dark) {
-                    value |= bit;
-                } else {
-                    value &= ~bit;
-                }
-                meizuFlags.setInt(lp, value);
-                window.setAttributes(lp);
-                result = true;
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            WindowManager.LayoutParams lp = window.getAttributes();
+            @SuppressWarnings("JavaReflectionMemberAccess") Field darkFlag = WindowManager.LayoutParams.class
+                    .getDeclaredField(MEIZU_FLAG_DARK_STATUS_BAR_ICON);
+            @SuppressWarnings("JavaReflectionMemberAccess") Field meizuFlags = WindowManager.LayoutParams.class
+                    .getDeclaredField("meizuFlags");
+            darkFlag.setAccessible(true);
+            meizuFlags.setAccessible(true);
+            int bit = darkFlag.getInt(null);
+            int value = meizuFlags.getInt(lp);
+            if (dark) {
+                value |= bit;
+            } else {
+                value &= ~bit;
             }
+            meizuFlags.setInt(lp, value);
+            window.setAttributes(lp);
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return result;
     }
@@ -138,26 +130,26 @@ public class OSHelper {
      * @param dark   是否把状态栏字体及图标颜色设置为深色
      * @return boolean 成功执行返回true
      */
-    public static boolean miuiSetStatusBarLightMode(Window window, boolean dark) {
-        if (window != null) {
-            Class clazz = window.getClass();
-            try {
-                int darkModeFlag;
-                @SuppressLint("PrivateApi") Class layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
-                Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
-                darkModeFlag = field.getInt(layoutParams);
-                Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
-                if (dark) {
-                    //状态栏透明且黑色字体
-                    extraFlagField.invoke(window, darkModeFlag, darkModeFlag);
-                } else {
-                    //清除黑色字体
-                    extraFlagField.invoke(window, 0, darkModeFlag);
-                }
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
+    @SuppressWarnings("UnusedReturnValue")
+    public static boolean miuiSetStatusBarLightMode(@NonNull Window window, boolean dark) {
+        Class clazz = window.getClass();
+        try {
+            int darkModeFlag;
+            @SuppressLint("PrivateApi") Class layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
+            Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
+            darkModeFlag = field.getInt(layoutParams);
+            //noinspection unchecked
+            Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
+            if (dark) {
+                //状态栏透明且黑色字体
+                extraFlagField.invoke(window, darkModeFlag, darkModeFlag);
+            } else {
+                //清除黑色字体
+                extraFlagField.invoke(window, 0, darkModeFlag);
             }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return false;
     }
@@ -198,7 +190,7 @@ public class OSHelper {
          * @param key 属性key
          * @return true表示系统存在这个属性key
          */
-        public boolean containsKey(final Object key) {
+        public boolean containsKey(@NonNull final Object key) {
             return properties.containsKey(key);
         }
 
@@ -208,7 +200,7 @@ public class OSHelper {
          * @param value 属性value
          * @return true表示系统存在这个属性value
          */
-        public boolean containsValue(final Object value) {
+        public boolean containsValue(@NonNull final Object value) {
             return properties.containsValue(value);
         }
 
@@ -217,6 +209,7 @@ public class OSHelper {
          *
          * @return 系统属性的set集合
          */
+        @NonNull
         public Set<Map.Entry<Object, Object>> entrySet() {
             return properties.entrySet();
         }
@@ -227,7 +220,8 @@ public class OSHelper {
          * @param name 属性名
          * @return 系统属性
          */
-        public String getProperty(String name) {
+        @NonNull
+        public String getProperty(@NonNull String name) {
             return properties.getProperty(name);
         }
 
@@ -238,12 +232,14 @@ public class OSHelper {
          * @param defaultValue 属性值
          * @return 系统属性
          */
-        public String getProperty(final String name, final String defaultValue) {
+        @NonNull
+        public String getProperty(@NonNull final String name, @NonNull final String defaultValue) {
             return properties.getProperty(name, defaultValue);
         }
 
         /**
          * 判断系统属性是否为空
+         *
          * @return true表示为空
          */
         public boolean isEmpty() {
@@ -252,22 +248,27 @@ public class OSHelper {
 
         /**
          * 获取系统属性所有的key
+         *
          * @return 系统属性所有的key
          */
+        @NonNull
         public Enumeration<Object> keys() {
             return properties.keys();
         }
 
         /**
          * 将系统属性所有的key转为set集合
+         *
          * @return set集合
          */
+        @NonNull
         public Set<Object> keySet() {
             return properties.keySet();
         }
 
         /**
          * 获取系统属性的大小
+         *
          * @return 系统属性的大小
          */
         public int size() {
@@ -276,8 +277,10 @@ public class OSHelper {
 
         /**
          * 获取系统属性所有的values
+         *
          * @return 系统属性所有的values
          */
+
         public Collection<Object> values() {
             return properties.values();
         }
@@ -286,6 +289,7 @@ public class OSHelper {
 
         /**
          * 创建BuildProperties本类实例
+         *
          * @return BuildProperties本类实例
          * @throws IOException IO异常
          */

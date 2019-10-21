@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.sscl.baselibrary.R;
 
@@ -53,7 +54,7 @@ public class GifView extends View {
      *
      * @param context 上下文
      */
-    public GifView(Context context) {
+    public GifView(@NonNull Context context) {
         this(context, null);
     }
 
@@ -63,7 +64,7 @@ public class GifView extends View {
      * @param context 上下文
      * @param attrs   参数
      */
-    public GifView(Context context, AttributeSet attrs) {
+    public GifView(@NonNull Context context,@Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
@@ -74,13 +75,13 @@ public class GifView extends View {
      * @param attrs    参数
      * @param defStyle 默认风格
      */
-    public GifView(Context context, AttributeSet attrs, int defStyle) {
+    public GifView(@NonNull Context context,@Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setViewAttributes(context, attrs, defStyle);
     }
 
     @SuppressLint("NewApi")
-    private void setViewAttributes(Context context, AttributeSet attrs,
+    private void setViewAttributes(@NonNull Context context,@Nullable AttributeSet attrs,
                                    int defStyle) {
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         // 从描述文件中读出gif的值，创建出Movie实例
@@ -100,6 +101,7 @@ public class GifView extends View {
      *
      * @param movieResId 要设置的gif图资源
      */
+    @SuppressWarnings("unused")
     public void setMovieResource(int movieResId) {
         this.mMovieResourceId = movieResId;
         mMovie = Movie.decodeStream(getResources().openRawResource(
@@ -112,6 +114,7 @@ public class GifView extends View {
      *
      * @param movie 要设置的gif动画(视频)
      */
+    @SuppressWarnings("unused")
     public void setMovie(Movie movie) {
         this.mMovie = movie;
         requestLayout();
@@ -122,6 +125,8 @@ public class GifView extends View {
      *
      * @return gif的动画(视频)
      */
+    @Nullable
+    @SuppressWarnings("unused")
     public Movie getMovie() {
         return mMovie;
     }
@@ -131,6 +136,7 @@ public class GifView extends View {
      *
      * @param time 要设置的gif动画(视频)时间
      */
+    @SuppressWarnings("unused")
     public void setMovieTime(int time) {
         mCurrentAnimationTime = time;
         invalidate();
@@ -155,6 +161,7 @@ public class GifView extends View {
      *
      * @return true表示已经停止了，false表示没有停止
      */
+    @SuppressWarnings("unused")
     public boolean isPaused() {
         return this.mPaused;
     }
@@ -185,7 +192,7 @@ public class GifView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         if (mMovie != null) {
             if (!mPaused) {
                 updateAnimationTime();
@@ -197,7 +204,6 @@ public class GifView extends View {
         }
     }
 
-    @SuppressLint("NewApi")
     private void invalidateView() {
         if (mVisible) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

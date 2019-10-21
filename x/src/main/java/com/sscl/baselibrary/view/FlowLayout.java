@@ -6,6 +6,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 
 /**
@@ -33,7 +36,7 @@ public class FlowLayout extends ViewGroup {
      *
      * @param context 上下文
      */
-    public FlowLayout(Context context) {
+    public FlowLayout(@NonNull Context context) {
         this(context, null);
     }
 
@@ -43,7 +46,7 @@ public class FlowLayout extends ViewGroup {
      * @param context 上下文
      * @param attrs   属性集合
      */
-    public FlowLayout(Context context, AttributeSet attrs) {
+    public FlowLayout(@NonNull Context context,@Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
@@ -54,7 +57,7 @@ public class FlowLayout extends ViewGroup {
      * @param attrs        属性集合
      * @param defStyleAttr 默认的属性
      */
-    public FlowLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FlowLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         viewLineList = new ArrayList<>();
         lineHeightList = new ArrayList<>();
@@ -155,7 +158,7 @@ public class FlowLayout extends ViewGroup {
      * @return LayoutParams
      */
     @Override
-    public LayoutParams generateLayoutParams(AttributeSet attrs) {
+    public LayoutParams generateLayoutParams(@NonNull AttributeSet attrs) {
         return new MarginLayoutParams(getContext(), attrs);
     }
 
@@ -217,17 +220,18 @@ public class FlowLayout extends ViewGroup {
         void onItemClick(View view, int position);
     }
 
-    public void setOnItemClickListener(final OnItemClickListener onItemClickListener) {
+    @SuppressWarnings("unused")
+    public void setOnItemClickListener(@Nullable final OnItemClickListener onItemClickListener) {
         int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View childView = getChildAt(i);
             childView.setClickable(true);
-            final int finalI = i;
+            final int finalValue = i;
             childView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (onItemClickListener != null){
-                        onItemClickListener.onItemClick(childView, finalI);
+                        onItemClickListener.onItemClick(childView, finalValue);
                     }
                 }
             });

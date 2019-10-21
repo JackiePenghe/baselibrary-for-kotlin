@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 
+import androidx.annotation.NonNull;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -18,6 +20,7 @@ import java.net.UnknownHostException;
  *
  * @author jackie
  */
+@SuppressWarnings("unused")
 public class UdpBroadcastUtil {
 
     /*---------------------------------------静态常量---------------------------------------*/
@@ -46,7 +49,7 @@ public class UdpBroadcastUtil {
      *
      * @param context 上下文
      */
-    public UdpBroadcastUtil(Context context) {
+    public UdpBroadcastUtil(@NonNull Context context) {
         mContext = context;
     }
 
@@ -111,7 +114,7 @@ public class UdpBroadcastUtil {
      * @param buffer 数据内容
      * @param port   目标端口
      */
-    public boolean sendPacket(byte[] buffer, int port) {
+    public boolean sendPacket(@NonNull byte[] buffer, int port) {
         try {
             InetAddress addr = getBroadcastAddress(mContext);
             DebugUtil.warnOut(TAG, "addr = " + addr.toString());
@@ -131,7 +134,7 @@ public class UdpBroadcastUtil {
      *
      * @param buffer 收到的数据
      */
-    public boolean recvPacket(byte[] buffer) {
+    public boolean recvPacket(@NonNull byte[] buffer) {
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
         try {
             if (mSocket != null) {
@@ -151,7 +154,7 @@ public class UdpBroadcastUtil {
      * @param packet 收到的数据包
      * @return true表示成功
      */
-    public boolean recvPacket(DatagramPacket packet) {
+    public boolean recvPacket(@NonNull DatagramPacket packet) {
         if (mSocket == null) {
             return false;
         }
@@ -171,7 +174,7 @@ public class UdpBroadcastUtil {
      *
      * @param context 上下文
      */
-    private static InetAddress getBroadcastAddress(Context context) throws UnknownHostException {
+    private static InetAddress getBroadcastAddress(@NonNull Context context) throws UnknownHostException {
         //判断wifi热点是否打开
         if (isWifiApEnabled(context)) {
             //直接返回
@@ -198,7 +201,7 @@ public class UdpBroadcastUtil {
      *
      * @param context 上下文
      */
-    private static boolean isWifiApEnabled(Context context) {
+    private static boolean isWifiApEnabled(@NonNull Context context) {
         try {
             WifiManager manager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             if (manager == null) {

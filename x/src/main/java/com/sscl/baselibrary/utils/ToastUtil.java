@@ -1,6 +1,8 @@
 package com.sscl.baselibrary.utils;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 /**
@@ -18,7 +20,7 @@ public class ToastUtil {
      * @param context 上下文
      * @param message 信息
      */
-    public static void toastL(Context context, String message) {
+    public static void toastLong(@NonNull Context context, String message) {
         showToast(context, message, CustomToast.LENGTH_LONG);
     }
 
@@ -28,7 +30,7 @@ public class ToastUtil {
      * @param context    上下文
      * @param messageRes 信息
      */
-    public static void toastL(Context context, @StringRes int messageRes) {
+    public static void toastLong(@NonNull Context context, @StringRes int messageRes) {
         showToast(context, messageRes, CustomToast.LENGTH_LONG);
     }
 
@@ -59,7 +61,7 @@ public class ToastUtil {
      * @param message 信息
      */
     @SuppressWarnings("unused")
-    public static void toastS(Context context, String message) {
+    public static void toastShort(@NonNull Context context, String message) {
         showToast(context, message, CustomToast.LENGTH_SHORT);
     }
 
@@ -69,7 +71,7 @@ public class ToastUtil {
      * @param context    上下文
      * @param messageRes 信息
      */
-    public static void toastS(Context context, @StringRes int messageRes) {
+    public static void toastShort(@NonNull Context context, @StringRes int messageRes) {
         showToast(context, messageRes, CustomToast.LENGTH_SHORT);
     }
 
@@ -80,7 +82,7 @@ public class ToastUtil {
      * @param message 信息
      */
     @SuppressWarnings("unused")
-    public static void toast(Context context, String message, int duration) {
+    public static void toast(@NonNull Context context, @NonNull String message, int duration) {
         showToast(context, message, duration);
     }
 
@@ -90,9 +92,10 @@ public class ToastUtil {
      * @param context    上下文
      * @param messageRes 信息
      */
-    public static void toast(Context context, @StringRes int messageRes, int duration) {
+    public static void toast(@NonNull Context context, @StringRes int messageRes, int duration) {
         showToast(context, messageRes, duration);
     }
+
     /**
      * 弹出Toast
      *
@@ -100,7 +103,7 @@ public class ToastUtil {
      * @param message  信息
      * @param duration 持续时间
      */
-    private static void showToast(Context context, String message, int duration) {
+    private static void showToast(@NonNull Context context, @NonNull String message, int duration) {
         CustomToast.makeText(context, message, duration).show();
     }
 
@@ -113,7 +116,7 @@ public class ToastUtil {
      * @param messageRes 信息
      * @param duration   持续时间
      */
-    private static void showToast(Context context, @StringRes int messageRes, int duration) {
+    private static void showToast(@NonNull Context context, @StringRes int messageRes, int duration) {
         CustomToast.makeText(context, messageRes, duration).show();
     }
 }

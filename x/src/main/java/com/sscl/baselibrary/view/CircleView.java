@@ -10,6 +10,8 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+
 /**
  * 自定义圆形控件
  * @author pengh
@@ -81,7 +83,7 @@ public class CircleView extends View {
      * @param canvas 画内容的画布
      */
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         paint.setColor(color);
 
         //画一个圆心坐标为(40,40)，半径为屏幕宽度的1/30的圆
@@ -106,9 +108,7 @@ public class CircleView extends View {
                 width = (int) (screenWidth / 7);
                 break;
             case MeasureSpec.EXACTLY:
-                break;
             case MeasureSpec.UNSPECIFIED:
-                break;
             default:
                 break;
         }
@@ -118,9 +118,7 @@ public class CircleView extends View {
                 height = (int) (screenWidth / 7);
                 break;
             case MeasureSpec.EXACTLY:
-                break;
             case MeasureSpec.UNSPECIFIED:
-                break;
             default:
                 break;
         }

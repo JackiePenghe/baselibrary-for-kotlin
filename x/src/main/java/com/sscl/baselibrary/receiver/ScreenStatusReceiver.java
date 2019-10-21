@@ -9,16 +9,14 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Handler;
 
+import androidx.annotation.Nullable;
+
 /**
  * 获取当前屏幕亮灭及解锁状态的广播监听
  *
  * @author jackie
  */
 public class ScreenStatusReceiver extends BroadcastReceiver {
-
-    /*---------------------------------------静态常量---------------------------------------*/
-
-    private static final String TAG = ScreenStatusReceiver.class.getSimpleName();
 
     /*---------------------------------------成员变量---------------------------------------*/
 
@@ -65,12 +63,16 @@ public class ScreenStatusReceiver extends BroadcastReceiver {
      * @param intent  The Intent being received.
      */
     @Override
-    public void onReceive(Context context, Intent intent) {
-        String action = intent.getAction();
-        if (action == null) {
+    public void onReceive(@Nullable Context context, @Nullable Intent intent) {
+
+        if (context == null) {
             return;
         }
-        if (context == null) {
+        if (intent == null) {
+            return;
+        }
+        String action = intent.getAction();
+        if (action == null) {
             return;
         }
         switch (action) {

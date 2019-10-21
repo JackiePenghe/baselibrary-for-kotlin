@@ -2,6 +2,9 @@ package com.sscl.baselibrary.adapter;
 
 import android.content.Context;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +28,13 @@ public abstract class BasePurposeAdapter<T> extends BaseAdapter {
     /**
      * 上下文弱引用
      */
+    @SuppressWarnings("WeakerAccess")
     protected Context mContext;
 
     /**
      * 适配器数据源
      */
+    @SuppressWarnings("WeakerAccess")
     protected ArrayList<T> mData;
 
     /**
@@ -51,7 +56,7 @@ public abstract class BasePurposeAdapter<T> extends BaseAdapter {
      * @param dataList     适配器数据源
      * @param itemLayoutId 适配器item的布局id
      */
-    public BasePurposeAdapter(ArrayList<T> dataList, @LayoutRes int itemLayoutId) {
+    public BasePurposeAdapter(@NonNull ArrayList<T> dataList, @LayoutRes int itemLayoutId) {
         mData = dataList;
         mItemLayoutId = itemLayoutId;
     }
@@ -79,6 +84,7 @@ public abstract class BasePurposeAdapter<T> extends BaseAdapter {
      *                 data set.
      * @return The data at the specified position.
      */
+    @NonNull
     @Override
     public T getItem(int position) {
         if (mCountSum == -1) {
@@ -117,8 +123,9 @@ public abstract class BasePurposeAdapter<T> extends BaseAdapter {
      * @param parent      The parent that this view will eventually be attached to
      * @return a View corresponding to the data at the specified position.
      */
+    @Nullable
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position,@Nullable View convertView,@NonNull ViewGroup parent) {
         if (mContext == null) {
             mContext = parent.getContext();
         }
@@ -138,6 +145,7 @@ public abstract class BasePurposeAdapter<T> extends BaseAdapter {
      *
      * @param dataList 新的数据源
      */
+    @SuppressWarnings("unused")
     public void refresh(ArrayList<T> dataList) {
         mData = dataList;
         notifyDataSetChanged();
@@ -148,6 +156,7 @@ public abstract class BasePurposeAdapter<T> extends BaseAdapter {
      *
      * @param position 指定删除位置
      */
+    @SuppressWarnings("unused")
     public void deleteListByPosition(int position) {
         if (position >= mData.size()) {
             return;
@@ -163,6 +172,7 @@ public abstract class BasePurposeAdapter<T> extends BaseAdapter {
      * @param countSum 自定义数据总量
      * @return AllPurposeAdapter本类对象
      */
+    @SuppressWarnings("unused")
     public BasePurposeAdapter<T> setCount(int countSum) {
         mCountSum = countSum;
         return this;
@@ -178,7 +188,8 @@ public abstract class BasePurposeAdapter<T> extends BaseAdapter {
      * @param parent      父布局
      * @return ViewHolder
      */
-    private ViewHolder getViewHolder(int position, View convertView, ViewGroup parent) {
+    @Nullable
+    private ViewHolder getViewHolder(int position,@Nullable View convertView,@NonNull ViewGroup parent) {
         Context context;
         if (convertView != null) {
             context = convertView.getContext();
@@ -202,5 +213,5 @@ public abstract class BasePurposeAdapter<T> extends BaseAdapter {
      * @param position   position
      * @param item       item
      */
-    protected abstract void convert(ViewHolder viewHolder, int position, T item);
+    protected abstract void convert(@Nullable ViewHolder viewHolder, int position, T item);
 }

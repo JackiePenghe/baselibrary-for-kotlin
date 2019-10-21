@@ -2,6 +2,8 @@ package com.sscl.baselibrary.image;
 
 import android.graphics.Bitmap;
 
+import androidx.annotation.NonNull;
+
 import java.lang.ref.WeakReference;
 
 /**
@@ -35,7 +37,7 @@ public class BitmapDisplayer implements Runnable {
      * @param bitmapHolder 位图图像Holder
      * @param imageLoader  ImageLoader
      */
-    public BitmapDisplayer(Bitmap bitmap, BitmapHolder bitmapHolder, ImageLoader imageLoader) {
+    BitmapDisplayer(@NonNull Bitmap bitmap,@NonNull BitmapHolder bitmapHolder,@NonNull ImageLoader imageLoader) {
         imageLoaderWeakReference = new WeakReference<>(imageLoader);
         this.mBitmap = bitmap;
         mBitmapHolder = bitmapHolder;

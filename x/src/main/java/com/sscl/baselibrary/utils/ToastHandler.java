@@ -7,6 +7,8 @@ import android.os.Looper;
 import android.os.Message;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 /**
  * 自定义Toast专用的Handler
  */
@@ -59,7 +61,7 @@ class ToastHandler extends Handler {
      * If this thread does not have a looper, this handler won't be able to receive messages
      * so an exception is thrown.
      */
-    ToastHandler(Context context) {
+    ToastHandler(@NonNull Context context) {
         this.context = context;
     }
 
@@ -71,7 +73,7 @@ class ToastHandler extends Handler {
      * @param msg 信息
      */
     @Override
-    public void handleMessage(Message msg) {
+    public void handleMessage(@NonNull Message msg) {
         super.handleMessage(msg);
         int what = msg.what;
         switch (what) {
@@ -95,7 +97,7 @@ class ToastHandler extends Handler {
      * 设置是否重用未消失的Toast
      * @param msg Message消息
      */
-    private void setReuse(Message msg) {
+    private void setReuse(@NonNull Message msg) {
         Object obj = msg.obj;
         if (obj == null) {
             return;

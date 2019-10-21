@@ -110,31 +110,6 @@ public abstract class BaseFragment extends Fragment {
         doAfterAll();
     }
 
-    /**
-     * Set a hint to the system about whether this fragment's UI is currently visible
-     * to the user. This hint defaults to true and is persistent across fragment instance
-     * state save and restore.
-     * <p>
-     * <p>An app may set this to false to indicate that the fragment's UI is
-     * scrolled out of visibility or is otherwise not directly visible to the user.
-     * This may be used by the system to prioritize operations such as fragment lifecycle updates
-     * or loader ordering behavior.</p>
-     * <p>
-     * <p><strong>Note:</strong> This method may be called outside of the fragment lifecycle.
-     * and thus has no ordering guarantees with regard to fragment lifecycle method calls.</p>
-     *
-     * @param isVisibleToUser true if this fragment's UI is currently visible to the user (default),
-     *                        false if it is not.
-     */
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (getUserVisibleHint()) {
-            onVisibleHint();
-        } else {
-            onUnVisibleHint();
-        }
-    }
 
     /*---------------抽象方法---------------*/
 
@@ -174,16 +149,6 @@ public abstract class BaseFragment extends Fragment {
      * 在最后执行的操作
      */
     protected abstract void doAfterAll();
-
-    /**
-     * 当fragment可见时调用此方法
-     */
-    protected abstract void onVisibleHint();
-
-    /**
-     * 当fragment不可见时调用此方法
-     */
-    protected abstract void onUnVisibleHint();
 
     /*---------------自定义子类可用函数---------------*/
 
@@ -478,14 +443,5 @@ public abstract class BaseFragment extends Fragment {
      */
     protected void showFragmentStatusView() {
         statusView.setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * 判断当前的Fragment是否对用户可见
-     *
-     * @return true表示可见
-     */
-    public boolean isVisibilityForUser() {
-        return getUserVisibleHint();
     }
 }

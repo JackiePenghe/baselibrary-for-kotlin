@@ -3,6 +3,8 @@ package com.sscl.basesample.activities.sample;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.receiver.HomeWatcherReceiver;
 import com.sscl.baselibrary.utils.HomeWatcher;
@@ -19,12 +21,12 @@ public class HomeWatcherActivity extends BaseAppCompatActivity {
     private  HomeWatcherReceiver.OnHomePressedListener onHomePressedListener = new HomeWatcherReceiver.OnHomePressedListener() {
         @Override
         public void onHomePressed() {
-            ToastUtil.toastL(HomeWatcherActivity.this, "home button pressed");
+            ToastUtil.toastLong(HomeWatcherActivity.this, "home button pressed");
         }
 
         @Override
         public void onHomeLongPressed() {
-            ToastUtil.toastL(HomeWatcherActivity.this, "home button long pressed");
+            ToastUtil.toastLong(HomeWatcherActivity.this, "home button long pressed");
         }
     };
 
@@ -109,7 +111,7 @@ public class HomeWatcherActivity extends BaseAppCompatActivity {
      * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
      */
     @Override
-    protected boolean createOptionsMenu(Menu menu) {
+    protected boolean createOptionsMenu(@NonNull Menu menu) {
         return false;
     }
 
@@ -120,7 +122,7 @@ public class HomeWatcherActivity extends BaseAppCompatActivity {
      * @return true表示处理了监听事件
      */
     @Override
-    protected boolean optionsItemSelected(MenuItem item) {
+    protected boolean optionsItemSelected(@NonNull MenuItem item) {
         return false;
     }
 

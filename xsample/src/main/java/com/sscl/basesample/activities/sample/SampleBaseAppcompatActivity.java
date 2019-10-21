@@ -1,10 +1,10 @@
 package com.sscl.basesample.activities.sample;
 
-import android.graphics.Color;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
@@ -38,7 +38,7 @@ public class SampleBaseAppcompatActivity extends BaseAppCompatActivity {
     @Override
     protected void doBeforeSetLayout() {
         //在Activity中，有时候会设置一些属性，这些属性在setContentView()之前，可在这里实现
-        if (OSHelper.isEMUI()) {
+        if (OSHelper.isEmui()) {
             OSHelper.miuiSetStatusBarLightMode(getWindow(), true);
             StatusBarUtil.setColor(this, ContextCompat.getColor(SampleBaseAppcompatActivity.this,R.color.colorPrimaryDark),0);
         } else if (OSHelper.isFlyme()) {
@@ -115,7 +115,7 @@ public class SampleBaseAppcompatActivity extends BaseAppCompatActivity {
      * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
      */
     @Override
-    protected boolean createOptionsMenu(Menu menu) {
+    protected boolean createOptionsMenu(@NonNull Menu menu) {
         return false;
     }
 
@@ -126,7 +126,7 @@ public class SampleBaseAppcompatActivity extends BaseAppCompatActivity {
      * @return true表示处理了监听事件
      */
     @Override
-    protected boolean optionsItemSelected(MenuItem item) {
+    protected boolean optionsItemSelected(@NonNull MenuItem item) {
         return false;
     }
 
