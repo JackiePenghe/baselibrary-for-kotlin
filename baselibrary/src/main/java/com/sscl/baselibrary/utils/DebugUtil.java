@@ -55,6 +55,7 @@ public class DebugUtil {
      * @param tag     tag
      * @param message 日志信息
      */
+    @SuppressWarnings("WeakerAccess")
     public static void infoOut(String tag, String message) {
         if (!mDebug) {
             return;
@@ -77,6 +78,7 @@ public class DebugUtil {
      * @param tag     tag
      * @param message 日志信息
      */
+    @SuppressWarnings("WeakerAccess")
     public static void errorOut(String tag, String message) {
         if (!mDebug) {
             return;
@@ -99,6 +101,7 @@ public class DebugUtil {
      * @param tag     tag
      * @param message 日志信息
      */
+    @SuppressWarnings("WeakerAccess")
     public static void debugOut(String tag, String message) {
         if (!mDebug) {
             return;
@@ -144,6 +147,7 @@ public class DebugUtil {
      * @param tag     tag
      * @param message 日志信息
      */
+    @SuppressWarnings("WeakerAccess")
     public static void verOut(String tag, String message) {
         if (!mDebug) {
             return;

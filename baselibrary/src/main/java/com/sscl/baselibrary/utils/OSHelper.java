@@ -80,10 +80,7 @@ public class OSHelper {
      * @return true表示存在
      */
     private static boolean isPropertiesExist(@Nullable String... keys) {
-        if (keys == null || keys.length == 0) {
-            return false;
-        }
-        return true;
+        return keys != null && keys.length != 0;
     }
 
     /*--------------------------------公开静态方法--------------------------------*/
@@ -159,7 +156,6 @@ public class OSHelper {
     /**
      * 获取系统属性的类
      */
-    @SuppressWarnings("WeakerAccess")
     private static class BuildProperties {
 
         /*--------------------------------成员变量--------------------------------*/
