@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 29
-        versionCode 15
-        versionName "0.0.15"
+        versionCode 16
+        versionName "0.0.16"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -32,12 +32,12 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha03'
 }
 
-version = "0.0.15"
+version = "0.0.16"
 
 def siteUrl = 'https://github.com/JackiePenghe/BaseSample'
 def gitUrl = 'https://github.com/JackiePenghe/BaseSample.git'
 
-group = "com.sscl.baselibrary"
+group = "com.sscl"
 
 install {
     repositories.mavenInstaller {
@@ -110,7 +110,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "baselibrary-x"
+        name = "baselibrary"
         userOrg = 'sscl'
         websiteUrl = siteUrl
         vcsUrl = gitUrl

@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
-
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -49,45 +47,9 @@ public class FileUtil {
      * @param context 上下文
      */
     public static void init(@NonNull Context context) {
-        init(context, true);
-    }
-
-    /**
-     * 初始化
-     *
-     * @param context            上下文
-     * @param withOutPackageName 是否需要包名
-     */
-    @SuppressWarnings("WeakerAccess")
-    public static void init(@NonNull Context context, boolean withOutPackageName) {
         File filesDir = context.getFilesDir();
-        String absolutePath = filesDir.getAbsolutePath();
-        String[] split = absolutePath.split("/");
-        String appName = split[split.length - 2];
-        if (withOutPackageName) {
-            String[] split1 = appName.split("\\.");
-            appName = split1[split1.length - 1];
-        }
-        FileUtil.APP_NAME = appName;
+        FileUtil.APP_NAME = filesDir.getAbsolutePath();
         init = true;
-    }
-
-    /**
-     * 获取SD卡文件目录
-     *
-     * @return 获取SD卡路径
-     */
-    @SuppressWarnings("WeakerAccess")
-    @NonNull
-    public static File getSdCardDir() {
-        //获取挂载状态
-        String state = Environment.getExternalStorageState();
-
-        //如果是已挂载,说明了有内存卡
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return Environment.getExternalStorageDirectory();
-        }
-        throw new NullPointerException("No SD card was found!");
     }
 
     /**
@@ -104,7 +66,8 @@ public class FileUtil {
         if (null == APP_NAME || "".equals(APP_NAME)) {
             throw new ExceptionInInitializerError("File name invalid");
         }
-        File file = new File(getSdCardDir(), APP_NAME);
+
+        File file = new File(APP_NAME);
         boolean mkdirs;
         if (!file.exists()) {
             mkdirs = file.mkdirs();
@@ -207,7 +170,7 @@ public class FileUtil {
      * @param apkFile 文件
      */
     @SuppressWarnings("unused")
-    public static void installApk(@NonNull Context context,@NonNull File apkFile) {
+    public static void installApk(@NonNull Context context, @NonNull File apkFile) {
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);
@@ -262,7 +225,7 @@ public class FileUtil {
      * @param picName 文件名
      */
     @SuppressWarnings("unused")
-    public static void saveBitmap(@NonNull Bitmap bm,@NonNull String picName) {
+    public static void saveBitmap(@NonNull Bitmap bm, @NonNull String picName) {
         Log.e("", "保存图片");
         try {
 
