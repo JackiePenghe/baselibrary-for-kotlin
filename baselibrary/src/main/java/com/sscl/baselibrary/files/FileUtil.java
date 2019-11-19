@@ -47,7 +47,30 @@ public class FileUtil {
      * @param context 上下文
      */
     public static void init(@NonNull Context context) {
-        File filesDir = context.getFilesDir();
+        init(context,false);
+    }
+
+    /**
+     * 初始化
+     *
+     * @param context 上下文
+     * @param useSdCard 是否使用SD卡
+     */
+    public static void init(@NonNull Context context, boolean useSdCard) {
+        File filesDir;
+        if (useSdCard) {
+            filesDir = context.getExternalFilesDir("");
+            if (filesDir == null){
+                return;
+            }
+            String parent = filesDir.getParent();
+            if (parent == null){
+                return;
+            }
+            filesDir = new File(parent);
+        } else {
+            filesDir = context.getFilesDir();
+        }
         FileUtil.APP_NAME = filesDir.getAbsolutePath();
         init = true;
     }
