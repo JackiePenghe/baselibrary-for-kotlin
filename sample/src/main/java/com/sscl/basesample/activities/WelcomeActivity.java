@@ -87,7 +87,7 @@ public class WelcomeActivity extends BaseWelcomeActivity {
     }
 
     private void toNext() {
-        CrashHandler.getInstance().init(WelcomeActivity.this.getApplicationContext());
+        CrashHandler.getInstance().init(WelcomeActivity.this.getApplicationContext(),true);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

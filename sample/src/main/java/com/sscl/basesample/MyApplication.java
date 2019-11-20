@@ -26,7 +26,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         DebugUtil.setDebugFlag(true);
-        FileUtil.init(this,true);
+        FileUtil.init(this);
     }
 
 }

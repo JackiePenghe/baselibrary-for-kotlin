@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Looper;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -71,7 +72,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     /**
      * 存储异常日志的文件目录
      */
-    private String crashFileDirPath = Environment.getExternalStorageDirectory().getPath();
+    private String crashFileDirPath;
 
     /*--------------------------------构造函数--------------------------------*/
 
@@ -131,8 +132,26 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      *
      * @param context 上下文
      */
+    public void init(@NonNull Context context, boolean useSdCardDir) {
+        File crashDir;
+        if (useSdCardDir) {
+            crashDir = FileUtil.getSdCardCrashDir();
+        } else {
+            crashDir = FileUtil.getCrashDir();
+        }
+        if (crashDir == null) {
+            throw new NullPointerException("crashDir == null");
+        }
+        init(context, crashDir.getAbsolutePath());
+    }
+
+    /**
+     * 初始化
+     *
+     * @param context 上下文
+     */
     @SuppressWarnings("WeakerAccess")
-    public void init(@NonNull Context context,@NonNull String crashFileDirPath) {
+    public void init(@NonNull Context context, @NonNull String crashFileDirPath) {
         mContext = context;
         //获取系统默认的UncaughtException处理器
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
@@ -147,11 +166,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      * @param context 上下文
      */
     public void init(@NonNull Context context) {
-        File crashDir = FileUtil.getCrashDir();
-        if (crashDir == null) {
-            throw new NullPointerException("crashDir == null");
-        }
-        init(context, crashDir.getAbsolutePath());
+        init(context, false);
     }
 
     /*--------------------------------私有函数--------------------------------*/
@@ -232,8 +247,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             try {
                 field.setAccessible(true);
                 Object o = field.get(null);
-                if (o == null){
-                    stringStringHashMap.put(field.getName(),"");
+                if (o == null) {
+                    stringStringHashMap.put(field.getName(), "");
                     Log.d(TAG, field.getName() + " : " + o);
                     return;
                 }
