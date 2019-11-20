@@ -37,41 +37,29 @@ public class FileUtil {
     /**
      * 应用程序名(在文件管理器中的程序文件夹名)
      */
-    private static String APP_NAME = UNNAMED_APP_DIR;
+    private static String INTERNAL_APP_NAME = UNNAMED_APP_DIR;
+
+    private static String SD_APP_NAME = UNNAMED_APP_DIR;
 
     /*--------------------------------公开静态方法--------------------------------*/
 
     /**
      * 初始化
      *
-     * @param context 上下文
+     * @param context   上下文
      */
     public static void init(@NonNull Context context) {
-        init(context,false);
-    }
-
-    /**
-     * 初始化
-     *
-     * @param context 上下文
-     * @param useSdCard 是否使用SD卡
-     */
-    public static void init(@NonNull Context context, boolean useSdCard) {
-        File filesDir;
-        if (useSdCard) {
-            filesDir = context.getExternalFilesDir("");
-            if (filesDir == null){
-                return;
-            }
-            String parent = filesDir.getParent();
-            if (parent == null){
-                return;
-            }
-            filesDir = new File(parent);
-        } else {
-            filesDir = context.getFilesDir();
+        File filesDir = context.getExternalFilesDir("");
+        if (filesDir == null) {
+            return;
         }
-        FileUtil.APP_NAME = filesDir.getAbsolutePath();
+        String parent = filesDir.getParent();
+        if (parent == null) {
+            return;
+        }
+        FileUtil.SD_APP_NAME = parent;
+        filesDir = context.getFilesDir();
+        FileUtil.INTERNAL_APP_NAME = filesDir.getAbsolutePath();
         init = true;
     }
 
@@ -86,11 +74,40 @@ public class FileUtil {
         if (!init) {
             throw new NullPointerException("FileUtil not init");
         }
-        if (null == APP_NAME || "".equals(APP_NAME)) {
+        if (null == INTERNAL_APP_NAME || "".equals(INTERNAL_APP_NAME)) {
             throw new ExceptionInInitializerError("File name invalid");
         }
 
-        File file = new File(APP_NAME);
+        File file = new File(INTERNAL_APP_NAME);
+        boolean mkdirs;
+        if (!file.exists()) {
+            mkdirs = file.mkdirs();
+            if (mkdirs) {
+                return file;
+            } else {
+                return null;
+            }
+        }
+        return file;
+    }
+
+    /**
+     * 获取本项目在SD卡上的文件目录
+     *
+     * @return 本项目在SD卡上的文件目录
+     */
+    @SuppressWarnings("WeakerAccess")
+    @Nullable
+    public static File getSdCardAppDir() {
+
+        if (!init) {
+            throw new NullPointerException("FileUtil not init");
+        }
+        if (null == SD_APP_NAME || "".equals(SD_APP_NAME)) {
+            throw new ExceptionInInitializerError("File name invalid");
+        }
+
+        File file = new File(SD_APP_NAME);
         boolean mkdirs;
         if (!file.exists()) {
             mkdirs = file.mkdirs();
@@ -125,6 +142,26 @@ public class FileUtil {
     }
 
     /**
+     * 获取项目在SD卡上的缓存文件目录
+     *
+     * @return 项目在SD卡上的缓存文件目录
+     */
+    @Nullable
+    public static File getSdCardCacheDir() {
+        File file = new File(getSdCardAppDir(), "cache");
+        boolean mkdirs;
+        if (!file.exists()) {
+            mkdirs = file.mkdirs();
+            if (mkdirs) {
+                return file;
+            } else {
+                return null;
+            }
+        }
+        return file;
+    }
+
+    /**
      * 获取项目的异常日志目录
      *
      * @return 项目的异常日志目录
@@ -132,6 +169,26 @@ public class FileUtil {
     @Nullable
     public static File getCrashDir() {
         File file = new File(getAppDir(), "crash");
+        boolean mkdirs;
+        if (!file.exists()) {
+            mkdirs = file.mkdirs();
+            if (mkdirs) {
+                return file;
+            } else {
+                return null;
+            }
+        }
+        return file;
+    }
+
+    /**
+     * 获取项目在SD卡上的异常日志目录
+     *
+     * @return 项目在SD卡上的异常日志目录
+     */
+    @Nullable
+    public static File getSdCardCrashDir() {
+        File file = new File(getSdCardAppDir(), "crash");
         boolean mkdirs;
         if (!file.exists()) {
             mkdirs = file.mkdirs();
@@ -166,6 +223,27 @@ public class FileUtil {
     }
 
     /**
+     * 获取在SD卡上的apk存储目录
+     *
+     * @return 在SD卡上的apk存储目录
+     */
+    @SuppressWarnings("unused")
+    @Nullable
+    public static File getSdCardApkDir() {
+        File file = new File(getSdCardAppDir(), "apk");
+        boolean mkdirs;
+        if (!file.exists()) {
+            mkdirs = file.mkdirs();
+            if (mkdirs) {
+                return file;
+            } else {
+                return null;
+            }
+        }
+        return file;
+    }
+
+    /**
      * 获取图片目录
      *
      * @return 图片目录
@@ -174,6 +252,27 @@ public class FileUtil {
     @Nullable
     public static File getImageDir() {
         File file = new File(getAppDir(), "images");
+        boolean mkdirs;
+        if (!file.exists()) {
+            mkdirs = file.mkdirs();
+            if (mkdirs) {
+                return file;
+            } else {
+                return null;
+            }
+        }
+        return file;
+    }
+
+    /**
+     * 获取在SD卡上的图片目录
+     *
+     * @return 在SD卡上的图片目录
+     */
+    @SuppressWarnings("unused")
+    @Nullable
+    public static File getSdCardImageDir() {
+        File file = new File(getSdCardAppDir(), "images");
         boolean mkdirs;
         if (!file.exists()) {
             mkdirs = file.mkdirs();
@@ -211,6 +310,27 @@ public class FileUtil {
     @Nullable
     public static File getDataDir() {
         File file = new File(getAppDir(), "data");
+        boolean mkdirs;
+        if (!file.exists()) {
+            mkdirs = file.mkdirs();
+            if (mkdirs) {
+                return file;
+            } else {
+                return null;
+            }
+        }
+        return file;
+    }
+
+    /**
+     * 获取项目在SD卡上的数据目录
+     *
+     * @return 项目在SD卡上的数据目录
+     */
+    @SuppressWarnings("unused")
+    @Nullable
+    public static File getSdCardDataDir() {
+        File file = new File(getSdCardAppDir(), "data");
         boolean mkdirs;
         if (!file.exists()) {
             mkdirs = file.mkdirs();
