@@ -19,4 +19,5 @@
     <string name="no_permission">No Permission</string>
     <string name="settings">Settings</string>
     <string name="cancel">Cancel</string>
+    <string name="view_pager_2" translatable="false">ViewPager2</string>
 </resources>

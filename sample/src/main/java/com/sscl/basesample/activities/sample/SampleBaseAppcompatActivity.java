@@ -1,5 +1,6 @@
 package com.sscl.basesample.activities.sample;
 
+import android.graphics.Color;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,6 +66,7 @@ public class SampleBaseAppcompatActivity extends BaseAppCompatActivity {
      */
     @Override
     protected void doBeforeInitOthers() {
+        setTitleTextColor(Color.BLACK);
     }
 
     /**

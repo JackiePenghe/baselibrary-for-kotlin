@@ -18,6 +18,7 @@ import com.sscl.basesample.activities.sample.SampleBaseAppcompatActivity;
 import com.sscl.basesample.activities.sample.SampleBaseDrawerActivity;
 import com.sscl.basesample.activities.sample.SampleBaseFragmentActivity;
 import com.sscl.basesample.activities.sample.SampleBasePopupWindowActivity;
+import com.sscl.basesample.activities.sample.SampleFragmentPager2AdapterActivity;
 import com.sscl.basesample.activities.sample.ToastTestActivity;
 
 
@@ -35,6 +36,7 @@ public class MainActivity extends BaseAppCompatActivity {
     private Button allPurposeAdapterBtn;
     private Button homeWatcherBtn;
     private Button toastTestBtn;
+    private Button viewPager2Btn;
 
     private View.OnClickListener onClickListener = view -> {
         Intent intent = null;
@@ -65,6 +67,9 @@ public class MainActivity extends BaseAppCompatActivity {
                 break;
             case R.id.title_right_text:
                 DebugUtil.warnOut(TAG, "文字右被点击");
+                break;
+            case R.id.view_pager_2:
+                intent = new Intent(MainActivity.this, SampleFragmentPager2AdapterActivity.class);
                 break;
             default:
                 break;
@@ -134,6 +139,7 @@ public class MainActivity extends BaseAppCompatActivity {
         allPurposeAdapterBtn = findViewById(R.id.all_purpose_adapter);
         homeWatcherBtn = findViewById(R.id.home_watcher);
         toastTestBtn = findViewById(R.id.toast_test);
+        viewPager2Btn = findViewById(R.id.view_pager_2);
     }
 
     /**
@@ -165,6 +171,7 @@ public class MainActivity extends BaseAppCompatActivity {
         allPurposeAdapterBtn.setOnClickListener(onClickListener);
         homeWatcherBtn.setOnClickListener(onClickListener);
         toastTestBtn.setOnClickListener(onClickListener);
+        viewPager2Btn.setOnClickListener(onClickListener);
 //        setOnTitleLeftTextClickListener(onClickListener);
 //        setOnTitleRightTextClickListener(onClickListener);
     }

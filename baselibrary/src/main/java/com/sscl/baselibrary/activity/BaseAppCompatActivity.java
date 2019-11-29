@@ -376,10 +376,10 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      * @param color 文本颜色
      */
     protected void setTitleTextColor(@ColorInt int color) {
-        if (toolbar == null) {
-            throw new RuntimeException("toolbar is null!Please invoke this method after method \"setLayout()\"");
+        if (titleView == null) {
+            throw new RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"");
         }
-        toolbar.setTitleTextColor(color);
+        titleView.setTextColor(color);
     }
 
     /**
@@ -389,10 +389,10 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      */
     @SuppressWarnings("unused")
     protected void setTitleBackgroundColor(@ColorInt int color) {
-        if (toolbar == null) {
-            throw new RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"");
+        if (titleView == null) {
+            throw new RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"");
         }
-        toolbar.setBackgroundColor(color);
+        titleView.setBackgroundColor(color);
     }
 
     /**
