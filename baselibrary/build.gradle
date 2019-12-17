@@ -36,8 +36,6 @@ repositories {
 }
 
 dependencies {
-    //BRVAH库
-    compileOnly(name: 'brvahlibrary-2.9.47', ext: 'aar')
     implementation 'androidx.appcompat:appcompat:1.1.0'
     //design库
     implementation 'com.google.android.material:material:1.2.0-alpha02'

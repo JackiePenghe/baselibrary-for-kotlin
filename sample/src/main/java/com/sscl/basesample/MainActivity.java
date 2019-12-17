@@ -12,6 +12,7 @@ import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.receiver.ScreenStatusReceiver;
 import com.sscl.baselibrary.utils.DebugUtil;
 import com.sscl.baselibrary.utils.Tool;
+import com.sscl.basesample.activities.WidgetActivity;
 import com.sscl.basesample.activities.sample.AllPurposeAdapterActivity;
 import com.sscl.basesample.activities.sample.HomeWatcherActivity;
 import com.sscl.basesample.activities.sample.SampleBaseAppcompatActivity;
@@ -35,6 +36,7 @@ public class MainActivity extends BaseAppCompatActivity {
     private Button allPurposeAdapterBtn;
     private Button homeWatcherBtn;
     private Button toastTestBtn;
+    private Button widgetBtn;
 
     private View.OnClickListener onClickListener = view -> {
         Intent intent = null;
@@ -65,6 +67,9 @@ public class MainActivity extends BaseAppCompatActivity {
                 break;
             case R.id.title_right_text:
                 DebugUtil.warnOut(TAG, "文字右被点击");
+                break;
+            case R.id.widget:
+                intent = new Intent(MainActivity.this, WidgetActivity.class);
                 break;
             default:
                 break;
@@ -134,6 +139,7 @@ public class MainActivity extends BaseAppCompatActivity {
         allPurposeAdapterBtn = findViewById(R.id.all_purpose_adapter);
         homeWatcherBtn = findViewById(R.id.home_watcher);
         toastTestBtn = findViewById(R.id.toast_test);
+        widgetBtn = findViewById(R.id.widget);
     }
 
     /**
@@ -149,8 +155,6 @@ public class MainActivity extends BaseAppCompatActivity {
      */
     @Override
     protected void initOtherData() {
-//        Uri uriForFile = FileProviderUtil.getUriFromFile(this, FileUtil.getAppDir());
-//        Tool.warnOut(TAG,"uriForFile = " + uriForFile);
     }
 
     /**
@@ -165,6 +169,7 @@ public class MainActivity extends BaseAppCompatActivity {
         allPurposeAdapterBtn.setOnClickListener(onClickListener);
         homeWatcherBtn.setOnClickListener(onClickListener);
         toastTestBtn.setOnClickListener(onClickListener);
+        widgetBtn.setOnClickListener(onClickListener);
     }
 
     /**

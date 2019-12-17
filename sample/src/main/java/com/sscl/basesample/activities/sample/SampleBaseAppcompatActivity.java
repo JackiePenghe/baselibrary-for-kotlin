@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat;
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.utils.OSHelper;
 import com.sscl.baselibrary.utils.StatusBarUtil;
-import com.sscl.baselibrary.view.GifView;
+import com.sscl.baselibrary.widget.GifView;
 import com.sscl.basesample.R;
 
 /**

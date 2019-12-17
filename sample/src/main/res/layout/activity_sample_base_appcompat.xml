@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         tools:ignore="HardcodedText" />
 
-    <com.sscl.baselibrary.view.GifView
+    <com.sscl.baselibrary.widget.GifView
         android:id="@+id/gif_view"
         app:gif="@drawable/loading"
         android:layout_width="match_parent"

@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">BaseSample</string>
+    <string name="app_name" translatable="false">BaseSample</string>
     <string name="press_home_btn_test">Press home button test</string>
     <string name="all_purpose_adapter">AllPurposeAdapter</string>
-    <string name="base_appcompat_activity">BaseAppcompatActivity</string>
-    <string name="base_drawer_activity">BaseDrawerActivity</string>
-    <string name="base_fragment">BaseFragment</string>
-    <string name="base_popup_window">BasePopupWindow</string>
+    <string name="base_appcompat_activity" translatable="false">BaseAppcompatActivity</string>
+    <string name="base_drawer_activity" translatable="false">BaseDrawerActivity</string>
+    <string name="base_fragment" translatable="false">BaseFragment</string>
+    <string name="base_popup_window" translatable="false">BasePopupWindow</string>
     <string name="home_watcher">Home Button Watcher</string>
     <string name="toast_test">Toast test</string>
     <string name="show_popup_window">Show Popup Window</string>
@@ -19,5 +19,7 @@
     <string name="no_permission">No Permission</string>
     <string name="settings">Settings</string>
     <string name="cancel">Cancel</string>
-    <string name="view_pager_2" translatable="false">ViewPager2</string>
+    <string name="arc_progress_bar">Arc targetProgress bar</string>
+    <string name="widget">Widget</string>
+    <string name="circle_progress_bar">Circle targetProgress bar</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.sscl.baselibrary.view;
+package com.sscl.baselibrary.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -16,7 +16,7 @@ import androidx.annotation.NonNull;
  * 自定义圆形控件
  * @author pengh
  */
-public class CircleView extends View {
+public class CirclePointView extends View {
 
     /*--------------------------------成员变量--------------------------------*/
 
@@ -40,7 +40,7 @@ public class CircleView extends View {
      *
      * @param context 上下文
      */
-    public CircleView(Context context) {
+    public CirclePointView(Context context) {
         super(context);
     }
 
@@ -50,7 +50,7 @@ public class CircleView extends View {
      * @param context 上下文
      * @param attrs   参数
      */
-    public CircleView(Context context, AttributeSet attrs) {
+    public CirclePointView(Context context, AttributeSet attrs) {
         super(context, attrs);
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         if (windowManager == null) {
@@ -71,7 +71,7 @@ public class CircleView extends View {
      * @param attrs        参数
      * @param defStyleAttr 风格
      */
-    public CircleView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CirclePointView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

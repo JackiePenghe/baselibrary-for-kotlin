@@ -1,11 +1,6 @@
 <resources>
-    <string name="app_name">BaseSample</string>
     <string name="press_home_btn_test">请按下Home键进行测试</string>
     <string name="all_purpose_adapter">万能适配器</string>
-    <string name="base_appcompat_activity">BaseAppcompatActivity</string>
-    <string name="base_drawer_activity">BaseDrawerActivity</string>
-    <string name="base_fragment">BaseFragment</string>
-    <string name="base_popup_window">BasePopupWindow</string>
     <string name="home_watcher">Home按键监听</string>
     <string name="toast_test">吐丝测试</string>
     <string name="show_popup_window">显示PopupWindow</string>
@@ -19,4 +14,7 @@
     <string name="no_permission">没有权限</string>
     <string name="settings">设置</string>
     <string name="cancel">取消</string>
+    <string name="arc_progress_bar">弧型进度条</string>
+    <string name="widget">自定义View</string>
+    <string name="circle_progress_bar">圆形进度条</string>
 </resources>
