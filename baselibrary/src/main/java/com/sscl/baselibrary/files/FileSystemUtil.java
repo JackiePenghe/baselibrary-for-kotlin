@@ -40,11 +40,217 @@ public class FileSystemUtil {
     private static final String CONTENT = "content";
     private static final String FILE = "file";
 
+    public enum FileType {
+        /**
+         * .3gp格式的文件
+         */
+        VIDEO_3GPP("video/3gpp"),
 
-    /*--------------------------------公开静态常量--------------------------------*/
+        /**
+         * .apk格式的文件
+         */
+        APK_FILE("application/vnd.android.package-archive"),
 
-    @SuppressWarnings("WeakerAccess")
-    public static final String FILE_TYPE_ALL = "*/*";
+        /**
+         * .asf格式的文件
+         */
+        ASF_FILE("video/x-ms-asf"),
+
+        /**
+         * .avi格式的文件
+         */
+        AVI_FILE("video/x-msvideo"),
+
+        /**
+         * .bin .class .exe .gif gtar 格式的文件
+         */
+        OCTET_STREAM_FILE("application/octet-stream"),
+
+        /**
+         * .bmp 格式的文件
+         */
+        BMP_FILE("image/bmp"),
+
+        /**
+         * .txt .c .conf .cpp .h .log .prop .rc .sh .xml 格式的文件
+         */
+        TEXT_FILE("text/plain"),
+
+        /**
+         * .doc格式的文件
+         */
+        DOC_FILE("application/msword"),
+
+        /**
+         * .docx格式的文件
+         */
+        DOCX_FILE("application/vnd.openxmlformats-officedocument.wordprocessingml.document"),
+
+        /**
+         * .xls格式的文件
+         */
+        XLS_FILE("application/vnd.ms-excel"),
+
+        /**
+         * .xlsx格式的文件
+         */
+        XLSX_FILE("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
+
+        /**
+         * .gz格式的文件
+         */
+        GZ_FILE("application/x-gzip"),
+
+        /**
+         * .htm .html 格式的文件
+         */
+        HTM_FILE("text/html"),
+
+        /**
+         * .jar .java 格式的文件
+         */
+        JAVA_FILE("application/java-archive"),
+
+        /**
+         * .jpeg .jpg 格式的文件
+         */
+        JPEG_FILE("image/jpeg"),
+
+        /**
+         * .js格式的文件
+         */
+        JS_FILE("application/x-javascript"),
+
+        /**
+         * m3u格式的文件
+         */
+        M3U_FILE("audio/x-mpegurl"),
+
+        /**
+         * .m4a .m4b .m4p 格式的文件
+         */
+        M4A_FILE("audio/mp4a-latm"),
+
+        /**
+         * ,m4u格式的文件
+         */
+        M4U_FILE("video/vnd.mpegurl"),
+
+        /**
+         * .m4v格式的文件
+         */
+        M4V_FILE("video/x-m4v"),
+
+        /**
+         * .mov格式的文件
+         */
+        MOV_FILE("video/quicktime"),
+
+        /**
+         * .mp2 .mp3格式的文件
+         */
+        MP3_FILE("audio/x-mpeg"),
+
+        /**
+         * .mp4 .mpg4 格式的文件
+         */
+        MP4_FILE("video/mp4"),
+
+        /**
+         * .mpc格式的文件
+         */
+        MPC_FILE("application/vnd.mpohun.certificate"),
+
+        /**
+         * .mpe .mpeg .mpg格式的文件
+         */
+        MPG_FILE("video/mpeg"),
+
+        /**
+         * .mpga格式的文件
+         */
+        MPGA_FILE("audio/mpeg"),
+
+        /**
+         * .msg格式的文件
+         */
+        MSG_FILE("application/vnd.ms-outlook"),
+        /**
+         * .ogg格式的文件
+         */
+        OGG_FILE("audio/ogg"),
+        /**
+         * .pdf格式的文件
+         */
+        PDF_FILE("application/pdf"),
+        /**
+         * .png格式的文件
+         */
+        PNG_FILE("image/png"),
+        /**
+         * .ppt .pps格式的文件
+         */
+        PPT_FILE("application/vnd.ms-powerpoint"),
+        /**
+         * .pptx格式的文件
+         */
+        PPTX_FILE("application/vnd.openxmlformats-officedocument.presentationml.presentation"),
+        /**
+         * .rmvb格式的文件
+         */
+        RMVB_FILE("audio/x-pn-realaudio"),
+        /**
+         * .rtf格式的文件
+         */
+        RTF_FILE("audio/x-pn-realaudio"),
+        /**
+         * .tar格式的文件
+         */
+        TAR_FILE("application/x-tar"),
+        /**
+         * .tgz格式的文件
+         */
+        TGZ_FILE("application/x-compressed"),
+        /**
+         * .wav格式的文件
+         */
+        WAV_FILE("audio/x-wav"),
+        /**
+         * .wma格式的文件
+         */
+        WMA_FILE("audio/x-ms-wma"),
+        /**
+         * wmv格式的文件
+         */
+        WMV_FILE("audio/x-ms-wmv"),
+        /**
+         * .wps格式的文件
+         */
+        WPS_FILE("application/vnd.ms-works"),
+        /**
+         * .z格式的文件
+         */
+        Z_FILE("application/x-compress"),
+        /**
+         * .zip格式的文件
+         */
+        ZIP_FILE("application/x-zip-compressed"),
+        /**
+         * 所有文件
+         */
+        FILE_TYPE_ALL("*/*");
+
+
+        String value;
+
+        FileType(String value) {
+            this.value = value;
+        }
+
+        private String getValue() {
+            return value;
+        }
+    }
 
     /*--------------------------------公开静态方法--------------------------------*/
 
@@ -127,7 +333,7 @@ public class FileSystemUtil {
      */
     @SuppressWarnings("unused")
     public static boolean openSystemFile(@NonNull Activity activity, int requestCode) {
-        return openSystemFile(activity, requestCode, FILE_TYPE_ALL);
+        return openSystemFile(activity, requestCode, FileType.FILE_TYPE_ALL);
     }
 
     /**
@@ -142,9 +348,9 @@ public class FileSystemUtil {
      * @return true表示打开成功
      */
     @SuppressWarnings({"unused", "WeakerAccess"})
-    public static boolean openSystemFile(@NonNull Activity activity, int requestCode, String fileType) {
+    public static boolean openSystemFile(@NonNull Activity activity, int requestCode, FileType fileType) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType(fileType);
+        intent.setType(fileType.getValue());
         intent.addCategory(Intent.CATEGORY_OPENABLE);
 
         try {
@@ -164,12 +370,12 @@ public class FileSystemUtil {
      * @param fileType 文件类型
      */
     @SuppressWarnings("WeakerAccess")
-    public static void openFile(@NonNull Context context, @NonNull File file, @NonNull String fileType) {
+    public static void openFile(@NonNull Context context, @NonNull File file, @NonNull FileType fileType) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         Uri uriFromFile = FileProviderUtil.getUriFromFile(context, file.getAbsoluteFile());
         intent.addCategory(Intent.CATEGORY_DEFAULT);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setDataAndType(uriFromFile, fileType);
+        intent.setDataAndType(uriFromFile, fileType.getValue());
         context.startActivity(intent);
     }
 
@@ -181,7 +387,7 @@ public class FileSystemUtil {
      */
     @SuppressWarnings("unused")
     public static void openFile(@NonNull Context context, @NonNull File file) {
-        openFile(context, file, FILE_TYPE_ALL);
+        openFile(context, file, FileType.FILE_TYPE_ALL);
     }
 
     /**

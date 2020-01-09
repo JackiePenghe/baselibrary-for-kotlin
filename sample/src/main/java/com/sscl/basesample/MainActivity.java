@@ -9,6 +9,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
+import com.sscl.baselibrary.files.FileSystemUtil;
 import com.sscl.baselibrary.receiver.ScreenStatusReceiver;
 import com.sscl.baselibrary.utils.DebugUtil;
 import com.sscl.baselibrary.utils.Tool;
@@ -122,8 +123,6 @@ public class MainActivity extends BaseAppCompatActivity {
      */
     @Override
     protected void doBeforeInitOthers() {
-//        setTitleLeftText("文字左");
-//        setTitleRightText("文字右");
         hideTitleBackButton();
     }
 
