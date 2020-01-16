@@ -136,6 +136,9 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         File crashDir;
         if (useSdCardDir) {
             crashDir = FileUtil.getSdCardCrashDir();
+            if (crashDir == null){
+                crashDir = FileUtil.getCrashDir();
+            }
         } else {
             crashDir = FileUtil.getCrashDir();
         }

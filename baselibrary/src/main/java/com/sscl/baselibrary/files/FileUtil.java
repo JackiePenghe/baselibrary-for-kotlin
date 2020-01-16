@@ -46,18 +46,17 @@ public class FileUtil {
     /**
      * 初始化
      *
-     * @param context   上下文
+     * @param context 上下文
      */
     public static void init(@NonNull Context context) {
         File filesDir = context.getExternalFilesDir("");
-        if (filesDir == null) {
-            return;
+        String parent;
+        if (filesDir != null) {
+            parent = filesDir.getParent();
+            if (parent != null) {
+                FileUtil.SD_APP_NAME = parent;
+            }
         }
-        String parent = filesDir.getParent();
-        if (parent == null) {
-            return;
-        }
-        FileUtil.SD_APP_NAME = parent;
         filesDir = context.getFilesDir();
         FileUtil.INTERNAL_APP_NAME = filesDir.getAbsolutePath();
         init = true;
