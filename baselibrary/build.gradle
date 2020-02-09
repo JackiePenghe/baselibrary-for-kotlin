@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 24
-        versionName "0.0.24"
+        versionCode 25
+        versionName "0.0.25"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -38,13 +38,13 @@ repositories {
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     //design库
-    implementation 'com.google.android.material:material:1.2.0-alpha03'
+    implementation 'com.google.android.material:material:1.2.0-alpha04'
     //SwipeRefreshLayout库
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha03'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }
 
-version = "0.0.24"
+version = "0.0.25"
 
 def siteUrl = 'https://github.com/JackiePenghe/BaseSample'
 def gitUrl = 'https://github.com/JackiePenghe/BaseSample.git'
