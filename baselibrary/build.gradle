@@ -38,9 +38,9 @@ repositories {
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     //design库
-    implementation 'com.google.android.material:material:1.2.0-alpha04'
+    implementation 'com.google.android.material:material:1.1.0'
     //SwipeRefreshLayout库
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha03'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }
 
@@ -87,6 +87,7 @@ install {
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
+    //noinspection GrDeprecatedAPIUsage
     classifier = 'sources'
 }
 
@@ -105,6 +106,7 @@ task javadoc(type: Javadoc) {
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
+    //noinspection GrDeprecatedAPIUsage
     classifier = 'javadoc'
     from javadoc.destinationDir
 }

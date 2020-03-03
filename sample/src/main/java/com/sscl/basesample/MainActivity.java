@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.files.FileSystemUtil;
 import com.sscl.baselibrary.receiver.ScreenStatusReceiver;
+import com.sscl.baselibrary.utils.ConversionUtil;
 import com.sscl.baselibrary.utils.DebugUtil;
 import com.sscl.baselibrary.utils.Tool;
 import com.sscl.basesample.activities.WidgetActivity;
@@ -178,6 +179,12 @@ public class MainActivity extends BaseAppCompatActivity {
     protected void doAfterAll() {
         Tool.startScreenStatusListener(this);
         Tool.setOnScreenStatusChangedListener(onScreenStatusChangedListener);
+        DebugUtil.warnOut(TAG, ConversionUtil.byteArrayToHexStr(ConversionUtil.longToByteArray(0x112233445566L, 1)));
+        DebugUtil.warnOut(TAG, ConversionUtil.byteArrayToHexStr(ConversionUtil.longToByteArray(0x112233445566L, 2)));
+        DebugUtil.warnOut(TAG, ConversionUtil.byteArrayToHexStr(ConversionUtil.longToByteArray(0x112233445566L, 3)));
+        DebugUtil.warnOut(TAG, ConversionUtil.byteArrayToHexStr(ConversionUtil.longToByteArray(0x112233445566L, 4)));
+        DebugUtil.warnOut(TAG, ConversionUtil.byteArrayToHexStr(ConversionUtil.longToByteArray(0x112233445566L, 5)));
+        DebugUtil.warnOut(TAG, ConversionUtil.byteArrayToHexStr(ConversionUtil.longToByteArray(0x112233445566L, 6)));
 
     }
 

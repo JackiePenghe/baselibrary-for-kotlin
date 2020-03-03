@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Size;
@@ -226,6 +227,32 @@ public class ConversionUtil {
     }
 
     /**
+     * 将 long 类型数转为指定长度的 byte 数组
+     *
+     * @param value           long 类型的数据
+     * @param byteArrayLength 指定的数组长度
+     * @return byte 数组
+     */
+    public static byte[] longToByteArray(long value, @IntRange(from = 1, to = 8) int byteArrayLength) {
+        byte[] bytes = longToByteArray(value);
+        int length = bytes.length;
+        if (length < byteArrayLength) {
+            int index = byteArrayLength - length;
+            byte[] cache = new byte[byteArrayLength];
+            System.arraycopy(bytes, 0, cache, index, length);
+            bytes = new byte[byteArrayLength];
+            System.arraycopy(cache, 0, bytes, 0, byteArrayLength);
+        } else if (length > byteArrayLength) {
+            int index = length - byteArrayLength;
+            byte[] cache = new byte[byteArrayLength];
+            System.arraycopy(bytes, index, cache, 0, byteArrayLength);
+            bytes = new byte[byteArrayLength];
+            System.arraycopy(cache, 0, bytes, 0, cache.length);
+        }
+        return bytes;
+    }
+
+    /**
      * byteArray字符串转换为Byte值
      *
      * @param src Byte字符串，每个Byte之间没有分隔符
@@ -286,7 +313,7 @@ public class ConversionUtil {
         String strHex;
         for (int i = 0; i < strText.length(); i++) {
             c = strText.charAt(i);
-            intAsc = (int) c;
+            intAsc = c;
             strHex = Integer.toHexString(intAsc);
             if (intAsc > 128) {
                 str.append("\\u").append(strHex);
