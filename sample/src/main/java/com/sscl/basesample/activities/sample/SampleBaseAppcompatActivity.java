@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
-import com.sscl.baselibrary.utils.OSHelper;
+import com.sscl.baselibrary.utils.SystemUtil;
 import com.sscl.baselibrary.utils.StatusBarUtil;
 import com.sscl.baselibrary.widget.GifView;
 import com.sscl.basesample.R;
@@ -39,11 +39,11 @@ public class SampleBaseAppcompatActivity extends BaseAppCompatActivity {
     @Override
     protected void doBeforeSetLayout() {
         //在Activity中，有时候会设置一些属性，这些属性在setContentView()之前，可在这里实现
-        if (OSHelper.isEmui()) {
-            OSHelper.miuiSetStatusBarLightMode(getWindow(), true);
+        if (SystemUtil.isEmui()) {
+            SystemUtil.miuiSetStatusBarLightMode(getWindow(), true);
             StatusBarUtil.setColor(this, ContextCompat.getColor(SampleBaseAppcompatActivity.this,R.color.colorPrimaryDark),0);
-        } else if (OSHelper.isFlyme()) {
-            OSHelper.flymeSetStatusBarLightMode(getWindow(), true);
+        } else if (SystemUtil.isFlyme()) {
+            SystemUtil.flymeSetStatusBarLightMode(getWindow(), true);
             StatusBarUtil.setColor(this,  ContextCompat.getColor(SampleBaseAppcompatActivity.this,R.color.colorPrimaryDark),0);
         } else {
             Log.w(TAG, "不是miui或者flyme,不设置状态栏字体深色");
