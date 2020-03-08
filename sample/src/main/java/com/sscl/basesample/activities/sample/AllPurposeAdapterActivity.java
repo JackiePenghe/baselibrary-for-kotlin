@@ -3,13 +3,12 @@ package com.sscl.basesample.activities.sample;
 import android.os.Build;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
-import com.sscl.baselibrary.utils.SystemUtil;
+import com.sscl.baselibrary.utils.Tool;
 import com.sscl.basesample.R;
 import com.sscl.basesample.adapter.SampleAdapter;
 
@@ -39,7 +38,9 @@ public class AllPurposeAdapterActivity extends BaseAppCompatActivity {
         for (int i = 0; i < 4; i++) {
             dataList.add("test" + i);
         }
-        SystemUtil.setNavigationBar(this, View.GONE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Tool.hideNavigationBar(this);
+        }
     }
 
     /**
