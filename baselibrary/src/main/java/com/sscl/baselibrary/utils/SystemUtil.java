@@ -23,6 +23,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import static android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+
 /**
  * 系统类型检测工具类（可识别MIUI，EMUI，Flyme系统）
  *
@@ -124,20 +126,18 @@ public class SystemUtil {
     }
 
     /**
-     * 隐藏状态栏与导航栏
+     * 隐藏导航栏
      *
-     * @param activity Activity
+     * @param activity activity
+     * @param visible  导航栏可见状态
      */
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static void hideStatusBarAndNavigationBar(@NonNull Activity activity) {
+    public static void setNavigationBar(Activity activity, int visible) {
         View decorView = activity.getWindow().getDecorView();
-        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-
+        int systemUiVisibility = decorView.getSystemUiVisibility();
+        //显示NavigationBar
+        if (View.GONE == visible) {
+            decorView.setSystemUiVisibility(systemUiVisibility | SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        }
     }
 
     /**
