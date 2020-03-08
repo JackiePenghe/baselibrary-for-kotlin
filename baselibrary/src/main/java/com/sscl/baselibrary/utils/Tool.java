@@ -17,6 +17,8 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.sscl.baselibrary.bean.PhoneInfo;
 import com.sscl.baselibrary.receiver.ScreenStatusReceiver;
@@ -34,6 +36,8 @@ import java.util.regex.Pattern;
 
 public class Tool {
 
+    /*--------------------------------静态常量--------------------------------*/
+
     /**
      * 屏幕状态的监听广播接收者
      */
@@ -41,6 +45,8 @@ public class Tool {
 
     private static final String IP_V4_REGEX = "^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$";
 
+
+    /*--------------------------------公开方法--------------------------------*/
 
     /**
      * 开始监听屏幕状态
@@ -239,6 +245,90 @@ public class Tool {
         return matcher.matches();
     }
 
+    /**
+     * 获取RecyclerView第一个可见的选项位置
+     *
+     * @param recyclerView RecyclerView
+     * @return RecyclerView第一个可见的选项位置
+     */
+    @SuppressWarnings("unused")
+    public static int getFirstVisibleItemPosition(@NonNull RecyclerView recyclerView) {
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if (layoutManager == null) {
+            throw new IllegalStateException("RecyclerView has no layoutManager set!");
+        }
+        if (!(layoutManager instanceof LinearLayoutManager)) {
+            throw new IllegalStateException("getFirstVisibleItemPosition only support when layoutManager is LinearLayoutManager");
+        }
+        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+        return linearLayoutManager.findFirstVisibleItemPosition();
+    }
+
+    /**
+     * 获取RecyclerView第一个可见的选项位置
+     *
+     * @param recyclerView RecyclerView
+     * @return RecyclerView第一个可见的选项位置
+     */
+    @SuppressWarnings("unused")
+    public static int getFirstCompletelyVisibleItemPosition(@NonNull RecyclerView recyclerView) {
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if (layoutManager == null) {
+            throw new IllegalStateException("RecyclerView has no layoutManager set!");
+        }
+        if (!(layoutManager instanceof LinearLayoutManager)) {
+            throw new IllegalStateException("getFirstVisibleItemPosition only support when layoutManager is LinearLayoutManager");
+        }
+        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+        return linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+    }
+
+    /**
+     * 获取RecyclerView最后一个可见的选项位置
+     *
+     * @param recyclerView RecyclerView
+     * @return RecyclerView第一个可见的选项位置
+     */
+    @SuppressWarnings("unused")
+    public static int getLastVisibleItemPosition(@NonNull RecyclerView recyclerView) {
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if (layoutManager == null) {
+            throw new IllegalStateException("RecyclerView has no layoutManager set!");
+        }
+        if (!(layoutManager instanceof LinearLayoutManager)) {
+            throw new IllegalStateException("getFirstVisibleItemPosition only support when layoutManager is LinearLayoutManager");
+        }
+        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+        return linearLayoutManager.findLastVisibleItemPosition();
+    }
+
+    /**
+     * 获取RecyclerView最后一个可见的选项位置
+     *
+     * @param recyclerView RecyclerView
+     * @return RecyclerView第一个可见的选项位置
+     */
+    @SuppressWarnings("unused")
+    public static int getLastCompletelyVisibleItemPosition(@NonNull RecyclerView recyclerView) {
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if (layoutManager == null) {
+            throw new IllegalStateException("RecyclerView has no layoutManager set!");
+        }
+        if (!(layoutManager instanceof LinearLayoutManager)) {
+            throw new IllegalStateException("getFirstVisibleItemPosition only support when layoutManager is LinearLayoutManager");
+        }
+        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+        return linearLayoutManager.findLastCompletelyVisibleItemPosition();
+    }
+
+
+    /*--------------------------------私有方法--------------------------------*/
+
+    /**
+     * 获取监听屏幕状态的广播接收者
+     *
+     * @return 监听屏幕状态的广播接收者
+     */
     private static IntentFilter getScreenStatusReceiverIntentFilter() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.setPriority(Integer.MAX_VALUE);
