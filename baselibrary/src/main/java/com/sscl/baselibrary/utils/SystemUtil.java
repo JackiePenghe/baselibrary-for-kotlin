@@ -1,16 +1,13 @@
 package com.sscl.baselibrary.utils;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.os.Build;
 import android.os.Environment;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,8 +19,6 @@ import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-
-import static android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
 
 /**
  * 系统类型检测工具类（可识别MIUI，EMUI，Flyme系统）
@@ -123,21 +118,6 @@ public class SystemUtil {
             e.printStackTrace();
         }
         return result;
-    }
-
-    /**
-     * 隐藏导航栏
-     *
-     * @param activity activity
-     * @param visible  导航栏可见状态
-     */
-    public static void setNavigationBar(Activity activity, int visible) {
-        View decorView = activity.getWindow().getDecorView();
-        int systemUiVisibility = decorView.getSystemUiVisibility();
-        //显示NavigationBar
-        if (View.GONE == visible) {
-            decorView.setSystemUiVisibility(systemUiVisibility | SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        }
     }
 
     /**

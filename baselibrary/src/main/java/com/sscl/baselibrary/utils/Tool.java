@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -262,6 +263,19 @@ public class Tool {
         }
         LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
         return linearLayoutManager.findFirstVisibleItemPosition();
+    }
+
+    /**
+     * 隐藏导航栏
+     *
+     * @param activity activity
+     */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static void hideNavigationBar(@NonNull Activity activity) {
+        View decorView = activity.getWindow().getDecorView();
+        int systemUiVisibility = decorView.getSystemUiVisibility();
+        //显示NavigationBar
+        decorView.setSystemUiVisibility(systemUiVisibility | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE);
     }
 
     /**
