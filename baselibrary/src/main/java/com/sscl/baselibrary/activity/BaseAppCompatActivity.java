@@ -303,6 +303,15 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     }
 
     /**
+     * 获取此界面的根布局
+     *
+     * @return 此界面的根布局
+     */
+    protected LinearLayout getRootView() {
+        return rootView;
+    }
+
+    /**
      * 设置根布局（整个Activity）的背景色
      *
      * @param drawableRes 背景色

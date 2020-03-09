@@ -1,6 +1,13 @@
 package com.sscl.baselibrary.fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
@@ -8,14 +15,8 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.fragment.app.Fragment;
 import androidx.appcompat.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
+import androidx.fragment.app.Fragment;
 
 import com.sscl.baselibrary.R;
 
@@ -218,6 +219,15 @@ public abstract class BaseFragment extends Fragment {
         }
         toolBar.setVisibility(View.VISIBLE);
         titleView.setText(titleRes);
+    }
+
+    /**
+     * 获取此界面的根布局
+     *
+     * @return 此界面的根布局
+     */
+    protected View getRootView() {
+        return root;
     }
 
     /**
