@@ -7,31 +7,24 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import android.widget.ImageView;
-
 import com.sscl.baselibrary.R;
 import com.sscl.baselibrary.files.FileCache;
 import com.sscl.baselibrary.utils.BaseManager;
-import com.sscl.baselibrary.utils.DebugUtil;
+import com.sscl.baselibrary.utils.ImageNetworkAsyncTask;
 import com.sscl.baselibrary.utils.MemoryCache;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -42,10 +35,6 @@ import java.util.concurrent.TimeUnit;
  * @author pengh
  */
 public class ImageLoader {
-
-    /*--------------------------------静态变量--------------------------------*/
-
-    private static final String TAG = ImageLoader.class.getSimpleName();
 
     /*--------------------------------成员变量--------------------------------*/
 
@@ -156,7 +145,6 @@ public class ImageLoader {
      * @return 位图图片
      */
     @Nullable
-    @SuppressWarnings("WeakerAccess")
     public Bitmap getBitmap(@NonNull String url) {
         File f = fileCache.getFile(url);
 
@@ -169,19 +157,13 @@ public class ImageLoader {
         // 最后从指定的url中下载图片
         try {
             Bitmap bitmap;
-            URL imageUrl = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection) imageUrl
-                    .openConnection();
-            conn.setConnectTimeout(5000);
-            conn.setReadTimeout(5000);
-            conn.setInstanceFollowRedirects(true);
-            InputStream is = conn.getInputStream();
-            OutputStream os = new FileOutputStream(f);
-            copyStream(is, os);
-            os.close();
-            bitmap = decodeFile(f);
+            ImageNetworkAsyncTask imageNetworkAsyncTask = new ImageNetworkAsyncTask(f);
+            imageNetworkAsyncTask.execute(url);
+            File file = imageNetworkAsyncTask.get();
+            bitmap = decodeFile(file);
             return bitmap;
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -237,30 +219,6 @@ public class ImageLoader {
         String tag = imageViews.get(holder.imageView);
 
         return tag == null || !tag.equals(holder.url);
-    }
-
-    /*--------------------------------私有函数--------------------------------*/
-
-    /**
-     * 下载图片操作
-     *
-     * @param is InputStream
-     * @param os OutputStream
-     */
-    private void copyStream(@NonNull InputStream is, @NonNull OutputStream os) {
-        final int bufferSize = 1024;
-        try {
-            byte[] bytes = new byte[bufferSize];
-            while (true) {
-                int count = is.read(bytes, 0, bufferSize);
-                if (count == -1) {
-                    break;
-                }
-                os.write(bytes, 0, count);
-            }
-        } catch (Exception e) {
-            DebugUtil.warnOut(TAG, "copyStream with exception! " + e.getMessage());
-        }
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.sscl.basesample;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,7 +10,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
-import com.sscl.baselibrary.files.FileSystemUtil;
+import com.sscl.baselibrary.image.ImageLoader;
 import com.sscl.baselibrary.receiver.ScreenStatusReceiver;
 import com.sscl.baselibrary.utils.ConversionUtil;
 import com.sscl.baselibrary.utils.DebugUtil;
@@ -185,7 +186,8 @@ public class MainActivity extends BaseAppCompatActivity {
         DebugUtil.warnOut(TAG, ConversionUtil.byteArrayToHexStr(ConversionUtil.longToByteArray(0x112233445566L, 4)));
         DebugUtil.warnOut(TAG, ConversionUtil.byteArrayToHexStr(ConversionUtil.longToByteArray(0x112233445566L, 5)));
         DebugUtil.warnOut(TAG, ConversionUtil.byteArrayToHexStr(ConversionUtil.longToByteArray(0x112233445566L, 6)));
-
+        Bitmap bitmap = ImageLoader.getInstance(this).getBitmap("http://image.sportfox.cn/54769202003041510504298.jpg");
+        DebugUtil.warnOut(TAG, "bitmap = " + bitmap);
     }
 
     /**

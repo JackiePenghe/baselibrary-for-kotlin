@@ -63,9 +63,33 @@ public class FileCache {
      */
     @NonNull
     public File getFile(@NonNull String url) {
-        // 将url的hashCode作为缓存的文件名
-        String filename = String.valueOf(url.hashCode());
-        return new File(cacheDir, filename);
+        String[] split = url.split("\\.");
+        String fileName;
+        int length = split.length;
+        if (length == 2) {
+            fileName = split[0];
+        } else {
+            if (length > 2) {
+                length = length - 1;
+                StringBuilder cache = new StringBuilder();
+                for (int i = 0; i < length; i++) {
+                    cache.append(split[i]);
+                }
+                fileName = cache.toString();
+            } else {
+                fileName = url;
+            }
+        }
+        split = fileName.split("/");
+        length = split.length;
+        if (split.length != 1) {
+            fileName = split[length - 1];
+        }
+        if (length > 16) {
+            fileName = fileName.substring(length - 16);
+        }
+
+        return new File(cacheDir, fileName);
 
     }
 
