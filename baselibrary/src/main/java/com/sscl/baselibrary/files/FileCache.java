@@ -85,9 +85,6 @@ public class FileCache {
         if (split.length != 1) {
             fileName = split[length - 1];
         }
-        if (length > 16) {
-            fileName = fileName.substring(length - 16);
-        }
 
         return new File(cacheDir, fileName);
 
