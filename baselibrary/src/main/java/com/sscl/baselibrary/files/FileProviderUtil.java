@@ -11,7 +11,6 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
-
 import java.io.File;
 import java.util.List;
 
@@ -21,11 +20,11 @@ import java.util.List;
  *
  * @author ALM
  */
-public class FileProviderUtil {
+public class FileProviderUtil extends FileProvider {
 
     /*--------------------------------静态常量--------------------------------*/
 
-    private static final String CONTENT = "content";
+    private static final String CONTENT_CONTENT = "content";
     private static final String ROOT_PATH = "/root";
 
     /*--------------------------------公开静态方法--------------------------------*/
@@ -38,7 +37,6 @@ public class FileProviderUtil {
      * @return 文件Uri
      */
     @NonNull
-    @SuppressWarnings("WeakerAccess")
     public static Uri getUriFromFile(@NonNull Context context, @NonNull File file) {
         Uri fileUri;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -126,8 +124,8 @@ public class FileProviderUtil {
     @NonNull
     public static String getPath(@NonNull Uri uri) {
         String scheme = uri.getScheme();
-        if (!CONTENT.equals(scheme)) {
-            throw new RuntimeException("Uri scheme error! Need " + CONTENT + ",find " + scheme + ".");
+        if (!CONTENT_CONTENT.equals(scheme)) {
+            throw new RuntimeException("Uri scheme error! Need " + CONTENT_CONTENT + ",find " + scheme + ".");
         }
         if (!uri.isAbsolute()) {
             throw new RuntimeException("Uri must be absolute");

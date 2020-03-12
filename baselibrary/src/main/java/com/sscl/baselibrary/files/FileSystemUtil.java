@@ -39,6 +39,7 @@ public class FileSystemUtil {
     private static final String AUDIO = "audio";
     private static final String CONTENT = "content";
     private static final String FILE = "file";
+    private static final String TAG = FileSystemUtil.class.getSimpleName();
 
     public enum FileType {
         /**
@@ -282,7 +283,7 @@ public class FileSystemUtil {
 
                 final String id = DocumentsContract.getDocumentId(uri);
                 final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+                        Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
 
                 return getDataColumn(context, contentUri, null, null);
             }
@@ -347,7 +348,7 @@ public class FileSystemUtil {
      * @param fileType    文件类型
      * @return true表示打开成功
      */
-    @SuppressWarnings({"unused", "WeakerAccess"})
+    @SuppressWarnings({"unused"})
     public static boolean openSystemFile(@NonNull Activity activity, int requestCode, FileType fileType) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType(fileType.getValue());
@@ -388,6 +389,39 @@ public class FileSystemUtil {
     @SuppressWarnings("unused")
     public static void openFile(@NonNull Context context, @NonNull File file) {
         openFile(context, file, FileType.FILE_TYPE_ALL);
+    }
+
+    /**
+     * 获取选择的文件所在的文件路径
+     *
+     * @param context 上下文
+     * @param intent  Intent
+     * @return 文件路径
+     */
+    @Nullable
+    public static String getSelectFilePath(Context context, @Nullable Intent intent) {
+        if (intent == null) {
+            return null;
+        }
+        Uri selectFileUri = getSelectFileUri(intent);
+        if (selectFileUri == null) {
+            return null;
+        }
+        return FileSystemUtil.getPath(context, selectFileUri);
+    }
+
+    /**
+     * 获取选择的文件的uri
+     *
+     * @param intent Intent
+     * @return Uri
+     */
+    @Nullable
+    public static Uri getSelectFileUri(@Nullable Intent intent) {
+        if (intent == null) {
+            return null;
+        }
+        return intent.getData();
     }
 
     /**
@@ -497,20 +531,25 @@ public class FileSystemUtil {
         if (uri == null) {
             return null;
         }
-        //noinspection TryFinallyCanBeTryWithResources
+
+        String result;
         try {
             cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
                     null);
             if (cursor != null && cursor.moveToFirst()) {
                 final int columnIndex = cursor.getColumnIndexOrThrow(column);
-                return cursor.getString(columnIndex);
+                result = cursor.getString(columnIndex);
+            } else {
+                result = FileProviderUtil.getPath(uri);
             }
+        } catch (Exception e) {
+            result = FileProviderUtil.getPath(uri);
         } finally {
             if (cursor != null) {
                 cursor.close();
             }
         }
-        return null;
+        return result;
     }
 
 

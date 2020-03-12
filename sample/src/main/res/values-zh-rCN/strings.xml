@@ -17,4 +17,9 @@
     <string name="arc_progress_bar">弧型进度条</string>
     <string name="widget">自定义View</string>
     <string name="circle_progress_bar">圆形进度条</string>
+    <string name="select_file">选择文件</string>
+    <string name="select_any_file">任意选择文件</string>
+    <string name="open_file_manager_failed">打开文件管理器失败</string>
+    <string name="confirm">确认</string>
+    <string name="select_text_file">选择文本文件</string>
 </resources>

@@ -22,4 +22,9 @@
     <string name="arc_progress_bar">Arc targetProgress bar</string>
     <string name="widget">Widget</string>
     <string name="circle_progress_bar">Circle targetProgress bar</string>
+    <string name="select_file">Select file</string>
+    <string name="select_any_file">Select any file</string>
+    <string name="open_file_manager_failed">File manager failed to open</string>
+    <string name="confirm">确认</string>
+    <string name="select_text_file">Select text file</string>
 </resources>

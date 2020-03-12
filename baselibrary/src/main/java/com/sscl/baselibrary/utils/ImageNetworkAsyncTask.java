@@ -55,6 +55,10 @@ public class ImageNetworkAsyncTask extends AsyncTask<String, Object, File> {
      */
     @Override
     protected File doInBackground(String... strings) {
+        int length = strings.length;
+        if (length <= 0) {
+            return null;
+        }
         URL imageUrl;
         try {
             imageUrl = new URL(strings[0]);
@@ -77,7 +81,6 @@ public class ImageNetworkAsyncTask extends AsyncTask<String, Object, File> {
         try {
             is = conn.getInputStream();
         } catch (IOException e) {
-            e.printStackTrace();
             return null;
         }
         OutputStream os;

@@ -22,6 +22,7 @@ import com.sscl.basesample.activities.sample.SampleBaseAppcompatActivity;
 import com.sscl.basesample.activities.sample.SampleBaseDrawerActivity;
 import com.sscl.basesample.activities.sample.SampleBaseFragmentActivity;
 import com.sscl.basesample.activities.sample.SampleBasePopupWindowActivity;
+import com.sscl.basesample.activities.sample.SelectFileActivity;
 import com.sscl.basesample.activities.sample.ToastTestActivity;
 
 
@@ -40,6 +41,7 @@ public class MainActivity extends BaseAppCompatActivity {
     private Button homeWatcherBtn;
     private Button toastTestBtn;
     private Button widgetBtn;
+    private Button selectFileBtn;
 
     private View.OnClickListener onClickListener = view -> {
         Intent intent = null;
@@ -73,6 +75,9 @@ public class MainActivity extends BaseAppCompatActivity {
                 break;
             case R.id.widget:
                 intent = new Intent(MainActivity.this, WidgetActivity.class);
+                break;
+            case R.id.select_file:
+                intent = new Intent(MainActivity.this, SelectFileActivity.class);
                 break;
             default:
                 break;
@@ -141,6 +146,7 @@ public class MainActivity extends BaseAppCompatActivity {
         homeWatcherBtn = findViewById(R.id.home_watcher);
         toastTestBtn = findViewById(R.id.toast_test);
         widgetBtn = findViewById(R.id.widget);
+        selectFileBtn = findViewById(R.id.select_file);
     }
 
     /**
@@ -171,6 +177,7 @@ public class MainActivity extends BaseAppCompatActivity {
         homeWatcherBtn.setOnClickListener(onClickListener);
         toastTestBtn.setOnClickListener(onClickListener);
         widgetBtn.setOnClickListener(onClickListener);
+        selectFileBtn.setOnClickListener(onClickListener);
     }
 
     /**
