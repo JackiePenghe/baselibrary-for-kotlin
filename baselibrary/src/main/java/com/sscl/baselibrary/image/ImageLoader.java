@@ -9,12 +9,14 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.widget.ImageView;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.sscl.baselibrary.R;
 import com.sscl.baselibrary.files.FileCache;
 import com.sscl.baselibrary.utils.BaseManager;
+import com.sscl.baselibrary.utils.DebugUtil;
 import com.sscl.baselibrary.utils.ImageNetworkAsyncTask;
 import com.sscl.baselibrary.utils.MemoryCache;
 
@@ -35,6 +37,8 @@ import java.util.concurrent.TimeUnit;
  * @author pengh
  */
 public class ImageLoader {
+
+    private static final String TAG = ImageLoader.class.getSimpleName();
 
     /*--------------------------------成员变量--------------------------------*/
 
@@ -62,7 +66,7 @@ public class ImageLoader {
     /**
      * 默认图片
      */
-    final int defaultDrawable = R.mipmap.ic_launcher;
+    private int defaultDrawable = R.mipmap.ic_launcher;
 
     /**
      * 图片边线宽度
@@ -138,6 +142,7 @@ public class ImageLoader {
         }
     }
 
+
     /**
      * 获取图片 先从缓存中去查找，如果没有再从网络下载
      *
@@ -175,6 +180,15 @@ public class ImageLoader {
     public void clearCache() {
         memoryCache.clear();
         fileCache.clear();
+    }
+
+    /**
+     * 设置默认的图片
+     *
+     * @param defaultDrawable 默认的图片
+     */
+    public void setDefaultDrawable(@DrawableRes int defaultDrawable) {
+        this.defaultDrawable = defaultDrawable;
     }
 
     /**
@@ -239,6 +253,8 @@ public class ImageLoader {
      * @return 位图图片
      */
     private Bitmap decodeFile(File f) {
+        String absolutePath = f.getAbsolutePath();
+        DebugUtil.warnOut(TAG, "file absolutePath = " + absolutePath);
         try {
             Bitmap bitmap;
             if (compress) {

@@ -1,71 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/all_purpose_adapter"
-        android:text="@string/all_purpose_adapter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:textAllCaps="false"
-        android:id="@+id/base_appcompat_activity"
-        android:text="@string/base_appcompat_activity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:textAllCaps="false"
-        android:id="@+id/base_drawer_activity"
-        android:text="@string/base_drawer_activity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:textAllCaps="false"
-        android:id="@+id/base_fragment"
-        android:text="@string/base_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:textAllCaps="false"
-        android:id="@+id/base_popup_window"
-        android:text="@string/base_popup_window"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:textAllCaps="false"
-        android:id="@+id/home_watcher"
-        android:text="@string/home_watcher"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:textAllCaps="false"
-        android:id="@+id/toast_test"
-        android:text="@string/toast_test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:textAllCaps="false"
-        android:text="@string/widget"
-        android:id="@+id/widget"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/select_file"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/select_file"
-        android:textAllCaps="false" />
+        android:orientation="vertical">
 
-</LinearLayout>
+        <Button
+            android:id="@+id/all_purpose_adapter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/all_purpose_adapter" />
+
+        <Button
+            android:id="@+id/base_appcompat_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/base_appcompat_activity"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/base_drawer_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/base_drawer_activity"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/base_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/base_fragment"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/base_popup_window"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/base_popup_window"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/home_watcher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/home_watcher"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/toast_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/toast_test"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/widget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/widget"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/select_file"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/select_file"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/image_loader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/image_loader"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+</ScrollView>
