@@ -66,7 +66,7 @@ public class ImageLoader {
     /**
      * 默认图片
      */
-    private int defaultDrawable = R.mipmap.ic_launcher;
+    int defaultDrawable = R.mipmap.ic_launcher;
 
     /**
      * 图片边线宽度
