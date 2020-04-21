@@ -9,6 +9,8 @@ import android.util.Log;
  */
 public class DebugUtil {
 
+    private static final int MAX_LENGTH = 4000;
+
     /*--------------------------------静态变量--------------------------------*/
 
     /**
@@ -60,7 +62,29 @@ public class DebugUtil {
         if (!mDebug) {
             return;
         }
-        Log.i(TAG + tag, message);
+        int length = message.length();
+        if (length <= MAX_LENGTH) {
+            Log.i(TAG, message);
+            return;
+        }
+        int count;
+        if (length % MAX_LENGTH != 0) {
+            count = length / MAX_LENGTH + 1;
+        } else {
+            count = length / MAX_LENGTH;
+        }
+        for (int i = 0; i < count; i++) {
+            if ((i + 1) * MAX_LENGTH > length) {
+                Log.i(TAG, "->" + message.substring(i * MAX_LENGTH, length));
+            } else {
+                String str = message.substring(i * MAX_LENGTH, (i + 1) * MAX_LENGTH);
+                if (i == 0) {
+                    Log.i(TAG, str + "->");
+                    continue;
+                }
+                Log.i(TAG, "->" + str + "->");
+            }
+        }
     }
 
     /**
@@ -83,7 +107,30 @@ public class DebugUtil {
         if (!mDebug) {
             return;
         }
-        Log.e(TAG + tag, message);
+
+        int length = message.length();
+        if (length <= MAX_LENGTH) {
+            Log.e(TAG, message);
+            return;
+        }
+        int count;
+        if (length % MAX_LENGTH != 0) {
+            count = length / MAX_LENGTH + 1;
+        } else {
+            count = length / MAX_LENGTH;
+        }
+        for (int i = 0; i < count; i++) {
+            if ((i + 1) * MAX_LENGTH > length) {
+                Log.e(TAG, "->" + message.substring(i * MAX_LENGTH, length));
+            } else {
+                String str = message.substring(i * MAX_LENGTH, (i + 1) * MAX_LENGTH);
+                if (i == 0) {
+                    Log.e(TAG, str + "->");
+                    continue;
+                }
+                Log.e(TAG, "->" + str + "->");
+            }
+        }
     }
 
     /**
@@ -106,7 +153,30 @@ public class DebugUtil {
         if (!mDebug) {
             return;
         }
-        Log.d(TAG + tag, message);
+
+        int length = message.length();
+        if (length <= MAX_LENGTH) {
+            Log.d(TAG, message);
+            return;
+        }
+        int count;
+        if (length % MAX_LENGTH != 0) {
+            count = length / MAX_LENGTH + 1;
+        } else {
+            count = length / MAX_LENGTH;
+        }
+        for (int i = 0; i < count; i++) {
+            if ((i + 1) * MAX_LENGTH > length) {
+                Log.d(TAG, "->" + message.substring(i * MAX_LENGTH, length));
+            } else {
+                String str = message.substring(i * MAX_LENGTH, (i + 1) * MAX_LENGTH);
+                if (i == 0) {
+                    Log.d(TAG, str + "->");
+                    continue;
+                }
+                Log.d(TAG, "->" + str + "->");
+            }
+        }
     }
 
     /**
@@ -128,7 +198,30 @@ public class DebugUtil {
         if (!mDebug) {
             return;
         }
-        Log.w(TAG + tag, message);
+
+        int length = message.length();
+        if (length <= MAX_LENGTH) {
+            Log.w(TAG, message);
+            return;
+        }
+        int count;
+        if (length % MAX_LENGTH != 0) {
+            count = length / MAX_LENGTH + 1;
+        } else {
+            count = length / MAX_LENGTH;
+        }
+        for (int i = 0; i < count; i++) {
+            if ((i + 1) * MAX_LENGTH > length) {
+                Log.w(TAG, "->" + message.substring(i * MAX_LENGTH, length));
+            } else {
+                String str = message.substring(i * MAX_LENGTH, (i + 1) * MAX_LENGTH);
+                if (i == 0) {
+                    Log.w(TAG, str + "->");
+                    continue;
+                }
+                Log.w(TAG, "->" + str + "->");
+            }
+        }
     }
 
     /**
@@ -152,7 +245,30 @@ public class DebugUtil {
         if (!mDebug) {
             return;
         }
-        Log.v(TAG + tag, message);
+
+        int length = message.length();
+        if (length <= MAX_LENGTH) {
+            Log.v(TAG, message);
+            return;
+        }
+        int count;
+        if (length % MAX_LENGTH != 0) {
+            count = length / MAX_LENGTH + 1;
+        } else {
+            count = length / MAX_LENGTH;
+        }
+        for (int i = 0; i < count; i++) {
+            if ((i + 1) * MAX_LENGTH > length) {
+                Log.v(TAG, "->" + message.substring(i * MAX_LENGTH, length));
+            } else {
+                String str = message.substring(i * MAX_LENGTH, (i + 1) * MAX_LENGTH);
+                if (i == 0) {
+                    Log.v(TAG, str + "->");
+                    continue;
+                }
+                Log.v(TAG, "->" + str + "->");
+            }
+        }
     }
 
     /**
