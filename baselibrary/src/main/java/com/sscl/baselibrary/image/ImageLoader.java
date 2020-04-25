@@ -153,7 +153,6 @@ public class ImageLoader {
     @Nullable
     public Bitmap getBitmap(@NonNull String url) {
         File f = fileCache.getFile(url);
-
         // 先从文件缓存中查找是否有
         Bitmap b = decodeFile(f);
         if (b != null) {
@@ -253,7 +252,10 @@ public class ImageLoader {
      * @param f 图片的本地路径
      * @return 位图图片
      */
-    private Bitmap decodeFile(File f) {
+    private Bitmap decodeFile(@Nullable File f) {
+        if (f == null) {
+            return null;
+        }
         String absolutePath = f.getAbsolutePath();
         DebugUtil.warnOut(TAG, "file absolutePath = " + absolutePath);
 
