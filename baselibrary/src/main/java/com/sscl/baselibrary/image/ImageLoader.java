@@ -23,6 +23,7 @@ import com.sscl.baselibrary.utils.MemoryCache;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -255,7 +256,11 @@ public class ImageLoader {
     private Bitmap decodeFile(File f) {
         String absolutePath = f.getAbsolutePath();
         DebugUtil.warnOut(TAG, "file absolutePath = " + absolutePath);
+
         try {
+            if (!f.exists()) {
+                f.createNewFile();
+            }
             Bitmap bitmap;
             if (compress) {
                 // 不加载图片的情况下获得图片的宽高
@@ -289,6 +294,8 @@ public class ImageLoader {
             }
             return isCircle ? createCircleBitmap(bitmap) : bitmap;
         } catch (FileNotFoundException e) {
+            return null;
+        } catch (IOException e) {
             return null;
         }
     }

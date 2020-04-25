@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 36
-        versionName "0.0.36"
+        versionCode 37
+        versionName "0.0.37"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -44,7 +44,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }
 
-version = "0.0.36"
+version = "0.0.37"
 
 def siteUrl = 'https://github.com/JackiePenghe/BaseSample'
 def gitUrl = 'https://github.com/JackiePenghe/BaseSample.git'
