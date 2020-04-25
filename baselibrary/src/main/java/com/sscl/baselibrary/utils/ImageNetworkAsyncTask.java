@@ -122,6 +122,9 @@ public class ImageNetworkAsyncTask extends AsyncTask<String, Object, File> {
      */
     @Override
     protected void onPostExecute(File file) {
+        if (file == null) {
+            return;
+        }
         DebugUtil.warnOut(TAG, "onPostExecute file = " + file.getAbsolutePath());
     }
 
