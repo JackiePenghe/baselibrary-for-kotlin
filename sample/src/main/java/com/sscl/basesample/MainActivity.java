@@ -1,7 +1,6 @@
 package com.sscl.basesample;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,15 +9,14 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
-import com.sscl.baselibrary.image.ImageLoader;
 import com.sscl.baselibrary.receiver.ScreenStatusReceiver;
-import com.sscl.baselibrary.utils.ConversionUtil;
 import com.sscl.baselibrary.utils.DebugUtil;
 import com.sscl.baselibrary.utils.Tool;
 import com.sscl.basesample.activities.WidgetActivity;
 import com.sscl.basesample.activities.sample.AllPurposeAdapterActivity;
 import com.sscl.basesample.activities.sample.HomeWatcherActivity;
 import com.sscl.basesample.activities.sample.ImageLoaderActivity;
+import com.sscl.basesample.activities.sample.SampleBannerActivity;
 import com.sscl.basesample.activities.sample.SampleBaseAppcompatActivity;
 import com.sscl.basesample.activities.sample.SampleBaseDrawerActivity;
 import com.sscl.basesample.activities.sample.SampleBaseFragmentActivity;
@@ -44,6 +42,7 @@ public class MainActivity extends BaseAppCompatActivity {
     private Button widgetBtn;
     private Button selectFileBtn;
     private Button imageLoaderBtn;
+    private Button bannerBtn;
 
     private View.OnClickListener onClickListener = view -> {
         Intent intent = null;
@@ -83,6 +82,9 @@ public class MainActivity extends BaseAppCompatActivity {
                 break;
             case R.id.image_loader:
                 intent = new Intent(MainActivity.this, ImageLoaderActivity.class);
+                break;
+            case R.id.banner:
+                intent = new Intent(MainActivity.this, SampleBannerActivity.class);
                 break;
             default:
                 break;
@@ -153,6 +155,7 @@ public class MainActivity extends BaseAppCompatActivity {
         widgetBtn = findViewById(R.id.widget);
         selectFileBtn = findViewById(R.id.select_file);
         imageLoaderBtn = findViewById(R.id.image_loader);
+        bannerBtn = findViewById(R.id.banner);
     }
 
     /**
@@ -185,6 +188,7 @@ public class MainActivity extends BaseAppCompatActivity {
         widgetBtn.setOnClickListener(onClickListener);
         selectFileBtn.setOnClickListener(onClickListener);
         imageLoaderBtn.setOnClickListener(onClickListener);
+        bannerBtn.setOnClickListener(onClickListener);
     }
 
     /**
@@ -194,14 +198,6 @@ public class MainActivity extends BaseAppCompatActivity {
     protected void doAfterAll() {
         Tool.startScreenStatusListener(this);
         Tool.setOnScreenStatusChangedListener(onScreenStatusChangedListener);
-        DebugUtil.warnOut(TAG, ConversionUtil.byteArrayToHexStr(ConversionUtil.longToByteArray(0x112233445566L, 1)));
-        DebugUtil.warnOut(TAG, ConversionUtil.byteArrayToHexStr(ConversionUtil.longToByteArray(0x112233445566L, 2)));
-        DebugUtil.warnOut(TAG, ConversionUtil.byteArrayToHexStr(ConversionUtil.longToByteArray(0x112233445566L, 3)));
-        DebugUtil.warnOut(TAG, ConversionUtil.byteArrayToHexStr(ConversionUtil.longToByteArray(0x112233445566L, 4)));
-        DebugUtil.warnOut(TAG, ConversionUtil.byteArrayToHexStr(ConversionUtil.longToByteArray(0x112233445566L, 5)));
-        DebugUtil.warnOut(TAG, ConversionUtil.byteArrayToHexStr(ConversionUtil.longToByteArray(0x112233445566L, 6)));
-        Bitmap bitmap = ImageLoader.getInstance(this).getBitmap("http://image.sportfox.cn/54769202003041510504298.jpg");
-        DebugUtil.warnOut(TAG, "bitmap = " + bitmap);
     }
 
     /**

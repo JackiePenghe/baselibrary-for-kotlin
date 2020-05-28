@@ -1,6 +1,7 @@
 package com.sscl.baselibrary.utils;
 
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -76,7 +77,7 @@ public class BaseManager {
 
     @SuppressWarnings("WeakerAccess")
     @NonNull
-    public static ScheduledExecutorService newScheduledExecutorService() {
+    public static ScheduledExecutorService newScheduledExecutorService(int corePoolSize) {
         return new ScheduledThreadPoolExecutor(1, newThreadFactory());
     }
 }

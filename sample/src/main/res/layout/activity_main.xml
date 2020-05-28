@@ -79,6 +79,13 @@
             android:text="@string/image_loader"
             android:textAllCaps="false" />
 
+        <Button
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/banner"
+            android:textAllCaps="false" />
+
     </LinearLayout>
 
 </ScrollView>

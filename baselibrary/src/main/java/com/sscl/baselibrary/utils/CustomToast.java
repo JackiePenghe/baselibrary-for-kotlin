@@ -105,17 +105,21 @@ class CustomToast {
             HIDE_TOAST_KEEP_SCHEDULED_EXECUTOR_SERVICE.shutdownNow();
             HIDE_TOAST_KEEP_SCHEDULED_EXECUTOR_SERVICE = null;
         }
-        SHOW_TOAST_KEEP_SCHEDULED_EXECUTOR_SERVICE = BaseManager.newScheduledExecutorService();
-        HIDE_TOAST_KEEP_SCHEDULED_EXECUTOR_SERVICE = BaseManager.newScheduledExecutorService();
+        SHOW_TOAST_KEEP_SCHEDULED_EXECUTOR_SERVICE = BaseManager.newScheduledExecutorService(2);
+        HIDE_TOAST_KEEP_SCHEDULED_EXECUTOR_SERVICE = BaseManager.newScheduledExecutorService(2);
         final boolean[] first = {true};
         SHOW_TOAST_KEEP_SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                if (first[0]) {
-                    handlerShowToast(messageText, ToastHandler.FIRST_SEND);
-                    first[0] = false;
-                } else {
-                    handlerShowToast(messageText, ToastHandler.KEEP_TOAST);
+                try {
+                    if (first[0]) {
+                        handlerShowToast(messageText, ToastHandler.FIRST_SEND);
+                        first[0] = false;
+                    } else {
+                        handlerShowToast(messageText, ToastHandler.KEEP_TOAST);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }, 0, 3000, TimeUnit.MILLISECONDS);
@@ -123,11 +127,15 @@ class CustomToast {
         HIDE_TOAST_KEEP_SCHEDULED_EXECUTOR_SERVICE.schedule(new Runnable() {
             @Override
             public void run() {
-                SHOW_TOAST_KEEP_SCHEDULED_EXECUTOR_SERVICE.shutdownNow();
-                SHOW_TOAST_KEEP_SCHEDULED_EXECUTOR_SERVICE = null;
-                handlerCancelToast();
-                HIDE_TOAST_KEEP_SCHEDULED_EXECUTOR_SERVICE.shutdownNow();
-                HIDE_TOAST_KEEP_SCHEDULED_EXECUTOR_SERVICE = null;
+                try {
+                    SHOW_TOAST_KEEP_SCHEDULED_EXECUTOR_SERVICE.shutdownNow();
+                    SHOW_TOAST_KEEP_SCHEDULED_EXECUTOR_SERVICE = null;
+                    handlerCancelToast();
+                    HIDE_TOAST_KEEP_SCHEDULED_EXECUTOR_SERVICE.shutdownNow();
+                    HIDE_TOAST_KEEP_SCHEDULED_EXECUTOR_SERVICE = null;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, duration, TimeUnit.MILLISECONDS);
     }
