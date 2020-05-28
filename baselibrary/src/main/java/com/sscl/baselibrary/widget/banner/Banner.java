@@ -2,13 +2,13 @@ package com.sscl.baselibrary.widget.banner;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
-import com.sscl.baselibrary.R;
 import com.sscl.baselibrary.utils.BaseManager;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -21,8 +21,6 @@ public class Banner extends FrameLayout {
     private ViewPager viewPager;
 
     private ScheduledExecutorService scheduledExecutorService;
-
-    private int viewPagerStates = ViewPager.SCROLL_STATE_IDLE;
     private BaseBannerAdapter adapter;
     private ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
         @Override
@@ -37,21 +35,30 @@ public class Banner extends FrameLayout {
             if (adapter.mData.size() == 0) {
                 return;
             }
-            if (viewPager.getCurrentItem() == 0) {
-                viewPager.setCurrentItem(adapter.mData.size(), false);//切换，不要动画效果
-            } else if (viewPager.getCurrentItem() == adapter.mData.size() - 1) {
-                viewPager.setCurrentItem(1, false);//切换，不要动画效果
-            }
+            mCurrentPosition = position % (adapter.mData.size() + 2);
+            lastScrollTime = System.currentTimeMillis();
         }
 
         @Override
         public void onPageScrollStateChanged(int state) {
-            viewPagerStates = state;
+            if (state == ViewPager.SCROLL_STATE_IDLE) {
+                int current = viewPager.getCurrentItem();
+                int lastReal = adapter.getCount() - 2;
+                if (current == 0) {
+                    viewPager.setCurrentItem(lastReal, false);
+                } else if (current == lastReal + 1) {
+                    viewPager.setCurrentItem(1, false);
+                }
+            }
         }
     };
     private long delayTime = 3;
 
     private TimeUnit delayTimeUnit = TimeUnit.SECONDS;
+
+    private int mCurrentPosition;
+
+    private long lastScrollTime;
 
     /*--------------------------------构造方法--------------------------------*/
 
@@ -65,7 +72,6 @@ public class Banner extends FrameLayout {
 
     public Banner(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        inflate(context, R.layout.banner, this);
         initViews();
         initListener();
     }
@@ -84,7 +90,7 @@ public class Banner extends FrameLayout {
 
     public void setAdapter(BaseBannerAdapter adapter) {
         this.adapter = adapter;
-        adapter.boundToViewPater(viewPager);
+        adapter.bindToViewPager(viewPager);
     }
 
 
@@ -94,7 +100,9 @@ public class Banner extends FrameLayout {
      * 初始化控件
      */
     private void initViews() {
-        viewPager = findViewById(R.id.view_pager);
+        viewPager = new ViewPager(getContext());
+        viewPager.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        addView(viewPager);
     }
 
     private void initListener() {
@@ -102,34 +110,33 @@ public class Banner extends FrameLayout {
     }
 
     public void start() {
-        if (scheduledExecutorService != null && !scheduledExecutorService.isShutdown()) {
-            scheduledExecutorService.shutdownNow();
-            scheduledExecutorService = null;
-        }
+        stop();
+
         scheduledExecutorService = BaseManager.newScheduledExecutorService(8);
         scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
+                long currentTimeMillis = System.currentTimeMillis();
+                long diffTime = currentTimeMillis - lastScrollTime;
+                long delayTimeMillis = delayTimeUnit.toMillis(delayTime);
+                if (diffTime < delayTimeMillis / 2){
+                    return;
+                }
                 BaseManager.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
-                        try {
-                            int currentItem = viewPager.getCurrentItem();
-                            if (currentItem == 0) {
-                                viewPager.setCurrentItem(adapter.mData.size(), false);//切换，不要动画效果
-                            } else if (currentItem == adapter.mData.size() - 1) {
-                                viewPager.setCurrentItem(1, false);//切换，不要动画效果
-                            } else {
-                                viewPager.setCurrentItem(currentItem + 1);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        mCurrentPosition++;
+                        viewPager.setCurrentItem(mCurrentPosition);
                     }
                 });
             }
-        }, 0, delayTime, delayTimeUnit);
+        }, delayTime, delayTime, delayTimeUnit);
+    }
 
-
+    public void stop(){
+        if (scheduledExecutorService != null && !scheduledExecutorService.isShutdown()) {
+            scheduledExecutorService.shutdownNow();
+            scheduledExecutorService = null;
+        }
     }
 }

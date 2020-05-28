@@ -18,11 +18,12 @@ public abstract class BaseBannerAdapter<T> extends PagerAdapter {
     protected ArrayList<T> mData = new ArrayList<>();
 
     /*--------------------------------接口定义--------------------------------*/
+
     protected Context mContext;
 
     /*--------------------------------成员变量--------------------------------*/
+
     private ViewPager viewPager;
-    private SparseArray<View> views = new SparseArray<>();
     private int layoutRes;
     private OnItemClickListener<T> mOnItemClickListener;
 
@@ -38,7 +39,7 @@ public abstract class BaseBannerAdapter<T> extends PagerAdapter {
      */
     @Override
     public int getCount() {
-        return mData == null ? 0 : mData.size();
+        return mData == null ? 0 : (mData.size() == 1) ? 1 : mData.size() + 2;
     }
 
     /*--------------------------------实现父类方法--------------------------------*/
@@ -70,31 +71,26 @@ public abstract class BaseBannerAdapter<T> extends PagerAdapter {
      */
     @NonNull
     @Override
-    public Object instantiateItem(@NonNull ViewGroup container, final int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         if (mContext == null) {
             mContext = container.getContext();
         }
-        View view = views.get(position);
-        if (view != null) {
-//            container.addView(view);
-            return views;
-        } else {
-            view = View.inflate(mContext, layoutRes, null);
-            BannerHolder holder = new BannerHolder(view);
-            bindView(holder, mData.get(position), position);
-            final View finalView = view;
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mOnItemClickListener != null) {
-                        mOnItemClickListener.onItemClick(finalView, mData.get(position), position);
-                    }
+        final int realPosition = getRealPosition(position);
+        View view = View.inflate(mContext, layoutRes, null);
+        BannerHolder holder = new BannerHolder(view);
+        bindView(holder, mData.get(realPosition), realPosition);
+        final View finalView = view;
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick(finalView, mData.get(realPosition), realPosition);
                 }
-            });
-            container.addView(view);
-            views.put(position, view);
-            return view;
-        }
+            }
+        });
+        container.addView(view);
+        return view;
+
     }
 
     /*--------------------------------重写父类方法--------------------------------*/
@@ -111,12 +107,16 @@ public abstract class BaseBannerAdapter<T> extends PagerAdapter {
      */
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        View view = views.get(position);
-        if (view.getParent() == null) {
-            container.removeView(view);
-        }
+        container.removeView((View) object);
     }
 
+    /**
+     * 当绑定某一个位置的布局时，进行的操作
+     *
+     * @param holder   ViewHolder
+     * @param itemData itemData
+     * @param position 位置
+     */
     public abstract void bindView(BannerHolder holder, T itemData, int position);
 
     /*--------------------------------抽象方法--------------------------------*/
@@ -127,20 +127,37 @@ public abstract class BaseBannerAdapter<T> extends PagerAdapter {
 
     /*--------------------------------setter--------------------------------*/
 
-    public void boundToViewPater(ViewPager viewPager) {
+    public void bindToViewPager(ViewPager viewPager) {
         this.viewPager = viewPager;
         viewPager.setAdapter(this);
+        notifyDataSetChanged();
+    }
+
+    /*--------------------------------自定义私有方法--------------------------------*/
+
+
+    /**
+     * 返回真实的位置
+     *
+     * @param position
+     * @return
+     */
+    private int getRealPosition(int position) {
+        int realPosition = (position - 1) % mData.size();
+        if (realPosition < 0) {
+            realPosition += mData.size();
+        }
+        return realPosition;
     }
 
     /*--------------------------------自定义公开方法--------------------------------*/
 
     public void setData(ArrayList<T> data) {
+        mData = data;
         if (data.size() > 0) {
-            mData.add(data.get(data.size() - 1));
-            mData.addAll(data);
-            mData.add(data.get(0));
-        } else {
-            mData.addAll(data);
+            if (data.size() > 1) {
+                viewPager.setCurrentItem(1, false);
+            }
         }
         notifyDataSetChanged();
     }

@@ -14,6 +14,7 @@ import com.sscl.basesample.R;
 import com.sscl.basesample.adapter.BannerAdapter;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class SampleBannerActivity extends BaseAppCompatActivity {
 
@@ -76,7 +77,6 @@ public class SampleBannerActivity extends BaseAppCompatActivity {
         }
         banner.setAdapter(bannerAdapter);
         bannerAdapter.setData(bannerData);
-        banner.start();
     }
 
     /**
@@ -95,16 +95,24 @@ public class SampleBannerActivity extends BaseAppCompatActivity {
 
     }
 
+    private int bannerDelay = 1;
+
     /**
      * 在最后进行的操作
      */
     @Override
     protected void doAfterAll() {
         bannerAdapter.setOnItemClickListener(new BaseBannerAdapter.OnItemClickListener<String>() {
-
             @Override
             public void onItemClick(View itemView, String itemData, int position) {
                 DebugUtil.warnOut(TAG, "onItemClick position = " + position + ",itemData = " + itemData);
+                banner.setDelayTime(bannerDelay++);
+                if (bannerDelay > 5) {
+                    bannerDelay = 1;
+                }
+                banner.setDelayTimeUnit(TimeUnit.SECONDS);
+                banner.stop();
+                banner.start();
             }
         });
     }
@@ -129,5 +137,17 @@ public class SampleBannerActivity extends BaseAppCompatActivity {
     @Override
     protected boolean optionsItemSelected(@NonNull MenuItem item) {
         return false;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        banner.start();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        banner.stop();
     }
 }
