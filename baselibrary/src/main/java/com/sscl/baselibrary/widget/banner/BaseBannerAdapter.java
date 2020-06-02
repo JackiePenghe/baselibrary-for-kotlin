@@ -1,7 +1,6 @@
 package com.sscl.baselibrary.widget.banner;
 
 import android.content.Context;
-import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 
 public abstract class BaseBannerAdapter<T> extends PagerAdapter {
 
-    private static final String TAG = BaseBannerAdapter.class.getSimpleName();
     protected ArrayList<T> mData = new ArrayList<>();
 
     /*--------------------------------接口定义--------------------------------*/
@@ -28,7 +26,6 @@ public abstract class BaseBannerAdapter<T> extends PagerAdapter {
     private OnItemClickListener<T> mOnItemClickListener;
 
     public BaseBannerAdapter(@LayoutRes int layoutRes) {
-
         this.layoutRes = layoutRes;
     }
 
@@ -151,16 +148,6 @@ public abstract class BaseBannerAdapter<T> extends PagerAdapter {
     }
 
     /*--------------------------------自定义公开方法--------------------------------*/
-
-    public void setData(ArrayList<T> data) {
-        mData = data;
-        if (data.size() > 0) {
-            if (data.size() > 1) {
-                viewPager.setCurrentItem(1, false);
-            }
-        }
-        notifyDataSetChanged();
-    }
 
     public interface OnItemClickListener<T> {
 

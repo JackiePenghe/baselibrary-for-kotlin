@@ -75,9 +75,8 @@ public class BaseManager {
         return SCHEDULED_THREAD_POOL_EXECUTOR;
     }
 
-    @SuppressWarnings("WeakerAccess")
     @NonNull
     public static ScheduledExecutorService newScheduledExecutorService(int corePoolSize) {
-        return new ScheduledThreadPoolExecutor(1, newThreadFactory());
+        return new ScheduledThreadPoolExecutor(corePoolSize, newThreadFactory());
     }
 }

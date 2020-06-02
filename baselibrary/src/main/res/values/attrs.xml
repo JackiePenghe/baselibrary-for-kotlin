@@ -14,4 +14,13 @@
         <attr name="text_color" format="color" />
         <attr name="show_text" format="boolean" />
     </declare-styleable>
+    <declare-styleable name="Banner">
+        <attr name="points_visibility" format="boolean" />
+        <attr name="points_position" format="enum">
+            <enum name="CENTER" value="0" />
+            <enum name="LEFT" value="1" />
+            <enum name="RIGHT" value="2" />
+        </attr>
+        <attr name="points_container_background" format="reference|color" />
+    </declare-styleable>
 </resources>

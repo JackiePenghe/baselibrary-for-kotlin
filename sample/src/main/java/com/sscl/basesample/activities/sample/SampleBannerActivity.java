@@ -76,7 +76,7 @@ public class SampleBannerActivity extends BaseAppCompatActivity {
             bannerData.add(String.valueOf(i + 1));
         }
         banner.setAdapter(bannerAdapter);
-        bannerAdapter.setData(bannerData);
+        banner.setData(bannerData);
     }
 
     /**
