@@ -77,7 +77,7 @@ public class SampleWebViewActivityActivity extends AppCompatActivity {
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         //没有网络时优先使用缓存
-        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+//        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         //不使用缓存
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
