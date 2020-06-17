@@ -23,7 +23,27 @@
             android:text="前进"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/refresh"
+            android:text=" 刷新"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/stop"
+            android:text="停止加载"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
+
+    <EditText
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:id="@+id/url"
+        android:hint="请输入网址"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <com.sscl.baselibrary.widget.LollipopFixedWebView
         android:id="@+id/web_view"
