@@ -86,6 +86,13 @@
             android:text="@string/banner"
             android:textAllCaps="false" />
 
+        <Button
+            android:id="@+id/web_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/web_view"
+            android:textAllCaps="false" />
+
     </LinearLayout>
 
 </ScrollView>

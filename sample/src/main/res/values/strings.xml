@@ -29,4 +29,5 @@
     <string name="select_text_file">Select text file</string>
     <string name="image_loader">Image loader</string>
     <string name="banner">banner</string>
+    <string name="web_view">WebView</string>
 </resources>

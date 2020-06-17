@@ -94,12 +94,13 @@ public class WelcomeActivity extends BaseWelcomeActivity {
     }
 
     private void requestPermission() {
-        AndPermission.with(this)
-                .runtime()
-                .permission(Permission.READ_EXTERNAL_STORAGE,Permission.WRITE_EXTERNAL_STORAGE)
-                .onGranted(onGrantedListener)
-                .onDenied(onDeniedListener)
-                .rationale(rationaleListener)
-                .start();
+        toNext();
+//        AndPermission.with(this)
+//                .runtime()
+//                .permission(Permission.READ_EXTERNAL_STORAGE,Permission.WRITE_EXTERNAL_STORAGE)
+//                .onGranted(onGrantedListener)
+//                .onDenied(onDeniedListener)
+//                .rationale(rationaleListener)
+//                .start();
     }
 }

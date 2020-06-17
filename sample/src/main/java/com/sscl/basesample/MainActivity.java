@@ -21,6 +21,7 @@ import com.sscl.basesample.activities.sample.SampleBaseAppcompatActivity;
 import com.sscl.basesample.activities.sample.SampleBaseDrawerActivity;
 import com.sscl.basesample.activities.sample.SampleBaseFragmentActivity;
 import com.sscl.basesample.activities.sample.SampleBasePopupWindowActivity;
+import com.sscl.basesample.activities.sample.SampleWebViewActivityActivity;
 import com.sscl.basesample.activities.sample.SelectFileActivity;
 import com.sscl.basesample.activities.sample.ToastTestActivity;
 
@@ -43,6 +44,7 @@ public class MainActivity extends BaseAppCompatActivity {
     private Button selectFileBtn;
     private Button imageLoaderBtn;
     private Button bannerBtn;
+    private Button webViewBtn;
 
     private View.OnClickListener onClickListener = view -> {
         Intent intent = null;
@@ -85,6 +87,9 @@ public class MainActivity extends BaseAppCompatActivity {
                 break;
             case R.id.banner:
                 intent = new Intent(MainActivity.this, SampleBannerActivity.class);
+                break;
+            case R.id.web_view:
+                intent = new Intent(MainActivity.this,SampleWebViewActivityActivity.class);
                 break;
             default:
                 break;
@@ -156,6 +161,7 @@ public class MainActivity extends BaseAppCompatActivity {
         selectFileBtn = findViewById(R.id.select_file);
         imageLoaderBtn = findViewById(R.id.image_loader);
         bannerBtn = findViewById(R.id.banner);
+        webViewBtn =findViewById(R.id.web_view);
     }
 
     /**
@@ -189,6 +195,7 @@ public class MainActivity extends BaseAppCompatActivity {
         selectFileBtn.setOnClickListener(onClickListener);
         imageLoaderBtn.setOnClickListener(onClickListener);
         bannerBtn.setOnClickListener(onClickListener);
+        webViewBtn.setOnClickListener(onClickListener);
     }
 
     /**
