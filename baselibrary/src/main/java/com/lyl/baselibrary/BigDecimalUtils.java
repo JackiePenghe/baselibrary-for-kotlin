@@ -14,11 +14,10 @@ public class BigDecimalUtils {
      * @param addend2 加数
      * @param scale   保留scale 位小数
      * @return 两个参数的和
-     * @throws Exception scale的值必须大于等于0
      */
-    public static String add(String addend1, String addend2, int scale) throws Exception {
+    public static String add(String addend1, String addend2, int scale) {
         if (scale < 0) {
-            throw new Exception("scale value must be greater or equal to 0");
+            throw new RuntimeException("scale value must be greater or equal to 0");
         }
         BigDecimal b1 = new BigDecimal(addend1);
         BigDecimal b2 = new BigDecimal(addend2);
@@ -32,11 +31,10 @@ public class BigDecimalUtils {
      * @param minus      减数
      * @param scale      保留scale 位小数
      * @return 两个参数的差
-     * @throws Exception scale的值必须大于等于0
      */
-    public static String sub(String subtracted, String minus, int scale) throws Exception {
+    public static String sub(String subtracted, String minus, int scale) {
         if (scale < 0) {
-            throw new Exception("scale value must be greater or equal to 0");
+            throw new RuntimeException("scale value must be greater or equal to 0");
         }
         BigDecimal b1 = new BigDecimal(subtracted);
         BigDecimal b2 = new BigDecimal(minus);
@@ -50,11 +48,10 @@ public class BigDecimalUtils {
      * @param multiplier2 乘数
      * @param scale       保留scale 位小数
      * @return 两个参数的积
-     * @throws Exception scale的值必须大于等于0
      */
-    public static String mul(String multiplier1, String multiplier2, int scale) throws Exception {
+    public static String mul(String multiplier1, String multiplier2, int scale) {
         if (scale < 0) {
-            throw new Exception("scale value must be greater or equal to 0");
+            throw new RuntimeException("scale value must be greater or equal to 0");
         }
         BigDecimal b1 = new BigDecimal(multiplier1);
         BigDecimal b2 = new BigDecimal(multiplier2);
@@ -68,11 +65,10 @@ public class BigDecimalUtils {
      * @param divisor  除数
      * @param scale    表示需要精确到小数点以后几位
      * @return 两个参数的商
-     * @throws Exception scale的值必须大于等于0
      */
-    public static String div(String dividend, String divisor, int scale) throws Exception {
+    public static String div(String dividend, String divisor, int scale) {
         if (scale < 0) {
-            throw new Exception("scale value must be greater or equal to 0");
+            throw new RuntimeException("scale value must be greater or equal to 0");
         }
         BigDecimal b1 = new BigDecimal(dividend);
         BigDecimal b2 = new BigDecimal(divisor);
@@ -85,11 +81,10 @@ public class BigDecimalUtils {
      * @param value 需要四舍五入的数字
      * @param scale 小数点后保留几位
      * @return 四舍五入后的结果
-     * @throws Exception scale的值必须大于等于0
      */
-    public static double round(double value, int scale) throws Exception {
+    public static double round(double value, int scale) {
         if (scale < 0) {
-            throw new Exception("scale value must be greater or equal to 0");
+            throw new RuntimeException("scale value must be greater or equal to 0");
         }
         BigDecimal b = new BigDecimal(value);
         return b.setScale(scale, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -98,14 +93,13 @@ public class BigDecimalUtils {
     /**
      * 提供精确的小数位四舍五入处理
      *
-     * @param value     需要四舍五入的数字
+     * @param value 需要四舍五入的数字
      * @param scale 小数点后保留几位
      * @return 四舍五入后的结果
-     * @throws Exception scale的值必须大于等于0
      */
-    public static String round(String value, int scale) throws Exception {
+    public static String round(String value, int scale) {
         if (scale < 0) {
-            throw new Exception("scale value must be greater or equal to 0");
+            throw new RuntimeException("scale value must be greater or equal to 0");
         }
         BigDecimal b = new BigDecimal(value);
         return b.setScale(scale, BigDecimal.ROUND_HALF_UP).toString();
@@ -114,15 +108,14 @@ public class BigDecimalUtils {
     /**
      * 取余数
      *
-     * @param dividend    被除数
-     * @param divisor    除数
-     * @param scale 小数点后保留几位
+     * @param dividend 被除数
+     * @param divisor  除数
+     * @param scale    小数点后保留几位
      * @return 余数
-     * @throws Exception scale的值必须大于等于0
      */
-    public static String remainder(String dividend, String divisor, int scale) throws Exception {
+    public static String remainder(String dividend, String divisor, int scale) {
         if (scale < 0) {
-            throw new Exception("scale value must be greater or equal to 0");
+            throw new RuntimeException("scale value must be greater or equal to 0");
         }
         BigDecimal b1 = new BigDecimal(dividend);
         BigDecimal b2 = new BigDecimal(divisor);
