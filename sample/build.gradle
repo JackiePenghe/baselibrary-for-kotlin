@@ -6,9 +6,9 @@ android {
     defaultConfig {
         applicationId "com.sscl.basesample"
         minSdkVersion 18
-        targetSdkVersion 29
-        versionCode 36
-        versionName "0.0.36"
+        targetSdkVersion 30
+        versionCode 37
+        versionName "0.0.37"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -43,7 +43,7 @@ dependencies {
     //design库
     implementation 'com.google.android.material:material:1.1.0'
     //SwipeRefreshLayout库
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation project(':baselibrary')
     implementation 'com.sscl:brvahlibrary:0.0.1'
     //动态权限库
