@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.sscl.basesample"
@@ -45,7 +45,7 @@ dependencies {
     //SwipeRefreshLayout库
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation project(':baselibrary')
-    implementation 'com.sscl:brvahlibrary:0.0.1'
+    implementation 'com.sscl:brvahlibrary:0.0.2'
     //动态权限库
     implementation 'com.yanzhenjie:permission:2.0.3'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'

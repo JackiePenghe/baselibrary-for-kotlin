@@ -7,12 +7,11 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Looper;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import android.util.Log;
-import android.widget.Toast;
 
 import com.sscl.baselibrary.R;
 import com.sscl.baselibrary.files.FileUtil;
@@ -27,10 +26,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 
@@ -73,6 +69,29 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      * 存储异常日志的文件目录
      */
     private String crashFileDirPath;
+
+    private OnExceptionListener onExceptionListener;
+
+    /**
+     * 初始化
+     *
+     * @param context 上下文
+     */
+    public void init(@NonNull Context context, boolean useSdCardDir) {
+        File crashDir;
+        if (useSdCardDir) {
+            crashDir = FileUtil.getSdCardCrashDir();
+            if (crashDir == null) {
+                crashDir = FileUtil.getCrashDir();
+            }
+        } else {
+            crashDir = FileUtil.getCrashDir();
+        }
+        if (crashDir == null) {
+            throw new NullPointerException("crashDir == null");
+        }
+        init(context, crashDir.getAbsolutePath());
+    }
 
     /*--------------------------------构造函数--------------------------------*/
 
@@ -132,20 +151,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      *
      * @param context 上下文
      */
-    public void init(@NonNull Context context, boolean useSdCardDir) {
-        File crashDir;
-        if (useSdCardDir) {
-            crashDir = FileUtil.getSdCardCrashDir();
-            if (crashDir == null){
-                crashDir = FileUtil.getCrashDir();
-            }
-        } else {
-            crashDir = FileUtil.getCrashDir();
-        }
-        if (crashDir == null) {
-            throw new NullPointerException("crashDir == null");
-        }
-        init(context, crashDir.getAbsolutePath());
+    public void init(@NonNull Context context) {
+        init(context, false);
     }
 
     /**
@@ -163,16 +170,9 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         this.crashFileDirPath = crashFileDirPath;
     }
 
-    /**
-     * 初始化
-     *
-     * @param context 上下文
-     */
-    public void init(@NonNull Context context) {
-        init(context, false);
+    public void setOnExceptionListener(OnExceptionListener onExceptionListener) {
+        this.onExceptionListener = onExceptionListener;
     }
-
-    /*--------------------------------私有函数--------------------------------*/
 
     /**
      * 自定义错误处理,收集错误信息 发送错误报告等操作均在此完成.
@@ -185,22 +185,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             return false;
         }
 
-        ThreadFactory threadFactory = new ThreadFactory() {
-            /**
-             * Constructs a new {@code Thread}.  Implementations may also initialize
-             * priority, name, daemon status, {@code ThreadGroup}, etc.
-             *
-             * @param r a runnable to be executed by new thread instance
-             * @return constructed thread, or {@code null} if the request to
-             * create a thread is rejected
-             */
-            @Override
-            public Thread newThread(@NonNull Runnable r) {
-                return new Thread(r);
-            }
-        };
+        ScheduledExecutorService scheduledThreadPoolExecutor = BaseManager.getScheduledThreadPoolExecutor();
 
-        ExecutorService executorService = new ThreadPoolExecutor(1, 1, 0, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(1024), threadFactory, new ThreadPoolExecutor.AbortPolicy());
 
         Runnable runnable = new Runnable() {
             @Override
@@ -210,14 +196,23 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
                 Looper.loop();
             }
         };
-
         //使用Toast来显示异常信息
-        executorService.execute(runnable);
+        scheduledThreadPoolExecutor.schedule(runnable, 0, TimeUnit.MILLISECONDS);
         //收集设备参数信息
         collectDeviceInfo(mContext);
         //保存日志文件
         saveCrashInfo2File(ex);
+        if (onExceptionListener != null) {
+            onExceptionListener.onException(ex);
+        }
         return true;
+    }
+
+    /*--------------------------------私有函数--------------------------------*/
+
+    public interface OnExceptionListener {
+
+        void onException(@Nullable Throwable ex);
     }
 
     /**

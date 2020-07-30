@@ -1,15 +1,16 @@
 package com.sscl.basesample.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.TextUtils;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import android.text.TextUtils;
 
 import com.sscl.baselibrary.activity.BaseWelcomeActivity;
 import com.sscl.baselibrary.utils.CrashHandler;
 import com.sscl.baselibrary.utils.ToastUtil;
 import com.sscl.basesample.MainActivity;
+import com.sscl.basesample.MyApplication;
 import com.sscl.basesample.R;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
@@ -87,20 +88,21 @@ public class WelcomeActivity extends BaseWelcomeActivity {
     }
 
     private void toNext() {
-        CrashHandler.getInstance().init(WelcomeActivity.this.getApplicationContext(),true);
+        CrashHandler.getInstance().init(WelcomeActivity.this.getApplicationContext(), true);
+        MyApplication.initCrashListener();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }
 
     private void requestPermission() {
-        toNext();
-//        AndPermission.with(this)
-//                .runtime()
-//                .permission(Permission.READ_EXTERNAL_STORAGE,Permission.WRITE_EXTERNAL_STORAGE)
-//                .onGranted(onGrantedListener)
-//                .onDenied(onDeniedListener)
-//                .rationale(rationaleListener)
-//                .start();
+//        toNext();
+        AndPermission.with(this)
+                .runtime()
+                .permission(Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE)
+                .onGranted(onGrantedListener)
+                .onDenied(onDeniedListener)
+                .rationale(rationaleListener)
+                .start();
     }
 }
