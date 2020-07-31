@@ -3,11 +3,10 @@ package com.sscl.basesample;
 import android.app.Application;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
 import com.sscl.baselibrary.files.FileUtil;
 import com.sscl.baselibrary.utils.CrashHandler;
 import com.sscl.baselibrary.utils.DebugUtil;
+import com.sscl.baselibrary.utils.Tool;
 
 /**
  * @author alm
@@ -17,12 +16,12 @@ import com.sscl.baselibrary.utils.DebugUtil;
 
 public class MyApplication extends Application {
 
+    private static MyApplication myApplication;
+
     public static void initCrashListener() {
-        CrashHandler.getInstance().setOnExceptionListener(new CrashHandler.OnExceptionListener() {
-            @Override
-            public void onException(@Nullable Throwable ex) {
-                Log.e("MyApplication", "onException: 自己对异常做的额外处理！！！！--------------------\n--------------------\n--------------------\n--------------------\n--------------------\n--------------------");
-            }
+        CrashHandler.getInstance().setOnExceptionListener(ex -> {
+            Log.e("MyApplication", "onException: 自己对异常做的额外处理！！！！--------------------\n--------------------\n--------------------\n--------------------\n--------------------\n--------------------");
+            Tool.restartApplication(myApplication);
         });
     }
 
@@ -38,6 +37,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        myApplication = this;
         DebugUtil.setDebugFlag(true);
         FileUtil.init(this);
     }

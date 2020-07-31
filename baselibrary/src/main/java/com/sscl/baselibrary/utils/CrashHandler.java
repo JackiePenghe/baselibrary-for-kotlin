@@ -37,6 +37,40 @@ import java.util.concurrent.TimeUnit;
  */
 public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
+    /**
+     * 自定义错误处理,收集错误信息 发送错误报告等操作均在此完成.
+     *
+     * @param ex 错误
+     * @return true:如果处理了该异常信息;否则返回false.
+     */
+    private boolean handleException(@Nullable Throwable ex) {
+        if (ex == null) {
+            return false;
+        }
+
+        ScheduledExecutorService scheduledThreadPoolExecutor = BaseManager.getScheduledThreadPoolExecutor();
+
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Looper.prepare();
+                Toast.makeText(mContext, R.string.app_run_with_error, Toast.LENGTH_LONG).show();
+                Looper.loop();
+            }
+        };
+        //使用Toast来显示异常信息
+        scheduledThreadPoolExecutor.schedule(runnable, 0, TimeUnit.MILLISECONDS);
+        //收集设备参数信息
+        collectDeviceInfo(mContext);
+        //保存日志文件
+        saveCrashInfo2File(ex);
+        if (onExceptionListener != null) {
+            onExceptionListener.onException(ex);
+        }
+        return true;
+    }
+
     /*--------------------------------静态常量--------------------------------*/
 
     private static final String TAG = CrashHandler.class.getSimpleName();
@@ -174,46 +208,12 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         this.onExceptionListener = onExceptionListener;
     }
 
-    /**
-     * 自定义错误处理,收集错误信息 发送错误报告等操作均在此完成.
-     *
-     * @param ex 错误
-     * @return true:如果处理了该异常信息;否则返回false.
-     */
-    private boolean handleException(@Nullable Throwable ex) {
-        if (ex == null) {
-            return false;
-        }
-
-        ScheduledExecutorService scheduledThreadPoolExecutor = BaseManager.getScheduledThreadPoolExecutor();
-
-
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                Looper.prepare();
-                Toast.makeText(mContext, R.string.exit_with_error, Toast.LENGTH_LONG).show();
-                Looper.loop();
-            }
-        };
-        //使用Toast来显示异常信息
-        scheduledThreadPoolExecutor.schedule(runnable, 0, TimeUnit.MILLISECONDS);
-        //收集设备参数信息
-        collectDeviceInfo(mContext);
-        //保存日志文件
-        saveCrashInfo2File(ex);
-        if (onExceptionListener != null) {
-            onExceptionListener.onException(ex);
-        }
-        return true;
-    }
-
-    /*--------------------------------私有函数--------------------------------*/
-
     public interface OnExceptionListener {
 
         void onException(@Nullable Throwable ex);
     }
+
+    /*--------------------------------私有函数--------------------------------*/
 
     /**
      * 收集设备参数信息

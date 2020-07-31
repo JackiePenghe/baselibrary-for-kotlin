@@ -89,7 +89,7 @@ public class MainActivity extends BaseAppCompatActivity {
                 intent = new Intent(MainActivity.this, SampleBannerActivity.class);
                 break;
             case R.id.web_view:
-                intent = new Intent(MainActivity.this,SampleWebViewActivityActivity.class);
+                intent = new Intent(MainActivity.this, SampleWebViewActivityActivity.class);
                 break;
             default:
                 break;
@@ -161,7 +161,7 @@ public class MainActivity extends BaseAppCompatActivity {
         selectFileBtn = findViewById(R.id.select_file);
         imageLoaderBtn = findViewById(R.id.image_loader);
         bannerBtn = findViewById(R.id.banner);
-        webViewBtn =findViewById(R.id.web_view);
+        webViewBtn = findViewById(R.id.web_view);
     }
 
     /**
@@ -205,6 +205,7 @@ public class MainActivity extends BaseAppCompatActivity {
     protected void doAfterAll() {
         Tool.startScreenStatusListener(this);
         Tool.setOnScreenStatusChangedListener(onScreenStatusChangedListener);
+        int a = 9 / 0;
     }
 
     /**

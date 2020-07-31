@@ -91,6 +91,21 @@ public class Tool {
     }
 
     /**
+     * 重启应用程序
+     *
+     * @param context 上下文
+     */
+    public static void restartApplication(@NonNull Context context) {
+        final Intent intent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+        if (intent == null) {
+            return;
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(intent);
+        android.os.Process.killProcess(android.os.Process.myPid());
+    }
+
+    /**
      * 解除输入法的内存泄漏bug
      *
      * @param activity Activity
