@@ -285,6 +285,40 @@ public class FileUtil {
     }
 
     /**
+     * 获取 Log 日志文件保存目录
+     *
+     * @return Log 日志文件保存目录
+     */
+    @Nullable
+    public static File getLogInfoSdcardDir() {
+        File file = new File(getSdCardAppDir(), "logInfo");
+        boolean mkdirs;
+        if (!file.exists()) {
+            mkdirs = file.mkdirs();
+            if (mkdirs) {
+                return file;
+            } else {
+                return null;
+            }
+        }
+        return file;
+    }
+
+    public static File getLogInfoDir() {
+        File file = new File(getAppDir(), "logInfo");
+        boolean mkdirs;
+        if (!file.exists()) {
+            mkdirs = file.mkdirs();
+            if (mkdirs) {
+                return file;
+            } else {
+                return null;
+            }
+        }
+        return file;
+    }
+
+    /**
      * 安装apk
      *
      * @param context 上下文

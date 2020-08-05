@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.sscl.baselibrary.activity.BaseWelcomeActivity;
 import com.sscl.baselibrary.utils.CrashHandler;
+import com.sscl.baselibrary.utils.LogCatHelper;
 import com.sscl.baselibrary.utils.ToastUtil;
 import com.sscl.basesample.MainActivity;
 import com.sscl.basesample.MyApplication;
@@ -88,6 +89,7 @@ public class WelcomeActivity extends BaseWelcomeActivity {
     }
 
     private void toNext() {
+        LogCatHelper.getInstance(this).init();
         CrashHandler.getInstance().init(WelcomeActivity.this.getApplicationContext(), true);
         MyApplication.initCrashListener();
         Intent intent = new Intent(this, MainActivity.class);

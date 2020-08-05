@@ -186,7 +186,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      * @param context 上下文
      */
     public void init(@NonNull Context context) {
-        init(context, false);
+        init(context, true);
     }
 
     /**
