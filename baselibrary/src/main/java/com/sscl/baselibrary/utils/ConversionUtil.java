@@ -9,8 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Size;
 
-import com.sscl.baselibrary.exception.WrongByteArrayLengthException;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -280,12 +278,12 @@ public class ConversionUtil {
      * @param byteArray byte数组
      * @return long
      */
-    public static long byteArrayToLong(@NonNull byte[] byteArray) throws WrongByteArrayLengthException {
+    public static long byteArrayToLong(@NonNull @Size(min = 1, max = 8) byte[] byteArray) {
         int length = byteArray.length;
         int maxLongByteArrayLength = 8;
         int byteBits = 8;
         if (byteArray.length == 0 || byteArray.length > maxLongByteArrayLength) {
-            throw new WrongByteArrayLengthException("byteArray length must be in range 1 ~ 8");
+            throw new RuntimeException("byteArray length must be in range 1 ~ 8");
         }
 
         long cache = 0;
@@ -358,14 +356,13 @@ public class ConversionUtil {
      * @param byteArray byte数组长度不超过4
      * @return int型数
      */
-    public static int byteArrayToInt(@NonNull @Size(max = 4) byte[] byteArray) throws WrongByteArrayLengthException {
+    public static int byteArrayToInt(@NonNull @Size(min = 1, max = 4) byte[] byteArray) {
         int length = byteArray.length;
         int maxLongByteArrayLength = 4;
         int byteBits = 8;
         if (byteArray.length == 0 || byteArray.length > maxLongByteArrayLength) {
-            throw new WrongByteArrayLengthException("byteArray length must be in range 1 ~ 8");
+            throw new RuntimeException("byteArray length must be in range 1 ~ 4");
         }
-
         int cache = 0;
         for (int i = 0; i < length; i++) {
             byte aByte = byteArray[i];
