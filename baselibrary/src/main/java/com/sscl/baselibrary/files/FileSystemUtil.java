@@ -41,6 +41,130 @@ public class FileSystemUtil {
     private static final String FILE = "file";
     private static final String TAG = FileSystemUtil.class.getSimpleName();
 
+    /**
+     * 打开文件管理(需要根据请求码在onActivityResult中获取数据
+     * if(requestCode == your requestCode && resultCode == Activity.RESULT_OK)){
+     * Uri uri = intent.getData;//获取文件uri
+     * }
+     *
+     * @param activity    对应的Activity
+     * @param requestCode 请求码
+     * @param fileType    文件类型
+     * @return true表示打开成功
+     */
+    @SuppressWarnings({"unused"})
+    public static boolean openSystemFile(@NonNull Activity activity, int requestCode, @NonNull FileType fileType) {
+        return openSystemFile(activity, requestCode, fileType.getValue());
+    }
+
+    /*--------------------------------公开静态方法--------------------------------*/
+
+    /**
+     * 根据uri获取文件路径
+     *
+     * @param context 上下文
+     * @param uri     uri
+     * @return 文件路径
+     */
+    @Nullable
+    @SuppressWarnings("unused")
+    public static String getPath(@NonNull final Context context, @NonNull final Uri uri) {
+
+        // DocumentProvider
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && DocumentsContract.isDocumentUri(context, uri)) {
+            // ExternalStorageProvider
+            if (isExternalStorageDocument(uri)) {
+                String docId = DocumentsContract.getDocumentId(uri);
+                String[] split = docId.split(":");
+                String type = split[0];
+
+                if (PRIMARY.equalsIgnoreCase(type)) {
+                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                }
+            }
+            // DownloadsProvider
+            else if (isDownloadsDocument(uri)) {
+
+                final String id = DocumentsContract.getDocumentId(uri);
+                final Uri contentUri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
+
+                return getDataColumn(context, contentUri, null, null);
+            }
+            // MediaProvider
+            else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                Uri contentUri = null;
+                if (IMAGE.equals(type)) {
+                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if (VIDEO.equals(type)) {
+                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if (AUDIO.equals(type)) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+
+                final String selection = "_id=?";
+                final String[] selectionArgs = new String[]{
+                        split[1]
+                };
+
+                return getDataColumn(context, contentUri, selection, selectionArgs);
+            }
+        }
+        // MediaStore (and general)
+        else if (CONTENT.equalsIgnoreCase(uri.getScheme())) {
+            return getDataColumn(context, uri, null, null);
+        }
+        // File
+        else if (FILE.equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+
+        return null;
+    }
+
+    /**
+     * 打开文件管理(需要根据请求码在onActivityResult中获取数据
+     * if(requestCode == your requestCode && resultCode == Activity.RESULT_OK)){
+     * Uri uri = intent.getData;//获取文件uri
+     * }
+     *
+     * @param activity    对应的Activity
+     * @param requestCode 请求码
+     * @return true表示打开成功
+     */
+    @SuppressWarnings("unused")
+    public static boolean openSystemFile(@NonNull Activity activity, int requestCode) {
+        return openSystemFile(activity, requestCode, FileType.FILE_TYPE_ALL);
+    }
+
+    /**
+     * 打开文件管理(需要根据请求码在onActivityResult中获取数据
+     * if(requestCode == your requestCode && resultCode == Activity.RESULT_OK)){
+     * Uri uri = intent.getData;//获取文件uri
+     * }
+     *
+     * @param activity    对应的Activity
+     * @param requestCode 请求码
+     * @param fileType    文件类型
+     * @return true表示打开成功
+     */
+    @SuppressWarnings({"unused"})
+    public static boolean openSystemFile(@NonNull Activity activity, int requestCode, @NonNull String mimeType) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType(mimeType);
+        try {
+            activity.startActivityForResult(intent, requestCode);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public enum FileType {
         /**
          * .3gp格式的文件
@@ -237,6 +361,10 @@ public class FileSystemUtil {
          */
         ZIP_FILE("application/x-zip-compressed"),
         /**
+         * 所有APP 支持的文件
+         */
+        APPLICATION_ALL("application/*"),
+        /**
          * 所有文件
          */
         FILE_TYPE_ALL("*/*");
@@ -250,116 +378,6 @@ public class FileSystemUtil {
 
         private String getValue() {
             return value;
-        }
-    }
-
-    /*--------------------------------公开静态方法--------------------------------*/
-
-    /**
-     * 根据uri获取文件路径
-     *
-     * @param context 上下文
-     * @param uri     uri
-     * @return 文件路径
-     */
-    @Nullable
-    @SuppressWarnings("unused")
-    public static String getPath(@NonNull final Context context, @NonNull final Uri uri) {
-
-        // DocumentProvider
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && DocumentsContract.isDocumentUri(context, uri)) {
-            // ExternalStorageProvider
-            if (isExternalStorageDocument(uri)) {
-                String docId = DocumentsContract.getDocumentId(uri);
-                String[] split = docId.split(":");
-                String type = split[0];
-
-                if (PRIMARY.equalsIgnoreCase(type)) {
-                    return Environment.getExternalStorageDirectory() + "/" + split[1];
-                }
-            }
-            // DownloadsProvider
-            else if (isDownloadsDocument(uri)) {
-
-                final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
-
-                return getDataColumn(context, contentUri, null, null);
-            }
-            // MediaProvider
-            else if (isMediaDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-
-                Uri contentUri = null;
-                if (IMAGE.equals(type)) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if (VIDEO.equals(type)) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if (AUDIO.equals(type)) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                }
-
-                final String selection = "_id=?";
-                final String[] selectionArgs = new String[]{
-                        split[1]
-                };
-
-                return getDataColumn(context, contentUri, selection, selectionArgs);
-            }
-        }
-        // MediaStore (and general)
-        else if (CONTENT.equalsIgnoreCase(uri.getScheme())) {
-            return getDataColumn(context, uri, null, null);
-        }
-        // File
-        else if (FILE.equalsIgnoreCase(uri.getScheme())) {
-            return uri.getPath();
-        }
-
-        return null;
-    }
-
-    /**
-     * 打开文件管理(需要根据请求码在onActivityResult中获取数据
-     * if(requestCode == your requestCode && resultCode == Activity.RESULT_OK)){
-     * Uri uri = intent.getData;//获取文件uri
-     * }
-     *
-     * @param activity    对应的Activity
-     * @param requestCode 请求码
-     * @return true表示打开成功
-     */
-    @SuppressWarnings("unused")
-    public static boolean openSystemFile(@NonNull Activity activity, int requestCode) {
-        return openSystemFile(activity, requestCode, FileType.FILE_TYPE_ALL);
-    }
-
-    /**
-     * 打开文件管理(需要根据请求码在onActivityResult中获取数据
-     * if(requestCode == your requestCode && resultCode == Activity.RESULT_OK)){
-     * Uri uri = intent.getData;//获取文件uri
-     * }
-     *
-     * @param activity    对应的Activity
-     * @param requestCode 请求码
-     * @param fileType    文件类型
-     * @return true表示打开成功
-     */
-    @SuppressWarnings({"unused"})
-    public static boolean openSystemFile(@NonNull Activity activity, int requestCode, FileType fileType) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType(fileType.getValue());
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-
-        try {
-            activity.startActivityForResult(intent, requestCode);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
         }
     }
 

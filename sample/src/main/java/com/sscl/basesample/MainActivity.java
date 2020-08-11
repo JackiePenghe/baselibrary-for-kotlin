@@ -205,7 +205,6 @@ public class MainActivity extends BaseAppCompatActivity {
     protected void doAfterAll() {
         Tool.startScreenStatusListener(this);
         Tool.setOnScreenStatusChangedListener(onScreenStatusChangedListener);
-        int a = 9 / 0;
     }
 
     /**

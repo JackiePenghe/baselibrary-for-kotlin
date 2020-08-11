@@ -21,6 +21,7 @@ public class SelectFileActivity extends BaseAppCompatActivity {
 
     private static final int SELECT_ANY_FILE = 1;
     private static final int SELECT_TEXT_FILE = 2;
+    private static final int SELECT_BINARY_FILE = 3;
     private static final String TAG = SelectFileActivity.class.getSimpleName();
     /**
      * 选择任意文件
@@ -31,6 +32,11 @@ public class SelectFileActivity extends BaseAppCompatActivity {
      * 选择文本文件
      */
     private Button selectTextFileBtn;
+
+    /**
+     * 选择二进制文件
+     */
+    private Button selectBinaryFileBtn;
 
     /**
      * 点击事件的监听
@@ -44,6 +50,9 @@ public class SelectFileActivity extends BaseAppCompatActivity {
                     break;
                 case R.id.select_text_file:
                     selectTextFile();
+                    break;
+                case R.id.select_binary_file:
+                    selectBinaryFile();
                     break;
                 default:
                     break;
@@ -92,6 +101,7 @@ public class SelectFileActivity extends BaseAppCompatActivity {
     protected void initViews() {
         selectAnyFileBtn = findViewById(R.id.select_any_file);
         selectTextFileBtn = findViewById(R.id.select_text_file);
+        selectBinaryFileBtn = findViewById(R.id.select_binary_file);
     }
 
     /**
@@ -117,6 +127,7 @@ public class SelectFileActivity extends BaseAppCompatActivity {
     protected void initEvents() {
         selectAnyFileBtn.setOnClickListener(onClickListener);
         selectTextFileBtn.setOnClickListener(onClickListener);
+        selectBinaryFileBtn.setOnClickListener(onClickListener);
     }
 
     /**
@@ -165,6 +176,9 @@ public class SelectFileActivity extends BaseAppCompatActivity {
             case SELECT_TEXT_FILE:
                 getSelectTextFileResult(data);
                 break;
+            case SELECT_BINARY_FILE:
+                getSelectBinaryFileResult(data);
+                break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
                 break;
@@ -203,6 +217,13 @@ public class SelectFileActivity extends BaseAppCompatActivity {
         }
     }
 
+    private void selectBinaryFile() {
+        boolean succeed = FileSystemUtil.openSystemFile(this, SELECT_BINARY_FILE, FileSystemUtil.FileType.OCTET_STREAM_FILE);
+        if (!succeed) {
+            ToastUtil.toastLong(this, R.string.open_file_manager_failed);
+        }
+    }
+
     private void getSelectAnyFileResult(Intent data) {
         Uri uri = FileSystemUtil.getSelectFileUri(data);
         String filePath = FileSystemUtil.getSelectFilePath(this, data);
@@ -213,6 +234,12 @@ public class SelectFileActivity extends BaseAppCompatActivity {
         Uri uri = FileSystemUtil.getSelectFileUri(data);
         String filePath = FileSystemUtil.getSelectFilePath(this, data);
         showDialog(getString(R.string.select_text_file), filePath, uri);
+    }
+
+    private void getSelectBinaryFileResult(Intent data) {
+        Uri uri = FileSystemUtil.getSelectFileUri(data);
+        String filePath = FileSystemUtil.getSelectFilePath(this, data);
+        showDialog(getString(R.string.select_binary_file), filePath, uri);
     }
 
     /**

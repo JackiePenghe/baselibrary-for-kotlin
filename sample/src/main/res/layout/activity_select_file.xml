@@ -17,4 +17,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/select_text_file" />
+
+    <Button
+        android:id="@+id/select_binary_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/select_binary_file" />
 </LinearLayout>
