@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.view.View;
@@ -382,6 +383,9 @@ public class Tool {
         }
     }
 
+    public static double dpToPx(double dp) {
+        return Resources.getSystem().getDisplayMetrics().density * dp;
+    }
 
     /*--------------------------------私有方法--------------------------------*/
 
