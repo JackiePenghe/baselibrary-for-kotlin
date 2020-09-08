@@ -17,6 +17,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
+import java.text.DecimalFormat;
 
 /**
  * 数据转换工具类
@@ -370,6 +371,36 @@ public class ConversionUtil {
             cache = cache | unsignedByte << (byteBits * (length - i - 1));
         }
         return cache;
+    }
+
+    /**
+     * 格式化数字为千分位显示；
+     *
+     * @param number 要格式化的数字
+     * @return
+     */
+    public static String formatMicrometer(String number) {
+        DecimalFormat df;
+        String point = ".";
+        if (number.indexOf(point) > 0) {
+            int index = number.length() - number.indexOf(point) - 1;
+            if (index == 0) {
+                df = new DecimalFormat("###,##0.");
+            } else if (index == 1) {
+                df = new DecimalFormat("###,##0.0");
+            } else {
+                df = new DecimalFormat("###,##0.00");
+            }
+        } else {
+            df = new DecimalFormat("###,##0");
+        }
+        double result;
+        try {
+            result = Double.parseDouble(number);
+        } catch (Exception e) {
+            result = 0.0;
+        }
+        return df.format(result);
     }
 
     /**
