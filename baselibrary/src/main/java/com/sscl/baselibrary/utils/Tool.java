@@ -333,7 +333,7 @@ public class Tool {
     }
 
     /**
-     * 获取RecyclerView最后一个可见的选项位置
+     * 获取RecyclerView最后一个完全可见的选项位置
      *
      * @param recyclerView RecyclerView
      * @return RecyclerView第一个可见的选项位置
