@@ -2,12 +2,15 @@ package com.sscl.baselibrary.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.sscl.baselibrary.R;
 
 import java.util.ArrayList;
 
@@ -23,11 +26,20 @@ public class FlowLayout extends ViewGroup {
     /**
      * 记录每一行的子控件的集合
      */
-    private ArrayList<ArrayList<View>> viewLineList;
+    private final ArrayList<ArrayList<View>> viewLineList;
     /**
      * j记录每一行的高度的集合
      */
-    private ArrayList<Integer> lineHeightList;
+    private final ArrayList<Integer> lineHeightList;
+
+    /**
+     * 行间距
+     */
+    private float lineInterval;
+    /**
+     * 行内间距
+     */
+    private float internalLineInterval;
 
     /*--------------------------------构造方法--------------------------------*/
 
@@ -46,7 +58,7 @@ public class FlowLayout extends ViewGroup {
      * @param context 上下文
      * @param attrs   属性集合
      */
-    public FlowLayout(@NonNull Context context,@Nullable AttributeSet attrs) {
+    public FlowLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
@@ -59,6 +71,7 @@ public class FlowLayout extends ViewGroup {
      */
     public FlowLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        parseAttrs(attrs);
         viewLineList = new ArrayList<>();
         lineHeightList = new ArrayList<>();
     }
@@ -104,15 +117,15 @@ public class FlowLayout extends ViewGroup {
                 //取出子控件的margin属性
                 MarginLayoutParams marginLayoutParams = (MarginLayoutParams) childView.getLayoutParams();
                 //计算子控件的宽度
-                int childViewWidth = childView.getMeasuredWidth() + marginLayoutParams.leftMargin + marginLayoutParams.rightMargin + childView.getPaddingLeft() + childView.getPaddingRight();
+                int childViewWidth = childView.getMeasuredWidth() + marginLayoutParams.leftMargin + marginLayoutParams.rightMargin;
                 //计算子控件的高度
-                int childViewHeight = childView.getMeasuredHeight() + marginLayoutParams.topMargin + marginLayoutParams.bottomMargin + childView.getPaddingTop() + childView.getPaddingBottom();
+                int childViewHeight = childView.getMeasuredHeight() + marginLayoutParams.topMargin + marginLayoutParams.bottomMargin;
                 // 如果当前行的宽度大于建议的宽度，就需要换行了
-                if (currentLineWidth + childViewWidth > widthSize) {
+                if (currentLineWidth + childViewWidth + internalLineInterval > widthSize) {
                     //取当前行的数据中，当前宽度与测量之后计算的宽度的最大的一个
                     measuredWidth = Math.max(currentLineWidth, measuredWidth);
                     //将测量高度累加一次（因为现在多了一行，需要增加一行的高度）
-                    measuredHeight += currentLineHeight;
+                    measuredHeight += currentLineHeight + lineInterval;
                     //换行之后，将当前行的子控件集合添加到viewLineList
                     viewLineList.add(viewList);
                     //将行高添加到lineHeightList
@@ -127,7 +140,7 @@ public class FlowLayout extends ViewGroup {
                     viewList.add(childView);
                 } else {//如果不超过建议值，记录当前行的一些数据
                     // 累加当前的行宽度
-                    currentLineWidth += childViewWidth;
+                    currentLineWidth += childViewWidth + internalLineInterval;
                     //取每行的最大高度
                     currentLineHeight = Math.max(childViewHeight, currentLineHeight);
                     //将当前行的子控件添加到用于记录当前行子控件的集合
@@ -135,7 +148,7 @@ public class FlowLayout extends ViewGroup {
                 }
 
                 //如果正好是最后一行需要换行
-                if (i == childCount -1){
+                if (i == childCount - 1) {
                     //取当前行的数据中，当前宽度与测量之后计算的宽度的最大的一个
                     measuredWidth = Math.max(currentLineWidth, measuredWidth);
                     //将测量高度累加一次（因为现在多了一行，需要增加一行的高度）
@@ -188,38 +201,42 @@ public class FlowLayout extends ViewGroup {
                 //获取子控件
                 View childView = views.get(j);
                 MarginLayoutParams marginLayoutParams = (MarginLayoutParams) childView.getLayoutParams();
+
                 //子控件的左边的坐标
-                left = currentLeft + marginLayoutParams.leftMargin + childView.getPaddingLeft();
+                left = currentLeft + marginLayoutParams.leftMargin;
                 //子控件的顶部的坐标
-                top = currentTop +marginLayoutParams.topMargin + childView.getPaddingTop();
+                top = currentTop + marginLayoutParams.topMargin;
                 //子控件的右边的坐标
-                right = left + childView.getMeasuredWidth() + childView.getPaddingRight();
+                right = left + childView.getMeasuredWidth();
                 //子控件底部的坐标
-                bottom = top + childView.getMeasuredHeight() + childView.getPaddingBottom();
+                bottom = top + childView.getMeasuredHeight();
                 //摆放子控件
                 childView.layout(left, top, right, bottom);
                 //将起始坐标currentLeft更新一次
-                currentLeft = right + marginLayoutParams.rightMargin;
+                currentLeft = (int) (right + marginLayoutParams.rightMargin + internalLineInterval);
             }
-            //在摆放完一排之后，更新起始坐标currentTop
-            currentTop += lineHeightList.get(i);
-            //同时，将currentLeft重置为0
-            currentLeft = 0;
+            if (i != lineCount - 1) {
+                //在摆放完一排之后，更新起始坐标currentTop
+                currentTop += lineHeightList.get(i) + lineInterval;
+                //同时，将currentLeft重置为0
+                currentLeft = 0;
+            } else {
+                currentTop += lineHeightList.get(i);
+                currentLeft = 0;
+            }
         }
         //因为测量
         viewLineList.clear();
         lineHeightList.clear();
     }
 
-    public interface OnItemClickListener{
-        /**
-         * 子控件被点击时进行的回调
-         * @param view 子控件
-         * @param position 子控件在当前布局中的位置
-         */
-        void onItemClick(View view, int position);
-    }
+    /*--------------------------------接口定义--------------------------------*/
 
+    /**
+     * 设置监听
+     *
+     * @param onItemClickListener
+     */
     @SuppressWarnings("unused")
     public void setOnItemClickListener(@Nullable final OnItemClickListener onItemClickListener) {
         int childCount = getChildCount();
@@ -230,11 +247,40 @@ public class FlowLayout extends ViewGroup {
             childView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (onItemClickListener != null){
+                    if (onItemClickListener != null) {
                         onItemClickListener.onItemClick(childView, finalValue);
                     }
                 }
             });
         }
+    }
+
+    /*--------------------------------公开方法--------------------------------*/
+
+    /**
+     * 解析自定义属性
+     *
+     * @param attrs 自定义属性
+     */
+    private void parseAttrs(AttributeSet attrs) {
+        Context context = getContext();
+        if (context == null) {
+            return;
+        }
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.FlowLayout);
+        lineInterval = typedArray.getDimension(R.styleable.FlowLayout_line_interval, 0);
+        internalLineInterval = typedArray.getDimension(R.styleable.FlowLayout_internal_line_interval, 0);
+    }
+
+    /*--------------------------------私有方法--------------------------------*/
+
+    public interface OnItemClickListener {
+        /**
+         * 子控件被点击时进行的回调
+         *
+         * @param view     子控件
+         * @param position 子控件在当前布局中的位置
+         */
+        void onItemClick(View view, int position);
     }
 }

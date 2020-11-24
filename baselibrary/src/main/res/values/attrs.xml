@@ -23,4 +23,8 @@
         </attr>
         <attr name="points_container_background" format="reference|color" />
     </declare-styleable>
+    <declare-styleable name="FlowLayout">
+        <attr name="line_interval" format="dimension" />
+        <attr name="internal_line_interval" format="dimension" />
+    </declare-styleable>
 </resources>

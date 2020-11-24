@@ -28,7 +28,8 @@
     <string name="confirm">确认</string>
     <string name="select_text_file">Select text file</string>
     <string name="image_loader">Image loader</string>
-    <string name="banner">banner</string>
-    <string name="web_view">WebView</string>
-    <string name="select_binary_file">选择二进制文件</string>
+    <string name="banner" translatable="false">banner</string>
+    <string name="web_view" translatable="false">WebView</string>
+    <string name="select_binary_file">select binary file</string>
+    <string name="flow_layout">flow layout</string>
 </resources>

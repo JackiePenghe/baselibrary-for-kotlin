@@ -8,11 +8,10 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.sscl.baselibrary.activity.BaseDrawerActivity;
-import com.sscl.baselibrary.widget.ArcProgressBar;
-import com.sscl.baselibrary.widget.CircleProgressBar;
 import com.sscl.basesample.R;
 import com.sscl.basesample.activities.widget.ArcProgressBarActivity;
 import com.sscl.basesample.activities.widget.CircleProgressBarActivity;
+import com.sscl.basesample.activities.widget.FlowLayoutActivity;
 
 /**
  * @author pengh
@@ -101,17 +100,14 @@ public class WidgetActivity extends BaseDrawerActivity {
     @Override
     protected void navigationItemSelected(int menuItemId) {
         Intent intent = null;
-        switch (menuItemId){
-            case R.id.arc_progress_bar:
-                intent = new Intent(WidgetActivity.this, ArcProgressBarActivity.class);
-                break;
-            case R.id.circle_progress_bar:
-                intent = new Intent(WidgetActivity.this, CircleProgressBarActivity.class);
-                break;
-            default:
-                break;
+        if (menuItemId == R.id.arc_progress_bar) {
+            intent = new Intent(WidgetActivity.this, ArcProgressBarActivity.class);
+        } else if (menuItemId == R.id.circle_progress_bar) {
+            intent = new Intent(WidgetActivity.this, CircleProgressBarActivity.class);
+        } else if (menuItemId == R.id.flow_layout) {
+            intent = new Intent(WidgetActivity.this, FlowLayoutActivity.class);
         }
-        if (intent != null){
+        if (intent != null) {
             startActivity(intent);
         }
     }

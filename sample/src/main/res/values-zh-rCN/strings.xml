@@ -22,5 +22,7 @@
     <string name="open_file_manager_failed">打开文件管理器失败</string>
     <string name="confirm">确认</string>
     <string name="select_text_file">选择文本文件</string>
+    <string name="select_binary_file">选择二进制</string>
     <string name="image_loader">图片加载</string>
+    <string name="flow_layout">流式布局</string>
 </resources>
