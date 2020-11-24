@@ -14,7 +14,7 @@ public class FlowLayoutActivity extends BaseAppCompatActivity {
      */
     @Override
     protected void titleBackClicked() {
-
+        onBackPressed();
     }
 
     /**
