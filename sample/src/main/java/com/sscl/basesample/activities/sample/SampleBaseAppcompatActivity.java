@@ -1,16 +1,17 @@
 package com.sscl.basesample.activities.sample;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
-import com.sscl.baselibrary.utils.SystemUtil;
 import com.sscl.baselibrary.utils.StatusBarUtil;
+import com.sscl.baselibrary.utils.SystemUtil;
+import com.sscl.baselibrary.utils.Tool;
 import com.sscl.baselibrary.widget.GifView;
 import com.sscl.basesample.R;
 
@@ -41,13 +42,15 @@ public class SampleBaseAppcompatActivity extends BaseAppCompatActivity {
         //在Activity中，有时候会设置一些属性，这些属性在setContentView()之前，可在这里实现
         if (SystemUtil.isEmui()) {
             SystemUtil.miuiSetStatusBarLightMode(getWindow(), true);
-            StatusBarUtil.setColor(this, ContextCompat.getColor(SampleBaseAppcompatActivity.this,R.color.colorPrimaryDark),0);
         } else if (SystemUtil.isFlyme()) {
             SystemUtil.flymeSetStatusBarLightMode(getWindow(), true);
-            StatusBarUtil.setColor(this,  ContextCompat.getColor(SampleBaseAppcompatActivity.this,R.color.colorPrimaryDark),0);
         } else {
             Log.w(TAG, "不是miui或者flyme,不设置状态栏字体深色");
-            StatusBarUtil.setColor(this, ContextCompat.getColor(SampleBaseAppcompatActivity.this,R.color.colorPrimaryDark),0);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            StatusBarUtil.setColor(this, Tool.getStatusBarColor(this), 0);
+        } else {
+            StatusBarUtil.setColor(this, Tool.getDarkColorPrimary(this), 0);
         }
     }
 

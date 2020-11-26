@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat;
 
 import com.sscl.baselibrary.R;
 import com.sscl.baselibrary.utils.StatusBarUtil;
+import com.sscl.baselibrary.utils.Tool;
 
 
 /**
@@ -75,8 +76,9 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_base_appcompat);
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            int color = ContextCompat.getColor(this, R.color.colorPrimary);
-            StatusBarUtil.setColor(this, color);
+            StatusBarUtil.setColor(this, Tool.getDarkColorPrimary(this));
+        } else {
+            StatusBarUtil.setColor(this, Tool.getStatusBarColor(this));
         }
         initThisView();
         initThisData();

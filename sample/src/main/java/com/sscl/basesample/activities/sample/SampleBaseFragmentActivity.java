@@ -2,7 +2,6 @@ package com.sscl.basesample.activities.sample;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.Button;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.sscl.baselibrary.adapter.FragmentViewPagerAdapter;
-import com.sscl.baselibrary.utils.DebugUtil;
+import com.sscl.baselibrary.utils.Tool;
 import com.sscl.basesample.R;
 import com.sscl.basesample.fragment.SampleFragment1;
 import com.sscl.basesample.fragment.SampleFragment2;
@@ -35,7 +34,7 @@ public class SampleBaseFragmentActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         toolbar.setTitle(R.string.app_title);
-        toolbar.setBackgroundResource(R.color.colorPrimary);
+        toolbar.setBackgroundColor(Tool.getColorPrimary(this));
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 

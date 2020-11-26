@@ -8,6 +8,9 @@ import androidx.annotation.NonNull;
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.basesample.R;
 
+/**
+ * @author jackie
+ */
 public class FlowLayoutActivity extends BaseAppCompatActivity {
     /**
      * 标题栏的返回按钮被按下的时候回调此方法

@@ -4,6 +4,11 @@ import android.annotation.TargetApi;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
@@ -14,25 +19,18 @@ import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-
-import com.google.android.material.navigation.NavigationView;
-
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.TextView;
-
+import com.google.android.material.navigation.NavigationView;
 import com.sscl.baselibrary.R;
 import com.sscl.baselibrary.utils.StatusBarUtil;
+import com.sscl.baselibrary.utils.Tool;
 
 
 /**
@@ -140,8 +138,9 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
 
         //如果SDK版本低于21（安卓5.0，主动设置标题栏颜色以实现沉浸式）
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            int color = ContextCompat.getColor(this, R.color.colorPrimary);
-            StatusBarUtil.setColor(this, color);
+            StatusBarUtil.setColor(this, Tool.getDarkColorPrimary(this));
+        } else {
+            StatusBarUtil.setColor(this, Tool.getStatusBarColor(this));
         }
         toolbar = findViewById(R.id.toolbar);
         titleView = findViewById(R.id.toolbar_title);

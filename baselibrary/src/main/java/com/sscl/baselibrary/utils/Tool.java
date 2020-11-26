@@ -2,6 +2,7 @@ package com.sscl.baselibrary.utils;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -12,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Build;
 import android.telephony.TelephonyManager;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -22,6 +24,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sscl.baselibrary.R;
 import com.sscl.baselibrary.bean.PhoneInfo;
 import com.sscl.baselibrary.receiver.ScreenStatusReceiver;
 
@@ -383,8 +386,65 @@ public class Tool {
         }
     }
 
+    /**
+     * 转换DP值为象素值
+     *
+     * @param dp DP值
+     * @return 象素值
+     */
     public static double dpToPx(double dp) {
         return Resources.getSystem().getDisplayMetrics().density * dp;
+    }
+
+    /**
+     * 获取主题Primary颜色
+     *
+     * @param context 上下文
+     * @return 主题Primary颜色
+     */
+    public static int getColorPrimary(@NonNull Context context) {
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
+        return typedValue.data;
+    }
+
+
+    /**
+     * 获取暗色主题Primary颜色
+     *
+     * @param context 上下文
+     * @return 暗色主题Primary颜色
+     */
+    public static int getDarkColorPrimary(@NonNull Context context) {
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+        return typedValue.data;
+    }
+
+    /**
+     * 获取主题Accent颜色
+     *
+     * @param context 上下文
+     * @return 主题Accent颜色
+     */
+    public static int getColorAccent(@NonNull Context context) {
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.colorAccent, typedValue, true);
+        return typedValue.data;
+    }
+
+    /**
+     * 获取主题状态栏颜色
+     *
+     * @param context 上下文
+     * @return 主题状态栏颜色
+     */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static int getStatusBarColor(@NonNull Context context) {
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(android.R.attr.statusBarColor, typedValue, true);
+        return typedValue.data;
     }
 
     /*--------------------------------私有方法--------------------------------*/

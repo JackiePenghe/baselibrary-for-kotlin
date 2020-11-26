@@ -10,8 +10,8 @@
     <com.sscl.baselibrary.widget.CircleProgressBar
         android:layout_gravity="center"
         app:max_progress="3000"
-        app:progress_color="@color/colorPrimary"
-        app:round_color="@color/colorAccent"
+        app:progress_color="?attr/colorPrimary"
+        app:round_color="?attr/colorAccent"
         app:round_width="10dp"
         app:show_text="true"
         app:text_color="@android:color/black"
