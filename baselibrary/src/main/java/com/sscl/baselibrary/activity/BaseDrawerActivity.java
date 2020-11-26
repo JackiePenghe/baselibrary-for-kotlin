@@ -18,6 +18,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -362,7 +363,6 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
      *
      * @param titleText 标题栏内容
      */
-    @SuppressWarnings("unused")
     protected void setTitleText(String titleText) {
         titleView.setText(titleText);
     }
@@ -395,7 +395,6 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
      *
      * @param color 标题栏背景色
      */
-    @SuppressWarnings("unused")
     protected void setTitleBackgroundColor(@ColorInt int color) {
         if (toolbar == null) {
             throw new RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"");
@@ -408,7 +407,7 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
      *
      * @param drawable 标题栏背景
      */
-    @SuppressWarnings("unused")
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     protected void setTitleBackgroundDrawable(Drawable drawable) {
         if (toolbar == null) {
