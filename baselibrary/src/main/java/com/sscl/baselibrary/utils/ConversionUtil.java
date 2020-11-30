@@ -61,6 +61,26 @@ public class ConversionUtil {
     }
 
     /**
+     * 将IP v4的字符串转为byte数组
+     *
+     * @param ipv4 IP v4的字符串
+     * @return byte数组
+     */
+    @Size(4)
+    @Nullable
+    public static byte[] ipv4StringToByteArray(String ipv4) {
+        if (!Tool.checkIpv4String(ipv4)) {
+            return null;
+        }
+        String[] split = ipv4.split("\\.");
+        byte[] result = new byte[4];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = (byte) Integer.parseInt(split[i]);
+        }
+        return result;
+    }
+
+    /**
      * 字符串转换成byte数组（数组长度最长为byteArrayLength）
      *
      * @param s               要转换成byte[]的字符串

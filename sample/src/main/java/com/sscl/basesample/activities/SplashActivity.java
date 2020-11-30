@@ -16,13 +16,10 @@ public class SplashActivity extends BaseSplashActivity {
 
     @Override
     protected void onCreate() {
-        for (int i = 0; i < 16; i++) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int j = 0; j < i; j++) {
-                String value = String.valueOf(j);
-                stringBuilder.append(value.substring(value.length() - 1));
-            }
-            DebugUtil.warnOut(ConversionUtil.formatMicrometer(stringBuilder.toString()));
+        String ipv4String = "192.168.0.2";
+        byte[] bytes = ConversionUtil.ipv4StringToByteArray(ipv4String);
+        if (bytes != null) {
+            DebugUtil.warnOut(TAG, ConversionUtil.byteArrayToHexStr(bytes));
         }
 
         //本界面仅用于防止程序黑白屏。想要更改本界面的黑白屏的背景，手动在res文件夹下新建一个xml文件夹，再新建一个files_path.xml。在其中配置即可
