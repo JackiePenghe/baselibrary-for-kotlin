@@ -87,6 +87,10 @@ public class FlowLayout extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        //因为测量
+        viewLineList.clear();
+        lineHeightList.clear();
         //获取测量模式
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
@@ -225,9 +229,6 @@ public class FlowLayout extends ViewGroup {
                 currentLeft = 0;
             }
         }
-        //因为测量
-        viewLineList.clear();
-        lineHeightList.clear();
     }
 
     /*--------------------------------接口定义--------------------------------*/
