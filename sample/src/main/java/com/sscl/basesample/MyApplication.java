@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.sscl.baselibrary.files.FileUtil;
 import com.sscl.baselibrary.utils.BaseManager;
 import com.sscl.baselibrary.utils.CrashHandler;
@@ -39,7 +40,7 @@ public class MyApplication extends Application {
 
             Toast.makeText(myApplication, "正在收集错误信息", Toast.LENGTH_LONG).show();
 
-            Kalle.post("http://face.mohoo.vip/api/v2.wrong/sendWrongLog")
+            Kalle.post("http://penghe.xyz/debug=true")
                     .param("content", message)
                     .perform(new SimpleCallback<String>() {
                         @Override
@@ -47,9 +48,18 @@ public class MyApplication extends Application {
                             dismissExceptionUploadingDialog();
                             if (response.isSucceed()) {
                                 String succeed = response.succeed();
-                                ExceptionUploadBean exceptionUploadBean = GSON.fromJson(succeed, ExceptionUploadBean.class);
-                                if (exceptionUploadBean.getCode() == 200) {
-                                    Toast.makeText(myApplication, "错误信息上传成功", Toast.LENGTH_LONG).show();
+                                ExceptionUploadBean exceptionUploadBean = null;
+                                try {
+                                    exceptionUploadBean = GSON.fromJson(succeed, ExceptionUploadBean.class);
+                                } catch (JsonSyntaxException e) {
+                                    e.printStackTrace();
+                                }
+                                if (exceptionUploadBean != null) {
+                                    if (exceptionUploadBean.getCode() == 200) {
+                                        Toast.makeText(myApplication, "错误信息上传成功", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        Toast.makeText(myApplication, "错误信息上传失败！" + exceptionUploadBean.getMsg(), Toast.LENGTH_LONG).show();
+                                    }
                                 } else {
                                     Toast.makeText(myApplication, "错误信息上传失败！" + exceptionUploadBean.getMsg(), Toast.LENGTH_LONG).show();
                                 }
