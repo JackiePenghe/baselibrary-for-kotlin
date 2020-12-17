@@ -40,7 +40,7 @@ public class MyApplication extends Application {
 
             Toast.makeText(myApplication, "正在收集错误信息", Toast.LENGTH_LONG).show();
 
-            Kalle.post("http://penghe.xyz/debug=true")
+            Kalle.post("http://penghe.xyz/?debug=true")
                     .param("content", message)
                     .perform(new SimpleCallback<String>() {
                         @Override
