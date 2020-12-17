@@ -2,11 +2,20 @@ package com.sscl.basesample;
 
 import android.app.Application;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+
+import com.google.gson.Gson;
 import com.sscl.baselibrary.files.FileUtil;
+import com.sscl.baselibrary.utils.BaseManager;
 import com.sscl.baselibrary.utils.CrashHandler;
 import com.sscl.baselibrary.utils.DebugUtil;
 import com.sscl.baselibrary.utils.Tool;
+import com.sscl.basesample.beans.ExceptionUploadBean;
+import com.yanzhenjie.kalle.Kalle;
+import com.yanzhenjie.kalle.simple.SimpleCallback;
+import com.yanzhenjie.kalle.simple.SimpleResponse;
 
 /**
  * @author alm
@@ -18,10 +27,38 @@ public class MyApplication extends Application {
 
     private static MyApplication myApplication;
 
+    private static final Gson GSON = new Gson();
+
+    private static AlertDialog exceptionDialog;
+
     public static void initCrashListener() {
         CrashHandler.getInstance().setOnExceptionListener(ex -> {
+            String message = ex.getMessage();
             Log.e("MyApplication", "onException: 自己对异常做的额外处理！！！！--------------------\n--------------------\n--------------------\n--------------------\n--------------------\n--------------------");
-            Tool.restartApplication(myApplication);
+//            Tool.restartApplication(myApplication);
+
+            Toast.makeText(myApplication, "正在收集错误信息", Toast.LENGTH_LONG).show();
+
+            Kalle.post("http://face.mohoo.vip/api/v2.wrong/sendWrongLog")
+                    .param("content", message)
+                    .perform(new SimpleCallback<String>() {
+                        @Override
+                        public void onResponse(SimpleResponse<String, String> response) {
+                            dismissExceptionUploadingDialog();
+                            if (response.isSucceed()) {
+                                String succeed = response.succeed();
+                                ExceptionUploadBean exceptionUploadBean = GSON.fromJson(succeed, ExceptionUploadBean.class);
+                                if (exceptionUploadBean.getCode() == 200) {
+                                    Toast.makeText(myApplication, "错误信息上传成功", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(myApplication, "错误信息上传失败！" + exceptionUploadBean.getMsg(), Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                Toast.makeText(myApplication, "错误信息上传失败", Toast.LENGTH_LONG).show();
+                            }
+                            BaseManager.getHandler().postDelayed(() -> Tool.exitProcess(1), 1000);
+                        }
+                    });
         });
     }
 
@@ -40,6 +77,21 @@ public class MyApplication extends Application {
         myApplication = this;
         DebugUtil.setDebugFlag(true);
         FileUtil.init(this);
+    }
+
+    private static void showExceptionUploadingDialog() {
+        dismissExceptionUploadingDialog();
+        exceptionDialog = new AlertDialog.Builder(myApplication)
+                .setMessage("正在收集崩溃信息")
+                .setCancelable(false)
+                .show();
+    }
+
+    private static void dismissExceptionUploadingDialog() {
+        if (exceptionDialog != null && exceptionDialog.isShowing()) {
+            exceptionDialog.dismiss();
+        }
+        exceptionDialog = null;
     }
 
 }

@@ -29,8 +29,8 @@ import java.util.List;
  */
 public class WelcomeActivity extends BaseWelcomeActivity {
     private static final int REQUEST_CODE_SETTING = 1;
-    private Action<List<String>> onGrantedListener = grantPermissions -> toNext();
-    private Action<List<String>> onDeniedListener = deniedPermissions -> {
+    private final Action<List<String>> onGrantedListener = grantPermissions -> toNext();
+    private final Action<List<String>> onDeniedListener = deniedPermissions -> {
         if (!AndPermission.hasAlwaysDeniedPermission(WelcomeActivity.this, deniedPermissions)) {
             ToastUtil.toastLong(WelcomeActivity.this, R.string.no_permission_exits);
             finish();
@@ -49,7 +49,7 @@ public class WelcomeActivity extends BaseWelcomeActivity {
                     .show();
         }
     };
-    private Rationale<List<String>> rationaleListener = (context, data, executor) -> {
+    private final Rationale<List<String>> rationaleListener = (context, data, executor) -> {
         List<String> strings = Permission.transformText(WelcomeActivity.this, data);
         String permissionText = TextUtils.join(",\n", strings);
         new AlertDialog.Builder(WelcomeActivity.this)
@@ -92,6 +92,7 @@ public class WelcomeActivity extends BaseWelcomeActivity {
         LogCatHelper.getInstance(this).init();
         CrashHandler.getInstance().init(WelcomeActivity.this.getApplicationContext(), true);
         MyApplication.initCrashListener();
+        int i = 1 / 0;
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

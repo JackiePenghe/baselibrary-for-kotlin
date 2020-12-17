@@ -447,6 +447,12 @@ public class Tool {
         return typedValue.data;
     }
 
+    public static void exitProcess(int status) {
+        //退出程序
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(status);
+    }
+
     /*--------------------------------私有方法--------------------------------*/
 
     /**

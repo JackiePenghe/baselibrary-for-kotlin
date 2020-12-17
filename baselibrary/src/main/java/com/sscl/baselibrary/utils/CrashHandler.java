@@ -38,38 +38,9 @@ import java.util.concurrent.TimeUnit;
 public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     /**
-     * 自定义错误处理,收集错误信息 发送错误报告等操作均在此完成.
-     *
-     * @param ex 错误
-     * @return true:如果处理了该异常信息;否则返回false.
+     * 用来存储设备信息和异常信息
      */
-    private boolean handleException(@Nullable Throwable ex) {
-        if (ex == null) {
-            return false;
-        }
-
-        ScheduledExecutorService scheduledThreadPoolExecutor = BaseManager.getScheduledThreadPoolExecutor();
-
-
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                Looper.prepare();
-                Toast.makeText(mContext, R.string.app_run_with_error, Toast.LENGTH_LONG).show();
-                Looper.loop();
-            }
-        };
-        //使用Toast来显示异常信息
-        scheduledThreadPoolExecutor.schedule(runnable, 0, TimeUnit.MILLISECONDS);
-        //收集设备参数信息
-        collectDeviceInfo(mContext);
-        //保存日志文件
-        saveCrashInfo2File(ex);
-        if (onExceptionListener != null) {
-            onExceptionListener.onException(ex);
-        }
-        return true;
-    }
+    private final Map<String, String> stringStringHashMap = new HashMap<>();
 
     /*--------------------------------静态常量--------------------------------*/
 
@@ -90,10 +61,56 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      * 程序的Context对象
      */
     private Context mContext;
+
     /**
-     * 用来存储设备信息和异常信息
+     * 自定义错误处理,收集错误信息 发送错误报告等操作均在此完成.
+     *
+     * @param ex 错误
+     * @return true:如果处理了该异常信息;否则返回false.
      */
-    private Map<String, String> stringStringHashMap = new HashMap<>();
+    private boolean handleException(@Nullable final Throwable ex) {
+        if (ex == null) {
+            return false;
+        }
+
+        //收集设备参数信息
+        collectDeviceInfo(mContext);
+        //保存日志文件
+        saveCrashInfo2File(ex);
+
+
+        if (onExceptionListener != null) {
+            ScheduledExecutorService scheduledExecutorService = BaseManager.newScheduledExecutorService(1);
+            scheduledExecutorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    Looper.prepare();
+                    onExceptionListener.onException(ex);
+                    Looper.loop();
+                }
+            });
+        } else {
+            ScheduledExecutorService scheduledThreadPoolExecutor = BaseManager.getScheduledThreadPoolExecutor();
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    Looper.prepare();
+                    Toast.makeText(mContext, R.string.app_run_with_error, Toast.LENGTH_LONG).show();
+                    Looper.loop();
+                }
+            };
+            //使用Toast来显示异常信息
+            scheduledThreadPoolExecutor.schedule(runnable, 0, TimeUnit.MILLISECONDS);
+            BaseManager.getHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Tool.exitProcess(1);
+
+                }
+            }, 2000);
+        }
+        return true;
+    }
 
     /**
      * 用于格式化日期,作为日志文件名的一部分

@@ -1,8 +1,13 @@
 package com.sscl.baselibrary.receiver;
 
+import android.app.job.JobScheduler;
+import android.app.job.JobService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,7 +34,7 @@ public class HomeWatcherReceiver extends BroadcastReceiver {
     /**
      * HomeWatcher弱引用
      */
-    private WeakReference<HomeWatcher> homeWatcherWeakReference;
+    private final WeakReference<HomeWatcher> homeWatcherWeakReference;
 
     /**
      * Home键的监听
@@ -55,7 +60,7 @@ public class HomeWatcherReceiver extends BroadcastReceiver {
      * BroadcastReceiver to view/modify the current result values.  This method
      * is always called within the main thread of its process, unless you
      * explicitly asked for it to be scheduled on a different thread using
-     * {@link Context#registerReceiver(BroadcastReceiver, * IntentFilter, String, Handler)}. When it runs on the main
+     * {@link Context#registerReceiver(BroadcastReceiver, IntentFilter, String, Handler)}. When it runs on the main
      * thread you should
      * never perform long-running operations in it (there is a timeout of
      * 10 seconds that the system allows before considering the receiver to
@@ -84,10 +89,9 @@ public class HomeWatcherReceiver extends BroadcastReceiver {
      * @param context The Context in which the receiver is running.
      * @param intent  The Intent being received.
      */
-    @SuppressWarnings({"JavadocReference", "JavaDoc"})
     @Override
-    public void onReceive(@Nullable Context context,@Nullable Intent intent) {
-        if (intent == null){
+    public void onReceive(@Nullable Context context, @Nullable Intent intent) {
+        if (intent == null) {
             return;
         }
         String action = intent.getAction();
