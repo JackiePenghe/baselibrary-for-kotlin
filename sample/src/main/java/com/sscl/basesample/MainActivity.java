@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.receiver.ScreenStatusReceiver;
 import com.sscl.baselibrary.utils.DebugUtil;
+import com.sscl.baselibrary.utils.SharedPreferencesTools;
 import com.sscl.baselibrary.utils.Tool;
 import com.sscl.basesample.activities.WidgetActivity;
 import com.sscl.basesample.activities.sample.AllPurposeAdapterActivity;
@@ -46,7 +47,7 @@ public class MainActivity extends BaseAppCompatActivity {
     private Button bannerBtn;
     private Button webViewBtn;
 
-    private View.OnClickListener onClickListener = view -> {
+    private final View.OnClickListener onClickListener = view -> {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.all_purpose_adapter:
@@ -98,7 +99,7 @@ public class MainActivity extends BaseAppCompatActivity {
             startActivity(intent);
         }
     };
-    private ScreenStatusReceiver.OnScreenStatusChangedListener onScreenStatusChangedListener = new ScreenStatusReceiver.OnScreenStatusChangedListener() {
+    private final ScreenStatusReceiver.OnScreenStatusChangedListener onScreenStatusChangedListener = new ScreenStatusReceiver.OnScreenStatusChangedListener() {
         @Override
         public void onScreenOn() {
             DebugUtil.warnOut(TAG, "屏幕开启");
@@ -205,6 +206,9 @@ public class MainActivity extends BaseAppCompatActivity {
     protected void doAfterAll() {
         Tool.startScreenStatusListener(this);
         Tool.setOnScreenStatusChangedListener(onScreenStatusChangedListener);
+        SharedPreferencesTools.getInstance(this, "Test").putValue("booleana", true);
+        boolean value = SharedPreferencesTools.getInstance(this, "Test").getValue("booleana", false);
+        DebugUtil.warnOut(TAG, "value = " + value);
     }
 
     /**

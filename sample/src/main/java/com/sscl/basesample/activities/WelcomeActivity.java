@@ -92,7 +92,6 @@ public class WelcomeActivity extends BaseWelcomeActivity {
         LogCatHelper.getInstance(this).init();
         CrashHandler.getInstance().init(WelcomeActivity.this.getApplicationContext(), true);
         MyApplication.initCrashListener();
-        int i = 1 / 0;
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
