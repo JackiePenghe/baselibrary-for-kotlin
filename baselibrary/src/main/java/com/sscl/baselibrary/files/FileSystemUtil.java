@@ -57,6 +57,13 @@ public class FileSystemUtil {
         return openSystemFile(activity, requestCode, fileType.getValue());
     }
 
+    /*--------------------------------私有静态变量--------------------------------*/
+
+    /**
+     * 文件选择路径
+     */
+    private static OnFileSelectedListener onFileSelectedListener;
+
     /*--------------------------------公开静态方法--------------------------------*/
 
     /**
@@ -162,6 +169,14 @@ public class FileSystemUtil {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public static void onActivityResult(Context context, int requestCode, int resultCode, Intent data) {
+        Uri uri = FileSystemUtil.getSelectFileUri(data);
+        String filePath = FileSystemUtil.getSelectFilePath(context, data);
+        if (onFileSelectedListener != null) {
+            onFileSelectedListener.fileSelected(requestCode, uri, filePath);
         }
     }
 
@@ -524,6 +539,24 @@ public class FileSystemUtil {
             return 0;
         }
         return 0;
+    }
+
+    public static void setOnFileSelectedListener(OnFileSelectedListener onFileSelectedListener) {
+        FileSystemUtil.onFileSelectedListener = onFileSelectedListener;
+    }
+
+    /*--------------------------------接口定义--------------------------------*/
+
+    public interface OnFileSelectedListener {
+
+        /**
+         * 选择的文件的路径
+         *
+         * @param requestCode 请求码
+         * @param uri         文件URI
+         * @param filePath    文件路径
+         */
+        void fileSelected(int requestCode, Uri uri, String filePath);
     }
 
     /*--------------------------------私有静态方法--------------------------------*/

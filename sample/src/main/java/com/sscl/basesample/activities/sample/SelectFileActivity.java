@@ -41,22 +41,32 @@ public class SelectFileActivity extends BaseAppCompatActivity {
     /**
      * 点击事件的监听
      */
-    private View.OnClickListener onClickListener = new View.OnClickListener() {
+    private final View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.select_any_file:
-                    selectAnyFile();
-                    break;
-                case R.id.select_text_file:
-                    selectTextFile();
-                    break;
-                case R.id.select_binary_file:
-                    selectBinaryFile();
-                    break;
-                default:
-                    break;
+            int id = v.getId();
+            if (id == R.id.select_any_file) {
+                selectAnyFile();
+            } else if (id == R.id.select_text_file) {
+                selectTextFile();
+            } else if (id == R.id.select_binary_file) {
+                selectBinaryFile();
             }
+        }
+    };
+    private final FileSystemUtil.OnFileSelectedListener onFileSelectedListener = (requestCode, uri, filePath) -> {
+        switch (requestCode) {
+            case SELECT_ANY_FILE:
+                showDialog(getString(R.string.select_any_file), filePath, uri);
+                break;
+            case SELECT_TEXT_FILE:
+                showDialog(getString(R.string.select_text_file), filePath, uri);
+                break;
+            case SELECT_BINARY_FILE:
+                showDialog(getString(R.string.select_binary_file), filePath, uri);
+                break;
+            default:
+                break;
         }
     };
 
@@ -128,6 +138,7 @@ public class SelectFileActivity extends BaseAppCompatActivity {
         selectAnyFileBtn.setOnClickListener(onClickListener);
         selectTextFileBtn.setOnClickListener(onClickListener);
         selectBinaryFileBtn.setOnClickListener(onClickListener);
+        FileSystemUtil.setOnFileSelectedListener(onFileSelectedListener);
     }
 
     /**
@@ -169,20 +180,8 @@ public class SelectFileActivity extends BaseAppCompatActivity {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        switch (requestCode) {
-            case SELECT_ANY_FILE:
-                getSelectAnyFileResult(data);
-                break;
-            case SELECT_TEXT_FILE:
-                getSelectTextFileResult(data);
-                break;
-            case SELECT_BINARY_FILE:
-                getSelectBinaryFileResult(data);
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-                break;
-        }
+        super.onActivityResult(requestCode, resultCode, data);
+        FileSystemUtil.onActivityResult(this, requestCode, resultCode, data);
     }
 
     /**
@@ -222,24 +221,6 @@ public class SelectFileActivity extends BaseAppCompatActivity {
         if (!succeed) {
             ToastUtil.toastLong(this, R.string.open_file_manager_failed);
         }
-    }
-
-    private void getSelectAnyFileResult(Intent data) {
-        Uri uri = FileSystemUtil.getSelectFileUri(data);
-        String filePath = FileSystemUtil.getSelectFilePath(this, data);
-        showDialog(getString(R.string.select_any_file), filePath, uri);
-    }
-
-    private void getSelectTextFileResult(Intent data) {
-        Uri uri = FileSystemUtil.getSelectFileUri(data);
-        String filePath = FileSystemUtil.getSelectFilePath(this, data);
-        showDialog(getString(R.string.select_text_file), filePath, uri);
-    }
-
-    private void getSelectBinaryFileResult(Intent data) {
-        Uri uri = FileSystemUtil.getSelectFileUri(data);
-        String filePath = FileSystemUtil.getSelectFilePath(this, data);
-        showDialog(getString(R.string.select_binary_file), filePath, uri);
     }
 
     /**
