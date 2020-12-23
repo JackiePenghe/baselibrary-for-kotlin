@@ -17,6 +17,9 @@ import com.sscl.baselibrary.utils.DebugUtil;
 import com.sscl.baselibrary.utils.ToastUtil;
 import com.sscl.basesample.R;
 
+/**
+ * @author jackie
+ */
 public class SelectFileActivity extends BaseAppCompatActivity {
 
     private static final int SELECT_ANY_FILE = 1;
@@ -41,17 +44,14 @@ public class SelectFileActivity extends BaseAppCompatActivity {
     /**
      * 点击事件的监听
      */
-    private final View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            int id = v.getId();
-            if (id == R.id.select_any_file) {
-                selectAnyFile();
-            } else if (id == R.id.select_text_file) {
-                selectTextFile();
-            } else if (id == R.id.select_binary_file) {
-                selectBinaryFile();
-            }
+    private final View.OnClickListener onClickListener = v -> {
+        int id = v.getId();
+        if (id == R.id.select_any_file) {
+            selectAnyFile();
+        } else if (id == R.id.select_text_file) {
+            selectTextFile();
+        } else if (id == R.id.select_binary_file) {
+            selectBinaryFile();
         }
     };
     private final FileSystemUtil.OnFileSelectedListener onFileSelectedListener = (requestCode, uri, filePath) -> {
