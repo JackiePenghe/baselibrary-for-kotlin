@@ -22,7 +22,7 @@ import com.sscl.basesample.activities.sample.SampleBaseAppcompatActivity;
 import com.sscl.basesample.activities.sample.SampleBaseDrawerActivity;
 import com.sscl.basesample.activities.sample.SampleBaseFragmentActivity;
 import com.sscl.basesample.activities.sample.SampleBasePopupWindowActivity;
-import com.sscl.basesample.activities.sample.SampleWebViewActivityActivity;
+import com.sscl.basesample.activities.sample.SampleWebViewActivity;
 import com.sscl.basesample.activities.sample.SelectFileActivity;
 import com.sscl.basesample.activities.sample.ToastTestActivity;
 
@@ -90,7 +90,7 @@ public class MainActivity extends BaseAppCompatActivity {
                 intent = new Intent(MainActivity.this, SampleBannerActivity.class);
                 break;
             case R.id.web_view:
-                intent = new Intent(MainActivity.this, SampleWebViewActivityActivity.class);
+                intent = new Intent(MainActivity.this, SampleWebViewActivity.class);
                 break;
             default:
                 break;

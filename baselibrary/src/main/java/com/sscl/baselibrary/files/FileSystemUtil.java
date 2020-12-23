@@ -207,9 +207,23 @@ public class FileSystemUtil {
         OCTET_STREAM_FILE("application/octet-stream"),
 
         /**
+         * 图片格式的文件
+         */
+        IMAGE_FILE("image/*"),
+
+        /**
          * .bmp 格式的文件
          */
         BMP_FILE("image/bmp"),
+
+        /**
+         * .jpeg .jpg 格式的文件
+         */
+        JPEG_FILE("image/jpeg"),
+        /**
+         * .png格式的文件
+         */
+        PNG_FILE("image/png"),
 
         /**
          * .txt .c .conf .cpp .h .log .prop .rc .sh .xml 格式的文件
@@ -250,11 +264,6 @@ public class FileSystemUtil {
          * .jar .java 格式的文件
          */
         JAVA_FILE("application/java-archive"),
-
-        /**
-         * .jpeg .jpg 格式的文件
-         */
-        JPEG_FILE("image/jpeg"),
 
         /**
          * .js格式的文件
@@ -323,10 +332,6 @@ public class FileSystemUtil {
          * .pdf格式的文件
          */
         PDF_FILE("application/pdf"),
-        /**
-         * .png格式的文件
-         */
-        PNG_FILE("image/png"),
         /**
          * .ppt .pps格式的文件
          */

@@ -25,6 +25,7 @@ public class SelectFileActivity extends BaseAppCompatActivity {
     private static final int SELECT_ANY_FILE = 1;
     private static final int SELECT_TEXT_FILE = 2;
     private static final int SELECT_BINARY_FILE = 3;
+    private static final int SELECT_IMAGE_FILE = 4;
     private static final String TAG = SelectFileActivity.class.getSimpleName();
     /**
      * 选择任意文件
@@ -40,7 +41,6 @@ public class SelectFileActivity extends BaseAppCompatActivity {
      * 选择二进制文件
      */
     private Button selectBinaryFileBtn;
-
     /**
      * 点击事件的监听
      */
@@ -52,6 +52,8 @@ public class SelectFileActivity extends BaseAppCompatActivity {
             selectTextFile();
         } else if (id == R.id.select_binary_file) {
             selectBinaryFile();
+        } else if (id == R.id.select_image_file) {
+            selectImageFile();
         }
     };
     private final FileSystemUtil.OnFileSelectedListener onFileSelectedListener = (requestCode, uri, filePath) -> {
@@ -65,10 +67,17 @@ public class SelectFileActivity extends BaseAppCompatActivity {
             case SELECT_BINARY_FILE:
                 showDialog(getString(R.string.select_binary_file), filePath, uri);
                 break;
+            case SELECT_IMAGE_FILE:
+                showDialog(getString(R.string.select_image_file), filePath, uri);
+                break;
             default:
                 break;
         }
     };
+    /**
+     * 选择图片文件
+     */
+    private Button selectImageFileBtn;
 
     /**
      * 标题栏的返回按钮被按下的时候回调此方法
@@ -112,6 +121,7 @@ public class SelectFileActivity extends BaseAppCompatActivity {
         selectAnyFileBtn = findViewById(R.id.select_any_file);
         selectTextFileBtn = findViewById(R.id.select_text_file);
         selectBinaryFileBtn = findViewById(R.id.select_binary_file);
+        selectImageFileBtn = findViewById(R.id.select_image_file);
     }
 
     /**
@@ -138,6 +148,8 @@ public class SelectFileActivity extends BaseAppCompatActivity {
         selectAnyFileBtn.setOnClickListener(onClickListener);
         selectTextFileBtn.setOnClickListener(onClickListener);
         selectBinaryFileBtn.setOnClickListener(onClickListener);
+        selectImageFileBtn.setOnClickListener(onClickListener);
+
         FileSystemUtil.setOnFileSelectedListener(onFileSelectedListener);
     }
 
@@ -218,6 +230,13 @@ public class SelectFileActivity extends BaseAppCompatActivity {
 
     private void selectBinaryFile() {
         boolean succeed = FileSystemUtil.openSystemFile(this, SELECT_BINARY_FILE, FileSystemUtil.FileType.OCTET_STREAM_FILE);
+        if (!succeed) {
+            ToastUtil.toastLong(this, R.string.open_file_manager_failed);
+        }
+    }
+
+    private void selectImageFile() {
+        boolean succeed = FileSystemUtil.openSystemFile(this, SELECT_BINARY_FILE, FileSystemUtil.FileType.IMAGE_FILE);
         if (!succeed) {
             ToastUtil.toastLong(this, R.string.open_file_manager_failed);
         }

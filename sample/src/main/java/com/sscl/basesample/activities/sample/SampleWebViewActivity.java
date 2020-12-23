@@ -19,11 +19,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.sscl.baselibrary.utils.ToastUtil;
 import com.sscl.basesample.R;
 
-public class SampleWebViewActivityActivity extends AppCompatActivity {
+public class SampleWebViewActivity extends AppCompatActivity {
 
-    private String url = "https://baidu.com";
+    //    private String url = "https://baidu.com";
+    private final String url = "http://main.wadd.vip/wdf";
 
-    private View.OnClickListener onClickListener = new View.OnClickListener() {
+    private final View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
@@ -34,7 +35,7 @@ public class SampleWebViewActivityActivity extends AppCompatActivity {
                     if (webView.canGoBack()) {
                         webView.goBack();
                     } else {
-                        ToastUtil.toastLong(SampleWebViewActivityActivity.this, "已是最后一个网页");
+                        ToastUtil.toastLong(SampleWebViewActivity.this, "已是最后一个网页");
                     }
                     break;
                 case R.id.forward:
@@ -44,7 +45,7 @@ public class SampleWebViewActivityActivity extends AppCompatActivity {
                     if (webView.canGoForward()) {
                         webView.goForward();
                     } else {
-                        ToastUtil.toastLong(SampleWebViewActivityActivity.this, "已是最前一个网页");
+                        ToastUtil.toastLong(SampleWebViewActivity.this, "已是最前一个网页");
                     }
                     break;
                 case R.id.refresh:
@@ -70,7 +71,7 @@ public class SampleWebViewActivityActivity extends AppCompatActivity {
     private Button stopBtn;
     private EditText urlEt;
     private WebView webView;
-    private TextView.OnEditorActionListener onEditorActionListener = new TextView.OnEditorActionListener() {
+    private final TextView.OnEditorActionListener onEditorActionListener = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             if (actionId == EditorInfo.IME_ACTION_DONE || event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
@@ -120,10 +121,10 @@ public class SampleWebViewActivityActivity extends AppCompatActivity {
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
                 if (newProgress == 100) {
-                    ToastUtil.toastLong(SampleWebViewActivityActivity.this, "加载完成");
+                    ToastUtil.toastLong(SampleWebViewActivity.this, "加载完成");
                     urlEt.setText(webView.getUrl());
                 } else {
-                    ToastUtil.toastLong(SampleWebViewActivityActivity.this, "正在加载，请等待");
+                    ToastUtil.toastLong(SampleWebViewActivity.this, "正在加载，请等待");
                 }
             }
         };

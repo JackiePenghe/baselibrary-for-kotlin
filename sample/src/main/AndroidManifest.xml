@@ -13,7 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".activities.widget.FlowLayoutActivity" />
-        <activity android:name=".activities.sample.SampleWebViewActivityActivity" />
+        <activity
+            android:name=".activities.sample.SampleWebViewActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar.FullScreen" />
         <activity android:name=".activities.sample.SampleBannerActivity" />
         <activity android:name=".activities.sample.ImageLoaderActivity" />
         <activity android:name=".activities.sample.SelectFileActivity">
