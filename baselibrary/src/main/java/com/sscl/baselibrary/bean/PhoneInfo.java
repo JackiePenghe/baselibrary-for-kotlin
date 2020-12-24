@@ -14,15 +14,15 @@ public class PhoneInfo {
     /**
      * 手机厂商
      */
-    private String manufacturer;
+    private final String manufacturer;
     /**
      * 手机型号
      */
-    private String model;
+    private final String model;
     /**
-     * 手机IMEI
+     * 设备Id
      */
-    private String phoneImei;
+    private final String deviceId;
 
     /*--------------------------------构造方法--------------------------------*/
 
@@ -31,12 +31,12 @@ public class PhoneInfo {
      *
      * @param manufacturer 手机厂商
      * @param model        手机型号
-     * @param phoneImei    手机IMEI
+     * @param deviceId     设备Id
      */
-    public PhoneInfo(@Nullable String manufacturer,@Nullable String model, @Nullable String phoneImei) {
+    public PhoneInfo(@Nullable String manufacturer, @Nullable String model, @Nullable String deviceId) {
         this.manufacturer = manufacturer;
         this.model = model;
-        this.phoneImei = phoneImei;
+        this.deviceId = deviceId;
     }
 
     /*--------------------------------getter--------------------------------*/
@@ -55,7 +55,7 @@ public class PhoneInfo {
 
     @SuppressWarnings("unused")
     @Nullable
-    public String getPhoneImei() {
-        return phoneImei;
+    public String getDeviceId() {
+        return deviceId;
     }
 }

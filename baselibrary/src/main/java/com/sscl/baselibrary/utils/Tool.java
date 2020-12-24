@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Build;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.TypedValue;
 import android.view.View;
@@ -227,9 +228,9 @@ public class Tool {
      * @param context 上下文
      * @return 本机信息
      */
+    @SuppressLint("HardwareIds")
     @SuppressWarnings("unused")
     @Nullable
-    @SuppressLint("HardwareIds")
     public static PhoneInfo getPhoneInfo(@NonNull Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int selfPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE);
@@ -241,15 +242,17 @@ public class Tool {
         if (telephonyManager == null) {
             return null;
         }
-        String phoneImei;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            phoneImei = telephonyManager.getImei();
+        String deviceId;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            deviceId = Settings.System.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            deviceId = telephonyManager.getImei();
         } else {
-            phoneImei = telephonyManager.getDeviceId();
+            deviceId = telephonyManager.getDeviceId();
         }
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
-        return new PhoneInfo(manufacturer, model, phoneImei);
+        return new PhoneInfo(manufacturer, model, deviceId);
     }
 
     /**
