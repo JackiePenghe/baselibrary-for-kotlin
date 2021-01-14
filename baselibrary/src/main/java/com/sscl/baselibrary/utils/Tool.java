@@ -201,6 +201,45 @@ public class Tool {
     }
 
     /**
+     * 获取系统抛出的异常的详细信息
+     *
+     * @param throwable 系统抛出的异常
+     * @return 系统抛出的异常的详细信息
+     */
+    public static String getExceptionDetailsInfo(@NonNull Throwable throwable) {
+        String message = throwable.getMessage();
+        StackTraceElement[] stackTrace = throwable.getStackTrace();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(message);
+        for (StackTraceElement traceElement : stackTrace) {
+            stringBuilder.append("\nat ").append(traceElement.toString());
+        }
+        stringBuilder.append("\n");
+        stringBuilder.append("suppressed:\n");
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+            Throwable[] suppressed = throwable.getSuppressed();
+            // Print suppressed exceptions, if any
+            for (Throwable se : suppressed) {
+                for (StackTraceElement traceElement : se.getStackTrace()) {
+                    stringBuilder.append("\nat ").append(traceElement.toString());
+                }
+                stringBuilder.append("\n");
+            }
+        }
+        stringBuilder.append("\n");
+        stringBuilder.append("cause:\n");
+        Throwable ourCause = throwable.getCause();
+        if (ourCause != null) {
+            stringBuilder.append(ourCause);
+            for (StackTraceElement traceElement : ourCause.getStackTrace()) {
+                stringBuilder.append("\nat ").append(traceElement.toString());
+            }
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
      * 从粘贴板获取文本
      *
      * @param context 上下文

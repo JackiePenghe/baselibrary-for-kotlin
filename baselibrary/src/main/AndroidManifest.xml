@@ -4,23 +4,35 @@
 
     <!--网络权限-->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!--SD卡读写权限-->
+
+    <!--SD卡挂载与卸载权限-->
     <uses-permission
         android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
         tools:ignore="ProtectedPermissions" />
+
+    <!--SD卡读权限-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <!--SD卡写权限-->
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
 
-    <!--手机信息读取权限-->
+    <!--读取手机状态权限-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+    <!--读取特殊手机状态的权限-->
     <uses-permission
         android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
         tools:ignore="ProtectedPermissions" />
 
+    <!--访问wifi状态的权限-->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!--获取程序日志信息的权限-->
+    <uses-permission
+        android:name="android.permission.READ_LOGS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:networkSecurityConfig="@xml/network_security_config"
