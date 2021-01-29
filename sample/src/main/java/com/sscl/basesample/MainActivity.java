@@ -206,7 +206,7 @@ public class MainActivity extends BaseAppCompatActivity {
     protected void doAfterAll() {
         Tool.startScreenStatusListener(this);
         Tool.setOnScreenStatusChangedListener(onScreenStatusChangedListener);
-        SharedPreferencesTools.getInstance(this, "Test").putValue("booleana", true);
+        SharedPreferencesTools.getInstance(this, "Test").putValueApply("boolean", true);
         boolean value = SharedPreferencesTools.getInstance(this, "Test").getValue("booleana", false);
         DebugUtil.warnOut(TAG, "value = " + value);
     }

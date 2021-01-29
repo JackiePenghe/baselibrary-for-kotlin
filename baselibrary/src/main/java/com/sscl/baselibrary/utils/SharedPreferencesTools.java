@@ -1,6 +1,7 @@
 package com.sscl.baselibrary.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
@@ -20,14 +21,12 @@ public class SharedPreferencesTools {
 
     /*--------------------------------成员变量-------------------------------*/
 
-    private final Context context;
-    private final String fileName;
+    private final SharedPreferences sharedPreferences;
 
     /*--------------------------------构造方法--------------------------------*/
 
     private SharedPreferencesTools(@NonNull Context context, String fileName) {
-        this.context = context.getApplicationContext();
-        this.fileName = fileName;
+        sharedPreferences = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
     }
 
     /*--------------------------------公开静态方法--------------------------------*/
@@ -57,8 +56,8 @@ public class SharedPreferencesTools {
      * @param key   Key
      * @param value 数据
      */
-    public void putValue(@NonNull String key, String value) {
-        context.getSharedPreferences(fileName, Context.MODE_PRIVATE).edit().putString(key, value).apply();
+    public void putValueApply(@NonNull String key, String value) {
+        sharedPreferences.edit().putString(key, value).apply();
     }
 
     /**
@@ -70,7 +69,7 @@ public class SharedPreferencesTools {
      * to persistent storage.
      */
     public boolean putValueImmediately(@NonNull String key, String value) {
-        return context.getSharedPreferences(fileName, Context.MODE_PRIVATE).edit().putString(key, value).commit();
+        return sharedPreferences.edit().putString(key, value).commit();
     }
 
     /**
@@ -79,8 +78,8 @@ public class SharedPreferencesTools {
      * @param key   Key
      * @param value 数据
      */
-    public void putValue(@NonNull String key, boolean value) {
-        context.getSharedPreferences(fileName, Context.MODE_PRIVATE).edit().putBoolean(key, value).apply();
+    public void putValueApply(@NonNull String key, boolean value) {
+        sharedPreferences.edit().putBoolean(key, value).apply();
     }
 
     /**
@@ -92,7 +91,7 @@ public class SharedPreferencesTools {
      * to persistent storage.
      */
     public boolean putValueImmediately(@NonNull String key, boolean value) {
-        return context.getSharedPreferences(fileName, Context.MODE_PRIVATE).edit().putBoolean(key, value).commit();
+        return sharedPreferences.edit().putBoolean(key, value).commit();
     }
 
     /**
@@ -101,8 +100,8 @@ public class SharedPreferencesTools {
      * @param key   Key
      * @param value 数据
      */
-    public void putValue(@NonNull String key, float value) {
-        context.getSharedPreferences(fileName, Context.MODE_PRIVATE).edit().putFloat(key, value).apply();
+    public void putValueApply(@NonNull String key, float value) {
+        sharedPreferences.edit().putFloat(key, value).apply();
     }
 
     /**
@@ -114,7 +113,7 @@ public class SharedPreferencesTools {
      * to persistent storage.
      */
     public boolean putValueImmediately(@NonNull String key, float value) {
-        return context.getSharedPreferences(fileName, Context.MODE_PRIVATE).edit().putFloat(key, value).commit();
+        return sharedPreferences.edit().putFloat(key, value).commit();
     }
 
     /**
@@ -123,8 +122,8 @@ public class SharedPreferencesTools {
      * @param key   Key
      * @param value 数据
      */
-    public void putValue(@NonNull String key, int value) {
-        context.getSharedPreferences(fileName, Context.MODE_PRIVATE).edit().putInt(key, value).apply();
+    public void putValueApply(@NonNull String key, int value) {
+        sharedPreferences.edit().putInt(key, value).apply();
     }
 
     /**
@@ -136,7 +135,7 @@ public class SharedPreferencesTools {
      * to persistent storage.
      */
     public boolean putValueImmediately(@NonNull String key, int value) {
-        return context.getSharedPreferences(fileName, Context.MODE_PRIVATE).edit().putInt(key, value).commit();
+        return sharedPreferences.edit().putInt(key, value).commit();
     }
 
     /**
@@ -145,8 +144,8 @@ public class SharedPreferencesTools {
      * @param key   Key
      * @param value 数据
      */
-    public void putValue(@NonNull String key, long value) {
-        context.getSharedPreferences(fileName, Context.MODE_PRIVATE).edit().putLong(key, value).apply();
+    public void putValueApply(@NonNull String key, long value) {
+        sharedPreferences.edit().putLong(key, value).apply();
     }
 
     /**
@@ -158,7 +157,7 @@ public class SharedPreferencesTools {
      * to persistent storage.
      */
     public boolean putValueImmediately(@NonNull String key, long value) {
-        return context.getSharedPreferences(fileName, Context.MODE_PRIVATE).edit().putLong(key, value).commit();
+        return sharedPreferences.edit().putLong(key, value).commit();
     }
 
     /**
@@ -167,8 +166,8 @@ public class SharedPreferencesTools {
      * @param key   Key
      * @param value 数据
      */
-    public void putValue(@NonNull String key, Set<String> value) {
-        context.getSharedPreferences(fileName, Context.MODE_PRIVATE).edit().putStringSet(key, value).apply();
+    public void putValueApply(@NonNull String key, Set<String> value) {
+        sharedPreferences.edit().putStringSet(key, value).apply();
     }
 
     /**
@@ -180,7 +179,7 @@ public class SharedPreferencesTools {
      * to persistent storage.
      */
     public boolean putValueImmediately(@NonNull String key, Set<String> value) {
-        return context.getSharedPreferences(fileName, Context.MODE_PRIVATE).edit().putStringSet(key, value).commit();
+        return sharedPreferences.edit().putStringSet(key, value).commit();
     }
 
     /**
@@ -191,7 +190,7 @@ public class SharedPreferencesTools {
      * @return 字符串数据
      */
     public String getValue(@NonNull String key, String defaultValue) {
-        return context.getSharedPreferences(fileName, Context.MODE_PRIVATE).getString(key, defaultValue);
+        return sharedPreferences.getString(key, defaultValue);
     }
 
     /**
@@ -202,7 +201,7 @@ public class SharedPreferencesTools {
      * @return 布尔数据
      */
     public boolean getValue(@NonNull String key, boolean defaultValue) {
-        return context.getSharedPreferences(fileName, Context.MODE_PRIVATE).getBoolean(key, defaultValue);
+        return sharedPreferences.getBoolean(key, defaultValue);
     }
 
     /**
@@ -213,7 +212,7 @@ public class SharedPreferencesTools {
      * @return 浮点数据
      */
     public float getValue(@NonNull String key, float defaultValue) {
-        return context.getSharedPreferences(fileName, Context.MODE_PRIVATE).getFloat(key, defaultValue);
+        return sharedPreferences.getFloat(key, defaultValue);
     }
 
     /**
@@ -224,7 +223,7 @@ public class SharedPreferencesTools {
      * @return 整形数据
      */
     public int getValue(@NonNull String key, int defaultValue) {
-        return context.getSharedPreferences(fileName, Context.MODE_PRIVATE).getInt(key, defaultValue);
+        return sharedPreferences.getInt(key, defaultValue);
     }
 
     /**
@@ -235,7 +234,7 @@ public class SharedPreferencesTools {
      * @return 长整形数据
      */
     public long getValue(@NonNull String key, long defaultValue) {
-        return context.getSharedPreferences(fileName, Context.MODE_PRIVATE).getLong(key, defaultValue);
+        return sharedPreferences.getLong(key, defaultValue);
     }
 
     /**
@@ -246,7 +245,7 @@ public class SharedPreferencesTools {
      * @return 长整形数据
      */
     public Set<String> getValue(@NonNull String key, Set<String> defaultValue) {
-        return context.getSharedPreferences(fileName, Context.MODE_PRIVATE).getStringSet(key, defaultValue);
+        return sharedPreferences.getStringSet(key, defaultValue);
     }
 
     /**
@@ -255,6 +254,6 @@ public class SharedPreferencesTools {
      * @return 数据集合
      */
     public Map<String, ?> getAll() {
-        return context.getSharedPreferences(fileName, Context.MODE_PRIVATE).getAll();
+        return sharedPreferences.getAll();
     }
 } 
