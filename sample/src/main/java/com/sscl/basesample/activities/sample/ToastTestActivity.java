@@ -25,7 +25,7 @@ public class ToastTestActivity extends BaseAppCompatActivity {
     private Button time500Btn;
 
     private RadioGroup reuseRadioGroup;
-    private View.OnClickListener onClickListener = v -> {
+    private final View.OnClickListener onClickListener = v -> {
         switch (v.getId()) {
             case R.id.long_time:
                 ToastUtil.toastLong(ToastTestActivity.this, R.string.long_time);
@@ -43,7 +43,7 @@ public class ToastTestActivity extends BaseAppCompatActivity {
                 break;
         }
     };
-    private RadioGroup.OnCheckedChangeListener onCheckedChangeListener = (group, checkedId) -> {
+    private final RadioGroup.OnCheckedChangeListener onCheckedChangeListener = (group, checkedId) -> {
         //noinspection SwitchStatementWithTooFewBranches
         switch (group.getId()) {
             case R.id.reuse_toast_group:

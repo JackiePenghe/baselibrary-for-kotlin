@@ -25,7 +25,7 @@ public class ImageNetworkAsyncTask extends AsyncTask<String, Object, File> {
     /**
      * 图片文件下载路径
      */
-    private File file;
+    private final File file;
 
     /*--------------------------------构造方法--------------------------------*/
 

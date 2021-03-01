@@ -32,8 +32,8 @@ import java.util.Collections;
  */
 public class LogCatHelper {
     private static LogCatHelper instance = null;
-    private String dirPath;//保存路径
-    private int appid;//应用pid
+    private final String dirPath;//保存路径
+    private final int appid;//应用pid
     private Thread logThread;
 
     private LogCatHelper(Context mContext, String path) {
@@ -101,8 +101,11 @@ public class LogCatHelper {
         if (logThread == null) {
             logThread = BaseManager.getThreadFactory().newThread(new LogRunnable(appid, dirPath));
         }
-        logThread.start();
-
+        try {
+            logThread.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean DeleteOverdueLogFile(String PATH) {
@@ -136,8 +139,8 @@ public class LogCatHelper {
         private Process mProcess;
         private FileOutputStream fos;
         private BufferedReader mReader;
-        private String cmds;
-        private String mPid;
+        private final String cmds;
+        private final String mPid;
 
         private LogRunnable(int pid, String dirPath) {
             this.mPid = "" + pid;

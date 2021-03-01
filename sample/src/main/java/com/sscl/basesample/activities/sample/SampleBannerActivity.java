@@ -21,9 +21,9 @@ public class SampleBannerActivity extends BaseAppCompatActivity {
     private static final String TAG = SampleBannerActivity.class.getSimpleName();
     private Banner banner;
 
-    private ArrayList<String> bannerData = new ArrayList<>();
+    private final ArrayList<String> bannerData = new ArrayList<>();
 
-    private BannerAdapter bannerAdapter = new BannerAdapter();
+    private final BannerAdapter bannerAdapter = new BannerAdapter();
 
     /**
      * 标题栏的返回按钮被按下的时候回调此方法

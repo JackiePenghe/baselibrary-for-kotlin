@@ -32,7 +32,7 @@ public class UdpBroadcastUtil {
     /**
      * 上下文
      */
-    private Context mContext;
+    private final Context mContext;
     /**
      * 数据发送目标端口
      */

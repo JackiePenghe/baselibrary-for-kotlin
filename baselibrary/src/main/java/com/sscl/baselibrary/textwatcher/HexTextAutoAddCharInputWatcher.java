@@ -55,7 +55,7 @@ public class HexTextAutoAddCharInputWatcher implements TextWatcher {
      */
     private boolean mFormat;
 
-    private int maxInput;
+    private final int maxInput;
 
     /**
      * 输入的字符是否有效
@@ -75,14 +75,14 @@ public class HexTextAutoAddCharInputWatcher implements TextWatcher {
     /**
      * The editText to edit text.
      */
-    private EditText mEditText;
+    private final EditText mEditText;
 
     /**
      * the characters
      */
-    private String character;
+    private final String character;
 
-    private int byteSize = 3;
+    private final int byteSize = 3;
 
     /*--------------------------构造方法--------------------------*/
 

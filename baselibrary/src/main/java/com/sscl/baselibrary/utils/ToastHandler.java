@@ -42,7 +42,7 @@ class ToastHandler extends Handler {
     /**
      * 上下文
      */
-    private Context context;
+    private final Context context;
     /**
      * Toast实例
      */

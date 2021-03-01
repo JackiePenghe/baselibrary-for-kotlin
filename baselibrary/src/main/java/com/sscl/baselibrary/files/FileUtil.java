@@ -454,4 +454,33 @@ public class FileUtil {
         }
         return true;
     }
+
+    /**
+     * 删除一个目录
+     *
+     * @param dir 目录
+     */
+    public static void deleteDirFiles(File dir) {
+        if (dir == null) {
+            return;
+        }
+        if (!dir.exists()) {
+            return;
+        }
+        if (!dir.isDirectory()) {
+            return;
+        }
+        File[] files = dir.listFiles();
+        if (files == null) {
+            return;
+        }
+        for (File file : files) {
+            if (file.isFile()) {
+                file.delete(); // 删除所有文件
+            } else if (file.isDirectory()) {
+                deleteDirFiles(file); //递规的方式删除文件夹
+            }
+        }
+        dir.delete();// 删除目录本身
+    }
 }

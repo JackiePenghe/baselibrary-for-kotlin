@@ -20,11 +20,11 @@ public class BitmapLoader implements Runnable {
     /**
      * 位图图像Holder弱引用
      */
-    private WeakReference<BitmapHolder> bitmapHolderWeakReference;
+    private final WeakReference<BitmapHolder> bitmapHolderWeakReference;
     /**
      * ImageLoader弱引用
      */
-    private WeakReference<ImageLoader> imageLoaderWeakReference;
+    private final WeakReference<ImageLoader> imageLoaderWeakReference;
 
     /*--------------------------------构造方法--------------------------------*/
 

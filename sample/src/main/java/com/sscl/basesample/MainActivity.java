@@ -49,51 +49,35 @@ public class MainActivity extends BaseAppCompatActivity {
 
     private final View.OnClickListener onClickListener = view -> {
         Intent intent = null;
-        switch (view.getId()) {
-            case R.id.all_purpose_adapter:
-                intent = new Intent(MainActivity.this, AllPurposeAdapterActivity.class);
-                break;
-            case R.id.base_appcompat_activity:
-                intent = new Intent(MainActivity.this, SampleBaseAppcompatActivity.class);
-                break;
-            case R.id.base_drawer_activity:
-                intent = new Intent(MainActivity.this, SampleBaseDrawerActivity.class);
-                break;
-            case R.id.base_fragment:
-                intent = new Intent(MainActivity.this, SampleBaseFragmentActivity.class);
-                break;
-            case R.id.base_popup_window:
-                intent = new Intent(MainActivity.this, SampleBasePopupWindowActivity.class);
-                break;
-            case R.id.home_watcher:
-                intent = new Intent(MainActivity.this, HomeWatcherActivity.class);
-                break;
-            case R.id.toast_test:
-                intent = new Intent(MainActivity.this, ToastTestActivity.class);
-                break;
-            case R.id.title_left_text:
-                DebugUtil.warnOut(TAG, "文字左被点击");
-                break;
-            case R.id.title_right_text:
-                DebugUtil.warnOut(TAG, "文字右被点击");
-                break;
-            case R.id.widget:
-                intent = new Intent(MainActivity.this, WidgetActivity.class);
-                break;
-            case R.id.select_file:
-                intent = new Intent(MainActivity.this, SelectFileActivity.class);
-                break;
-            case R.id.image_loader:
-                intent = new Intent(MainActivity.this, ImageLoaderActivity.class);
-                break;
-            case R.id.banner:
-                intent = new Intent(MainActivity.this, SampleBannerActivity.class);
-                break;
-            case R.id.web_view:
-                intent = new Intent(MainActivity.this, SampleWebViewActivity.class);
-                break;
-            default:
-                break;
+        int id = view.getId();
+        if (id == R.id.all_purpose_adapter) {
+            intent = new Intent(MainActivity.this, AllPurposeAdapterActivity.class);
+        } else if (id == R.id.base_appcompat_activity) {
+            intent = new Intent(MainActivity.this, SampleBaseAppcompatActivity.class);
+        } else if (id == R.id.base_drawer_activity) {
+            intent = new Intent(MainActivity.this, SampleBaseDrawerActivity.class);
+        } else if (id == R.id.base_fragment) {
+            intent = new Intent(MainActivity.this, SampleBaseFragmentActivity.class);
+        } else if (id == R.id.base_popup_window) {
+            intent = new Intent(MainActivity.this, SampleBasePopupWindowActivity.class);
+        } else if (id == R.id.home_watcher) {
+            intent = new Intent(MainActivity.this, HomeWatcherActivity.class);
+        } else if (id == R.id.toast_test) {
+            intent = new Intent(MainActivity.this, ToastTestActivity.class);
+        } else if (id == R.id.title_left_text) {
+            DebugUtil.warnOut(TAG, "文字左被点击");
+        } else if (id == R.id.title_right_text) {
+            DebugUtil.warnOut(TAG, "文字右被点击");
+        } else if (id == R.id.widget) {
+            intent = new Intent(MainActivity.this, WidgetActivity.class);
+        } else if (id == R.id.select_file) {
+            intent = new Intent(MainActivity.this, SelectFileActivity.class);
+        } else if (id == R.id.image_loader) {
+            intent = new Intent(MainActivity.this, ImageLoaderActivity.class);
+        } else if (id == R.id.banner) {
+            intent = new Intent(MainActivity.this, SampleBannerActivity.class);
+        } else if (id == R.id.web_view) {
+            intent = new Intent(MainActivity.this, SampleWebViewActivity.class);
         }
         if (intent != null) {
             startActivity(intent);

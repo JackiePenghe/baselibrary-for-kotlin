@@ -18,15 +18,15 @@ public class BitmapDisplayer implements Runnable {
     /**
      * 位图图像
      */
-    private Bitmap mBitmap;
+    private final Bitmap mBitmap;
     /**
      * ImageLoader弱引用
      */
-    private WeakReference<ImageLoader> imageLoaderWeakReference;
+    private final WeakReference<ImageLoader> imageLoaderWeakReference;
     /**
      * 位图图像Holder
      */
-    private BitmapHolder mBitmapHolder;
+    private final BitmapHolder mBitmapHolder;
 
     /*--------------------------------构造方法--------------------------------*/
 

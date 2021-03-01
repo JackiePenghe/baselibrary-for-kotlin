@@ -51,18 +51,18 @@ public class ImageLoader {
     /**
      * 文件缓存工具
      */
-    private FileCache fileCache;
+    private final FileCache fileCache;
 
     /**
      * 存储图片空间的集合
      */
-    private Map<ImageView, String> imageViews = Collections
+    private final Map<ImageView, String> imageViews = Collections
             .synchronizedMap(new WeakHashMap<ImageView, String>());
 
     /**
      * 线程池
      */
-    private ThreadPoolExecutor threadPoolExecutor;
+    private final ThreadPoolExecutor threadPoolExecutor;
 
     /**
      * 默认图片

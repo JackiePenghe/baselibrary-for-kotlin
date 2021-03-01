@@ -22,15 +22,15 @@ public class HomeWatcher {
     /**
      * 上下文
      */
-    private Context mContext;
+    private final Context mContext;
     /**
      * 广播过滤器
      */
-    private IntentFilter mFilter;
+    private final IntentFilter mFilter;
     /**
      * home键监听的广播接收者
      */
-    private HomeWatcherReceiver mReceiver;
+    private final HomeWatcherReceiver mReceiver;
 
     /*--------------------------------构造方法--------------------------------*/
 

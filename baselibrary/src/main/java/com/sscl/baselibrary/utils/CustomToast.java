@@ -56,7 +56,7 @@ class CustomToast {
     /**
      * 上下文
      */
-    private Context context;
+    private final Context context;
     /**
      * Toast文本内容
      */

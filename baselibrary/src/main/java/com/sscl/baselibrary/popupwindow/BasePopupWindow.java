@@ -1,14 +1,15 @@
 package com.sscl.baselibrary.popupwindow;
 
 import android.content.Context;
-import androidx.annotation.IdRes;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.PopupWindow;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.sscl.baselibrary.utils.BaseManager;
 
@@ -22,7 +23,7 @@ public abstract class BasePopupWindow extends PopupWindow {
 
     /*--------------------------------构造方法--------------------------------*/
 
-    private Context context;
+    private final Context context;
 
     /**
      * <p>Create a new empty, non focusable popup window of dimension (0,0).</p>

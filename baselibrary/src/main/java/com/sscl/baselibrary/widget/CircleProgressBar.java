@@ -82,7 +82,7 @@ public class CircleProgressBar extends View {
      */
     private boolean showText;
     private RectF rectF;
-    private Runnable animateRunnable = new Runnable() {
+    private final Runnable animateRunnable = new Runnable() {
         @Override
         public void run() {
             boolean needPlus;

@@ -1,14 +1,9 @@
 package com.sscl.baselibrary.textwatcher;
 
 
-import android.text.Editable;
-import android.text.InputType;
-import android.text.TextWatcher;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
-
-import com.sscl.baselibrary.utils.DebugUtil;
 
 
 /**

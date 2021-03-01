@@ -5,11 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Lifecycle;
-import androidx.viewpager.widget.PagerAdapter;
 
 /**
  * @author jackie
@@ -21,11 +17,11 @@ public class FragmentViewPagerAdapter extends FragmentStatePagerAdapter {
     /**
      * Fragment数组
      */
-    private Fragment[] fragments;
+    private final Fragment[] fragments;
     /**
      * Fragment数组对应的标题
      */
-    private String[] pageTitles;
+    private final String[] pageTitles;
 
     /*--------------------------------构造方法--------------------------------*/
 

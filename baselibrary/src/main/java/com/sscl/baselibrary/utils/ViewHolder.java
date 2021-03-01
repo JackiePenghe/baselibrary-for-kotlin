@@ -2,13 +2,6 @@ package com.sscl.baselibrary.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import androidx.annotation.ColorInt;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.IdRes;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +10,14 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 import com.sscl.baselibrary.image.ImageLoader;
 
@@ -35,22 +36,22 @@ public class ViewHolder {
     /**
      * 当前位置
      */
-    private int mPosition;
+    private final int mPosition;
 
     /**
      * 根据id将不同的View保存起来
      */
-    private SparseArray<View> viewSparseArray;
+    private final SparseArray<View> viewSparseArray;
 
     /**
      * 当前item的View
      */
-    private View convertView;
+    private final View convertView;
 
     /**
      * 图片加载工具
      */
-    private ImageLoader imageLoader;
+    private final ImageLoader imageLoader;
 
     /*--------------------------------构造函数--------------------------------*/
 

@@ -42,19 +42,19 @@ public class DefaultItemDecoration extends RecyclerView.ItemDecoration {
     /**
      * 颜色图像
      */
-    private Drawable mDivider;
+    private final Drawable mDivider;
     /**
      * 装饰物（分割线）的宽度
      */
-    private int mDividerWidth;
+    private final int mDividerWidth;
     /**
      * 装饰物（分割线）的高度
      */
-    private int mDividerHeight;
+    private final int mDividerHeight;
     /**
      * 保存ViewType集合
      */
-    private List<Integer> mViewTypeList = new ArrayList<>();
+    private final List<Integer> mViewTypeList = new ArrayList<>();
 
     /*--------------------------------构造方法--------------------------------*/
 

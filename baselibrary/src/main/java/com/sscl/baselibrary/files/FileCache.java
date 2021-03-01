@@ -24,7 +24,7 @@ public class FileCache {
     /**
      * 缓存目录
      */
-    private File cacheDir;
+    private final File cacheDir;
 
     /*--------------------------------构造函数--------------------------------*/
 

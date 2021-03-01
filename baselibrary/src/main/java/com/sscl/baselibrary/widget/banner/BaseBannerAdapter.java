@@ -22,7 +22,7 @@ public abstract class BaseBannerAdapter<T> extends PagerAdapter {
     /*--------------------------------成员变量--------------------------------*/
 
     private ViewPager viewPager;
-    private int layoutRes;
+    private final int layoutRes;
     private OnItemClickListener<T> mOnItemClickListener;
 
     public BaseBannerAdapter(@LayoutRes int layoutRes) {

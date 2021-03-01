@@ -18,7 +18,7 @@ public class HomeWatcherActivity extends BaseAppCompatActivity {
 
     private HomeWatcher homeWatcher;
 
-    private  HomeWatcherReceiver.OnHomePressedListener onHomePressedListener = new HomeWatcherReceiver.OnHomePressedListener() {
+    private final HomeWatcherReceiver.OnHomePressedListener onHomePressedListener = new HomeWatcherReceiver.OnHomePressedListener() {
         @Override
         public void onHomePressed() {
             ToastUtil.toastLong(HomeWatcherActivity.this, "home button pressed");

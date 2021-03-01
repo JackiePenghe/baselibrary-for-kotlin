@@ -70,26 +70,26 @@ public class Banner extends RelativeLayout {
      * 保存上次轮播的时间，用于暂停一次轮播。（如果500毫秒内轮播过，即使下一次轮播时间到了，也不执行内容切换）
      */
     private long lastScrollTime;
-    private int mIndicatorPaddingL = 0;
-    private int mIndicatorPaddingT = 0;
-    private int mIndicatorPaddingR = 0;
-    private int mIndicatorPaddingB = 0;
+    private final int mIndicatorPaddingL = 0;
+    private final int mIndicatorPaddingT = 0;
+    private final int mIndicatorPaddingR = 0;
+    private final int mIndicatorPaddingB = 0;
     /**
      * 指示器点资源
      */
-    private int mPointDrawableResId = R.drawable.selector_banner_point;
+    private final int mPointDrawableResId = R.drawable.selector_banner_point;
     //是否可以自动播放
-    private boolean mAutoPlayAble = true;
+    private final boolean mAutoPlayAble = true;
     //是否正在播放
-    private boolean mIsAutoPlaying = false;
+    private final boolean mIsAutoPlaying = false;
     //自动播放时间
-    private int mAutoPalyTime = 5000;
+    private final int mAutoPalyTime = 5000;
     //设置指示器容器
     private LinearLayout mPointRealContainerLl;
     /**
      * ViewPager状态切换的监听
      */
-    private ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
+    private final ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         }
@@ -410,7 +410,7 @@ public class Banner extends RelativeLayout {
         END(RelativeLayout.ALIGN_END),
         RIGHT(RelativeLayout.ALIGN_RIGHT),
         BOTTOM(RelativeLayout.ALIGN_BOTTOM);
-        private int value;
+        private final int value;
 
         POSITION(int value) {
             this.value = value;

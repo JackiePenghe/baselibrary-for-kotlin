@@ -26,7 +26,7 @@ public class Ip4AddressTextWatcher implements TextWatcher {
     /**
      * 要监听的文本输入框
      */
-    private EditText editText;
+    private final EditText editText;
 
     private int changedIndex;
 

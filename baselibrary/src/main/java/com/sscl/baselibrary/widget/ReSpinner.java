@@ -1,11 +1,11 @@
 package com.sscl.baselibrary.widget;
 
 import android.content.Context;
+import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
-import android.util.AttributeSet;
 
 
 /**

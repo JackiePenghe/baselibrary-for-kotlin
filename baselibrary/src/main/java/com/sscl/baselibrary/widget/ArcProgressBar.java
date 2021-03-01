@@ -34,15 +34,15 @@ public class ArcProgressBar extends View {
     /**
      * 圆弧开始的角度
      */
-    private float startAngle = 135;
+    private final float startAngle = 135;
     /**
      * 圆弧结束的角度
      */
-    private float endAngle = 45;
+    private final float endAngle = 45;
     /**
      * 圆弧背景的开始和结束间的夹角大小
      */
-    private float mAngle = 270;
+    private final float mAngle = 270;
     /**
      * 当前进度夹角大小
      */
@@ -50,7 +50,7 @@ public class ArcProgressBar extends View {
     /**
      * 圆弧的画笔的宽度
      */
-    private float mStrokeWith = 10;
+    private final float mStrokeWith = 10;
     /**
      * 中心的文字描述
      */

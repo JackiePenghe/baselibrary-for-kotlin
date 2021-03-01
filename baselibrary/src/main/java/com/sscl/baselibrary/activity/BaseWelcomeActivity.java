@@ -1,13 +1,13 @@
 package com.sscl.baselibrary.activity;
 
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 
 import com.sscl.baselibrary.R;
 import com.sscl.baselibrary.utils.StatusBarUtil;

@@ -163,7 +163,7 @@ public class SystemUtil {
         /**
          * 系统属性
          */
-        private Properties properties;
+        private final Properties properties;
 
         /*--------------------------------构造方法--------------------------------*/
 

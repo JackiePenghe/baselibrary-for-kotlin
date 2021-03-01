@@ -1,14 +1,14 @@
 package com.sscl.baselibrary.adapter;
 
 import android.content.Context;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.sscl.baselibrary.utils.ViewHolder;
 
@@ -41,7 +41,7 @@ public abstract class BasePurposeAdapter<T> extends BaseAdapter {
      * 适配器item的布局id
      */
     @LayoutRes
-    private int mItemLayoutId;
+    private final int mItemLayoutId;
 
     /**
      * 自定义适配器总数(适配器会根据这个数与数据源的比例来显示)
