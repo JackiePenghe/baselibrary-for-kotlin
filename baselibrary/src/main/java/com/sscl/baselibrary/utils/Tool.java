@@ -403,6 +403,16 @@ public class Tool {
      * @param show     是否显示
      */
     public static void setInputMethodState(@NonNull Activity activity, boolean show) {
+        setInputMethodState(activity, show, false);
+    }
+
+    /**
+     * 设置软键状态
+     *
+     * @param activity 上下文
+     * @param show     是否显示
+     */
+    public static void setInputMethodState(@NonNull Activity activity, boolean show, boolean needFocus) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
 
         if (null == imm) {
@@ -414,16 +424,20 @@ public class Tool {
                 //有焦点打开
                 imm.showSoftInput(activity.getCurrentFocus(), 0);
             } else {
-                //无焦点打开
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                if (!needFocus) {
+                    //无焦点打开
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                }
             }
         } else {
             if (activity.getCurrentFocus() != null) {
                 //有焦点关闭
                 imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             } else {
-                //无焦点关闭
-                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                if (!needFocus) {
+                    //无焦点关闭
+                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                }
             }
         }
     }
