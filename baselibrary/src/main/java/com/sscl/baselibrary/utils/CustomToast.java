@@ -214,9 +214,13 @@ class CustomToast {
      * 使用Handler取消Toast
      */
     static void handlerCancelToast() {
-        Message message = new Message();
-        message.what = ToastHandler.CANCEL;
-        toastHandler.sendMessage(message);
+        try {
+            Message message = new Message();
+            message.what = ToastHandler.CANCEL;
+            toastHandler.sendMessage(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
