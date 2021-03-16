@@ -75,7 +75,7 @@ class CustomToast {
      * @param messageText Toast文本内容
      * @param duration    Toast持续时间（单位：毫秒）
      */
-    private CustomToast(@NonNull Context context,@NonNull String messageText, int duration) {
+    private CustomToast(@NonNull Context context, @NonNull String messageText, int duration) {
         this.context = context;
         this.messageText = messageText;
         this.duration = duration;
@@ -91,7 +91,7 @@ class CustomToast {
      * @param duration    Toast持续时间（单位：毫秒）
      */
     @SuppressLint("ShowToast")
-    private static void showMyToast(@NonNull final Context context,@NonNull final String messageText, int duration) {
+    private static void showMyToast(@NonNull final Context context, @NonNull final String messageText, int duration) {
         if (toastHandler == null) {
             toastHandler = new ToastHandler(context.getApplicationContext());
         }
@@ -155,15 +155,6 @@ class CustomToast {
     }
 
     /**
-     * 使用Handler取消Toast
-     */
-    private static void handlerCancelToast() {
-        Message message = new Message();
-        message.what = ToastHandler.CANCEL;
-        toastHandler.sendMessage(message);
-    }
-
-    /**
      * 设置Handler是否重用未消失的Toast
      */
     private static void setHandlerReuse() {
@@ -202,7 +193,7 @@ class CustomToast {
      * @return CustomToast本类
      */
     @NonNull
-    static CustomToast makeText(@NonNull Context context,@NonNull String message, int duration) {
+    static CustomToast makeText(@NonNull Context context, @NonNull String message, int duration) {
         if (customToast == null) {
             synchronized (CustomToast.class) {
                 if (customToast == null) {
@@ -217,6 +208,15 @@ class CustomToast {
             customToast.duration = duration;
         }
         return customToast;
+    }
+
+    /**
+     * 使用Handler取消Toast
+     */
+    static void handlerCancelToast() {
+        Message message = new Message();
+        message.what = ToastHandler.CANCEL;
+        toastHandler.sendMessage(message);
     }
 
     /**

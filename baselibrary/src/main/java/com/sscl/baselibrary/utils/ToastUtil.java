@@ -66,6 +66,13 @@ public class ToastUtil {
     }
 
     /**
+     * 取消Toast
+     */
+    public static void cancel() {
+        CustomToast.handlerCancelToast();
+    }
+
+    /**
      * 短时间的吐司
      *
      * @param context    上下文
