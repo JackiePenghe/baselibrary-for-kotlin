@@ -26,8 +26,9 @@ public class AllPurposeAdapterActivity extends BaseAppCompatActivity {
      * 标题栏的返回按钮被按下的时候回调此函数
      */
     @Override
-    protected void titleBackClicked() {
+    protected boolean titleBackClicked() {
         onBackPressed();
+        return true;
     }
 
     /**

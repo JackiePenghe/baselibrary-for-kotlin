@@ -47,7 +47,10 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     private View.OnClickListener mTitleBackButtonOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            titleBackClicked();
+            boolean b = titleBackClicked();
+            if (!b) {
+                finish();
+            }
         }
     };
 
@@ -161,7 +164,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     /**
      * 标题栏的返回按钮被按下的时候回调此方法
      */
-    protected abstract void titleBackClicked();
+    protected abstract boolean titleBackClicked();
 
     /**
      * 在设置布局之前需要进行的操作

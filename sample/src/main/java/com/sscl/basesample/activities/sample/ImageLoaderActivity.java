@@ -10,6 +10,9 @@ import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.image.ImageLoader;
 import com.sscl.basesample.R;
 
+/**
+ * @author jackie
+ */
 public class ImageLoaderActivity extends BaseAppCompatActivity {
 
     private static final String URL = "https://ywmdata.mohoo.club/upload/wxcode_ywm863412042671753.png";
@@ -17,8 +20,8 @@ public class ImageLoaderActivity extends BaseAppCompatActivity {
     private ImageView imageView;
 
     @Override
-    protected void titleBackClicked() {
-
+    protected boolean titleBackClicked() {
+        return false;
     }
 
     @Override

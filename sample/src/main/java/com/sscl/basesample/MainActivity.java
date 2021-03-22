@@ -101,8 +101,9 @@ public class MainActivity extends BaseAppCompatActivity {
     };
 
     @Override
-    protected void titleBackClicked() {
+    protected boolean titleBackClicked() {
         onBackPressed();
+        return true;
     }
 
     /**

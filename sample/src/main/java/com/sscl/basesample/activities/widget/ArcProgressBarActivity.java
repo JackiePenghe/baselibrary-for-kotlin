@@ -22,8 +22,9 @@ public class ArcProgressBarActivity extends BaseAppCompatActivity {
      * 标题栏的返回按钮被按下的时候回调此方法
      */
     @Override
-    protected void titleBackClicked() {
+    protected boolean titleBackClicked() {
         onBackPressed();
+        return true;
     }
 
     /**

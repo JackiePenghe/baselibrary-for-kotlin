@@ -16,6 +16,9 @@ import com.sscl.basesample.adapter.BannerAdapter;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author jackie
+ */
 public class SampleBannerActivity extends BaseAppCompatActivity {
 
     private static final String TAG = SampleBannerActivity.class.getSimpleName();
@@ -29,8 +32,9 @@ public class SampleBannerActivity extends BaseAppCompatActivity {
      * 标题栏的返回按钮被按下的时候回调此方法
      */
     @Override
-    protected void titleBackClicked() {
+    protected boolean titleBackClicked() {
         onBackPressed();
+        return true;
     }
 
     /**
