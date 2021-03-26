@@ -21,6 +21,10 @@ import com.sscl.baselibrary.utils.BaseManager;
  */
 public abstract class BasePopupWindow extends PopupWindow {
 
+    /*--------------------------------静态常量--------------------------------*/
+
+    protected final String TAG = getClass().getSimpleName();
+
     /*--------------------------------构造方法--------------------------------*/
 
     private final Context context;

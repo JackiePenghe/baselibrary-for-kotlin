@@ -23,6 +23,10 @@ import java.util.ArrayList;
 
 public abstract class BasePurposeAdapter<T> extends BaseAdapter {
 
+    /*--------------------------------静态常量--------------------------------*/
+
+    protected final String TAG = getClass().getSimpleName();
+
     /*--------------------------------成员变量--------------------------------*/
 
     /**

@@ -25,6 +25,10 @@ public class HomeWatcherReceiver extends BroadcastReceiver {
 
     /*--------------------------------静态常量--------------------------------*/
 
+    protected final String TAG = getClass().getSimpleName();
+
+    /*--------------------------------静态常量--------------------------------*/
+
     final String SYSTEM_DIALOG_REASON_KEY = "reason";
 
     final String SYSTEM_DIALOG_REASON_RECENT_APPS = "recentapps";

@@ -28,7 +28,11 @@ import com.sscl.baselibrary.R;
  */
 public abstract class BaseFragment extends Fragment {
 
-    /*---------------成员变量---------------*/
+    /*--------------------------------静态常量--------------------------------*/
+
+    protected final String TAG = getClass().getSimpleName();
+
+    /*--------------------------------成员变量--------------------------------*/
 
     /**
      * 整个Fragment的根布局
@@ -63,7 +67,7 @@ public abstract class BaseFragment extends Fragment {
      */
     private View statusView;
 
-    /*---------------重写父类函数---------------*/
+    /*--------------------------------重写父类函数--------------------------------*/
 
     /**
      * Called to have the fragment instantiate its user interface view.
@@ -112,7 +116,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
 
-    /*---------------抽象方法---------------*/
+    /*--------------------------------抽象方法--------------------------------*/
 
     /**
      * 在设置布局之前进行的操作
@@ -151,7 +155,7 @@ public abstract class BaseFragment extends Fragment {
      */
     protected abstract void doAfterAll();
 
-    /*---------------自定义子类可用函数---------------*/
+    /*--------------------------------自定义子类可用函数--------------------------------*/
 
     /**
      * 让fragment可以和Activity一样拥有findViewById函数

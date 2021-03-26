@@ -15,6 +15,10 @@ import androidx.annotation.Nullable;
  */
 public abstract class BaseSplashActivity extends Activity {
 
+    /*--------------------------------静态常量--------------------------------*/
+
+    protected final String TAG = getClass().getSimpleName();
+
     /*--------------------------------重写父类方法--------------------------------*/
 
     /**

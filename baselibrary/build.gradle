@@ -9,7 +9,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 67
-        versionName "2.0.13"
+        versionName "2.0.14"
     }
 
     lintOptions {
@@ -40,7 +40,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }
 
-version = "2.0.13"
+version = "2.0.14"
 
 def siteUrl = 'https://github.com/JackiePenghe/BaseSample'
 def gitUrl = 'https://github.com/JackiePenghe/BaseSample.git'

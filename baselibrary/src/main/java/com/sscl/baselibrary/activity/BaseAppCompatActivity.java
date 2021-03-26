@@ -35,6 +35,10 @@ import com.sscl.baselibrary.utils.Tool;
  */
 public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
+    /*--------------------------------静态常量--------------------------------*/
+
+    protected final String TAG = getClass().getSimpleName();
+
     /*--------------------------------成员变量--------------------------------*/
 
     /**

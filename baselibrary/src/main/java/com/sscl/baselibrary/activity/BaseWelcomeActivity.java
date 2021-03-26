@@ -20,6 +20,10 @@ import com.sscl.baselibrary.utils.StatusBarUtil;
  */
 public abstract class BaseWelcomeActivity extends BaseAppCompatActivity {
 
+    /*--------------------------------静态常量--------------------------------*/
+
+    protected final String TAG = getClass().getSimpleName();
+
     /*--------------------------------成员变量--------------------------------*/
 
     /**

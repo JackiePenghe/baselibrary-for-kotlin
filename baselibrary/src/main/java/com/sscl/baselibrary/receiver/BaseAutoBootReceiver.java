@@ -5,9 +5,15 @@ import android.app.job.JobService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Handler;
 
 public abstract class BaseAutoBootReceiver extends BroadcastReceiver {
+
+    /*--------------------------------静态常量--------------------------------*/
+
+    protected final String TAG = getClass().getSimpleName();
 
     /*--------------------------------实现父类方法--------------------------------*/
 
@@ -55,5 +61,5 @@ public abstract class BaseAutoBootReceiver extends BroadcastReceiver {
         }
     }
 
-    protected abstract void doBootComplete(Context context, Intent intent);
+    protected abstract void doBootComplete(Context context, Intent receivedIntent);
 }
