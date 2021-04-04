@@ -89,6 +89,10 @@ public class MyApplication extends Application {
         FileUtil.init(this);
     }
 
+    public static Gson getGSON() {
+        return GSON;
+    }
+
     private static void showExceptionUploadingDialog() {
         dismissExceptionUploadingDialog();
         exceptionDialog = new AlertDialog.Builder(myApplication)
