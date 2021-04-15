@@ -16,7 +16,9 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +32,7 @@ import com.sscl.baselibrary.bean.PhoneInfo;
 import com.sscl.baselibrary.receiver.ScreenStatusReceiver;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -108,6 +111,40 @@ public class Tool {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
         android.os.Process.killProcess(android.os.Process.myPid());
+    }
+
+    /**
+     * 设置输入框输入类型
+     *
+     * @param activity  Activity
+     * @param editText  输入框
+     * @param inputType 输入类型
+     */
+    public static void setInpType(@NonNull Activity activity, @NonNull EditText editText, int inputType) {
+
+        activity.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        try {
+            Class<EditText> cls = EditText.class;
+            Method setSoftInputShownOnFocus = cls.getMethod(
+                    "setSoftInputShownOnFocus", boolean.class);
+            setSoftInputShownOnFocus.setAccessible(true);
+            setSoftInputShownOnFocus.invoke(editText, false);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Class<EditText> cls = EditText.class;
+            Method setShowSoftInputOnFocus;
+            setShowSoftInputOnFocus = cls.getMethod(
+                    "setShowSoftInputOnFocus", boolean.class);
+            setShowSoftInputOnFocus.setAccessible(true);
+            setShowSoftInputOnFocus.invoke(editText, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

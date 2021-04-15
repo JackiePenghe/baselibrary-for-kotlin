@@ -230,6 +230,11 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         void onException(@Nullable Throwable ex);
     }
 
+
+    public String getCrashFileDirPath() {
+        return crashFileDirPath;
+    }
+
     /*--------------------------------私有函数--------------------------------*/
 
     /**
