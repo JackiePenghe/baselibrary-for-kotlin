@@ -290,7 +290,7 @@ public class FileUtil {
      * @return Log 日志文件保存目录
      */
     @Nullable
-    public static File getLogInfoSdcardDir() {
+    public static File getSdcardLogInfoDir() {
         File file = new File(getSdCardAppDir(), "logInfo");
         boolean mkdirs;
         if (!file.exists()) {

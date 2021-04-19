@@ -9,15 +9,14 @@ package com.sscl.baselibrary.utils;
 
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.os.Environment;
 import android.text.TextUtils;
 
 import com.sscl.baselibrary.files.FileUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 
@@ -30,15 +29,20 @@ import java.text.SimpleDateFormat;
  */
 public class LogCatHelper {
     private static LogCatHelper instance = null;
-    private final String dirPath;//保存路径
-    private final int appid;//应用pid
+    /**
+     * 保存路径
+     */
+    private final String dirPath;
+    /**
+     * 应用pid
+     */
+    private final int appid;
     private Thread logThread;
 
-    private LogCatHelper(Context mContext, String path) {
+    private LogCatHelper(String path) {
         appid = android.os.Process.myPid();
         if (TextUtils.isEmpty(path)) {
-            dirPath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + File.separator + "seeker" + File.separator + mContext.getPackageName();
+            dirPath = FileUtil.getLogInfoDir().getAbsolutePath();
         } else {
             dirPath = path;
         }
@@ -49,22 +53,20 @@ public class LogCatHelper {
     }
 
     /**
-     * @param mContext 上下文
      * @return 本类单例
      */
-    public static LogCatHelper getInstance(Context mContext) {
-        return getInstance(mContext, true);
+    public static LogCatHelper getInstance() {
+        return getInstance(true);
     }
 
     /**
-     * @param mContext  上下文
      * @param useSdcard 是否保存到 SD 卡
      * @return 本类单例
      */
-    public static LogCatHelper getInstance(Context mContext, boolean useSdcard) {
+    public static LogCatHelper getInstance(boolean useSdcard) {
         String path = null;
         if (useSdcard) {
-            File logInfoSdcardDir = FileUtil.getLogInfoSdcardDir();
+            File logInfoSdcardDir = FileUtil.getSdcardLogInfoDir();
             if (logInfoSdcardDir != null) {
                 path = logInfoSdcardDir.getAbsolutePath();
             }
@@ -77,17 +79,16 @@ public class LogCatHelper {
         if (path == null) {
             throw new NullPointerException("path == null");
         }
-        return getInstance(mContext, path);
+        return getInstance(path);
     }
 
     /**
-     * @param mContext 上下文
-     * @param path     log日志保存根目录
+     * @param path log日志保存根目录
      * @return 本类单例
      */
-    private static LogCatHelper getInstance(Context mContext, String path) {
+    private static LogCatHelper getInstance(String path) {
         if (instance == null) {
-            instance = new LogCatHelper(mContext, path);
+            instance = new LogCatHelper(path);
         }
         return instance;
     }
@@ -113,22 +114,14 @@ public class LogCatHelper {
     private static class LogRunnable implements Runnable {
 
         private Process mProcess;
-        private FileOutputStream fos;
         private BufferedReader mReader;
         private final String cmds;
         private final String mPid;
+        private final String dirPath;
 
         private LogRunnable(int pid, String dirPath) {
             this.mPid = "" + pid;
-            try {
-                File file = new File(dirPath, "myLog-" + FormatDate.getFormatDate() + ".log");
-                if (!file.exists()) {
-                    file.createNewFile();
-                }
-                fos = new FileOutputStream(file, true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            this.dirPath = dirPath;
             cmds = "logcat *:v | grep \"(" + mPid + ")\"";
         }
 
@@ -142,9 +135,8 @@ public class LogCatHelper {
                     if (line.length() == 0) {
                         continue;
                     }
-                    if (fos != null && line.contains(mPid)) {
-                        fos.write((FormatDate.getFormatTime() + "	" + line + "\r\n").getBytes());
-                    }
+                    saveToFile(line);
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -158,12 +150,36 @@ public class LogCatHelper {
                         mReader.close();
                         mReader = null;
                     }
-                    if (fos != null) {
-                        fos.close();
-                        fos = null;
-                    }
                 } catch (Exception e2) {
                     e2.printStackTrace();
+                }
+            }
+        }
+
+        private void saveToFile(String line) {
+            FileWriter fileWriter = null;
+            try {
+                File file = new File(dirPath, "log-" + FormatDate.getFormatDate() + ".log");
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+                fileWriter = new FileWriter(file, true);
+                if (line.contains(mPid)) {
+                    fileWriter.append(FormatDate.getFormatTime())
+                            .append("	")
+                            .append(line)
+                            .append("\r\n");
+                    fileWriter.flush();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (fileWriter != null) {
+                    try {
+                        fileWriter.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -173,7 +189,7 @@ public class LogCatHelper {
     private static class FormatDate {
 
         public static String getFormatDate() {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHH");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH");
             return sdf.format(System.currentTimeMillis());
         }
 
