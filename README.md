@@ -12,6 +12,6 @@ allprojects {
 
 ```xml
 dependencies {
-        implementation 'com.github.JackiePenghe:BaseLibrary:release-version'
+        implementation 'com.github.JackiePenghe:BaseLibrary:version'
 }
 ```
