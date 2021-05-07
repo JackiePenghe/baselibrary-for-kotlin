@@ -58,4 +58,13 @@ public class PhoneInfo {
     public String getDeviceId() {
         return deviceId;
     }
+
+    @Override
+    public String toString() {
+        return "PhoneInfo{" +
+                "manufacturer='" + manufacturer + '\'' +
+                ", model='" + model + '\'' +
+                ", deviceId='" + deviceId + '\'' +
+                '}';
+    }
 }
