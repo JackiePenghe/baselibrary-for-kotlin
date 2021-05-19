@@ -1,7 +1,6 @@
 package com.sscl.basesample.adapter;
 
 import com.sscl.baselibrary.adapter.BasePurposeAdapter;
-import com.sscl.baselibrary.utils.ViewHolder;
 import com.sscl.basesample.R;
 
 import java.util.ArrayList;

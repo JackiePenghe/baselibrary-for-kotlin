@@ -21,7 +21,6 @@
         <item name="elevation">0dp</item>
     </style>
 
-
     <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowBackground">@drawable/baselibrary_default_main</item>
         <item name="android:windowFullscreen">true</item>

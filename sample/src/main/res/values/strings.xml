@@ -33,4 +33,6 @@
     <string name="select_binary_file">select binary file</string>
     <string name="flow_layout">flow layout</string>
     <string name="select_image_file">Select Image file</string>
+    <string name="number_input_method">Number InputMethod</string>
+    <string name="letter_input_method">Letter InputMethod</string>
 </resources>

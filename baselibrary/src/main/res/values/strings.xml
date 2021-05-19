@@ -5,4 +5,7 @@
     <string name="_null" translatable="false" />
     <string name="app_run_with_error">An unknown exception occurs.</string>
     <string name="file_not_found_or_use_unrecognized_characters">Wrong file path or file USES unrecognized characters</string>
+    <string name="clear">Clear</string>
+    <string name="delete">Delete</string>
+    <string name="caps_lock">Caps</string>
 </resources>

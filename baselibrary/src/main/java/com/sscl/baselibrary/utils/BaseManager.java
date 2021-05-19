@@ -77,6 +77,11 @@ public class BaseManager {
 
     @NonNull
     public static ScheduledExecutorService newScheduledExecutorService(int corePoolSize) {
-        return new ScheduledThreadPoolExecutor(corePoolSize, newThreadFactory());
+        return new ScheduledThreadPoolExecutor(corePoolSize, THREAD_FACTORY);
+    }
+
+    @NonNull
+    public static ScheduledExecutorService newScheduledExecutorService(int corePoolSize, ThreadFactory threadFactory) {
+        return new ScheduledThreadPoolExecutor(corePoolSize, threadFactory);
     }
 }

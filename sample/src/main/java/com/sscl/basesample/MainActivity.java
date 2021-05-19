@@ -17,6 +17,8 @@ import com.sscl.basesample.activities.WidgetActivity;
 import com.sscl.basesample.activities.sample.AllPurposeAdapterActivity;
 import com.sscl.basesample.activities.sample.HomeWatcherActivity;
 import com.sscl.basesample.activities.sample.ImageLoaderActivity;
+import com.sscl.basesample.activities.sample.LetterInputMethodActivity;
+import com.sscl.basesample.activities.sample.NumberInputMethodActivity;
 import com.sscl.basesample.activities.sample.SampleBannerActivity;
 import com.sscl.basesample.activities.sample.SampleBaseAppcompatActivity;
 import com.sscl.basesample.activities.sample.SampleBaseDrawerActivity;
@@ -46,6 +48,8 @@ public class MainActivity extends BaseAppCompatActivity {
     private Button imageLoaderBtn;
     private Button bannerBtn;
     private Button webViewBtn;
+    private Button numberInputMethodBtn;
+    private Button letterInputMethodBtn;
 
     private final View.OnClickListener onClickListener = view -> {
         Intent intent = null;
@@ -78,6 +82,10 @@ public class MainActivity extends BaseAppCompatActivity {
             intent = new Intent(MainActivity.this, SampleBannerActivity.class);
         } else if (id == R.id.web_view) {
             intent = new Intent(MainActivity.this, SampleWebViewActivity.class);
+        } else if (id == numberInputMethodBtn.getId()) {
+            intent = new Intent(MainActivity.this, NumberInputMethodActivity.class);
+        } else if (id == letterInputMethodBtn.getId()) {
+            intent = new Intent(MainActivity.this, LetterInputMethodActivity.class);
         }
         if (intent != null) {
             startActivity(intent);
@@ -148,6 +156,8 @@ public class MainActivity extends BaseAppCompatActivity {
         imageLoaderBtn = findViewById(R.id.image_loader);
         bannerBtn = findViewById(R.id.banner);
         webViewBtn = findViewById(R.id.web_view);
+        numberInputMethodBtn = findViewById(R.id.number_input_method_btn);
+        letterInputMethodBtn = findViewById(R.id.letter_input_method_btn);
     }
 
     /**
@@ -182,6 +192,8 @@ public class MainActivity extends BaseAppCompatActivity {
         imageLoaderBtn.setOnClickListener(onClickListener);
         bannerBtn.setOnClickListener(onClickListener);
         webViewBtn.setOnClickListener(onClickListener);
+        numberInputMethodBtn.setOnClickListener(onClickListener);
+        letterInputMethodBtn.setOnClickListener(onClickListener);
     }
 
     /**

@@ -3,4 +3,7 @@
     <string name="app_title">默认的标题</string>
     <string name="app_run_with_error">出现未知异常！</string>
     <string name="file_not_found_or_use_unrecognized_characters">错误的文件路径，或使用了无效的字符</string>
+    <string name="clear">清空</string>
+    <string name="delete">删除</string>
+    <string name="caps_lock">大写</string>
 </resources>

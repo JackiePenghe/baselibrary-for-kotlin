@@ -93,6 +93,20 @@
             android:text="@string/web_view"
             android:textAllCaps="false" />
 
+        <Button
+            android:id="@+id/number_input_method_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/number_input_method"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/letter_input_method_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/letter_input_method"
+            android:textAllCaps="false" />
+
     </LinearLayout>
 
 </ScrollView>
