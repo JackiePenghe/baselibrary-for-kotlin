@@ -1,24 +1,19 @@
 package com.sscl.basesample.activities;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Intent;
-import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 
 import com.sscl.baselibrary.activity.BaseWelcomeActivity;
 import com.sscl.baselibrary.utils.CrashHandler;
 import com.sscl.baselibrary.utils.LogCatHelper;
+import com.sscl.baselibrary.utils.PermissionUtil;
 import com.sscl.baselibrary.utils.ToastUtil;
 import com.sscl.basesample.MainActivity;
 import com.sscl.basesample.MyApplication;
 import com.sscl.basesample.R;
-import com.yanzhenjie.permission.Action;
-import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.Rationale;
-import com.yanzhenjie.permission.runtime.Permission;
-
-import java.util.List;
 
 
 /**
@@ -29,44 +24,10 @@ import java.util.List;
  */
 public class WelcomeActivity extends BaseWelcomeActivity {
     private static final int REQUEST_CODE_SETTING = 1;
-    private final Action<List<String>> onGrantedListener = grantPermissions -> toNext();
-    private final Action<List<String>> onDeniedListener = deniedPermissions -> {
-        if (!AndPermission.hasAlwaysDeniedPermission(WelcomeActivity.this, deniedPermissions)) {
-            ToastUtil.toastLong(WelcomeActivity.this, R.string.no_permission_exits);
-            finish();
-        } else {
-            List<String> strings = Permission.transformText(WelcomeActivity.this, deniedPermissions);
-            String permissionText = TextUtils.join(",\n", strings);
-            new AlertDialog.Builder(WelcomeActivity.this)
-                    .setTitle(R.string.no_permission)
-                    .setMessage(permissionText)
-                    .setPositiveButton(R.string.settings, (dialog, which) -> AndPermission.with(WelcomeActivity.this)
-                            .runtime()
-                            .setting()
-                            .start(REQUEST_CODE_SETTING))
-                    .setNegativeButton(R.string.cancel, (dialog, which) -> finish())
-                    .setCancelable(false)
-                    .show();
-        }
-    };
-    private final Rationale<List<String>> rationaleListener = (context, data, executor) -> {
-        List<String> strings = Permission.transformText(WelcomeActivity.this, data);
-        String permissionText = TextUtils.join(",\n", strings);
-        new AlertDialog.Builder(WelcomeActivity.this)
-                .setTitle(R.string.no_permission)
-                .setMessage(permissionText)
-                .setPositiveButton(R.string.settings, (dialog, which) -> AndPermission.with(WelcomeActivity.this)
-                        .runtime()
-                        .setting()
-                        .start(REQUEST_CODE_SETTING))
-                .setNegativeButton(R.string.cancel, (dialog, which) -> finish())
-                .setCancelable(false)
-                .show();
-    };
 
     @Override
     protected void doAfterAnimation() {
-        requestPermission();
+        checkPermission();
     }
 
     /**
@@ -82,7 +43,7 @@ public class WelcomeActivity extends BaseWelcomeActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_CODE_SETTING) {
-            requestPermission();
+            checkPermission();
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -97,14 +58,24 @@ public class WelcomeActivity extends BaseWelcomeActivity {
         finish();
     }
 
-    private void requestPermission() {
-//        toNext();
-        AndPermission.with(this)
-                .runtime()
-                .permission(Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE)
-                .onGranted(onGrantedListener)
-                .onDenied(onDeniedListener)
-                .rationale(rationaleListener)
-                .start();
+    private void checkPermission() {
+        if (PermissionUtil.hasPermissions(this, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            toNext();
+        } else {
+            showPermissionDialog();
+        }
+    }
+
+    private void showPermissionDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.no_permission)
+                .setMessage(R.string.no_permission_message)
+                .setPositiveButton(R.string.settings, (dialog, which) -> PermissionUtil.toSettingActivity(WelcomeActivity.this, REQUEST_CODE_SETTING))
+                .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                    ToastUtil.toastLong(WelcomeActivity.this, R.string.no_permission_exits);
+                    finish();
+                })
+                .setCancelable(false)
+                .show();
     }
 }

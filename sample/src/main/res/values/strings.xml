@@ -17,6 +17,7 @@
     <string name="time_500">500ms</string>
     <string name="no_permission_exits">No permission, the program exits</string>
     <string name="no_permission">No Permission</string>
+    <string name="no_permission_message">The application does not have permission, please go to the settings to allow all permissions</string>
     <string name="settings">Settings</string>
     <string name="cancel">Cancel</string>
     <string name="arc_progress_bar">Arc targetProgress bar</string>
