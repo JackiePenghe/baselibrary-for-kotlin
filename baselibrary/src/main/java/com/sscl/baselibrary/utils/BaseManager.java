@@ -1,6 +1,7 @@
 package com.sscl.baselibrary.utils;
 
 import android.os.Handler;
+import android.os.Looper;
 
 import androidx.annotation.NonNull;
 
@@ -21,7 +22,7 @@ public class BaseManager {
     /**
      * Handler
      */
-    private static final Handler HANDLER = new Handler();
+    private static final Handler HANDLER = new Handler(Looper.getMainLooper());
 
     /**
      * 线程工厂

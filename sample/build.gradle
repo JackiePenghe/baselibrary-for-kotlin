@@ -42,7 +42,6 @@ dependencies {
     //SwipeRefreshLayout库
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation project(':baselibrary')
-//    implementation 'com.sscl:baselibrary:2.0.15'
     implementation 'com.sscl:brvahlibrary:0.0.2'
     //动态权限库
     implementation 'com.yanzhenjie:permission:2.0.3'
