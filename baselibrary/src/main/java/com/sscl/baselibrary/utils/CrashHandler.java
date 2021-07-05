@@ -48,6 +48,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     /*--------------------------------成员变量--------------------------------*/
 
+    private ScheduledExecutorService autoDeleteFileTimer;
+
     /**
      * 系统默认的UncaughtException处理类
      */
@@ -61,6 +63,31 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      * 程序的Context对象
      */
     private Context mContext;
+    /**
+     * 自动删除文件超时
+     */
+    private long autoDeleteTime = 24 * 3 * 60 * 60 * 1000;
+    /**
+     * 自动删除文件的日志
+     */
+    private final Runnable autoDeleteFileTimerRunnable = new Runnable() {
+        @Override
+        public void run() {
+            //删除崩溃日志
+            File file = new File(crashFileDirPath);
+            File[] files = file.listFiles();
+            if (files != null) {
+                for (File logFile : files) {
+                    long l = logFile.lastModified();
+                    long time = System.currentTimeMillis() - l;
+                    //删除大于3天的文件
+                    if (time > autoDeleteTime) {
+                        logFile.delete();
+                    }
+                }
+            }
+        }
+    };
 
     /**
      * 自定义错误处理,收集错误信息 发送错误报告等操作均在此完成.
@@ -207,6 +234,15 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     }
 
     /**
+     * 自动删除文件的定时器
+     *
+     * @param autoDeleteTime
+     */
+    public void setAutoDeleteTime(long autoDeleteTime) {
+        this.autoDeleteTime = autoDeleteTime;
+    }
+
+    /**
      * 初始化
      *
      * @param context 上下文
@@ -219,6 +255,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         //设置该CrashHandler为程序的默认处理器
         Thread.setDefaultUncaughtExceptionHandler(this);
         this.crashFileDirPath = crashFileDirPath;
+        startAutoDeleteFileTimer();
     }
 
     public void setOnExceptionListener(OnExceptionListener onExceptionListener) {
@@ -233,6 +270,10 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     public String getCrashFileDirPath() {
         return crashFileDirPath;
+    }
+
+    public void destroy() {
+        stopAutoDeleteFileTimer();
     }
 
     /*--------------------------------私有函数--------------------------------*/
@@ -322,5 +363,24 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         } catch (Exception e) {
             Log.e(TAG, "an error occurred while writing file...", e);
         }
+    }
+
+    /**
+     * 开启自动删除文件的定时器
+     */
+    private void startAutoDeleteFileTimer() {
+        stopAutoDeleteFileTimer();
+        autoDeleteFileTimer = BaseManager.newScheduledExecutorService(1);
+        autoDeleteFileTimer.scheduleAtFixedRate(autoDeleteFileTimerRunnable, 1, 1, TimeUnit.MINUTES);
+    }
+
+    /**
+     * 停止自动删除文件的定时器
+     */
+    private void stopAutoDeleteFileTimer() {
+        if (autoDeleteFileTimer != null && !autoDeleteFileTimer.isShutdown()) {
+            autoDeleteFileTimer.shutdownNow();
+        }
+        autoDeleteFileTimer = null;
     }
 }

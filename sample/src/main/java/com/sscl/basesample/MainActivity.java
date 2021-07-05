@@ -15,6 +15,7 @@ import com.sscl.baselibrary.utils.SharedPreferencesTools;
 import com.sscl.baselibrary.utils.Tool;
 import com.sscl.basesample.activities.WidgetActivity;
 import com.sscl.basesample.activities.sample.AllPurposeAdapterActivity;
+import com.sscl.basesample.activities.sample.CustomPasswordViewActivity;
 import com.sscl.basesample.activities.sample.HomeWatcherActivity;
 import com.sscl.basesample.activities.sample.ImageLoaderActivity;
 import com.sscl.basesample.activities.sample.LetterInputMethodActivity;
@@ -50,6 +51,7 @@ public class MainActivity extends BaseAppCompatActivity {
     private Button webViewBtn;
     private Button numberInputMethodBtn;
     private Button letterInputMethodBtn;
+    private Button customPasswordViewBtn;
 
     private final View.OnClickListener onClickListener = view -> {
         Intent intent = null;
@@ -86,6 +88,8 @@ public class MainActivity extends BaseAppCompatActivity {
             intent = new Intent(MainActivity.this, NumberInputMethodActivity.class);
         } else if (id == letterInputMethodBtn.getId()) {
             intent = new Intent(MainActivity.this, LetterInputMethodActivity.class);
+        } else if (id == customPasswordViewBtn.getId()) {
+            intent = new Intent(MainActivity.this, CustomPasswordViewActivity.class);
         }
         if (intent != null) {
             startActivity(intent);
@@ -158,6 +162,7 @@ public class MainActivity extends BaseAppCompatActivity {
         webViewBtn = findViewById(R.id.web_view);
         numberInputMethodBtn = findViewById(R.id.number_input_method_btn);
         letterInputMethodBtn = findViewById(R.id.letter_input_method_btn);
+        customPasswordViewBtn = findViewById(R.id.custom_password_view_btn);
     }
 
     /**
@@ -194,6 +199,7 @@ public class MainActivity extends BaseAppCompatActivity {
         webViewBtn.setOnClickListener(onClickListener);
         numberInputMethodBtn.setOnClickListener(onClickListener);
         letterInputMethodBtn.setOnClickListener(onClickListener);
+        customPasswordViewBtn.setOnClickListener(onClickListener);
     }
 
     /**

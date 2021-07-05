@@ -36,4 +36,5 @@
     <string name="select_image_file">Select Image file</string>
     <string name="number_input_method">Number InputMethod</string>
     <string name="letter_input_method">Letter InputMethod</string>
+    <string name="custom_password_view">custom password view</string>
 </resources>

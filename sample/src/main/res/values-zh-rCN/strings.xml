@@ -29,4 +29,5 @@
     <string name="select_image_file">选择图片文件</string>
     <string name="number_input_method">自定义数字键盘</string>
     <string name="letter_input_method">自定义字母键盘</string>
+    <string name="custom_password_view">自定义密码输入框</string>
 </resources>

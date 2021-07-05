@@ -19,6 +19,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Administrator
@@ -38,6 +40,26 @@ public class LogCatHelper {
      */
     private final int appid;
     private Thread logThread;
+    private long autoDeleteFileTime = 24 * 3 * 60 * 60 * 1000;
+    private final Runnable autoDeleteFileTimerRunnable = new Runnable() {
+        @Override
+        public void run() {
+            //删除崩溃日志
+            File file = new File(dirPath);
+            File[] files = file.listFiles();
+            if (files != null) {
+                for (File logFile : files) {
+                    long l = logFile.lastModified();
+                    long time = System.currentTimeMillis() - l;
+                    //删除大于3天的文件
+                    if (time > autoDeleteFileTime) {
+                        logFile.delete();
+                    }
+                }
+            }
+        }
+    };
+    private ScheduledExecutorService autoDeleteFileTimer;
 
     private LogCatHelper(String path) {
         appid = android.os.Process.myPid();
@@ -105,10 +127,15 @@ public class LogCatHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        startAutoDeleteFileTimer();
     }
 
     public String getLogcatDirectoryPath() {
         return dirPath;
+    }
+
+    public void setAutoDeleteFileTime(long autoDeleteFileTime) {
+        this.autoDeleteFileTime = autoDeleteFileTime;
     }
 
     private static class LogRunnable implements Runnable {
@@ -197,5 +224,24 @@ public class LogCatHelper {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             return sdf.format(System.currentTimeMillis());
         }
+    }
+
+    /**
+     * 开启自动删除文件的定时器
+     */
+    private void startAutoDeleteFileTimer() {
+        stopAutoDeleteFileTimer();
+        autoDeleteFileTimer = BaseManager.newScheduledExecutorService(1);
+        autoDeleteFileTimer.scheduleAtFixedRate(autoDeleteFileTimerRunnable, 1, 1, TimeUnit.MINUTES);
+    }
+
+    /**
+     * 停止自动删除文件的定时器
+     */
+    private void stopAutoDeleteFileTimer() {
+        if (autoDeleteFileTimer != null && !autoDeleteFileTimer.isShutdown()) {
+            autoDeleteFileTimer.shutdownNow();
+        }
+        autoDeleteFileTimer = null;
     }
 }

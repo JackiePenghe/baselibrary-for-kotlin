@@ -27,4 +27,8 @@
         <attr name="line_interval" format="dimension" />
         <attr name="internal_line_interval" format="dimension" />
     </declare-styleable>
+    <declare-styleable name="PasswordView">
+        <attr name="android:text" />
+        <attr name="android:maxEms" />
+    </declare-styleable>
 </resources>

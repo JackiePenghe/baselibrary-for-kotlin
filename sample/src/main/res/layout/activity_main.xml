@@ -107,6 +107,13 @@
             android:text="@string/letter_input_method"
             android:textAllCaps="false" />
 
+        <Button
+            android:id="@+id/custom_password_view_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_password_view"
+            android:textAllCaps="false" />
+
     </LinearLayout>
 
 </ScrollView>
