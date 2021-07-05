@@ -138,6 +138,10 @@ public class LogCatHelper {
         this.autoDeleteFileTime = autoDeleteFileTime;
     }
 
+    public void destroy() {
+        stopAutoDeleteFileTimer();
+    }
+
     private static class LogRunnable implements Runnable {
 
         private Process mProcess;
