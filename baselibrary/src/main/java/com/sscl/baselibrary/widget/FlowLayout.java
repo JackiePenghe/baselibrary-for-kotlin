@@ -118,12 +118,22 @@ public class FlowLayout extends ViewGroup {
                 View childView = getChildAt(i);
                 //测量子控件的宽高
                 measureChild(childView, widthMeasureSpec, heightMeasureSpec);
-                //取出子控件的margin属性
-                MarginLayoutParams marginLayoutParams = (MarginLayoutParams) childView.getLayoutParams();
-                //计算子控件的宽度
-                int childViewWidth = childView.getMeasuredWidth() + marginLayoutParams.leftMargin + marginLayoutParams.rightMargin;
-                //计算子控件的高度
-                int childViewHeight = childView.getMeasuredHeight() + marginLayoutParams.topMargin + marginLayoutParams.bottomMargin;
+                LayoutParams layoutParams = childView.getLayoutParams();
+                int childViewWidth;
+                int childViewHeight;
+                if (layoutParams instanceof MarginLayoutParams) {
+                    //取出子控件的margin属性
+                    MarginLayoutParams marginLayoutParams = (MarginLayoutParams) layoutParams;
+                    //计算子控件的宽度
+                    childViewWidth = childView.getMeasuredWidth() + marginLayoutParams.leftMargin + marginLayoutParams.rightMargin;
+                    //计算子控件的高度
+                    childViewHeight = childView.getMeasuredHeight() + marginLayoutParams.topMargin + marginLayoutParams.bottomMargin;
+                } else {
+                    //计算子控件的宽度
+                    childViewWidth = childView.getMeasuredWidth();
+                    //计算子控件的高度
+                    childViewHeight = childView.getMeasuredHeight();
+                }
                 // 如果当前行的宽度大于建议的宽度，就需要换行了
                 if (currentLineWidth + childViewWidth + internalLineInterval > widthSize) {
                     //取当前行的数据中，当前宽度与测量之后计算的宽度的最大的一个
