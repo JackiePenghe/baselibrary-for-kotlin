@@ -214,30 +214,46 @@ public class FlowLayout extends ViewGroup {
             for (int j = 0; j < childViewCount; j++) {
                 //获取子控件
                 View childView = views.get(j);
-                MarginLayoutParams marginLayoutParams = (MarginLayoutParams) childView.getLayoutParams();
+                LayoutParams layoutParams = childView.getLayoutParams();
+                if (layoutParams instanceof MarginLayoutParams) {
+                    MarginLayoutParams marginLayoutParams = (MarginLayoutParams) layoutParams;
 
-                //子控件的左边的坐标
-                left = currentLeft + marginLayoutParams.leftMargin;
-                //子控件的顶部的坐标
-                top = currentTop + marginLayoutParams.topMargin;
-                //子控件的右边的坐标
-                right = left + childView.getMeasuredWidth();
-                //子控件底部的坐标
-                bottom = top + childView.getMeasuredHeight();
-                //摆放子控件
-                childView.layout(left, top, right, bottom);
-                //将起始坐标currentLeft更新一次
-                currentLeft = (int) (right + marginLayoutParams.rightMargin + internalLineInterval);
+                    //子控件的左边的坐标
+                    left = currentLeft + marginLayoutParams.leftMargin;
+                    //子控件的顶部的坐标
+                    top = currentTop + marginLayoutParams.topMargin;
+
+                    //子控件的右边的坐标
+                    right = left + childView.getMeasuredWidth();
+                    //子控件底部的坐标
+                    bottom = top + childView.getMeasuredHeight();
+                    //摆放子控件
+                    childView.layout(left, top, right, bottom);
+                    //将起始坐标currentLeft更新一次
+                    currentLeft = (int) (right + marginLayoutParams.rightMargin + internalLineInterval);
+                } else {
+                    //子控件的左边的坐标
+                    left = currentLeft;
+                    top = currentTop;
+
+                    //子控件的右边的坐标
+                    right = left + childView.getMeasuredWidth();
+                    //子控件底部的坐标
+                    bottom = top + childView.getMeasuredHeight();
+                    //摆放子控件
+                    childView.layout(left, top, right, bottom);
+                    //将起始坐标currentLeft更新一次
+                    currentLeft = (int) (right + internalLineInterval);
+                }
             }
             if (i != lineCount - 1) {
                 //在摆放完一排之后，更新起始坐标currentTop
                 currentTop += lineHeightList.get(i) + lineInterval;
                 //同时，将currentLeft重置为0
-                currentLeft = 0;
             } else {
                 currentTop += lineHeightList.get(i);
-                currentLeft = 0;
             }
+            currentLeft = 0;
         }
     }
 
