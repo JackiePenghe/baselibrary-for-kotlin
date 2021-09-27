@@ -111,9 +111,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             scheduledExecutorService.execute(new Runnable() {
                 @Override
                 public void run() {
-                    Looper.prepare();
                     onExceptionListener.onException(ex);
-                    Looper.loop();
                 }
             });
         } else {

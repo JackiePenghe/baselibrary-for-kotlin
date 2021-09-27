@@ -151,15 +151,14 @@ public class FlowLayout extends ViewGroup {
 
                     //将用于保存当前行的所有子控件的集合重新创建（不能清空，会导致之前的数据全部丢失），并添加新一行的第一个子控件
                     viewList = new ArrayList<>();
-                    viewList.add(childView);
                 } else {//如果不超过建议值，记录当前行的一些数据
                     // 累加当前的行宽度
                     currentLineWidth += childViewWidth + internalLineInterval;
                     //取每行的最大高度
                     currentLineHeight = Math.max(childViewHeight, currentLineHeight);
                     //将当前行的子控件添加到用于记录当前行子控件的集合
-                    viewList.add(childView);
                 }
+                viewList.add(childView);
 
                 //如果正好是最后一行需要换行
                 if (i == childCount - 1) {
