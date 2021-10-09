@@ -44,16 +44,10 @@ public class LogCatHelper {
         private final String cmds;
         private final String mPid;
         private final String dirPath;
-        private final String fileNameDataStart;
-        private final String fileNameDataPattern;
-        private final String fileNameExtensionName;
 
-        private LogRunnable(int pid, String dirPath, String fileNameDataStart, String fileNameDataPattern, String fileNameExtensionName) {
+        private LogRunnable(int pid, String dirPath) {
             this.mPid = "" + pid;
             this.dirPath = dirPath;
-            this.fileNameDataStart = fileNameDataStart;
-            this.fileNameDataPattern = fileNameDataPattern;
-            this.fileNameExtensionName = fileNameExtensionName;
             cmds = "logcat *:v | grep \"(" + mPid + ")\"";
         }
 
@@ -91,8 +85,13 @@ public class LogCatHelper {
         private void saveToFile(String line) {
             FileWriter fileWriter = null;
             try {
-                File file = new File(dirPath, fileNameDataStart + FormatDate.getFormatDate(fileNameDataPattern) + fileNameExtensionName);
+                File file = new File(dirPath, getInstance().fileNameStart + FormatDate.getFormatDate(getInstance().fileNameDataPattern) + getInstance().fileNameExtensionName);
                 if (!file.exists()) {
+                    file.createNewFile();
+                }
+                long totalSpace = file.getTotalSpace();
+                if (totalSpace >= getInstance().fileMaxSize){
+                    file.delete();
                     file.createNewFile();
                 }
                 fileWriter = new FileWriter(file, true);
@@ -154,11 +153,18 @@ public class LogCatHelper {
      */
     private final int appid;
     private Thread logThread;
+    /**
+     * 三天
+     */
     private long autoDeleteFileTime = 24 * 3 * 60 * 60 * 1000;
+    /**
+     * 20MB
+     */
+    private long fileMaxSize = 20 * 1024 * 1024;
     /**
      * 日志文件的文件名开头
      */
-    private String fileNameDataStart = "log-";
+    private String fileNameStart = "log-";
     /**
      * 日志文件时间格式化规则
      */
@@ -178,7 +184,7 @@ public class LogCatHelper {
                 for (File logFile : files) {
                     long l = logFile.lastModified();
                     long time = System.currentTimeMillis() - l;
-                    //删除大于3天的文件
+                    //删除大于指定有效期的文件
                     if (time > autoDeleteFileTime) {
                         logFile.delete();
                     }
@@ -265,7 +271,7 @@ public class LogCatHelper {
      */
     public void init() {
         if (logThread == null) {
-            logThread = BaseManager.getThreadFactory().newThread(new LogRunnable(appid, dirPath,fileNameDataStart,fileNameDataPattern,fileNameExtensionName));
+            logThread = BaseManager.getThreadFactory().newThread(new LogRunnable(appid, dirPath));
         }
         try {
             logThread.start();
@@ -275,8 +281,12 @@ public class LogCatHelper {
         startAutoDeleteFileTimer();
     }
 
-    public void setFileNameStart(String fileNameDataStart) {
-        this.fileNameDataStart = fileNameDataStart;
+    public void setFileNameStart(String fileNameStart) {
+        this.fileNameStart = fileNameStart;
+    }
+
+    public void setFileMaxSize(long fileMaxSize) {
+        this.fileMaxSize = fileMaxSize;
     }
 
     public void setFileNameDataPattern(String fileNameDataPattern) {
