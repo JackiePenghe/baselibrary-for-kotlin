@@ -30,117 +30,12 @@ import java.util.concurrent.TimeUnit;
  * <uses-permission android:name="android.permission.READ_LOGS" />
  */
 public class LogCatHelper {
-    private static LogCatHelper instance = null;
-    /**
-     * 保存路径
-     */
-    private final String dirPath;
-    /**
-     * 应用pid
-     */
-    private final int appid;
-    private Thread logThread;
-    private long autoDeleteFileTime = 24 * 3 * 60 * 60 * 1000;
-    private final Runnable autoDeleteFileTimerRunnable = new Runnable() {
-        @Override
-        public void run() {
-            //删除崩溃日志
-            File file = new File(dirPath);
-            File[] files = file.listFiles();
-            if (files != null) {
-                for (File logFile : files) {
-                    long l = logFile.lastModified();
-                    long time = System.currentTimeMillis() - l;
-                    //删除大于3天的文件
-                    if (time > autoDeleteFileTime) {
-                        logFile.delete();
-                    }
-                }
-            }
-        }
-    };
-    private ScheduledExecutorService autoDeleteFileTimer;
 
-    private LogCatHelper(String path) {
-        appid = android.os.Process.myPid();
-        if (TextUtils.isEmpty(path)) {
-            dirPath = FileUtil.getLogInfoDir().getAbsolutePath();
-        } else {
-            dirPath = path;
-        }
-        File dir = new File(dirPath);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-    }
-
-    /**
-     * @return 本类单例
-     */
-    public static LogCatHelper getInstance() {
-        return getInstance(true);
-    }
-
-    /**
-     * @param useSdcard 是否保存到 SD 卡
-     * @return 本类单例
-     */
-    public static LogCatHelper getInstance(boolean useSdcard) {
-        String path = null;
-        if (useSdcard) {
-            File logInfoSdcardDir = FileUtil.getSdcardLogInfoDir();
-            if (logInfoSdcardDir != null) {
-                path = logInfoSdcardDir.getAbsolutePath();
-            }
-        } else {
-            File logInfoDir = FileUtil.getLogInfoDir();
-            if (logInfoDir != null) {
-                path = logInfoDir.getAbsolutePath();
-            }
-        }
-        if (path == null) {
-            throw new NullPointerException("path == null");
-        }
-        return getInstance(path);
-    }
-
-    /**
-     * @param path log日志保存根目录
-     * @return 本类单例
-     */
-    private static LogCatHelper getInstance(String path) {
-        if (instance == null) {
-            instance = new LogCatHelper(path);
-        }
-        return instance;
-    }
-
-    /**
-     * 启动log日志保存
-     */
-    public void init() {
-        if (logThread == null) {
-            logThread = BaseManager.getThreadFactory().newThread(new LogRunnable(appid, dirPath));
-        }
-        try {
-            logThread.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        startAutoDeleteFileTimer();
-    }
-
-    public String getLogcatDirectoryPath() {
-        return dirPath;
-    }
-
-    public void setAutoDeleteFileTime(long autoDeleteFileTime) {
-        this.autoDeleteFileTime = autoDeleteFileTime;
-    }
-
-    public void destroy() {
-        stopAutoDeleteFileTimer();
-    }
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 私有静态内部类
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     private static class LogRunnable implements Runnable {
 
@@ -149,10 +44,16 @@ public class LogCatHelper {
         private final String cmds;
         private final String mPid;
         private final String dirPath;
+        private final String fileNameDataStart;
+        private final String fileNameDataPattern;
+        private final String fileNameExtensionName;
 
-        private LogRunnable(int pid, String dirPath) {
+        private LogRunnable(int pid, String dirPath, String fileNameDataStart, String fileNameDataPattern, String fileNameExtensionName) {
             this.mPid = "" + pid;
             this.dirPath = dirPath;
+            this.fileNameDataStart = fileNameDataStart;
+            this.fileNameDataPattern = fileNameDataPattern;
+            this.fileNameExtensionName = fileNameExtensionName;
             cmds = "logcat *:v | grep \"(" + mPid + ")\"";
         }
 
@@ -190,7 +91,7 @@ public class LogCatHelper {
         private void saveToFile(String line) {
             FileWriter fileWriter = null;
             try {
-                File file = new File(dirPath, "log-" + FormatDate.getFormatDate() + ".log");
+                File file = new File(dirPath, fileNameDataStart + FormatDate.getFormatDate(fileNameDataPattern) + fileNameExtensionName);
                 if (!file.exists()) {
                     file.createNewFile();
                 }
@@ -219,8 +120,8 @@ public class LogCatHelper {
     @SuppressLint("SimpleDateFormat")
     private static class FormatDate {
 
-        public static String getFormatDate() {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH");
+        public static String getFormatDate(String fileNameDataPattern) {
+            SimpleDateFormat sdf = new SimpleDateFormat(fileNameDataPattern);
             return sdf.format(System.currentTimeMillis());
         }
 
@@ -229,6 +130,180 @@ public class LogCatHelper {
             return sdf.format(System.currentTimeMillis());
         }
     }
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 私有静态变量
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    private static LogCatHelper instance = null;
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 私有成员变量
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    /**
+     * 保存路径
+     */
+    private final String dirPath;
+    /**
+     * 应用pid
+     */
+    private final int appid;
+    private Thread logThread;
+    private long autoDeleteFileTime = 24 * 3 * 60 * 60 * 1000;
+    /**
+     * 日志文件的文件名开头
+     */
+    private String fileNameDataStart = "log-";
+    /**
+     * 日志文件时间格式化规则
+     */
+    private String fileNameDataPattern = "yyyy-MM-dd-HH";
+    /**
+     * 文件扩展名
+     */
+    private String fileNameExtensionName = ".log";
+
+    private final Runnable autoDeleteFileTimerRunnable = new Runnable() {
+        @Override
+        public void run() {
+            //删除崩溃日志
+            File file = new File(dirPath);
+            File[] files = file.listFiles();
+            if (files != null) {
+                for (File logFile : files) {
+                    long l = logFile.lastModified();
+                    long time = System.currentTimeMillis() - l;
+                    //删除大于3天的文件
+                    if (time > autoDeleteFileTime) {
+                        logFile.delete();
+                    }
+                }
+            }
+        }
+    };
+    private ScheduledExecutorService autoDeleteFileTimer;
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 构造方法
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    private LogCatHelper(String path) {
+        appid = android.os.Process.myPid();
+        if (TextUtils.isEmpty(path)) {
+            dirPath = FileUtil.getLogInfoDir().getAbsolutePath();
+        } else {
+            dirPath = path;
+        }
+        File dir = new File(dirPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+    }
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 公开静态方法
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    /**
+     * @return 本类单例
+     */
+    public static LogCatHelper getInstance() {
+        return getInstance(true);
+    }
+
+    /**
+     * @param useSdcard 是否保存到 SD 卡
+     * @return 本类单例
+     */
+    public static LogCatHelper getInstance(boolean useSdcard) {
+        String path = null;
+        if (useSdcard) {
+            File logInfoSdcardDir = FileUtil.getSdcardLogInfoDir();
+            if (logInfoSdcardDir != null) {
+                path = logInfoSdcardDir.getAbsolutePath();
+            }
+        } else {
+            File logInfoDir = FileUtil.getLogInfoDir();
+            if (logInfoDir != null) {
+                path = logInfoDir.getAbsolutePath();
+            }
+        }
+        if (path == null) {
+            throw new NullPointerException("path == null");
+        }
+        return getInstance(path);
+    }
+
+    /**
+     * @param path log日志保存根目录
+     * @return 本类单例
+     */
+    public static LogCatHelper getInstance(String path) {
+        if (instance == null) {
+            instance = new LogCatHelper(path);
+        }
+        return instance;
+    }
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 公开成员方法
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    /**
+     * 启动log日志保存
+     */
+    public void init() {
+        if (logThread == null) {
+            logThread = BaseManager.getThreadFactory().newThread(new LogRunnable(appid, dirPath,fileNameDataStart,fileNameDataPattern,fileNameExtensionName));
+        }
+        try {
+            logThread.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        startAutoDeleteFileTimer();
+    }
+
+    public void setFileNameStart(String fileNameDataStart) {
+        this.fileNameDataStart = fileNameDataStart;
+    }
+
+    public void setFileNameDataPattern(String fileNameDataPattern) {
+        this.fileNameDataPattern = fileNameDataPattern;
+    }
+
+    public void setFileNameExtensionName(String fileNameExtensionName) {
+        this.fileNameExtensionName = fileNameExtensionName;
+    }
+
+    public String getLogcatDirectoryPath() {
+        return dirPath;
+    }
+
+    public void setAutoDeleteFileTime(long autoDeleteFileTime) {
+        this.autoDeleteFileTime = autoDeleteFileTime;
+    }
+
+    public void destroy() {
+        stopAutoDeleteFileTimer();
+    }
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 私有成员方法
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     /**
      * 开启自动删除文件的定时器
