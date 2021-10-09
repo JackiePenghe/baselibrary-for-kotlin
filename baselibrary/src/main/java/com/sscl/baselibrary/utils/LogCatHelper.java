@@ -48,7 +48,7 @@ public class LogCatHelper {
         private LogRunnable(int pid, String dirPath) {
             this.mPid = "" + pid;
             this.dirPath = dirPath;
-            cmds = "logcat *:v | grep \"(" + mPid + ")\"";
+            cmds = "logcat *:" + getInstance().logLevel + " | grep \"(" + mPid + ")\"";
         }
 
         @Override
@@ -90,7 +90,7 @@ public class LogCatHelper {
                     file.createNewFile();
                 }
                 long totalSpace = file.getTotalSpace();
-                if (totalSpace >= getInstance().fileMaxSize){
+                if (totalSpace >= getInstance().fileMaxSize) {
                     file.delete();
                     file.createNewFile();
                 }
@@ -161,6 +161,10 @@ public class LogCatHelper {
      * 20MB
      */
     private long fileMaxSize = 20 * 1024 * 1024;
+    /**
+     * 自定义日志记录等级
+     */
+    private String logLevel = "v";
     /**
      * 日志文件的文件名开头
      */
@@ -283,6 +287,15 @@ public class LogCatHelper {
 
     public void setFileNameStart(String fileNameStart) {
         this.fileNameStart = fileNameStart;
+    }
+
+    /**
+     * 设置日志过滤等级 "v" "w" "e" "d" "i"
+     * @param logLevel
+     */
+    public void setLogLevel(String logLevel) {
+
+        this.logLevel = logLevel;
     }
 
     public void setFileMaxSize(long fileMaxSize) {
