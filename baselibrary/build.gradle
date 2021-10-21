@@ -3,13 +3,13 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 79
-        versionName "2.0.26"
+        minSdkVersion 19
+        targetSdkVersion 31
+        versionCode 80
+        versionName "2.0.27"
     }
 
     lintOptions {
@@ -22,12 +22,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-    }
-}
-
-repositories {
-    flatDir {
-        dirs 'aars'
     }
 }
 

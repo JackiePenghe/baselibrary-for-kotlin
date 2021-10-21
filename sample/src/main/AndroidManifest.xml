@@ -13,17 +13,25 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".activities.sample.CustomPasswordViewActivity"></activity>
-        <activity android:name=".activities.sample.LetterInputMethodActivity" />
-        <activity android:name=".activities.sample.NumberInputMethodActivity" />
-        <activity android:name=".activities.widget.FlowLayoutActivity" />
+        <activity android:name=".activities.sample.CustomPasswordViewActivity"
+            android:exported="true"/>
+        <activity android:name=".activities.sample.LetterInputMethodActivity"
+            android:exported="true" />
+        <activity android:name=".activities.sample.NumberInputMethodActivity"
+            android:exported="true" />
+        <activity android:name=".activities.widget.FlowLayoutActivity"
+            android:exported="true" />
         <activity
+            android:exported="true"
             android:name=".activities.sample.SampleWebViewActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar.FullScreen" />
-        <activity android:name=".activities.sample.SampleBannerActivity" />
-        <activity android:name=".activities.sample.ImageLoaderActivity" />
-        <activity android:name=".activities.sample.SelectFileActivity">
+        <activity android:name=".activities.sample.SampleBannerActivity"
+            android:exported="true" />
+        <activity android:name=".activities.sample.ImageLoaderActivity"
+            android:exported="true" />
+        <activity android:name=".activities.sample.SelectFileActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -45,11 +53,15 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.widget.CircleProgressBarActivity" />
-        <activity android:name=".activities.widget.ArcProgressBarActivity" />
-        <activity android:name=".activities.WidgetActivity" />
+        <activity android:name=".activities.widget.CircleProgressBarActivity"
+            android:exported="true"/>
+        <activity android:name=".activities.widget.ArcProgressBarActivity"
+            android:exported="true" />
+        <activity android:name=".activities.WidgetActivity"
+            android:exported="true" />
         <activity
             android:name=".activities.SplashActivity"
+            android:exported="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -58,9 +70,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:exported="true"
             android:name=".activities.WelcomeActivity"
             android:theme="@style/AppTheme.NoActionBar.FullScreen" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -73,15 +87,22 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.sample.SampleBaseAppcompatActivity" />
-        <activity android:name=".activities.sample.SampleBaseDrawerActivity" />
-        <activity android:name=".activities.sample.SampleBaseFragmentActivity" />
+        <activity android:name=".activities.sample.SampleBaseAppcompatActivity"
+            android:exported="true" />
+        <activity android:name=".activities.sample.SampleBaseDrawerActivity"
+            android:exported="true" />
+        <activity android:name=".activities.sample.SampleBaseFragmentActivity"
+            android:exported="true" />
         <activity
             android:name=".activities.sample.SampleBasePopupWindowActivity"
+            android:exported="true"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activities.sample.AllPurposeAdapterActivity" />
-        <activity android:name=".activities.sample.HomeWatcherActivity" />
-        <activity android:name=".activities.sample.ToastTestActivity" />
+        <activity android:name=".activities.sample.AllPurposeAdapterActivity"
+            android:exported="true"/>
+        <activity android:name=".activities.sample.HomeWatcherActivity"
+            android:exported="true" />
+        <activity android:name=".activities.sample.ToastTestActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>
