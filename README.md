@@ -12,6 +12,7 @@ allprojects {
 
 ```xml
 dependencies {
+	//version is release tag
         implementation 'com.github.JackiePenghe:BaseLibrary:version'
 }
 ```
