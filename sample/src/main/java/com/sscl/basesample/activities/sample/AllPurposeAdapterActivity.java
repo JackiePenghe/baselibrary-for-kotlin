@@ -22,6 +22,7 @@ public class AllPurposeAdapterActivity extends BaseAppCompatActivity {
     private ListView listView;
     private final ArrayList<String> dataList = new ArrayList<>();
 
+
     /**
      * 标题栏的返回按钮被按下的时候回调此函数
      */

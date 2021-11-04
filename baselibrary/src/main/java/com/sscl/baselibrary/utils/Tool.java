@@ -157,37 +157,38 @@ public class Tool {
         //解除输入法内存泄漏
         InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         try {
-            @SuppressWarnings("JavaReflectionMemberAccess") Field mCurRootViewField = InputMethodManager.class.getDeclaredField("mCurRootView");
-            @SuppressWarnings("JavaReflectionMemberAccess") Field mNextServedViewField = InputMethodManager.class.getDeclaredField("mNextServedView");
-            @SuppressWarnings("JavaReflectionMemberAccess") Field mServedViewField = InputMethodManager.class.getDeclaredField("mServedView");
-            mCurRootViewField.setAccessible(true);
-            mNextServedViewField.setAccessible(true);
-            mServedViewField.setAccessible(true);
-            Object mCurRootView = mCurRootViewField.get(inputMethodManager);
-            if (null != mCurRootView) {
-                Context context = ((View) mCurRootView).getContext();
-                if (context == activity) {
-                    //将该对象设为null，破环GC引用链，防止输入法内存泄漏
-                    mCurRootViewField.set(inputMethodManager, null);
-                }
-            }
-            Object mNextServedView = mNextServedViewField.get(inputMethodManager);
-            if (null != mNextServedView) {
-                Context context = ((View) mNextServedView).getContext();
-                if (activity == context) {
-                    mNextServedViewField.set(inputMethodManager, null);
-                }
-            }
-            Object mServedView = mServedViewField.get(inputMethodManager);
-            if (null != mServedView) {
-                Context context = ((View) mServedView).getContext();
-                if (activity == context) {
-                    mServedViewField.set(inputMethodManager, null);
-                }
-            }
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+           if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S){
+               Class<InputMethodManager> inputMethodManagerClass = InputMethodManager.class;
+               @SuppressLint("DiscouragedPrivateApi") Field mCurRootViewField = inputMethodManagerClass.getDeclaredField("mCurRootView");
+               @SuppressLint("DiscouragedPrivateApi") Field mNextServedViewField = inputMethodManagerClass.getDeclaredField("mNextServedView");
+               @SuppressLint("DiscouragedPrivateApi") Field mServedViewField = inputMethodManagerClass.getDeclaredField("mServedView");
+               mCurRootViewField.setAccessible(true);
+               mNextServedViewField.setAccessible(true);
+               mServedViewField.setAccessible(true);
+               Object mCurRootView = mCurRootViewField.get(inputMethodManager);
+               if (null != mCurRootView) {
+                   Context context = ((View) mCurRootView).getContext();
+                   if (context == activity) {
+                       //将该对象设为null，破环GC引用链，防止输入法内存泄漏
+                       mCurRootViewField.set(inputMethodManager, null);
+                   }
+               }
+               Object mNextServedView = mNextServedViewField.get(inputMethodManager);
+               if (null != mNextServedView) {
+                   Context context = ((View) mNextServedView).getContext();
+                   if (activity == context) {
+                       mNextServedViewField.set(inputMethodManager, null);
+                   }
+               }
+               Object mServedView = mServedViewField.get(inputMethodManager);
+               if (null != mServedView) {
+                   Context context = ((View) mServedView).getContext();
+                   if (activity == context) {
+                       mServedViewField.set(inputMethodManager, null);
+                   }
+               }
+           }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
@@ -511,6 +512,19 @@ public class Tool {
     public static int getDarkColorPrimary(@NonNull Context context) {
         TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+        return typedValue.data;
+    }
+
+
+    /**
+     * 获取暗色主题Primary颜色
+     *
+     * @param context 上下文
+     * @return 暗色主题Primary颜色
+     */
+    public static int getDarkColorPrimaryVariant(@NonNull Context context) {
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.colorPrimaryVariant, typedValue, true);
         return typedValue.data;
     }
 
