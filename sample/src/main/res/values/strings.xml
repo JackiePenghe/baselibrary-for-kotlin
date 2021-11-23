@@ -37,4 +37,12 @@
     <string name="number_input_method">Number InputMethod</string>
     <string name="letter_input_method">Letter InputMethod</string>
     <string name="custom_password_view">custom password view</string>
+    <string name="zip_file_operation">zip file operation</string>
+    <string name="file_name_colon">File name:</string>
+    <string name="list_files">List the files</string>
+    <string name="no_file_selected">select none file</string>
+    <string name="file_list">file list</string>
+    <string name="unzip_file">unzip files</string>
+    <string name="unzip_file_succeed">解压文件成功</string>
+    <string name="unzip_file_failed">解压失败</string>
 </resources>

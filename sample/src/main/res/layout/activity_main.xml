@@ -114,6 +114,13 @@
             android:text="@string/custom_password_view"
             android:textAllCaps="false" />
 
+        <Button
+            android:id="@+id/zip_file_operation_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/zip_file_operation"
+            android:textAllCaps="false" />
+
     </LinearLayout>
 
 </ScrollView>

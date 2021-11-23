@@ -3,6 +3,10 @@ package com.sscl.basesample.activities;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.Settings;
 
 import androidx.annotation.Nullable;
 
@@ -24,6 +28,7 @@ import com.sscl.basesample.R;
  */
 public class WelcomeActivity extends BaseWelcomeActivity {
     private static final int REQUEST_CODE_SETTING = 1;
+    private static final int REQUEST_CODE = 2;
 
     @Override
     protected void doAfterAnimation() {
@@ -44,12 +49,15 @@ public class WelcomeActivity extends BaseWelcomeActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_CODE_SETTING) {
             checkPermission();
-        } else {
+        } else if (requestCode == REQUEST_CODE){
+            checkFileManagePermission();
+        }else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
     private void toNext() {
+
         LogCatHelper.getInstance().init();
         CrashHandler.getInstance().init(WelcomeActivity.this.getApplicationContext(), true);
         MyApplication.initCrashListener();
@@ -60,9 +68,24 @@ public class WelcomeActivity extends BaseWelcomeActivity {
 
     private void checkPermission() {
         if (PermissionUtil.hasPermissions(this, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            toNext();
+           checkFileManagePermission();
         } else {
             showPermissionDialog();
+        }
+    }
+
+    private void checkFileManagePermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // 先判断有没有权限
+            if (Environment.isExternalStorageManager()) {
+               toNext();
+            } else {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.setData(Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+        }else {
+            toNext();
         }
     }
 

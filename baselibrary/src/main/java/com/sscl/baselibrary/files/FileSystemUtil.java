@@ -92,11 +92,15 @@ public class FileSystemUtil {
             // DownloadsProvider
             else if (isDownloadsDocument(uri)) {
 
-                final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
+                try {
+                    final String id = DocumentsContract.getDocumentId(uri);
+                    final Uri contentUri = ContentUris.withAppendedId(
+                            Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
 
-                return getDataColumn(context, contentUri, null, null);
+                    return getDataColumn(context, contentUri, null, null);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
             }
             // MediaProvider
             else if (isMediaDocument(uri)) {
@@ -130,7 +134,7 @@ public class FileSystemUtil {
             return uri.getPath();
         }
 
-        return null;
+        return FileProviderUtil.getPath(uri);
     }
 
     /**
@@ -377,9 +381,13 @@ public class FileSystemUtil {
          */
         Z_FILE("application/x-compress"),
         /**
+         * .x_zip格式的文件
+         */
+        X_ZIP_FILE("application/x-zip-compressed"),
+        /**
          * .zip格式的文件
          */
-        ZIP_FILE("application/x-zip-compressed"),
+        ZIP_FILE("application/zip"),
         /**
          * 所有APP 支持的文件
          */

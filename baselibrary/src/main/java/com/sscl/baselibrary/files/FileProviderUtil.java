@@ -137,6 +137,7 @@ public class FileProviderUtil extends FileProvider {
         if (path.startsWith(ROOT_PATH)) {
             path = path.substring(ROOT_PATH.length());
         }
+
         return path;
     }
 
