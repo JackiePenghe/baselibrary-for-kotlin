@@ -12,7 +12,14 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Size;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.sscl.baselibrary.activity.BaseSplashActivity;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 权限请求工具类
@@ -23,13 +30,43 @@ public class PermissionUtil {
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
+     * 接口定义
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    public interface OnPermissionRequestResult {
+
+        /**
+         * 权限请求成功
+         */
+        void permissionRequestSucceed();
+
+        /**
+         * 权限请求失败
+         *
+         * @param failedPermissions 请求失败的权限
+         */
+        void permissionRequestFailed(String[] failedPermissions);
+    }
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
      * 静态常量
      *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-    /* * * * * * * * * * * * * * * * * * * BaseSplashActivity * * * * * * * * * * * * * * * * * * */
-
     private static final String TAG = PermissionUtil.class.getSimpleName();
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 静态成员变量
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    private static int requestCode;
+    private static String[] permissions;
+
+    private static OnPermissionRequestResult onPermissionRequestResult;
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
@@ -68,10 +105,48 @@ public class PermissionUtil {
         return true;
     }
 
+    public static void setOnPermissionRequestResult(OnPermissionRequestResult onPermissionRequestResult) {
+        PermissionUtil.onPermissionRequestResult = onPermissionRequestResult;
+    }
+
     public static void toSettingActivity(@NonNull Activity activity, int requestCode) {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.fromParts("package", activity.getPackageName(), null));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivityForResult(intent, requestCode);
+    }
+
+    public static void requestPermission(@NonNull Activity activity, int requestCode, String... permissions) {
+        PermissionUtil.requestCode = requestCode;
+        PermissionUtil.permissions = permissions;
+        ActivityCompat.requestPermissions(activity, permissions, requestCode);
+    }
+
+    public static void onRequestPermissionsResult(Activity activity, int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode != PermissionUtil.requestCode) {
+            return;
+        }
+        boolean hasPermissions = hasPermissions(activity, PermissionUtil.permissions);
+        if (hasPermissions) {
+            if (onPermissionRequestResult != null) {
+                onPermissionRequestResult.permissionRequestSucceed();
+            }
+        } else {
+            ArrayList<String> strings = new ArrayList<>();
+            for (int i = 0; i < grantResults.length; i++) {
+                int grantResult = grantResults[i];
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    strings.add(permissions[i]);
+                }
+            }
+            if (onPermissionRequestResult != null) {
+                String[] failedPermissions = new String[strings.size()];
+                onPermissionRequestResult.permissionRequestFailed(strings.toArray(failedPermissions));
+            }
+        }
+    }
+
+    public static boolean isPermissionAlwaysDenied(@NonNull Activity activity, String permission) {
+       return !ActivityCompat.shouldShowRequestPermissionRationale(activity,permission);
     }
 }

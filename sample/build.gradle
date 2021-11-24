@@ -37,8 +37,7 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation project(':baselibrary')
     implementation 'com.sscl:brvahlibrary:0.0.2'
-    //动态权限库
-    implementation 'com.yanzhenjie:permission:2.0.3'
+
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.yanzhenjie:kalle:0.1.7'
