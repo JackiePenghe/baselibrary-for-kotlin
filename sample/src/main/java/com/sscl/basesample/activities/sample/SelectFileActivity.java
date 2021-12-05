@@ -13,9 +13,12 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.files.FileSystemUtil;
+import com.sscl.baselibrary.files.FileUtil;
 import com.sscl.baselibrary.utils.DebugUtil;
 import com.sscl.baselibrary.utils.ToastUtil;
 import com.sscl.basesample.R;
+
+import java.io.File;
 
 /**
  * @author jackie
@@ -253,6 +256,10 @@ public class SelectFileActivity extends BaseAppCompatActivity {
     private void showDialog(@NonNull String title, @Nullable String filePath, @Nullable Uri uri) {
 
         String message = "filePath = " + filePath + "\n" + "uri = " + uri;
+        if (filePath != null) {
+            File file = new File(filePath);
+            DebugUtil.warnOut(TAG,"file exists " + file.exists() );
+        }
         new AlertDialog.Builder(this)
                 .setTitle(title)
                 .setMessage(message)

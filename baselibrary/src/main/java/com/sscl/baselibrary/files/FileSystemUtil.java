@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -78,7 +77,7 @@ public class FileSystemUtil {
     public static String getPath(@NonNull final Context context, @NonNull final Uri uri) {
 
         // DocumentProvider
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && DocumentsContract.isDocumentUri(context, uri)) {
+        if (DocumentsContract.isDocumentUri(context, uri)) {
             // ExternalStorageProvider
             if (isExternalStorageDocument(uri)) {
                 String docId = DocumentsContract.getDocumentId(uri);
@@ -87,6 +86,10 @@ public class FileSystemUtil {
 
                 if (PRIMARY.equalsIgnoreCase(type)) {
                     return Environment.getExternalStorageDirectory() + "/" + split[1];
+                } else {
+                    if (type.split("-").length == 2) {
+                        return  Environment.getExternalStorageDirectory() +"/" + split[1];
+                    }
                 }
             }
             // DownloadsProvider
@@ -164,9 +167,9 @@ public class FileSystemUtil {
      * @return true表示打开成功
      */
     @SuppressWarnings({"unused"})
-    public static boolean openSystemFile(@NonNull Activity activity, int requestCode, @NonNull String mimeType) {
+    public static boolean openSystemFile(@NonNull Activity activity, int requestCode, @NonNull String fileType) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType(mimeType);
+        intent.setType(fileType);
         try {
             activity.startActivityForResult(intent, requestCode);
             return true;
@@ -178,7 +181,13 @@ public class FileSystemUtil {
 
     public static void onActivityResult(Context context, int requestCode, int resultCode, Intent data) {
         Uri uri = FileSystemUtil.getSelectFileUri(data);
-        String filePath = FileSystemUtil.getSelectFilePath(context, data);
+        if (uri == null) {
+            if (onFileSelectedListener != null) {
+                onFileSelectedListener.fileSelected(requestCode, null, null);
+            }
+            return;
+        }
+        String filePath = getSelectFilePath(context, uri);
         if (onFileSelectedListener != null) {
             onFileSelectedListener.fileSelected(requestCode, uri, filePath);
         }
@@ -441,19 +450,20 @@ public class FileSystemUtil {
      * 获取选择的文件所在的文件路径
      *
      * @param context 上下文
-     * @param intent  Intent
+     * @param uri     Intent
      * @return 文件路径
      */
     @Nullable
-    public static String getSelectFilePath(Context context, @Nullable Intent intent) {
-        if (intent == null) {
-            return null;
+    public static String getSelectFilePath(Context context, @NonNull Uri uri) {
+        String path;
+        //使用第三方应用打开
+        if ("file".equalsIgnoreCase(uri.getScheme())) {
+            path = uri.getPath();
+        } else {
+            path = FileSystemUtil.getPath(context, uri);
         }
-        Uri selectFileUri = getSelectFileUri(intent);
-        if (selectFileUri == null) {
-            return null;
-        }
-        return FileSystemUtil.getPath(context, selectFileUri);
+
+        return path;
     }
 
     /**
@@ -569,7 +579,7 @@ public class FileSystemUtil {
          * @param uri         文件URI
          * @param filePath    文件路径
          */
-        void fileSelected(int requestCode, Uri uri, String filePath);
+        void fileSelected(int requestCode, @Nullable Uri uri, @Nullable String filePath);
     }
 
     /*--------------------------------私有静态方法--------------------------------*/
