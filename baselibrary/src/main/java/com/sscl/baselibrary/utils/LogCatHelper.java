@@ -89,7 +89,7 @@ public class LogCatHelper {
                 if (!file.exists()) {
                     file.createNewFile();
                 }
-                long totalSpace = file.getTotalSpace();
+                long totalSpace = file.length();
                 if (totalSpace >= getInstance().fileMaxSize) {
                     file.delete();
                     file.createNewFile();
@@ -158,7 +158,7 @@ public class LogCatHelper {
      */
     private long autoDeleteFileTime = 24 * 3 * 60 * 60 * 1000;
     /**
-     * 20MB
+     * 单个日志文件大小 默认20MB
      */
     private long fileMaxSize = 20 * 1024 * 1024;
     /**
@@ -291,6 +291,7 @@ public class LogCatHelper {
 
     /**
      * 设置日志过滤等级 "v" "w" "e" "d" "i"
+     *
      * @param logLevel
      */
     public void setLogLevel(String logLevel) {
