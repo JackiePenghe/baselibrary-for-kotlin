@@ -62,6 +62,7 @@ class ToastHandler extends Handler {
      * so an exception is thrown.
      */
     ToastHandler(@NonNull Context context) {
+        super(Looper.getMainLooper());
         this.context = context;
     }
 
