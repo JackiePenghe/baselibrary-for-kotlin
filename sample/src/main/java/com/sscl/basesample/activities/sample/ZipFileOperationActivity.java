@@ -303,6 +303,7 @@ public class ZipFileOperationActivity extends BaseAppCompatActivity {
             public void unzipSucceed(String unzipDir) {
                 DebugUtil.warnOut(TAG, "解压完成");
                 ToastUtil.toastLong(ZipFileOperationActivity.this, R.string.unzip_file_succeed);
+                FileUtil.deleteDirFiles(new File(unzipDir));
             }
 
             @Override

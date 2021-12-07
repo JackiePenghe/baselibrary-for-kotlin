@@ -86,6 +86,28 @@ public class ZipUtils {
                     final String unzipDir = FileUtil.getCacheDir() + "/unzipFiles";
                     upZipFile(file, unzipDir);
                     DebugUtil.warnOut(TAG, "解压完成");
+                    if (onFileZipListener != null) {
+                        onFileZipListener.unzipSucceed(unzipDir);
+                    }
+                } catch (final IOException e) {
+                    e.printStackTrace();
+                    DebugUtil.warnOut(TAG, "解压失败");
+                    if (onFileZipListener != null) {
+                        onFileZipListener.unzipFailed(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    public static void unzipCallbackOnMainThread(final File file, @Nullable final OnFileZipListener onFileZipListener) {
+        BaseManager.getThreadFactory().newThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final String unzipDir = FileUtil.getCacheDir() + "/unzipFiles";
+                    upZipFile(file, unzipDir);
+                    DebugUtil.warnOut(TAG, "解压完成");
                     BaseManager.getHandler().post(new Runnable() {
                         @Override
                         public void run() {
