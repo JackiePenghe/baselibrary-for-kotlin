@@ -36,4 +36,9 @@
     <string name="file_list">文件列表</string>
     <string name="no_file_selected">没有选择文件</string>
     <string name="unzip_file">解压文件</string>
+    <string name="translate">位移动画</string>
+    <string name="unzip_file_succeed">解压成功</string>
+    <string name="unzip_file_failed">解压失败</string>
+    <string name="animation_test">动画测试</string>
+    <string name="scale">缩放动画</string>
 </resources>

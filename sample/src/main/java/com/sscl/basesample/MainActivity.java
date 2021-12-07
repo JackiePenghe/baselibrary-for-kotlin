@@ -15,6 +15,7 @@ import com.sscl.baselibrary.utils.SharedPreferencesTools;
 import com.sscl.baselibrary.utils.Tool;
 import com.sscl.basesample.activities.WidgetActivity;
 import com.sscl.basesample.activities.sample.AllPurposeAdapterActivity;
+import com.sscl.basesample.activities.sample.AnimationSampleActivity;
 import com.sscl.basesample.activities.sample.CustomPasswordViewActivity;
 import com.sscl.basesample.activities.sample.HomeWatcherActivity;
 import com.sscl.basesample.activities.sample.ImageLoaderActivity;
@@ -54,6 +55,7 @@ public class MainActivity extends BaseAppCompatActivity {
     private Button letterInputMethodBtn;
     private Button customPasswordViewBtn;
     private Button zipFileOperationBtn;
+    private Button animationTestBtn;
 
     private final View.OnClickListener onClickListener = view -> {
         Intent intent = null;
@@ -94,6 +96,8 @@ public class MainActivity extends BaseAppCompatActivity {
             intent = new Intent(MainActivity.this, CustomPasswordViewActivity.class);
         }else if (id == zipFileOperationBtn.getId()){
             intent = new Intent(MainActivity.this, ZipFileOperationActivity.class);
+        }else if (id == animationTestBtn.getId()){
+            intent = new Intent(MainActivity.this, AnimationSampleActivity.class);
         }
         if (intent != null) {
             startActivity(intent);
@@ -168,6 +172,7 @@ public class MainActivity extends BaseAppCompatActivity {
         letterInputMethodBtn = findViewById(R.id.letter_input_method_btn);
         customPasswordViewBtn = findViewById(R.id.custom_password_view_btn);
         zipFileOperationBtn = findViewById(R.id.zip_file_operation_btn);
+        animationTestBtn = findViewById(R.id.animation_test_btn);
     }
 
     /**
@@ -206,6 +211,7 @@ public class MainActivity extends BaseAppCompatActivity {
         letterInputMethodBtn.setOnClickListener(onClickListener);
         customPasswordViewBtn.setOnClickListener(onClickListener);
         zipFileOperationBtn.setOnClickListener(onClickListener);
+        animationTestBtn.setOnClickListener(onClickListener);
     }
 
     /**

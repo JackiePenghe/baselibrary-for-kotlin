@@ -43,6 +43,10 @@
     <string name="no_file_selected">select none file</string>
     <string name="file_list">file list</string>
     <string name="unzip_file">unzip files</string>
-    <string name="unzip_file_succeed">解压文件成功</string>
-    <string name="unzip_file_failed">解压失败</string>
+    <string name="unzip_file_succeed">unzip succeed</string>
+    <string name="unzip_file_failed">unzip failed</string>
+    <string name="translate">translate</string>
+    <string name="animation_test">Animation test</string>
+    <string name="scale">scale</string>
+    <string name="scale_translate"><![CDATA[Scale & Translate]]></string>
 </resources>

@@ -121,6 +121,13 @@
             android:text="@string/zip_file_operation"
             android:textAllCaps="false" />
 
+        <Button
+            android:id="@+id/animation_test_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/animation_test"
+            android:textAllCaps="false" />
+
     </LinearLayout>
 
 </ScrollView>
