@@ -10,9 +10,15 @@ import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
+import androidx.documentfile.provider.DocumentFile;
 
 import java.io.File;
 import java.util.List;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.URIResolver;
+import javax.xml.validation.Schema;
 
 
 /**
@@ -122,7 +128,7 @@ public class FileProviderUtil extends FileProvider {
      */
     @SuppressWarnings("unused")
     @NonNull
-    public static String getPath(@NonNull Uri uri) {
+    public static String getPath(@NonNull Context context,@NonNull Uri uri) {
         String scheme = uri.getScheme();
         if (!CONTENT_CONTENT.equals(scheme)) {
             throw new RuntimeException("Uri scheme error! Need " + CONTENT_CONTENT + ",find " + scheme + ".");
@@ -137,7 +143,12 @@ public class FileProviderUtil extends FileProvider {
         if (path.startsWith(ROOT_PATH)) {
             path = path.substring(ROOT_PATH.length());
         }
-
+//        boolean documentUri = DocumentFile.isDocumentUri(context, uri);
+//        String path;
+//        if (documentUri){
+//            DocumentFile documentFile = DocumentFile.fromSingleUri(context, uri);
+////            documentFile.
+//        }
         return path;
     }
 

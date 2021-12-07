@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.sscl.baselibrary.R;
+import com.sscl.baselibrary.utils.DebugUtil;
 import com.sscl.baselibrary.utils.ToastUtil;
 
 import java.io.File;
@@ -75,31 +76,29 @@ public class FileSystemUtil {
     @Nullable
     @SuppressWarnings("unused")
     public static String getPath(@NonNull final Context context, @NonNull final Uri uri) {
-
-        // DocumentProvider
+        DebugUtil.warnOut(TAG,"getPath uri " + uri);
         if (DocumentsContract.isDocumentUri(context, uri)) {
             // ExternalStorageProvider
             if (isExternalStorageDocument(uri)) {
                 String docId = DocumentsContract.getDocumentId(uri);
                 String[] split = docId.split(":");
                 String type = split[0];
-
+                DebugUtil.warnOut(TAG, "file docId " + docId);
+                DebugUtil.warnOut(TAG, "file type " + type);
                 if (PRIMARY.equalsIgnoreCase(type)) {
                     return Environment.getExternalStorageDirectory() + "/" + split[1];
                 } else {
                     if (type.split("-").length == 2) {
-                        return  Environment.getExternalStorageDirectory() +"/" + split[1];
+                        return Environment.getExternalStorageDirectory() + "/" + split[1];
                     }
                 }
             }
             // DownloadsProvider
             else if (isDownloadsDocument(uri)) {
-
                 try {
                     final String id = DocumentsContract.getDocumentId(uri);
                     final Uri contentUri = ContentUris.withAppendedId(
                             Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
-
                     return getDataColumn(context, contentUri, null, null);
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
@@ -137,7 +136,7 @@ public class FileSystemUtil {
             return uri.getPath();
         }
 
-        return FileProviderUtil.getPath(uri);
+        return FileProviderUtil.getPath(context,uri);
     }
 
     /**
@@ -614,10 +613,10 @@ public class FileSystemUtil {
                 final int columnIndex = cursor.getColumnIndexOrThrow(column);
                 result = cursor.getString(columnIndex);
             } else {
-                result = FileProviderUtil.getPath(uri);
+                result = FileProviderUtil.getPath(context,uri);
             }
         } catch (Exception e) {
-            result = FileProviderUtil.getPath(uri);
+            result = FileProviderUtil.getPath(context,uri);
         } finally {
             if (cursor != null) {
                 cursor.close();
@@ -641,7 +640,7 @@ public class FileSystemUtil {
      * 检测是否属于下载uri
      *
      * @param uri 要检测的Uri
-     * @return 是否属于下载uri
+     * @return 是否属于下载uri解压完成
      */
     private static boolean isDownloadsDocument(@NonNull Uri uri) {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
