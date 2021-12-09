@@ -265,12 +265,8 @@ public class ZipFileOperationActivity extends BaseAppCompatActivity {
             ToastUtil.toastLong(this, R.string.no_file_selected);
             return;
         }
-        try {
-            ArrayList<String> entriesNames = ZipUtils.getEntriesNames(new File(filePath));
-            showFileListDialog(entriesNames);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ArrayList<String> entriesNames = ZipUtils.getEntriesNamesNew(new File(filePath));
+        showFileListDialog(entriesNames);
     }
 
     /**
@@ -279,10 +275,16 @@ public class ZipFileOperationActivity extends BaseAppCompatActivity {
      * @param entriesNames 文件列表
      */
     private void showFileListDialog(ArrayList<String> entriesNames) {
-        String[] cache = new String[entriesNames.size()];
+        String[] items;
+        if (entriesNames != null) {
+            String[] cache = new String[entriesNames.size()];
+            items = entriesNames.toArray(cache);
+        } else {
+            items = new String[]{"空文件列表"};
+        }
         new AlertDialog.Builder(this)
                 .setTitle(R.string.file_list)
-                .setItems(entriesNames.toArray(cache), null)
+                .setItems(items, null)
                 .setCancelable(false)
                 .setPositiveButton(R.string.confirm, null)
                 .show();
@@ -298,17 +300,17 @@ public class ZipFileOperationActivity extends BaseAppCompatActivity {
         }
         File file = new File(filePath);
         DebugUtil.warnOut(TAG, "开始解压");
-        ZipUtils.unzip(file, new ZipUtils.OnFileZipListener() {
+        ZipUtils.unzip(file, FileUtil.getSdCardCacheDir().getPath() + "/unzipFiles", new ZipUtils.OnFileZipListener() {
             @Override
             public void unzipSucceed(String unzipDir) {
                 DebugUtil.warnOut(TAG, "解压完成");
                 ToastUtil.toastLong(ZipFileOperationActivity.this, R.string.unzip_file_succeed);
 //                FileUtil.deleteDirFiles(new File(unzipDir));
-                DebugUtil.warnOut(TAG,"file dir " + unzipDir);
+                DebugUtil.warnOut(TAG, "file dir " + unzipDir);
             }
 
             @Override
-            public void unzipFailed(IOException e) {
+            public void unzipFailed() {
                 DebugUtil.warnOut(TAG, "解压失败");
                 ToastUtil.toastLong(ZipFileOperationActivity.this, R.string.unzip_file_failed);
             }

@@ -397,6 +397,10 @@ public class FileSystemUtil {
          */
         ZIP_FILE("application/zip"),
         /**
+         * 所有zip文件
+         */
+        ALL_ZIP_FILE("*/zip"),
+        /**
          * 所有APP 支持的文件
          */
         APPLICATION_ALL("application/*"),

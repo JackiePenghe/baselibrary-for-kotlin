@@ -5,15 +5,11 @@ import androidx.annotation.Nullable;
 import com.sscl.baselibrary.files.FileUtil;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
-import java.util.zip.ZipOutputStream;
+import java.util.zip.ZipInputStream;
 
 /**
  * Java utils 实现的Zip工具
@@ -37,323 +33,309 @@ public class ZipUtils {
 
         /**
          * 解压失败
-         *
-         * @param e 异常信息
          */
-        void unzipFailed(IOException e);
+        void unzipFailed();
     }
 
-    /**
-     * 批量压缩文件（夹）
-     *
-     * @param resFileList 要压缩的文件（夹）列表
-     * @param zipFile     生成的压缩文件
-     * @throws IOException 当压缩过程出错时抛出
-     */
-    public static void zipFiles(Collection<File> resFileList, File zipFile) throws IOException {
-        ZipOutputStream zipout = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(
-                zipFile), BUFF_SIZE));
-        for (File resFile : resFileList) {
-            zipFile(resFile, zipout, "");
-        }
-        zipout.close();
-    }
+    public static void unzip(final File file, @Nullable final String unzipFileDir, @Nullable final OnFileZipListener onFileZipListener) {
 
-    /**
-     * 批量压缩文件（夹）
-     *
-     * @param resFileList 要压缩的文件（夹）列表
-     * @param zipFile     生成的压缩文件
-     * @param comment     压缩文件的注释
-     * @throws IOException 当压缩过程出错时抛出
-     */
-    public static void zipFiles(Collection<File> resFileList, File zipFile, String comment)
-            throws IOException {
-        ZipOutputStream zipout = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(
-                zipFile), BUFF_SIZE));
-        for (File resFile : resFileList) {
-            zipFile(resFile, zipout, "");
-        }
-        zipout.setComment(comment);
-        zipout.close();
-    }
-
-    public static void unzip(final File file, @Nullable final OnFileZipListener onFileZipListener) {
         BaseManager.getThreadFactory().newThread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    final String unzipDir = FileUtil.getCacheDir() + "/unzipFiles";
-                    upZipFile(file, unzipDir);
-                    DebugUtil.warnOut(TAG, "解压完成");
+                String unzipDir;
+                if (unzipFileDir == null) {
+                    unzipDir = FileUtil.getCacheDir() + "/unzipFiles";
+                }else {
+                    unzipDir = unzipFileDir;
+                }
+                boolean b = upZipFileNew(file, unzipDir);
+                DebugUtil.warnOut(TAG, "解压完成");
+                if (b) {
                     if (onFileZipListener != null) {
                         onFileZipListener.unzipSucceed(unzipDir);
                     }
-                } catch (final IOException e) {
-                    e.printStackTrace();
-                    DebugUtil.warnOut(TAG, "解压失败");
+                } else {
                     if (onFileZipListener != null) {
-                        onFileZipListener.unzipFailed(e);
+                        onFileZipListener.unzipFailed();
                     }
                 }
             }
         }).start();
+//        String unzipDir = FileUtil.getCacheDir() + "/unzipFiles";
+//        upZipFileNew(file, unzipDir);
     }
 
     public static void unzipCallbackOnMainThread(final File file, @Nullable final OnFileZipListener onFileZipListener) {
         BaseManager.getThreadFactory().newThread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    final String unzipDir = FileUtil.getCacheDir() + "/unzipFiles";
-                    upZipFile(file, unzipDir);
-                    DebugUtil.warnOut(TAG, "解压完成");
-                    BaseManager.getHandler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (onFileZipListener != null) {
-                                onFileZipListener.unzipSucceed(unzipDir);
-                            }
+                final String unzipDir = FileUtil.getCacheDir() + "/unzipFiles";
+                upZipFile(file, unzipDir);
+                DebugUtil.warnOut(TAG, "解压完成");
+                BaseManager.getHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (onFileZipListener != null) {
+                            onFileZipListener.unzipSucceed(unzipDir);
                         }
-                    });
-                } catch (final IOException e) {
-                    e.printStackTrace();
-                    DebugUtil.warnOut(TAG, "解压失败");
-                    BaseManager.getHandler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (onFileZipListener != null) {
-                                onFileZipListener.unzipFailed(e);
-                            }
-                        }
-                    });
-                }
+                    }
+                });
             }
         }).start();
     }
 
     /**
-     * 解压缩一个文件
+     * 列出压缩包中的所有文件名
      *
-     * @param zipFile    压缩文件
-     * @param folderPath 解压缩的目标目录
-     * @throws IOException 当解压缩过程出错时抛出
+     * @param zipFile 压缩包文件
+     * @return 文件名集合
      */
-    public static void upZipFile(File zipFile, String folderPath) throws IOException {
-        File desDir = new File(folderPath);
-        if (desDir.exists()) {
-            FileUtil.deleteDirFiles(desDir);
-        }
-        desDir.mkdirs();
-        ZipFile zf;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            zf = new ZipFile(zipFile, Charset.forName(readFileCharset(zipFile)));
-        } else {
-            zf = new ZipFile(zipFile);
-        }
-        for (Enumeration<?> entries = zf.entries(); entries.hasMoreElements(); ) {
-            ZipEntry entry = ((ZipEntry) entries.nextElement());
-            InputStream in = zf.getInputStream(entry);
-            File desFile = new File(folderPath, entry.getName());
-            if (!desFile.exists()) {
-                File fileParentDir = desFile.getParentFile();
-                if (!fileParentDir.exists()) {
-                    fileParentDir.mkdirs();
-                } else {
-                    if (fileParentDir.isFile()) {
-                        fileParentDir.mkdirs();
-                    }
-                }
-                desFile.createNewFile();
-            }
-            OutputStream out = new FileOutputStream(desFile);
-            byte buffer[] = new byte[BUFF_SIZE];
-            int realLength;
-            while ((realLength = in.read(buffer)) > 0) {
-                out.write(buffer, 0, realLength);
-            }
-            in.close();
-            out.close();
-        }
-    }
-
-    /**
-     * 解压文件名包含传入文字的文件
-     *
-     * @param zipFile      压缩文件
-     * @param folderPath   目标文件夹
-     * @param nameContains 传入的文件匹配名
-     * @throws ZipException 压缩格式有误时抛出
-     * @throws IOException  IO错误时抛出
-     */
-    public static ArrayList<File> upZipSelectedFile(File zipFile, String folderPath,
-                                                    String nameContains) throws ZipException, IOException {
-        ArrayList<File> fileList = new ArrayList<File>();
-
-        File desDir = new File(folderPath);
-        if (!desDir.exists()) {
-            desDir.mkdir();
-        }
-        ZipFile zf = new ZipFile(zipFile);
-        for (Enumeration<?> entries = zf.entries(); entries.hasMoreElements(); ) {
-            ZipEntry entry = ((ZipEntry) entries.nextElement());
-            if (entry.getName().contains(nameContains)) {
-                InputStream in = zf.getInputStream(entry);
-                String str = folderPath + File.separator + entry.getName();
-                str = new String(str.getBytes("8859_1"), "GB2312");
-                // str.getBytes("GB2312"),"8859_1" 输出
-                // str.getBytes("8859_1"),"GB2312" 输入
-                File desFile = new File(str);
-                if (!desFile.exists()) {
-                    File fileParentDir = desFile.getParentFile();
-                    if (!fileParentDir.exists()) {
-                        fileParentDir.mkdirs();
-                    }
-                    desFile.createNewFile();
-                }
-                OutputStream out = new FileOutputStream(desFile);
-                byte buffer[] = new byte[BUFF_SIZE];
-                int realLength;
-                while ((realLength = in.read(buffer)) > 0) {
-                    out.write(buffer, 0, realLength);
-                }
-                in.close();
-                out.close();
-                fileList.add(desFile);
-            }
-        }
-        return fileList;
-    }
-
-    /**
-     * 获得压缩文件内文件列表
-     *
-     * @param zipFile 压缩文件
-     * @return 压缩文件内文件名称
-     * @throws ZipException 压缩文件格式有误时抛出
-     * @throws IOException  当解压缩过程出错时抛出
-     */
-    public static ArrayList<String> getEntriesNames(File zipFile) throws ZipException, IOException {
-        ArrayList<String> entryNames = new ArrayList<>();
-        Enumeration<?> entries = getEntriesEnumeration(zipFile);
-        while (entries.hasMoreElements()) {
-            ZipEntry entry = ((ZipEntry) entries.nextElement());
-            entryNames.add(new String(getEntryName(entry).getBytes()));
-        }
-        return entryNames;
-    }
-
-    /**
-     * 获得压缩文件内压缩文件对象以取得其属性
-     *
-     * @param zipFile 压缩文件
-     * @return 返回一个压缩文件列表
-     * @throws ZipException 压缩文件格式有误时抛出
-     * @throws IOException  IO操作有误时抛出
-     */
-    public static Enumeration<?> getEntriesEnumeration(File zipFile) throws ZipException,
-            IOException {
-        ZipFile zf;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            zf = new ZipFile(zipFile, ZipFile.OPEN_READ, Charset.forName(readFileCharset(zipFile)));
-        } else {
-            zf = new ZipFile(zipFile);
-        }
-        return zf.entries();
-    }
-
-    public static String readFileCharset(File file) {
-        String code = "US-ASCII";
+    @Nullable
+    public static ArrayList<String> getEntriesNamesNew(File zipFile) {
+        ArrayList<String> nameList = new ArrayList<>();
+        ArrayList<String> result;
+        FileInputStream fileInputStream = null;
+        ZipInputStream zipInputStream = null;
         try {
-
-            FileInputStream input = new FileInputStream(file);
-
-            int pre = (input.read() << 8) + input.read();
-
-
-            switch (pre) {
-                case 0xefbb:
-                    if (input.read() == 0xbf) {
-                        code = "UTF-8";
-                    }
+            fileInputStream = new FileInputStream(zipFile);
+            zipInputStream = new ZipInputStream(fileInputStream);
+            ZipEntry nextEntry;
+            do {
+                nextEntry = zipInputStream.getNextEntry();
+                if (nextEntry == null) {
                     break;
-                case 0xfffe:
-                    code = "Unicode";
-                    break;
-                case 0xfeff:
-                    code = "UTF-16BE";
-                    break;
-                default:
-                    code = "GBK";
-                    break;
+                }
+                if (nextEntry.isDirectory()){
+                    continue;
+                }
+                nameList.add(nextEntry.getName());
+                zipInputStream.closeEntry();
+            } while (true);
+            result = nameList;
+        } catch (IOException e) {
+            e.printStackTrace();
+            result = null;
+        } finally {
+            if (fileInputStream != null) {
+                try {
+                    fileInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-            System.out.println("CodeType: " + code);
-            input.close();
+            if (zipInputStream != null) {
+                try {
+                    zipInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return result;
+    }
+
+
+    /**
+     * 列出压缩包中的所有文件名
+     *
+     * @param zipFile 压缩包文件
+     * @return 文件名集合
+     */
+    public static ArrayList<String> getEntriesNames(File zipFile) {
+        ZipFile sourceFile;
+        try {
+            sourceFile = new ZipFile(zipFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        Enumeration<? extends ZipEntry> entries = sourceFile.entries();
+        if (entries == null) {
+            DebugUtil.warnOut(TAG, "zip file entries null");
+            return null;
+        }
+        ArrayList<String> fileNames = new ArrayList<>();
+        while (entries.hasMoreElements()) {
+            ZipEntry zipEntry = entries.nextElement();
+            if (zipEntry.isDirectory()) {
+                continue;
+            }
+            fileNames.add(zipEntry.getName());
+        }
+
+        try {
+            sourceFile.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return code;
-    }
-
-    public static String readFileCharset(String path) {
-        File file = new File(path);
-        return readFileCharset(file);
+        return fileNames;
     }
 
     /**
-     * 取得压缩文件对象的注释
+     * 解压缩一个文件
      *
-     * @param entry 压缩文件对象
-     * @return 压缩文件对象的注释
-     * @throws UnsupportedEncodingException
+     * @param zipFile       压缩文件
+     * @param targetDirPath 解压缩的目标目录
+     * @throws IOException 当解压缩过程出错时抛出
      */
-    public static String getEntryComment(ZipEntry entry) throws UnsupportedEncodingException {
-        return new String(entry.getComment().getBytes("GB2312"), "8859_1");
-    }
-
-    /**
-     * 取得压缩文件对象的名称
-     *
-     * @param entry 压缩文件对象
-     * @return 压缩文件对象的名称
-     * @throws UnsupportedEncodingException
-     */
-    public static String getEntryName(ZipEntry entry) throws UnsupportedEncodingException {
-        return new String(entry.getName().getBytes());
-    }
-
-    /**
-     * 压缩文件
-     *
-     * @param resFile  需要压缩的文件（夹）
-     * @param zipout   压缩的目的文件
-     * @param rootpath 压缩的文件路径
-     * @throws FileNotFoundException 找不到文件时抛出
-     * @throws IOException           当压缩过程出错时抛出
-     */
-    private static void zipFile(File resFile, ZipOutputStream zipout, String rootpath)
-            throws FileNotFoundException, IOException {
-        rootpath = rootpath + (rootpath.trim().length() == 0 ? "" : File.separator)
-                + resFile.getName();
-        rootpath = new String(rootpath.getBytes());
-        if (resFile.isDirectory()) {
-            File[] fileList = resFile.listFiles();
-            for (File file : fileList) {
-                zipFile(file, zipout, rootpath);
-            }
-        } else {
-            byte buffer[] = new byte[BUFF_SIZE];
-            BufferedInputStream in = new BufferedInputStream(new FileInputStream(resFile),
-                    BUFF_SIZE);
-            zipout.putNextEntry(new ZipEntry(rootpath));
-            int realLength;
-            while ((realLength = in.read(buffer)) != -1) {
-                zipout.write(buffer, 0, realLength);
-            }
-            in.close();
-            zipout.flush();
-            zipout.closeEntry();
+    public static boolean upZipFile(File zipFile, String targetDirPath) {
+        boolean result = true;
+        ZipFile sourceFile;
+        try {
+            sourceFile = new ZipFile(zipFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
+        File targetDirFile = new File(targetDirPath);
+        if (!targetDirFile.exists()) {
+            targetDirFile.mkdirs();
+        }
+        if (targetDirFile.isFile()) {
+            targetDirFile.delete();
+            targetDirFile.mkdirs();
+        }
+        Enumeration<? extends ZipEntry> entries = sourceFile.entries();
+        if (entries == null) {
+            DebugUtil.warnOut(TAG, "zip file entries null");
+            return false;
+        }
+        while (entries.hasMoreElements()) {
+            ZipEntry zipEntry = entries.nextElement();
+            if (zipEntry.isDirectory()) {
+                continue;
+            }
+            File file = new File(targetDirFile, zipEntry.getName());
+            if (file.isDirectory()) {
+                FileUtil.deleteDirFiles(file);
+            }
+            if (file.exists()) {
+                file.delete();
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    result = false;
+                    break;
+                }
+            }
+            DebugUtil.warnOut(TAG, file.getAbsolutePath());
+            FileOutputStream fileOutputStream = null;
+            InputStream inputStream = null;
+            try {
+                inputStream = sourceFile.getInputStream(zipEntry);
+                fileOutputStream = new FileOutputStream(file, true);
+                byte[] data = new byte[1024];
+                int count;
+                do {
+                    count = inputStream.read(data);
+                    if (count < 0) {
+                        break;
+                    }
+                    fileOutputStream.write(data, 0, count);
+                } while (true);
+            } catch (IOException e) {
+                e.printStackTrace();
+                result = false;
+            } finally {
+                if (inputStream != null) {
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (fileOutputStream != null) {
+                    try {
+                        fileOutputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        try {
+            sourceFile.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * 解压文件 新
+     *
+     * @param zipFile      zip压缩包
+     * @param unzipDirPath 解压目录
+     * @return
+     */
+    private static boolean upZipFileNew(File zipFile, String unzipDirPath) {
+        if (!zipFile.exists()) {
+            return false;
+        }
+        if (zipFile.isDirectory()) {
+            return false;
+        }
+        File unzipDirFile = new File(unzipDirPath);
+        if (!unzipDirFile.exists()) {
+            unzipDirFile.mkdirs();
+        }
+        if (unzipDirFile.isFile()) {
+            unzipDirFile.delete();
+            unzipDirFile.mkdirs();
+        }
+        FileInputStream fileInputStream = null;
+        ZipInputStream zipInputStream = null;
+        boolean result = true;
+        try {
+            fileInputStream = new FileInputStream(zipFile);
+            zipInputStream = new ZipInputStream(fileInputStream);
+            ZipEntry nextEntry;
+            do {
+                nextEntry = zipInputStream.getNextEntry();
+                if (nextEntry == null) {
+                    break;
+                }
+                long size = nextEntry.getSize();
+                String name = nextEntry.getName();
+                File targetFile = new File(unzipDirFile, name);
+                DebugUtil.warnOut(TAG, "targetFile = " + targetFile.getName());
+                DebugUtil.warnOut(TAG, "size = " + size);
+                byte[] data = new byte[1024];
+                int count;
+                FileOutputStream fileOutputStream = new FileOutputStream(targetFile, true);
+                do {
+                    count = zipInputStream.read(data);
+                    if (count < 0) {
+                        fileOutputStream.flush();
+                        fileOutputStream.close();
+                        break;
+                    }
+                    fileOutputStream.write(data, 0, count);
+                } while (true);
+            } while (true);
+            DebugUtil.warnOut(TAG, "");
+            zipInputStream.closeEntry();
+        } catch (IOException e) {
+            e.printStackTrace();
+            result = false;
+        } finally {
+            if (fileInputStream != null) {
+                try {
+                    fileInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (zipInputStream != null) {
+                try {
+                    zipInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return result;
     }
 }
 

@@ -48,5 +48,5 @@
     <string name="translate">translate</string>
     <string name="animation_test">Animation test</string>
     <string name="scale">scale</string>
-    <string name="scale_translate"><![CDATA[Scale & Translate]]></string>
+    <string name="scale_translate">Scale &amp; Translate</string>
 </resources>

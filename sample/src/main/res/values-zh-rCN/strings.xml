@@ -41,4 +41,5 @@
     <string name="unzip_file_failed">解压失败</string>
     <string name="animation_test">动画测试</string>
     <string name="scale">缩放动画</string>
+    <string name="scale_translate">缩放并位移</string>
 </resources>
