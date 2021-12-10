@@ -10,16 +10,18 @@ import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 
+import androidx.activity.ComponentActivity;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.Size;
 import androidx.core.app.ActivityCompat;
+
 import androidx.core.content.ContextCompat;
 
-import com.sscl.baselibrary.activity.BaseSplashActivity;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * 权限请求工具类
@@ -109,11 +111,26 @@ public class PermissionUtil {
         PermissionUtil.onPermissionRequestResult = onPermissionRequestResult;
     }
 
-    public static void toSettingActivity(@NonNull Activity activity, int requestCode) {
+    public static void toSettingActivity(@NonNull Activity activity, int requestCode, @Nullable ActivityResultCallback<ActivityResult> activityResultActivityResultCallback) {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.fromParts("package", activity.getPackageName(), null));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        activity.startActivityForResult(intent, requestCode);
+        if (activity instanceof ComponentActivity) {
+            if (activityResultActivityResultCallback != null) {
+                ComponentActivity componentActivity = (ComponentActivity) activity;
+                ActivityResultContracts.StartActivityForResult launcher = new ActivityResultContracts.StartActivityForResult();
+                componentActivity.registerForActivityResult(launcher, activityResultActivityResultCallback);
+                componentActivity.startActivity(intent);
+            } else {
+                activity.startActivityForResult(intent, requestCode);
+            }
+        } else {
+            activity.startActivityForResult(intent, requestCode);
+        }
+    }
+
+    public static void toSettingActivity(@NonNull Activity activity, int requestCode) {
+        toSettingActivity(activity, requestCode, null);
     }
 
     public static void requestPermission(@NonNull Activity activity, int requestCode, String... permissions) {
@@ -147,8 +164,10 @@ public class PermissionUtil {
     }
 
     public static boolean isPermissionAlwaysDenied(@NonNull Activity activity, String permission) {
-       return !ActivityCompat.shouldShowRequestPermissionRationale(activity,permission);
-    }public static boolean isAnyPermissionAlwaysDenied(@NonNull Activity activity, String... permission) {
+        return !ActivityCompat.shouldShowRequestPermissionRationale(activity, permission);
+    }
+
+    public static boolean isAnyPermissionAlwaysDenied(@NonNull Activity activity, String... permission) {
         boolean result = false;
         for (String s : permission) {
             boolean b = ActivityCompat.shouldShowRequestPermissionRationale(activity, s);
