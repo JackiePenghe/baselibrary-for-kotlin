@@ -122,10 +122,7 @@ public class WelcomeActivity extends BaseWelcomeActivity {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.no_permission)
                 .setMessage(R.string.no_permission_message)
-                .setPositiveButton(R.string.settings, (dialog, which) -> PermissionUtil.toSettingActivity(WelcomeActivity.this, REQUEST_CODE_SETTING, result -> {
-                    DebugUtil.warnOut(TAG,"onActivityResult");
-                    checkPermission();
-                }))
+                .setPositiveButton(R.string.settings, (dialog, which) -> PermissionUtil.toSettingActivity(WelcomeActivity.this, REQUEST_CODE_SETTING))
                 .setNegativeButton(R.string.cancel, (dialog, which) -> {
                     ToastUtil.toastLong(WelcomeActivity.this, R.string.no_permission_exits);
                     finish();
