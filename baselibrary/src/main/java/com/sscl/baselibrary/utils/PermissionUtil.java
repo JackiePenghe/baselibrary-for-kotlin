@@ -150,6 +150,13 @@ public class PermissionUtil {
         }
     }
 
+    /**
+     * 是否权限永久被拒绝
+     *
+     * @param activity   Activity
+     * @param permission 权限
+     * @return 是否被永久拒绝
+     */
     public static boolean isPermissionAlwaysDenied(@NonNull Activity activity, String permission) {
         return !hasPermissions(activity, permission) && !ActivityCompat.shouldShowRequestPermissionRationale(activity, permission);
     }
