@@ -109,7 +109,7 @@ public class PermissionUtil {
         PermissionUtil.onPermissionRequestResult = onPermissionRequestResult;
     }
 
-    public static Intent getPermissionSettingIntent(@NonNull Activity activity){
+    public static Intent getPermissionSettingIntent(@NonNull Activity activity) {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.fromParts("package", activity.getPackageName(), null));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -151,13 +151,13 @@ public class PermissionUtil {
     }
 
     public static boolean isPermissionAlwaysDenied(@NonNull Activity activity, String permission) {
-        return !ActivityCompat.shouldShowRequestPermissionRationale(activity,permission);
+        return !hasPermissions(activity, permission) && !ActivityCompat.shouldShowRequestPermissionRationale(activity, permission);
     }
 
     public static boolean isAnyPermissionAlwaysDenied(@NonNull Activity activity, String... permission) {
         boolean result = false;
         for (String s : permission) {
-            boolean b = ActivityCompat.shouldShowRequestPermissionRationale(activity, s);
+            boolean b = isPermissionAlwaysDenied(activity, s);
             if (b) {
                 result = true;
                 break;
