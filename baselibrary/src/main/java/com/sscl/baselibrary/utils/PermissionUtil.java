@@ -105,27 +105,58 @@ public class PermissionUtil {
         return true;
     }
 
+    /**
+     * 设置权限相关回调
+     *
+     * @param onPermissionRequestResult 回调
+     */
     public static void setOnPermissionRequestResult(OnPermissionRequestResult onPermissionRequestResult) {
         PermissionUtil.onPermissionRequestResult = onPermissionRequestResult;
     }
 
-    public static Intent getPermissionSettingIntent(@NonNull Activity activity) {
+    /**
+     * 获取跳转到权限设置界面的Intent
+     *
+     * @param context 上下文
+     * @return Intent
+     */
+    public static Intent getPermissionSettingIntent(@NonNull Context context) {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.fromParts("package", activity.getPackageName(), null));
+        intent.setData(Uri.fromParts("package", context.getPackageName(), null));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
     }
 
-    public static void toSettingActivity(@NonNull Activity activity, int requestCode) {
-        activity.startActivityForResult(getPermissionSettingIntent(activity), requestCode);
+    /**
+     * 直接跳转到设置界面
+     *
+     * @param activity Activity
+     */
+    public static void toSettingActivity(@NonNull Activity activity) {
+        activity.startActivity(getPermissionSettingIntent(activity));
     }
 
-    public static void requestPermission(@NonNull Activity activity, int requestCode, String... permissions) {
+    /**
+     * 请求权限
+     *
+     * @param activity    Activity
+     * @param requestCode 请求码
+     * @param permissions 权限
+     */
+    public static void requestPermission(@NonNull Activity activity, int requestCode, @Size(min = 1) String... permissions) {
         PermissionUtil.requestCode = requestCode;
         PermissionUtil.permissions = permissions;
         ActivityCompat.requestPermissions(activity, permissions, requestCode);
     }
 
+    /**
+     * 权限请求结果，需要重写{@link Activity#onRequestPermissionsResult(int, String[], int[])}，在该方法中加入本方法
+     *
+     * @param activity     Activity
+     * @param requestCode  请求码
+     * @param permissions  权限
+     * @param grantResults 权限的允许情况
+     */
     public static void onRequestPermissionsResult(Activity activity, int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode != PermissionUtil.requestCode) {
             return;
@@ -161,7 +192,14 @@ public class PermissionUtil {
         return !hasPermissions(activity, permission) && !ActivityCompat.shouldShowRequestPermissionRationale(activity, permission);
     }
 
-    public static boolean isAnyPermissionAlwaysDenied(@NonNull Activity activity, String... permission) {
+    /**
+     * 是否有任何一个权限被用户永久拒绝
+     *
+     * @param activity   Activity
+     * @param permission 权限
+     * @return 是否有任何一个权限被用户永久拒绝
+     */
+    public static boolean isAnyPermissionAlwaysDenied(@NonNull Activity activity, @Size(min = 1) String... permission) {
         boolean result = false;
         for (String s : permission) {
             boolean b = isPermissionAlwaysDenied(activity, s);
