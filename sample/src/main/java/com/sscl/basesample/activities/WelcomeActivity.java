@@ -33,9 +33,9 @@ import com.sscl.basesample.R;
  */
 public class WelcomeActivity extends BaseWelcomeActivity {
 
-    private static final int REQUEST_CODE_SETTING = 1;
     private static final int REQUEST_CODE_PERMISSION = 3;
     private static final int REQUEST_CODE = 2;
+    private boolean needCheckPermission;
 
     @Override
     protected void doAfterAnimation() {
@@ -74,14 +74,27 @@ public class WelcomeActivity extends BaseWelcomeActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == REQUEST_CODE_SETTING) {
-            DebugUtil.warnOut(TAG, "permission result code " + resultCode);
-            checkPermission();
-        } else if (requestCode == REQUEST_CODE) {
+        if (requestCode == REQUEST_CODE) {
             DebugUtil.warnOut(TAG, "manage result code " + resultCode);
             checkFileManagePermission();
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Dispatch onResume() to fragments.  Note that for better inter-operation
+     * with older versions of the platform, at the point of this call the
+     * fragments attached to the activity are <em>not</em> resumed.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (needCheckPermission) {
+            needCheckPermission = false;
+            checkPermission();
         }
     }
 
@@ -122,7 +135,10 @@ public class WelcomeActivity extends BaseWelcomeActivity {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.no_permission)
                 .setMessage(R.string.no_permission_message)
-                .setPositiveButton(R.string.settings, (dialog, which) -> PermissionUtil.toSettingActivity(WelcomeActivity.this, REQUEST_CODE_SETTING))
+                .setPositiveButton(R.string.settings, (dialog, which) -> {
+                    PermissionUtil.toSettingActivity(WelcomeActivity.this);
+                    needCheckPermission = true;
+                })
                 .setNegativeButton(R.string.cancel, (dialog, which) -> {
                     ToastUtil.toastLong(WelcomeActivity.this, R.string.no_permission_exits);
                     finish();
