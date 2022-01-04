@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,10 @@ class ToastHandler extends Handler {
      * 当前是否为第一次弹出Toast
      */
     static final int FIRST_SEND = 5;
+    /**
+     * 使用视图
+     */
+    static final int VIEW = 6;
 
     /*--------------------------------成员常量--------------------------------*/
 
@@ -79,6 +84,7 @@ class ToastHandler extends Handler {
         int what = msg.what;
         switch (what) {
             case MESSAGE:
+            case VIEW:
                 showToast(msg);
                 break;
             case CANCEL:
@@ -96,6 +102,7 @@ class ToastHandler extends Handler {
 
     /**
      * 设置是否重用未消失的Toast
+     *
      * @param msg Message消息
      */
     private void setReuse(@NonNull Message msg) {
@@ -121,6 +128,7 @@ class ToastHandler extends Handler {
 
     /**
      * 显示Toast
+     *
      * @param msg Message消息
      */
     @SuppressLint("ShowToast")
@@ -130,21 +138,38 @@ class ToastHandler extends Handler {
         if (obj == null) {
             return;
         }
-        if (!(obj instanceof String)) {
-            return;
-        }
-        String messageText = (String) obj;
-        if (toast == null) {
-            toast = Toast.makeText(context, messageText, Toast.LENGTH_LONG);
-        } else {
-            if (reuse) {
-                toast.setText(messageText);
-            } else {
-                if (arg1 != KEEP_TOAST) {
-                    hideToast();
-                }
+        if (obj instanceof String) {
+            String messageText = (String) obj;
+            if (toast == null) {
                 toast = Toast.makeText(context, messageText, Toast.LENGTH_LONG);
+            } else {
+                if (reuse) {
+                    toast.setText(messageText);
+                } else {
+                    if (arg1 != KEEP_TOAST) {
+                        hideToast();
+                    }
+                    toast = Toast.makeText(context, messageText, Toast.LENGTH_LONG);
+                }
             }
+        } else if (obj instanceof View) {
+            View view = (View) obj;
+            if (toast == null) {
+                toast = new Toast(context);
+                toast.setView(view);
+            } else {
+                if (reuse) {
+                    toast.setView(view);
+                } else {
+                    if (arg1 != KEEP_TOAST) {
+                        hideToast();
+                    }
+                    toast = new Toast(context);
+                    toast.setView(view);
+                }
+            }
+        } else {
+            return;
         }
         toast.show();
     }

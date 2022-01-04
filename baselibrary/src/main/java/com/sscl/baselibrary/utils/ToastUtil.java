@@ -1,6 +1,7 @@
 package com.sscl.baselibrary.utils;
 
 import android.content.Context;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
@@ -32,6 +33,26 @@ public class ToastUtil {
      */
     public static void toastLong(@NonNull Context context, @StringRes int messageRes) {
         showToast(context, messageRes, CustomToast.LENGTH_LONG);
+    }
+
+    /**
+     * 长时间的吐司
+     *
+     * @param context 上下文
+     * @param view    View
+     */
+    public static void toastLong(@NonNull Context context, @NonNull View view) {
+        showToast(context, view, CustomToast.LENGTH_LONG);
+    }
+
+    /**
+     * 长时间的吐司
+     *
+     * @param context 上下文
+     * @param view    View
+     */
+    public static void toastShort(@NonNull Context context, @NonNull View view) {
+        showToast(context, view, CustomToast.LENGTH_SHORT);
     }
 
     /**
@@ -104,6 +125,16 @@ public class ToastUtil {
     }
 
     /**
+     * 自定义时间的吐司
+     *
+     * @param context    上下文
+     * @param view 信息
+     */
+    public static void toast(@NonNull Context context,@NonNull  View view, int duration) {
+        showToast(context, view, duration);
+    }
+
+    /**
      * 弹出Toast
      *
      * @param context  上下文
@@ -125,5 +156,16 @@ public class ToastUtil {
      */
     private static void showToast(@NonNull Context context, @StringRes int messageRes, int duration) {
         CustomToast.makeText(context, messageRes, duration).show();
+    }
+
+    /**
+     * 弹出Toast
+     *
+     * @param context  上下文
+     * @param view     View
+     * @param duration 持续时间
+     */
+    private static void showToast(Context context, View view, int duration) {
+        CustomToast.makeText(context, view, duration).show();
     }
 }

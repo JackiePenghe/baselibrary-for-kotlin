@@ -48,4 +48,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/time_500" />
+
+    <Button
+        android:id="@+id/view_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/view_test" />
 </LinearLayout>

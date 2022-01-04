@@ -23,6 +23,7 @@ public class ToastTestActivity extends BaseAppCompatActivity {
     private Button shortTimeBtn;
     private Button time100Btn;
     private Button time500Btn;
+    private Button viewTestBtn;
 
     private RadioGroup reuseRadioGroup;
     private final View.OnClickListener onClickListener = v -> {
@@ -38,6 +39,10 @@ public class ToastTestActivity extends BaseAppCompatActivity {
                 break;
             case R.id.time_500:
                 ToastUtil.toast(ToastTestActivity.this, R.string.time_500, 500);
+                break;
+            case R.id.view_test:
+                View view = View.inflate(ToastTestActivity.this, R.layout.toast_view, null);
+                ToastUtil.toast(ToastTestActivity.this, view, 2000);
                 break;
             default:
                 break;
@@ -111,6 +116,7 @@ public class ToastTestActivity extends BaseAppCompatActivity {
         shortTimeBtn = findViewById(R.id.short_time);
         time100Btn = findViewById(R.id.time_100);
         time500Btn = findViewById(R.id.time_500);
+        viewTestBtn = findViewById(R.id.view_test);
         reuseRadioGroup = findViewById(R.id.reuse_toast_group);
     }
 
@@ -140,6 +146,7 @@ public class ToastTestActivity extends BaseAppCompatActivity {
         shortTimeBtn.setOnClickListener(onClickListener);
         time100Btn.setOnClickListener(onClickListener);
         time500Btn.setOnClickListener(onClickListener);
+        viewTestBtn.setOnClickListener(onClickListener);
     }
 
     /**
