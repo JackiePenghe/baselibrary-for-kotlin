@@ -9,7 +9,7 @@ import android.util.Log;
  */
 public class DebugUtil {
 
-    private static final int MAX_LENGTH = 4000;
+    private static final int MAX_LENGTH = 2000;
 
     /*--------------------------------静态变量--------------------------------*/
 
