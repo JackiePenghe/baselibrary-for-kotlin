@@ -15,7 +15,11 @@ import androidx.annotation.NonNull;
  */
 class ToastHandler extends Handler {
 
-    /*--------------------------------库内静态常量--------------------------------*/
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 库内静态常量
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     /**
      * 显示Toast
@@ -42,22 +46,37 @@ class ToastHandler extends Handler {
      */
     static final int VIEW = 6;
 
-    /*--------------------------------成员常量--------------------------------*/
-
-    /**
-     * 上下文
-     */
-    private final Context context;
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 私有成员常量
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     /**
      * Toast实例
      */
-    private Toast toast;
+    private Toast textToast;
+    private Toast viewToast;
     /**
      * 是否重用上次还未消失的Toast
      */
     private static boolean reuse = false;
 
-    /*--------------------------------构造方法--------------------------------*/
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 私有成员变量
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    /**
+     * 上下文
+     */
+    private Context context;
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 构造方法
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     /**
      * Default constructor associates this handler with the {@link Looper} for the
@@ -68,6 +87,16 @@ class ToastHandler extends Handler {
      */
     ToastHandler(@NonNull Context context) {
         super(Looper.getMainLooper());
+        this.context = context;
+    }
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 公开成员方法
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    void setContext(Context context) {
         this.context = context;
     }
 
@@ -120,9 +149,9 @@ class ToastHandler extends Handler {
      * 隐藏Toast
      */
     private void hideToast() {
-        if (toast != null) {
-            toast.cancel();
-            toast = null;
+        if (textToast != null) {
+            textToast.cancel();
+            textToast = null;
         }
     }
 
@@ -139,39 +168,45 @@ class ToastHandler extends Handler {
             return;
         }
         if (obj instanceof String) {
+            if (viewToast != null){
+                viewToast.cancel();
+                viewToast = null;
+            }
             String messageText = (String) obj;
-            if (toast == null) {
-                toast = Toast.makeText(context, messageText, Toast.LENGTH_LONG);
+            if (textToast == null) {
+                textToast = Toast.makeText(context, messageText, Toast.LENGTH_LONG);
             } else {
                 if (reuse) {
-                    toast.setText(messageText);
+                    textToast.setText(messageText);
                 } else {
                     if (arg1 != KEEP_TOAST) {
                         hideToast();
                     }
-                    toast = Toast.makeText(context, messageText, Toast.LENGTH_LONG);
+                    textToast = Toast.makeText(context, messageText, Toast.LENGTH_LONG);
                 }
             }
+            textToast.show();
         } else if (obj instanceof View) {
+            if (textToast != null){
+                textToast.cancel();
+                textToast = null;
+            }
             View view = (View) obj;
-            if (toast == null) {
-                toast = new Toast(context);
-                toast.setView(view);
+            if (viewToast == null) {
+                viewToast = new Toast(context);
             } else {
-                if (reuse) {
-                    toast.setView(view);
-                } else {
+                if (!reuse) {
                     if (arg1 != KEEP_TOAST) {
                         hideToast();
                     }
-                    toast = new Toast(context);
-                    toast.setView(view);
+                    viewToast = new Toast(context);
                 }
             }
+            viewToast.setView(view);
+            viewToast.show();
         } else {
             return;
         }
-        toast.show();
     }
 
     static boolean isReuse() {

@@ -104,7 +104,9 @@ class CustomToast {
     @SuppressLint("ShowToast")
     private static void showMyToast(@NonNull final Context context, @NonNull final String messageText, int duration) {
         if (toastHandler == null) {
-            toastHandler = new ToastHandler(context.getApplicationContext());
+            toastHandler = new ToastHandler(context);
+        }else {
+            toastHandler.setContext(context);
         }
         setHandlerReuse();
         if (SHOW_TOAST_KEEP_SCHEDULED_EXECUTOR_SERVICE != null) {
@@ -161,7 +163,9 @@ class CustomToast {
     @SuppressLint("ShowToast")
     private static void showMyToast(@NonNull final Context context, @NonNull final View view, int duration) {
         if (toastHandler == null) {
-            toastHandler = new ToastHandler(context.getApplicationContext());
+            toastHandler = new ToastHandler(context);
+        }else {
+            toastHandler.setContext(context);
         }
         setHandlerReuse();
         if (SHOW_TOAST_KEEP_SCHEDULED_EXECUTOR_SERVICE != null) {
@@ -282,7 +286,7 @@ class CustomToast {
         if (customToast == null) {
             synchronized (CustomToast.class) {
                 if (customToast == null) {
-                    customToast = new CustomToast(context.getApplicationContext(), message, duration);
+                    customToast = new CustomToast(context, message, duration);
                 } else {
                     customToast.messageText = message;
                     customToast.duration = duration;
@@ -322,7 +326,7 @@ class CustomToast {
         if (customToast == null) {
             synchronized (CustomToast.class) {
                 if (customToast == null) {
-                    customToast = new CustomToast(context.getApplicationContext(), message, duration);
+                    customToast = new CustomToast(context, message, duration);
                 } else {
                     customToast.messageText = message;
                     customToast.view = null;
@@ -342,7 +346,7 @@ class CustomToast {
         if (customToast == null) {
             synchronized (CustomToast.class) {
                 if (customToast == null) {
-                    customToast = new CustomToast(context.getApplicationContext(), view, duration);
+                    customToast = new CustomToast(context, view, duration);
                 } else {
                     customToast.view = view;
                     customToast.duration = duration;
