@@ -90,7 +90,8 @@ public class LogCatHelper {
                     file.createNewFile();
                 }
                 long totalSpace = file.length();
-                if (totalSpace >= getInstance().fileMaxSize) {
+                long fileMaxSize = getInstance().fileMaxSize;
+                if (fileMaxSize > 0 &&totalSpace >= fileMaxSize) {
                     file.delete();
                     file.createNewFile();
                 }
