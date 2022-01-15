@@ -91,6 +91,7 @@ public class LogCatHelper {
                 }
                 long totalSpace = file.length();
                 long fileMaxSize = getInstance().fileMaxSize;
+                //文件大小必须大于0才会生效
                 if (fileMaxSize > 0 &&totalSpace >= fileMaxSize) {
                     file.delete();
                     file.createNewFile();
