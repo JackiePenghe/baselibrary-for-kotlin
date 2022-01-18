@@ -89,12 +89,14 @@ public class LogCatHelper {
                 if (!file.exists()) {
                     file.createNewFile();
                 }
-                long totalSpace = file.length();
-                long fileMaxSize = getInstance().fileMaxSize;
-                //文件大小必须大于0才会生效
-                if (fileMaxSize > 0 &&totalSpace >= fileMaxSize) {
-                    file.delete();
-                    file.createNewFile();
+                if (getInstance().autoDeleteBigFile) {
+                    long totalSpace = file.length();
+                    long fileMaxSize = getInstance().fileMaxSize;
+                    //文件大小必须大于0才会生效
+                    if (fileMaxSize > 0 && totalSpace >= fileMaxSize) {
+                        file.delete();
+                        file.createNewFile();
+                    }
                 }
                 fileWriter = new FileWriter(file, true);
                 if (line.contains(mPid)) {
@@ -163,6 +165,10 @@ public class LogCatHelper {
      * 单个日志文件大小 默认20MB
      */
     private long fileMaxSize = 20 * 1024 * 1024;
+    /**
+     * 是否自动删除超过大小的日志文件
+     */
+    private boolean autoDeleteBigFile;
     /**
      * 自定义日志记录等级
      */
@@ -285,6 +291,15 @@ public class LogCatHelper {
             e.printStackTrace();
         }
         startAutoDeleteFileTimer();
+    }
+
+    /**
+     * 设置是否自动删除大文件日志
+     *
+     * @param autoDeleteBigFile 是否自动删除
+     */
+    public void setAutoDeleteBigFile(boolean autoDeleteBigFile) {
+        this.autoDeleteBigFile = autoDeleteBigFile;
     }
 
     public void setFileNameStart(String fileNameStart) {
