@@ -35,6 +35,7 @@ public class WelcomeActivity extends BaseWelcomeActivity {
 
     private static final int REQUEST_CODE_PERMISSION = 3;
     private boolean needCheckPermission;
+    private ActivityResultLauncher<Intent> intentActivityResultLauncher;
 
     @Override
     protected void doAfterAnimation() {
@@ -53,6 +54,19 @@ public class WelcomeActivity extends BaseWelcomeActivity {
             }
         });
         checkPermission();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //startActivityForResult被弃用，改用ActivityResultLauncher
+        intentActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                DebugUtil.warnOut(TAG, "manage result code " + result.getResultCode());
+                checkFileManagePermission();
+            }
+        });
     }
 
     /**
@@ -111,14 +125,6 @@ public class WelcomeActivity extends BaseWelcomeActivity {
             if (Environment.isExternalStorageManager()) {
                 toNext();
             } else {
-                //startActivityForResult被弃用，改用ActivityResultLauncher
-                ActivityResultLauncher<Intent> intentActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        DebugUtil.warnOut(TAG, "manage result code " + result.getResultCode());
-                        checkFileManagePermission();
-                    }
-                });
                 Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
                 intent.setData(Uri.parse("package:" + getPackageName()));
                 intentActivityResultLauncher.launch(intent);
