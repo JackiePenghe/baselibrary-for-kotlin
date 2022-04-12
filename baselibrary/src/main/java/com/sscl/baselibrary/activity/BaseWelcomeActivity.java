@@ -71,7 +71,6 @@ public abstract class BaseWelcomeActivity extends BaseAppCompatActivity {
 
             }
         };
-        setAutoSetStatusBarColor(false);
     }
 
     /**
