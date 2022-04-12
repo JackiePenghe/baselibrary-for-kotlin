@@ -534,8 +534,6 @@ public class Tool {
      * @param context 上下文
      * @return 主题状态栏颜色
      */
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static int getStatusBarColor(@NonNull Context context) {
         TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(android.R.attr.statusBarColor, typedValue, true);

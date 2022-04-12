@@ -24,8 +24,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import com.sscl.baselibrary.R;
-import com.sscl.baselibrary.utils.StatusBarUtil;
-import com.sscl.baselibrary.utils.Tool;
 
 
 /**
@@ -71,10 +69,6 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      * 整个BaseActivity的根布局（setContentLayout传入的布局）
      */
     private LinearLayout rootView;
-    /**
-     * 是否自动设置状态栏颜色
-     */
-    private boolean autoSetStatusBarColor;
 
     /*--------------------------------重写父类方法--------------------------------*/
 
@@ -86,11 +80,6 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_base_appcompat);
 
-        if (autoSetStatusBarColor) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                StatusBarUtil.setColor(this, Tool.getDarkColorPrimaryVariant(this));
-            }
-        }
         initThisView();
         initThisData();
         initThisEvents();
@@ -432,14 +421,5 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @NonNull
     protected FrameLayout getContentView() {
         return content;
-    }
-
-    /**
-     * 设置是否自动设置状态栏颜色
-     *
-     * @param autoSetStatusBarColor 是否自动设置状态栏颜色
-     */
-    protected void setAutoSetStatusBarColor(boolean autoSetStatusBarColor) {
-        this.autoSetStatusBarColor = autoSetStatusBarColor;
     }
 }

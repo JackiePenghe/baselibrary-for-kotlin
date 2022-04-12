@@ -1,7 +1,6 @@
 package com.sscl.basesample.activities.sample;
 
 import android.graphics.Color;
-import android.os.Build;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,18 +40,16 @@ public class SampleBaseAppcompatActivity extends BaseAppCompatActivity {
     @Override
     protected void doBeforeSetLayout() {
         //在Activity中，有时候会设置一些属性，这些属性在setContentView()之前，可在这里实现
-        if (SystemUtil.isEmui()) {
-            SystemUtil.miuiSetStatusBarLightMode(getWindow(), true);
-        } else if (SystemUtil.isFlyme()) {
+        if (SystemUtil.isFlyme()) {
             SystemUtil.flymeSetStatusBarLightMode(getWindow(), true);
+        } else if (SystemUtil.isMiui()) {
+            SystemUtil.miuiSetStatusBarLightMode(getWindow(), true);
+            SystemUtil.setStatusBarLightMode(this);
         } else {
-            Log.w(TAG, "不是miui或者flyme,不设置状态栏字体深色");
+            Log.w(TAG, "非MIUI 非 FlyMe 使用通用方法");
+            SystemUtil.setStatusBarLightMode(this);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            StatusBarUtil.setColor(this, Tool.getStatusBarColor(this), 0);
-        } else {
-            StatusBarUtil.setColor(this, Tool.getDarkColorPrimary(this), 0);
-        }
+        StatusBarUtil.setColor(this, Tool.getStatusBarColor(this), 0);
     }
 
     /**

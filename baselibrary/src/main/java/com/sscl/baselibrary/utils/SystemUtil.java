@@ -1,13 +1,17 @@
 package com.sscl.baselibrary.utils;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Build;
 import android.os.Environment;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.sscl.baselibrary.R;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -149,6 +153,13 @@ public class SystemUtil {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static void setStatusBarLightMode(Activity activity) {
+        Window window = activity.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
 
     /*--------------------------------静态内部类--------------------------------*/

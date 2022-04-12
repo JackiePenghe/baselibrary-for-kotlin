@@ -38,7 +38,7 @@ public class LollipopFixedWebView extends WebView {
     }
 
     public static Context getFixedContext(Context context){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
             return context.createConfigurationContext(new Configuration());
         }
         return context;

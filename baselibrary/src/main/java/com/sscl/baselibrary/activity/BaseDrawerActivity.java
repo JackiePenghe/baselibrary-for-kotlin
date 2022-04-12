@@ -81,10 +81,6 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
      * 子类继承此类之后，设置的布局都在FrameLayout中
      */
     private FrameLayout content;
-    /**
-     *
-     */
-    protected boolean autoSetStatusBarColor;
 
     /**
      * 抽屉布局侧边栏的相关监听
@@ -145,11 +141,6 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_base_drawer);
 
-        if (autoSetStatusBarColor) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                StatusBarUtil.setColor(this, Tool.getDarkColorPrimaryVariant(this));
-            }
-        }
         toolbar = findViewById(R.id.toolbar);
         titleView = findViewById(R.id.toolbar_title);
         if (titleView != null) {
@@ -474,14 +465,5 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
     protected FrameLayout getContentView() {
         return content;
-    }
-
-    /**
-     * 设置是否自动设置状态栏颜色
-     *
-     * @param autoSetStatusBarColor 是否自动设置状态栏颜色
-     */
-    protected void setAutoSetStatusBarColor(boolean autoSetStatusBarColor) {
-        this.autoSetStatusBarColor = autoSetStatusBarColor;
     }
 }
