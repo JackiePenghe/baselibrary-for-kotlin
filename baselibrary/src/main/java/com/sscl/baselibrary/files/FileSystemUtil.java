@@ -74,9 +74,8 @@ public class FileSystemUtil {
      * @return 文件路径
      */
     @Nullable
-    @SuppressWarnings("unused")
     public static String getPath(@NonNull final Context context, @NonNull final Uri uri) {
-        DebugUtil.warnOut(TAG,"getPath uri " + uri);
+        DebugUtil.warnOut(TAG, "getPath uri " + uri);
         if (DocumentsContract.isDocumentUri(context, uri)) {
             // ExternalStorageProvider
             if (isExternalStorageDocument(uri)) {
@@ -136,7 +135,7 @@ public class FileSystemUtil {
             return uri.getPath();
         }
 
-        return FileProviderUtil.getPath(context,uri);
+        return FileProviderUtil.getPath(context, uri);
     }
 
     /**
@@ -149,7 +148,6 @@ public class FileSystemUtil {
      * @param requestCode 请求码
      * @return true表示打开成功
      */
-    @SuppressWarnings("unused")
     public static boolean openSystemFile(@NonNull Activity activity, int requestCode) {
         return openSystemFile(activity, requestCode, FileType.FILE_TYPE_ALL);
     }
@@ -165,7 +163,6 @@ public class FileSystemUtil {
      * @param fileType    文件类型
      * @return true表示打开成功
      */
-    @SuppressWarnings({"unused"})
     public static boolean openSystemFile(@NonNull Activity activity, int requestCode, @NonNull String fileType) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType(fileType);
@@ -178,6 +175,14 @@ public class FileSystemUtil {
         }
     }
 
+    /**
+     * 需要将此方法放在onActivityResult中调用
+     *
+     * @param context     上下文
+     * @param requestCode 请求码
+     * @param resultCode  结果码
+     * @param data        数据
+     */
     public static void onActivityResult(Context context, int requestCode, int resultCode, Intent data) {
         Uri uri = FileSystemUtil.getSelectFileUri(data);
         if (uri == null) {
@@ -428,7 +433,6 @@ public class FileSystemUtil {
      * @param file     文件
      * @param fileType 文件类型
      */
-    @SuppressWarnings("WeakerAccess")
     public static void openFile(@NonNull Context context, @NonNull File file, @NonNull FileType fileType) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         Uri uriFromFile = FileProviderUtil.getUriFromFile(context, file.getAbsoluteFile());
@@ -444,7 +448,6 @@ public class FileSystemUtil {
      * @param context 上下文
      * @param file    文件
      */
-    @SuppressWarnings("unused")
     public static void openFile(@NonNull Context context, @NonNull File file) {
         openFile(context, file, FileType.FILE_TYPE_ALL);
     }
@@ -492,7 +495,6 @@ public class FileSystemUtil {
      * @return 读取的文件内容
      */
     @Nullable
-    @SuppressWarnings("unused")
     public static byte[] readFileFromPath(@NonNull Context context, @NonNull String filePath, int byteLength) {
         //若果SD卡存在
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -540,7 +542,6 @@ public class FileSystemUtil {
      * @param filePath 文件绝对路径
      * @return 文件大小(Byte)
      */
-    @SuppressWarnings("unused")
     public static int getFileSizeFromRealPath(@NonNull String filePath) {
         //若果SD卡存在
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -617,10 +618,10 @@ public class FileSystemUtil {
                 final int columnIndex = cursor.getColumnIndexOrThrow(column);
                 result = cursor.getString(columnIndex);
             } else {
-                result = FileProviderUtil.getPath(context,uri);
+                result = FileProviderUtil.getPath(context, uri);
             }
         } catch (Exception e) {
-            result = FileProviderUtil.getPath(context,uri);
+            result = FileProviderUtil.getPath(context, uri);
         } finally {
             if (cursor != null) {
                 cursor.close();

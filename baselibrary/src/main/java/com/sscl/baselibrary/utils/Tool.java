@@ -14,6 +14,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.text.InputType;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
@@ -90,7 +91,6 @@ public class Tool {
      *
      * @return true表示为中文简体
      */
-    @SuppressWarnings("WeakerAccess")
     public static boolean isZhCn() {
         Locale aDefault = Locale.getDefault();
         String aDefaultStr = aDefault.toString();
@@ -103,6 +103,7 @@ public class Tool {
      *
      * @param context 上下文
      */
+    @SuppressWarnings("unused")
     public static void restartApplication(@NonNull Context context) {
         final Intent intent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
         if (intent == null) {
@@ -124,17 +125,7 @@ public class Tool {
 
         activity.getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        try {
-            Class<EditText> cls = EditText.class;
-            Method setSoftInputShownOnFocus = cls.getMethod(
-                    "setSoftInputShownOnFocus", boolean.class);
-            setSoftInputShownOnFocus.setAccessible(true);
-            setSoftInputShownOnFocus.invoke(editText, false);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        editText.setInputType(inputType);
         try {
             Class<EditText> cls = EditText.class;
             Method setShowSoftInputOnFocus;
@@ -157,9 +148,9 @@ public class Tool {
         //解除输入法内存泄漏
         InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         try {
-           if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S){
+           if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
                Class<InputMethodManager> inputMethodManagerClass = InputMethodManager.class;
-               @SuppressLint("DiscouragedPrivateApi") Field mCurRootViewField = inputMethodManagerClass.getDeclaredField("mCurRootView");
+               @SuppressLint({"DiscouragedPrivateApi", "BlockedPrivateApi"}) Field mCurRootViewField = inputMethodManagerClass.getDeclaredField("mCurRootView");
                @SuppressLint("DiscouragedPrivateApi") Field mNextServedViewField = inputMethodManagerClass.getDeclaredField("mNextServedView");
                @SuppressLint("DiscouragedPrivateApi") Field mServedViewField = inputMethodManagerClass.getDeclaredField("mServedView");
                mCurRootViewField.setAccessible(true);
@@ -383,7 +374,6 @@ public class Tool {
      * @param recyclerView RecyclerView
      * @return RecyclerView第一个可见的选项位置
      */
-    @SuppressWarnings("unused")
     public static int getFirstCompletelyVisibleItemPosition(@NonNull RecyclerView recyclerView) {
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         if (layoutManager == null) {
@@ -402,7 +392,6 @@ public class Tool {
      * @param recyclerView RecyclerView
      * @return RecyclerView第一个可见的选项位置
      */
-    @SuppressWarnings("unused")
     public static int getLastVisibleItemPosition(@NonNull RecyclerView recyclerView) {
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         if (layoutManager == null) {
@@ -421,7 +410,6 @@ public class Tool {
      * @param recyclerView RecyclerView
      * @return RecyclerView第一个可见的选项位置
      */
-    @SuppressWarnings("unused")
     public static int getLastCompletelyVisibleItemPosition(@NonNull RecyclerView recyclerView) {
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         if (layoutManager == null) {

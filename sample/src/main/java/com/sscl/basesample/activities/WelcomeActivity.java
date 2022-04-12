@@ -3,7 +3,6 @@ package com.sscl.basesample.activities;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -11,8 +10,9 @@ import android.provider.Settings;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.sscl.baselibrary.activity.BaseWelcomeActivity;
 import com.sscl.baselibrary.utils.CrashHandler;
@@ -34,7 +34,6 @@ import com.sscl.basesample.R;
 public class WelcomeActivity extends BaseWelcomeActivity {
 
     private static final int REQUEST_CODE_PERMISSION = 3;
-    private static final int REQUEST_CODE = 2;
     private boolean needCheckPermission;
 
     @Override
@@ -70,16 +69,6 @@ public class WelcomeActivity extends BaseWelcomeActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionUtil.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == REQUEST_CODE) {
-            DebugUtil.warnOut(TAG, "manage result code " + resultCode);
-            checkFileManagePermission();
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
     }
 
     /**
@@ -122,9 +111,17 @@ public class WelcomeActivity extends BaseWelcomeActivity {
             if (Environment.isExternalStorageManager()) {
                 toNext();
             } else {
+                //startActivityForResult被弃用，改用ActivityResultLauncher
+                ActivityResultLauncher<Intent> intentActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        DebugUtil.warnOut(TAG, "manage result code " + result.getResultCode());
+                        checkFileManagePermission();
+                    }
+                });
                 Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
                 intent.setData(Uri.parse("package:" + getPackageName()));
-                startActivityForResult(intent, REQUEST_CODE);
+                intentActivityResultLauncher.launch(intent);
             }
         } else {
             toNext();
