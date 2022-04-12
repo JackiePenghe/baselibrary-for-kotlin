@@ -50,4 +50,7 @@
     <string name="scale">scale</string>
     <string name="scale_translate">Scale &amp; Translate</string>
     <string name="view_test">view toast</string>
+    <string name="sdcard_file_test">SD卡根目录读写测试</string>
+    <string name="read_file">读文件</string>
+    <string name="write_file">写文件</string>
 </resources>

@@ -27,6 +27,7 @@ import com.sscl.basesample.activities.sample.SampleBaseDrawerActivity;
 import com.sscl.basesample.activities.sample.SampleBaseFragmentActivity;
 import com.sscl.basesample.activities.sample.SampleBasePopupWindowActivity;
 import com.sscl.basesample.activities.sample.SampleWebViewActivity;
+import com.sscl.basesample.activities.sample.SdcardFileTestActivity;
 import com.sscl.basesample.activities.sample.SelectFileActivity;
 import com.sscl.basesample.activities.sample.ToastTestActivity;
 import com.sscl.basesample.activities.sample.ZipFileOperationActivity;
@@ -56,6 +57,7 @@ public class MainActivity extends BaseAppCompatActivity {
     private Button customPasswordViewBtn;
     private Button zipFileOperationBtn;
     private Button animationTestBtn;
+    private Button sdcardFileTestBtn;
 
     private final View.OnClickListener onClickListener = view -> {
         Intent intent = null;
@@ -98,6 +100,8 @@ public class MainActivity extends BaseAppCompatActivity {
             intent = new Intent(MainActivity.this, ZipFileOperationActivity.class);
         }else if (id == animationTestBtn.getId()){
             intent = new Intent(MainActivity.this, AnimationSampleActivity.class);
+        }else if (id == sdcardFileTestBtn.getId()){
+            intent = new Intent(MainActivity.this, SdcardFileTestActivity.class);
         }
         if (intent != null) {
             startActivity(intent);
@@ -173,6 +177,7 @@ public class MainActivity extends BaseAppCompatActivity {
         customPasswordViewBtn = findViewById(R.id.custom_password_view_btn);
         zipFileOperationBtn = findViewById(R.id.zip_file_operation_btn);
         animationTestBtn = findViewById(R.id.animation_test_btn);
+        sdcardFileTestBtn = findViewById(R.id.sdcard_file_test_btn);
     }
 
     /**
@@ -212,6 +217,7 @@ public class MainActivity extends BaseAppCompatActivity {
         customPasswordViewBtn.setOnClickListener(onClickListener);
         zipFileOperationBtn.setOnClickListener(onClickListener);
         animationTestBtn.setOnClickListener(onClickListener);
+        sdcardFileTestBtn.setOnClickListener(onClickListener);
     }
 
     /**

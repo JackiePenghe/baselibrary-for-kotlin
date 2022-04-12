@@ -5,7 +5,7 @@ BaseSample
 allprojects {
 	repositories {
 		...
-		maven { url 'https://jitpack.io' }
+        maven { url 'https://jitpack.io' }
 	}
 }
 ```
@@ -13,7 +13,7 @@ allprojects {
 ```xml
 dependencies {
 	//version is release tag
-        implementation 'com.gitee.sscl:BaseLibrary:version'
+    implementation 'com.gitee.sscl:BaseLibrary:version'
 }
 ```
 当前最新版本：2.1.6
