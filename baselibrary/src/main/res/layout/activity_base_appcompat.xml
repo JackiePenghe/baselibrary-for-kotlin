@@ -9,6 +9,7 @@
     android:orientation="vertical"
     tools:ignore="MissingDefaultResource">
 
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/base_app_bar_layout"
         android:layout_width="match_parent"
@@ -20,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            android:navigationIcon="@drawable/back"
             app:navigationIcon="@drawable/back"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 

@@ -11,8 +11,6 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.sscl.baselibrary.R;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -61,6 +59,7 @@ public class SystemUtil {
      *
      * @return true表示当前为Emui系统
      */
+    @SuppressWarnings("unused")
     public static boolean isEmui() {
         return isPropertiesExist(KEY_EMUI_VERSION_CODE);
     }
@@ -133,13 +132,12 @@ public class SystemUtil {
      */
     @SuppressWarnings("UnusedReturnValue")
     public static boolean miuiSetStatusBarLightMode(@NonNull Window window, boolean dark) {
-        Class clazz = window.getClass();
+        Class<?> clazz = window.getClass();
         try {
             int darkModeFlag;
-            @SuppressLint("PrivateApi") Class layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
+            @SuppressLint("PrivateApi") Class<?> layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
             Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
             darkModeFlag = field.getInt(layoutParams);
-            //noinspection unchecked
             Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
             if (dark) {
                 //状态栏透明且黑色字体
@@ -159,7 +157,9 @@ public class SystemUtil {
         Window window = activity.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
     }
 
     /*--------------------------------静态内部类--------------------------------*/
@@ -167,6 +167,7 @@ public class SystemUtil {
     /**
      * 获取系统属性的类
      */
+    @SuppressWarnings("unused")
     private static class BuildProperties {
 
         /*--------------------------------成员变量--------------------------------*/
