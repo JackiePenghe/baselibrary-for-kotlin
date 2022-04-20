@@ -135,5 +135,19 @@ public class BigDecimalUtils {
         int bj = b1.compareTo(b2);
         return bj > 0;
     }
+
+    /**
+     * 比较大小
+     *
+     * @param value1 被比较数
+     * @param value2 比较数
+     * @return 如果v1 大于或等于 v2 则 返回true 否则false
+     */
+    public static boolean compareWithEqual(String value1, String value2) {
+        BigDecimal b1 = new BigDecimal(value1);
+        BigDecimal b2 = new BigDecimal(value2);
+        int bj = b1.compareTo(b2);
+        return bj >= 0;
+    }
 }
 

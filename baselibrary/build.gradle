@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 100
-        versionName "2.2.3"
+        versionCode 101
+        versionName "2.2.4"
     }
 
     lintOptions {
@@ -31,4 +31,6 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     //SwipeRefreshLayout库
     api 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    //RecyclerView适配器库
+    api 'androidx.recyclerview:recyclerview:1.2.1'
 }
