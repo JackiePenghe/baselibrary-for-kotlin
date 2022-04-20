@@ -16,6 +16,6 @@ dependencies {
     implementation 'com.gitee.sscl:BaseLibrary:version'
 }
 ```
-当前最新版本：2.1.6
+当前最新版本：2.2.4
 
-lasts version now:2.1.6
+lasts version now:2.2.4
