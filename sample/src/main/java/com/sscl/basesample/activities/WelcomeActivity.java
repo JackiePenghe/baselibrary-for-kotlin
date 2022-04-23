@@ -60,12 +60,9 @@ public class WelcomeActivity extends BaseWelcomeActivity {
     protected void onStart() {
         super.onStart();
         //startActivityForResult被弃用，改用ActivityResultLauncher
-        intentActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                DebugUtil.warnOut(TAG, "manage result code " + result.getResultCode());
-                checkFileManagePermission();
-            }
+        intentActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            DebugUtil.warnOut(TAG, "manage result code " + result.getResultCode());
+            checkFileManagePermission();
         });
     }
 
@@ -76,7 +73,7 @@ public class WelcomeActivity extends BaseWelcomeActivity {
      */
     @Override
     protected int setImageViewSource() {
-        return 0;
+        return R.drawable.bg_welcome;
     }
 
     @Override

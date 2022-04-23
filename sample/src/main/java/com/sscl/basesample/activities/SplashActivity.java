@@ -1,5 +1,6 @@
 package com.sscl.basesample.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 
 import com.sscl.baselibrary.activity.BaseSplashActivity;
@@ -9,6 +10,7 @@ import com.sscl.baselibrary.activity.BaseSplashActivity;
  *
  * @author alm
  */
+@SuppressLint("CustomSplashScreen")
 public class SplashActivity extends BaseSplashActivity {
 
     @Override

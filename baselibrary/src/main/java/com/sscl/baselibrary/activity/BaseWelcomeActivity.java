@@ -110,10 +110,8 @@ public abstract class BaseWelcomeActivity extends BaseAppCompatActivity {
             try {
                 imageView.setImageResource(imageSource);
             } catch (Exception e) {
-                imageView.setImageResource(R.drawable.baselibrary_default_main);
+                e.printStackTrace();
             }
-        } else {
-            imageView.setImageResource(R.drawable.baselibrary_default_main);
         }
         animation = AnimationUtils.loadAnimation(BaseWelcomeActivity.this, R.anim.com_jackiepenghe_baselibrary_anim_welcome);
     }

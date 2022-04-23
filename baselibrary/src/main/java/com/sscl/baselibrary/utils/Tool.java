@@ -2,7 +2,6 @@ package com.sscl.baselibrary.utils;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -14,7 +13,6 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
-import android.text.InputType;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
