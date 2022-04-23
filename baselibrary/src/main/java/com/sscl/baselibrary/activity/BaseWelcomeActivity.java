@@ -10,7 +10,6 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 
 import com.sscl.baselibrary.R;
-import com.sscl.baselibrary.utils.StatusBarUtil;
 
 
 /**
@@ -89,7 +88,6 @@ public abstract class BaseWelcomeActivity extends BaseAppCompatActivity {
     @Override
     protected void doBeforeInitOthers() {
         hideTitleBar();
-        StatusBarUtil.hideFakeStatusBarView(BaseWelcomeActivity.this);
     }
 
     /**
