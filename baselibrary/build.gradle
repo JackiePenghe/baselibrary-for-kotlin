@@ -1,6 +1,21 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 
-apply plugin: 'com.github.dcendents.android-maven'
+
+afterEvaluate {
+    publishing {
+        repositories {
+            publications {
+                release(MavenPublication) {
+                    from components.release
+                    groupId 'com.gitee.sscl'
+                    artifactId 'BaseLibrary'
+                    version '2.3.1'
+                }
+            }
+        }
+    }
+}
 
 android {
     compileSdkVersion 32
@@ -8,8 +23,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 102
-        versionName "2.3.0"
+        versionCode 103
+        versionName "2.3.1"
     }
 
     lintOptions {
@@ -23,6 +38,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    namespace 'com.sscl.baselibrary'
 }
 
 dependencies {

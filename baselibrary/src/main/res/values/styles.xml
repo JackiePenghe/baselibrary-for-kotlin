@@ -2,7 +2,9 @@
 <resources>
     <!--  Base application theme.  -->
     <!--suppress AndroidDomInspection -->
-    <style name="AppTheme" parent="Theme.BaseLibrary" />
+    <style name="AppTheme" parent="Theme.BaseLibrary" >
+        <item name="postSplashScreenTheme">@style/DefaultSplashTheme</item>
+    </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -39,4 +41,6 @@
         <!--模糊-->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+
+    <style name="DefaultSplashTheme" parent="SplashTheme"/>
 </resources>

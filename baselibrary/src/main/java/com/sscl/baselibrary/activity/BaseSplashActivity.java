@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.core.splashscreen.SplashScreen;
 
 
 /**
@@ -32,10 +33,19 @@ public abstract class BaseSplashActivity extends Activity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        SplashScreen splashScreen = null;
+        if (needInstallSplash()) {
+            splashScreen = SplashScreen.installSplashScreen(this);
+        }
         super.onCreate(savedInstanceState);
         //防止本界面被多次启动
         if (runApp()) {
             return;
+        }
+        if (needInstallSplash()) {
+            if (splashScreen != null) {
+                splashScreen.setKeepVisibleCondition(() -> true);
+            }
         }
         onCreate();
     }
@@ -45,6 +55,13 @@ public abstract class BaseSplashActivity extends Activity {
      * 抽象方法
      *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    /**
+     * 是否需要手动安装为闪屏（AndroidManifest中不使用闪屏主题时，才可用）
+     *
+     * @return true表示需要手动安装为闪屏
+     */
+    protected abstract boolean needInstallSplash();
 
     /**
      * 在本界面第一次启动时执行的操作
