@@ -10,12 +10,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Point;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.WindowMetrics;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -146,37 +149,37 @@ public class Tool {
         //解除输入法内存泄漏
         InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         try {
-           if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
-               Class<InputMethodManager> inputMethodManagerClass = InputMethodManager.class;
-               @SuppressLint({"DiscouragedPrivateApi", "BlockedPrivateApi"}) Field mCurRootViewField = inputMethodManagerClass.getDeclaredField("mCurRootView");
-               @SuppressLint("DiscouragedPrivateApi") Field mNextServedViewField = inputMethodManagerClass.getDeclaredField("mNextServedView");
-               @SuppressLint("DiscouragedPrivateApi") Field mServedViewField = inputMethodManagerClass.getDeclaredField("mServedView");
-               mCurRootViewField.setAccessible(true);
-               mNextServedViewField.setAccessible(true);
-               mServedViewField.setAccessible(true);
-               Object mCurRootView = mCurRootViewField.get(inputMethodManager);
-               if (null != mCurRootView) {
-                   Context context = ((View) mCurRootView).getContext();
-                   if (context == activity) {
-                       //将该对象设为null，破环GC引用链，防止输入法内存泄漏
-                       mCurRootViewField.set(inputMethodManager, null);
-                   }
-               }
-               Object mNextServedView = mNextServedViewField.get(inputMethodManager);
-               if (null != mNextServedView) {
-                   Context context = ((View) mNextServedView).getContext();
-                   if (activity == context) {
-                       mNextServedViewField.set(inputMethodManager, null);
-                   }
-               }
-               Object mServedView = mServedViewField.get(inputMethodManager);
-               if (null != mServedView) {
-                   Context context = ((View) mServedView).getContext();
-                   if (activity == context) {
-                       mServedViewField.set(inputMethodManager, null);
-                   }
-               }
-           }
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                Class<InputMethodManager> inputMethodManagerClass = InputMethodManager.class;
+                @SuppressLint({"DiscouragedPrivateApi", "BlockedPrivateApi"}) Field mCurRootViewField = inputMethodManagerClass.getDeclaredField("mCurRootView");
+                @SuppressLint("DiscouragedPrivateApi") Field mNextServedViewField = inputMethodManagerClass.getDeclaredField("mNextServedView");
+                @SuppressLint("DiscouragedPrivateApi") Field mServedViewField = inputMethodManagerClass.getDeclaredField("mServedView");
+                mCurRootViewField.setAccessible(true);
+                mNextServedViewField.setAccessible(true);
+                mServedViewField.setAccessible(true);
+                Object mCurRootView = mCurRootViewField.get(inputMethodManager);
+                if (null != mCurRootView) {
+                    Context context = ((View) mCurRootView).getContext();
+                    if (context == activity) {
+                        //将该对象设为null，破环GC引用链，防止输入法内存泄漏
+                        mCurRootViewField.set(inputMethodManager, null);
+                    }
+                }
+                Object mNextServedView = mNextServedViewField.get(inputMethodManager);
+                if (null != mNextServedView) {
+                    Context context = ((View) mNextServedView).getContext();
+                    if (activity == context) {
+                        mNextServedViewField.set(inputMethodManager, null);
+                    }
+                }
+                Object mServedView = mServedViewField.get(inputMethodManager);
+                if (null != mServedView) {
+                    Context context = ((View) mServedView).getContext();
+                    if (activity == context) {
+                        mServedViewField.set(inputMethodManager, null);
+                    }
+                }
+            }
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -542,6 +545,19 @@ public class Tool {
         //退出程序
         android.os.Process.killProcess(android.os.Process.myPid());
         System.exit(status);
+    }
+
+    /**
+     * 获取默认的屏幕大小
+     *
+     * @param context 上下文
+     */
+    public static Point getDefaultScreenSize(@NonNull Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display defaultDisplay = windowManager.getDefaultDisplay();
+        Point point = new Point();
+        defaultDisplay.getSize(point);
+        return point;
     }
 
     /*--------------------------------私有方法--------------------------------*/
