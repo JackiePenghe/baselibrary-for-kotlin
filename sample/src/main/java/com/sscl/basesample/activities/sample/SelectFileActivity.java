@@ -62,16 +62,16 @@ public class SelectFileActivity extends BaseAppCompatActivity {
     private final FileSystemUtil.OnFileSelectedListener onFileSelectedListener = (requestCode, uri, filePath) -> {
         switch (requestCode) {
             case SELECT_ANY_FILE:
-                showDialog(getString(R.string.select_any_file), filePath, uri);
+                showDialog(getString(R.string.com_sscl_basesample_select_any_file), filePath, uri);
                 break;
             case SELECT_TEXT_FILE:
-                showDialog(getString(R.string.select_text_file), filePath, uri);
+                showDialog(getString(R.string.com_sscl_basesample_select_text_file), filePath, uri);
                 break;
             case SELECT_BINARY_FILE:
-                showDialog(getString(R.string.select_binary_file), filePath, uri);
+                showDialog(getString(R.string.com_sscl_basesample_select_binary_file), filePath, uri);
                 break;
             case SELECT_IMAGE_FILE:
-                showDialog(getString(R.string.select_image_file), filePath, uri);
+                showDialog(getString(R.string.com_sscl_basesample_select_image_file), filePath, uri);
                 break;
             default:
                 break;
@@ -106,7 +106,7 @@ public class SelectFileActivity extends BaseAppCompatActivity {
      */
     @Override
     protected int setLayout() {
-        return R.layout.activity_select_file;
+        return R.layout.com_sscl_basesample_activity_select_file;
     }
 
     /**
@@ -221,28 +221,28 @@ public class SelectFileActivity extends BaseAppCompatActivity {
     private void selectAnyFile() {
         boolean succeed = FileSystemUtil.openSystemFile(this, SELECT_ANY_FILE);
         if (!succeed) {
-            ToastUtil.toastLong(this, R.string.open_file_manager_failed);
+            ToastUtil.toastLong(this, R.string.com_sscl_basesample_open_file_manager_failed);
         }
     }
 
     private void selectTextFile() {
         boolean succeed = FileSystemUtil.openSystemFile(this, SELECT_TEXT_FILE, FileSystemUtil.FileType.TEXT_FILE);
         if (!succeed) {
-            ToastUtil.toastLong(this, R.string.open_file_manager_failed);
+            ToastUtil.toastLong(this, R.string.com_sscl_basesample_open_file_manager_failed);
         }
     }
 
     private void selectBinaryFile() {
         boolean succeed = FileSystemUtil.openSystemFile(this, SELECT_BINARY_FILE, FileSystemUtil.FileType.OCTET_STREAM_FILE);
         if (!succeed) {
-            ToastUtil.toastLong(this, R.string.open_file_manager_failed);
+            ToastUtil.toastLong(this, R.string.com_sscl_basesample_open_file_manager_failed);
         }
     }
 
     private void selectImageFile() {
         boolean succeed = FileSystemUtil.openSystemFile(this, SELECT_BINARY_FILE, FileSystemUtil.FileType.IMAGE_FILE);
         if (!succeed) {
-            ToastUtil.toastLong(this, R.string.open_file_manager_failed);
+            ToastUtil.toastLong(this, R.string.com_sscl_basesample_open_file_manager_failed);
         }
     }
 
@@ -263,7 +263,7 @@ public class SelectFileActivity extends BaseAppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(R.string.confirm, null)
+                .setPositiveButton(R.string.com_sscl_basesample_confirm, null)
                 .show();
     }
 

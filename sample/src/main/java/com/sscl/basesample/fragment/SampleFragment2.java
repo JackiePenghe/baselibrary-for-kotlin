@@ -27,7 +27,7 @@ public class SampleFragment2 extends BaseFragment {
      */
     @Override
     protected int setLayout() {
-        return R.layout.fragment_sample_2;
+        return R.layout.com_sscl_basesample_fragment_sample_2;
     }
 
     /**

@@ -52,7 +52,7 @@ public class AllPurposeAdapterActivity extends BaseAppCompatActivity {
      */
     @Override
     protected int setLayout() {
-        return R.layout.activity_all_purpose_adapter;
+        return R.layout.com_sscl_basesample_activity_all_purpose_adapter;
     }
 
     /**

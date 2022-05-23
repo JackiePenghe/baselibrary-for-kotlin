@@ -9,13 +9,13 @@
 
     <Button
         android:id="@+id/write_file_btn"
-        android:text="@string/write_file"
+        android:text="@string/com_sscl_basesample_write_file"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/read_file_btn"
-        android:text="@string/read_file"
+        android:text="@string/com_sscl_basesample_read_file"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </LinearLayout>

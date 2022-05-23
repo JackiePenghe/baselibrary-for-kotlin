@@ -10,23 +10,23 @@
         android:id="@+id/select_any_file"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/select_any_file" />
+        android:text="@string/com_sscl_basesample_select_any_file" />
 
     <Button
         android:id="@+id/select_text_file"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/select_text_file" />
+        android:text="@string/com_sscl_basesample_select_text_file" />
 
     <Button
         android:id="@+id/select_binary_file"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/select_binary_file" />
+        android:text="@string/com_sscl_basesample_select_binary_file" />
 
     <Button
         android:id="@+id/select_image_file"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/select_image_file" />
+        android:text="@string/com_sscl_basesample_select_image_file" />
 </LinearLayout>

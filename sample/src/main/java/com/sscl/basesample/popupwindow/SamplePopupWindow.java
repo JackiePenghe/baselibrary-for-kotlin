@@ -35,7 +35,7 @@ public class SamplePopupWindow extends BasePopupWindow {
 
     @Override
     protected int setLayout() {
-        return R.layout.layout_sample_popup_window;
+        return R.layout.com_sscl_basesample_layout_sample_popup_window;
     }
 
     @Override

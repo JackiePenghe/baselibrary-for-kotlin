@@ -1,56 +1,56 @@
 <resources>
-    <string name="app_name" translatable="false">BaseSample</string>
-    <string name="press_home_btn_test">Press home button test</string>
-    <string name="all_purpose_adapter">AllPurposeAdapter</string>
-    <string name="base_appcompat_activity" translatable="false">BaseAppcompatActivity</string>
-    <string name="base_drawer_activity" translatable="false">BaseDrawerActivity</string>
-    <string name="base_fragment" translatable="false">BaseFragment</string>
-    <string name="base_popup_window" translatable="false">BasePopupWindow</string>
-    <string name="home_watcher">Home Button Watcher</string>
-    <string name="toast_test">Toast test</string>
-    <string name="show_popup_window">Show Popup Window</string>
-    <string name="open_toast_reuse">Open reuse</string>
-    <string name="close_toast_reuse">Close reuse</string>
-    <string name="long_time">Long time</string>
-    <string name="short_time">Short time</string>
-    <string name="time_100">100ms</string>
-    <string name="time_500">500ms</string>
-    <string name="no_permission_exits">No permission, the program exits</string>
-    <string name="no_permission">No Permission</string>
-    <string name="no_permission_message">The application does not have permission, please go to the settings to allow all permissions</string>
-    <string name="settings">Settings</string>
-    <string name="cancel">Cancel</string>
-    <string name="arc_progress_bar">Arc targetProgress bar</string>
-    <string name="widget">Widget</string>
-    <string name="circle_progress_bar">Circle targetProgress bar</string>
-    <string name="select_file">Select file</string>
-    <string name="select_any_file">Select any file</string>
-    <string name="open_file_manager_failed">File manager failed to open</string>
-    <string name="confirm">确认</string>
-    <string name="select_text_file">Select text file</string>
-    <string name="image_loader">Image loader</string>
-    <string name="banner" translatable="false">banner</string>
-    <string name="web_view" translatable="false">WebView</string>
-    <string name="select_binary_file">select binary file</string>
-    <string name="flow_layout">flow layout</string>
-    <string name="select_image_file">Select Image file</string>
-    <string name="number_input_method">Number InputMethod</string>
-    <string name="letter_input_method">Letter InputMethod</string>
-    <string name="custom_password_view">custom password view</string>
-    <string name="zip_file_operation">zip file operation</string>
-    <string name="file_name_colon">File name:</string>
-    <string name="list_files">List the files</string>
-    <string name="no_file_selected">select none file</string>
-    <string name="file_list">file list</string>
-    <string name="unzip_file">unzip files</string>
-    <string name="unzip_file_succeed">unzip succeed</string>
-    <string name="unzip_file_failed">unzip failed</string>
-    <string name="translate">translate</string>
-    <string name="animation_test">Animation test</string>
-    <string name="scale">scale</string>
-    <string name="scale_translate">Scale &amp; Translate</string>
-    <string name="view_test">view toast</string>
-    <string name="sdcard_file_test">SD卡根目录读写测试</string>
-    <string name="read_file">读文件</string>
-    <string name="write_file">写文件</string>
+    <string name="com_sscl_basesample_app_name" translatable="false">BaseSample</string>
+    <string name="com_sscl_basesample_press_home_btn_test">Press home button test</string>
+    <string name="com_sscl_basesample_all_purpose_adapter">AllPurposeAdapter</string>
+    <string name="com_sscl_basesample_base_appcompat_activity" translatable="false">BaseAppcompatActivity</string>
+    <string name="com_sscl_basesample_base_drawer_activity" translatable="false">BaseDrawerActivity</string>
+    <string name="com_sscl_basesample_base_fragment" translatable="false">BaseFragment</string>
+    <string name="com_sscl_basesample_base_popup_window" translatable="false">BasePopupWindow</string>
+    <string name="com_sscl_basesample_home_watcher">Home Button Watcher</string>
+    <string name="com_sscl_basesample_toast_test">Toast test</string>
+    <string name="com_sscl_basesample_show_popup_window">Show Popup Window</string>
+    <string name="com_sscl_basesample_open_toast_reuse">Open reuse</string>
+    <string name="com_sscl_basesample_close_toast_reuse">Close reuse</string>
+    <string name="com_sscl_basesample_long_time">Long time</string>
+    <string name="com_sscl_basesample_short_time">Short time</string>
+    <string name="com_sscl_basesample_time_100">100ms</string>
+    <string name="com_sscl_basesample_time_500">500ms</string>
+    <string name="com_sscl_basesample_no_permission_exits">No permission, the program exits</string>
+    <string name="com_sscl_basesample_no_permission">No Permission</string>
+    <string name="com_sscl_basesample_no_permission_message">The application does not have permission, please go to the settings to allow all permissions</string>
+    <string name="com_sscl_basesample_settings">Settings</string>
+    <string name="com_sscl_basesample_cancel">Cancel</string>
+    <string name="com_sscl_basesample_arc_progress_bar">Arc targetProgress bar</string>
+    <string name="com_sscl_basesample_widget">Widget</string>
+    <string name="com_sscl_basesample_circle_progress_bar">Circle targetProgress bar</string>
+    <string name="com_sscl_basesample_select_file">Select file</string>
+    <string name="com_sscl_basesample_select_any_file">Select any file</string>
+    <string name="com_sscl_basesample_open_file_manager_failed">File manager failed to open</string>
+    <string name="com_sscl_basesample_confirm">确认</string>
+    <string name="com_sscl_basesample_select_text_file">Select text file</string>
+    <string name="com_sscl_basesample_image_loader">Image loader</string>
+    <string name="com_sscl_basesample_banner" translatable="false">banner</string>
+    <string name="com_sscl_basesample_web_view" translatable="false">WebView</string>
+    <string name="com_sscl_basesample_select_binary_file">select binary file</string>
+    <string name="com_sscl_basesample_flow_layout">flow layout</string>
+    <string name="com_sscl_basesample_select_image_file">Select Image file</string>
+    <string name="com_sscl_basesample_number_input_method">Number InputMethod</string>
+    <string name="com_sscl_basesample_letter_input_method">Letter InputMethod</string>
+    <string name="com_sscl_basesample_custom_password_view">custom password view</string>
+    <string name="com_sscl_basesample_zip_file_operation">zip file operation</string>
+    <string name="com_sscl_basesample_file_name_colon">File name:</string>
+    <string name="com_sscl_basesample_list_files">List the files</string>
+    <string name="com_sscl_basesample_no_file_selected">select none file</string>
+    <string name="com_sscl_basesample_file_list">file list</string>
+    <string name="com_sscl_basesample_unzip_file">unzip files</string>
+    <string name="com_sscl_basesample_unzip_file_succeed">unzip succeed</string>
+    <string name="com_sscl_basesample_unzip_file_failed">unzip failed</string>
+    <string name="com_sscl_basesample_translate">translate</string>
+    <string name="com_sscl_basesample_animation_test">Animation test</string>
+    <string name="com_sscl_basesample_scale">scale</string>
+    <string name="com_sscl_basesample_scale_translate">Scale &amp; Translate</string>
+    <string name="com_sscl_basesample_view_test">view toast</string>
+    <string name="com_sscl_basesample_sdcard_file_test">sd card root dir read/wrte test</string>
+    <string name="com_sscl_basesample_read_file">read file</string>
+    <string name="com_sscl_basesample_write_file">write file</string>
 </resources>

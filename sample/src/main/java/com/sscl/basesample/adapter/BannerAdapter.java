@@ -12,7 +12,7 @@ public class BannerAdapter extends BaseBannerAdapter<String> {
     private static final String TAG = BannerAdapter.class.getSimpleName();
 
     public BannerAdapter() {
-        super(R.layout.adapter_banner);
+        super(R.layout.com_sscl_basesample_adapter_banner);
     }
 
     @Override

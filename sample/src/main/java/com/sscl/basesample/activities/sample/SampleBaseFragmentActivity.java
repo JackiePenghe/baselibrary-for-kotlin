@@ -27,13 +27,13 @@ public class SampleBaseFragmentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sample_base_fragment);
+        setContentView(R.layout.com_sscl_basesample_activity_sample_base_fragment);
 
         ViewPager viewPager = findViewById(R.id.view_pager);
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         Toolbar toolbar = findViewById(R.id.toolbar);
 
-        toolbar.setTitle(R.string.app_title);
+        toolbar.setTitle(R.string.com_jackiepenghe_app_title);
         toolbar.setBackgroundColor(Tool.getColorPrimary(this));
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);

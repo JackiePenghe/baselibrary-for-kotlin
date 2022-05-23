@@ -3,11 +3,9 @@ package com.sscl.basesample.activities.sample;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +23,6 @@ import com.sscl.baselibrary.utils.ZipUtils;
 import com.sscl.basesample.R;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -44,7 +41,7 @@ public class ZipFileOperationActivity extends BaseAppCompatActivity {
      */
     @Override
     protected int setLayout() {
-        return R.layout.activity_zip_file_operation;
+        return R.layout.com_sscl_basesample_activity_zip_file_operation;
     }
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -86,7 +83,7 @@ public class ZipFileOperationActivity extends BaseAppCompatActivity {
             if (requestCode == REQUEST_CODE_ZIP) {
                 DebugUtil.warnOut(TAG, "fileSelected " + filePath);
                 if (uri == null || filePath == null) {
-                    ToastUtil.toastLong(ZipFileOperationActivity.this, R.string.no_file_selected);
+                    ToastUtil.toastLong(ZipFileOperationActivity.this, R.string.com_sscl_basesample_no_file_selected);
                     return;
                 }
                 fileNameTv.setText(filePath);
@@ -253,7 +250,7 @@ public class ZipFileOperationActivity extends BaseAppCompatActivity {
     private void selectFile() {
         boolean b = FileSystemUtil.openSystemFile(this, REQUEST_CODE_ZIP, FileSystemUtil.FileType.ZIP_FILE);
         if (!b) {
-            ToastUtil.toastLong(this, R.string.open_file_manager_failed);
+            ToastUtil.toastLong(this, R.string.com_sscl_basesample_open_file_manager_failed);
         }
     }
 
@@ -262,7 +259,7 @@ public class ZipFileOperationActivity extends BaseAppCompatActivity {
      */
     private void listFiles() {
         if (fileUri == null || filePath == null) {
-            ToastUtil.toastLong(this, R.string.no_file_selected);
+            ToastUtil.toastLong(this, R.string.com_sscl_basesample_no_file_selected);
             return;
         }
         ArrayList<String> entriesNames = ZipUtils.getEntriesNamesNew(new File(filePath));
@@ -283,10 +280,10 @@ public class ZipFileOperationActivity extends BaseAppCompatActivity {
             items = new String[]{"空文件列表"};
         }
         new AlertDialog.Builder(this)
-                .setTitle(R.string.file_list)
+                .setTitle(R.string.com_sscl_basesample_file_list)
                 .setItems(items, null)
                 .setCancelable(false)
-                .setPositiveButton(R.string.confirm, null)
+                .setPositiveButton(R.string.com_sscl_basesample_confirm, null)
                 .show();
     }
 
@@ -295,7 +292,7 @@ public class ZipFileOperationActivity extends BaseAppCompatActivity {
      */
     private void unzipFile() {
         if (fileUri == null || filePath == null) {
-            ToastUtil.toastLong(this, R.string.no_file_selected);
+            ToastUtil.toastLong(this, R.string.com_sscl_basesample_no_file_selected);
             return;
         }
         File file = new File(filePath);
@@ -304,7 +301,7 @@ public class ZipFileOperationActivity extends BaseAppCompatActivity {
             @Override
             public void unzipSucceed(String unzipDir) {
                 DebugUtil.warnOut(TAG, "解压完成");
-                ToastUtil.toastLong(ZipFileOperationActivity.this, R.string.unzip_file_succeed);
+                ToastUtil.toastLong(ZipFileOperationActivity.this, R.string.com_sscl_basesample_unzip_file_succeed);
 //                FileUtil.deleteDirFiles(new File(unzipDir));
                 DebugUtil.warnOut(TAG, "file dir " + unzipDir);
             }
@@ -312,7 +309,7 @@ public class ZipFileOperationActivity extends BaseAppCompatActivity {
             @Override
             public void unzipFailed() {
                 DebugUtil.warnOut(TAG, "解压失败");
-                ToastUtil.toastLong(ZipFileOperationActivity.this, R.string.unzip_file_failed);
+                ToastUtil.toastLong(ZipFileOperationActivity.this, R.string.com_sscl_basesample_unzip_file_failed);
             }
         });
     }

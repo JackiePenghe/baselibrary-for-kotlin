@@ -18,7 +18,7 @@ public class NumberInputMethodActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_number_input_metohd);
+        setContentView(R.layout.com_sscl_basesample_activity_number_input_metohd);
 
         EditText editText = findViewById(R.id.test_et);
         NumberInputMethodView numberInputMethodView = findViewById(R.id.number_input_method_view);

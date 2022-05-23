@@ -52,7 +52,7 @@ public class SampleBannerActivity extends BaseAppCompatActivity {
      */
     @Override
     protected int setLayout() {
-        return R.layout.activity_sample_banner;
+        return R.layout.com_sscl_basesample_activity_sample_banner;
     }
 
     /**

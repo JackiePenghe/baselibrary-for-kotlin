@@ -17,7 +17,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:text="@string/file_name_colon"
+                android:text="@string/com_sscl_basesample_file_name_colon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -28,19 +28,19 @@
         </LinearLayout>
 
         <Button
-            android:text="@string/select_file"
+            android:text="@string/com_sscl_basesample_select_file"
             android:id="@+id/select_file_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <Button
-            android:text="@string/list_files"
+            android:text="@string/com_sscl_basesample_list_files"
             android:id="@+id/list_files_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <Button
-            android:text="@string/unzip_file"
+            android:text="@string/com_sscl_basesample_unzip_file"
             android:id="@+id/unzip_file_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

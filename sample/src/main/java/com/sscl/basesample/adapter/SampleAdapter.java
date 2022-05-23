@@ -21,7 +21,7 @@ public class SampleAdapter extends BasePurposeAdapter<String> {
      */
     public SampleAdapter(ArrayList<String> dataList) {
         //在此处我直接使用安卓默认的布局
-        super(dataList, R.layout.adapter_sample);
+        super(dataList, R.layout.com_sscl_basesample_adapter_sample);
     }
 
     /**

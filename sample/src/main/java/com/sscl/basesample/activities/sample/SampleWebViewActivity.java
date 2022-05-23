@@ -93,7 +93,7 @@ public class SampleWebViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sample_web_view_activity);
+        setContentView(R.layout.com_sscl_basesample_activity_sample_web_view_activity);
 
         backBtn = findViewById(R.id.back);
         forwwardBtn = findViewById(R.id.forward);

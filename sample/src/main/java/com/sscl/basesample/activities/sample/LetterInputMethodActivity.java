@@ -18,7 +18,7 @@ public class LetterInputMethodActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_letter_input_method);
+        setContentView(R.layout.com_sscl_basesample_activity_letter_input_method);
 
         EditText editText = findViewById(R.id.test_et);
         LetterInputMethodView letterInputMethodView = findViewById(R.id.letter_input_method_view);

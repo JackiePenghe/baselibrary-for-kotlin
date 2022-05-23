@@ -497,7 +497,7 @@
                 android:gravity="center"
                 android:paddingStart="80dp"
                 android:paddingEnd="80dp"
-                android:text="@string/caps_lock"
+                android:text="@string/com_jackiepenghe_caps_lock"
                 android:textColor="@color/com_jackiepenghe_baselibrary_letter_keyboard_capslock_btn"
                 android:textSize="31dp" />
 

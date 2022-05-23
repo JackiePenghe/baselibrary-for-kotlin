@@ -43,7 +43,7 @@ public class CircleProgressBarActivity extends BaseAppCompatActivity {
      */
     @Override
     protected int setLayout() {
-        return R.layout.activity_circle_progress_bar;
+        return R.layout.com_sscl_basesample_activity_circle_progress_bar;
     }
 
     /**

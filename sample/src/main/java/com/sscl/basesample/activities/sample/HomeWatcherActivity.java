@@ -54,7 +54,7 @@ public class HomeWatcherActivity extends BaseAppCompatActivity {
      */
     @Override
     protected int setLayout() {
-        return R.layout.activity_home_watcher;
+        return R.layout.com_sscl_basesample_activity_home_watcher;
     }
 
     /**

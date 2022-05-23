@@ -33,7 +33,7 @@ public class SampleBaseDrawerActivity extends BaseDrawerActivity {
      */
     @Override
     protected int setLayout() {
-        return R.layout.activity_sample_base_drawer;
+        return R.layout.com_sscl_basesample_activity_sample_base_drawer;
     }
 
     /**
@@ -43,7 +43,7 @@ public class SampleBaseDrawerActivity extends BaseDrawerActivity {
     protected void doBeforeInitOthers() {
 
         //重命名标题栏的内容
-        setTitleText(R.string.base_drawer_activity);
+        setTitleText(R.string.com_sscl_basesample_base_drawer_activity);
         //设置标题栏文本的颜色
         setTitleTextColorRes(android.R.color.white);
     }

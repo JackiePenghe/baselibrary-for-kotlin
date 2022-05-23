@@ -7,7 +7,7 @@
 
     <TextView
         android:layout_centerInParent="true"
-        android:text="@string/widget"
+        android:text="@string/com_sscl_basesample_widget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

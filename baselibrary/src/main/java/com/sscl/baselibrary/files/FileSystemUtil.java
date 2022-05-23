@@ -517,7 +517,7 @@ public class FileSystemUtil {
 
                 return buffer;
             } catch (FileNotFoundException e) {
-                ToastUtil.toastLong(context, R.string.file_not_found_or_use_unrecognized_characters);
+                ToastUtil.toastLong(context, R.string.com_jackiepenghe_file_not_found_or_use_unrecognized_characters);
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();

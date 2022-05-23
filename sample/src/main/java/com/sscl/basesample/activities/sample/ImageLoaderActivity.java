@@ -31,7 +31,7 @@ public class ImageLoaderActivity extends BaseAppCompatActivity {
 
     @Override
     protected int setLayout() {
-        return R.layout.activity_image_loader;
+        return R.layout.com_sscl_basesample_activity_image_loader;
     }
 
     @Override

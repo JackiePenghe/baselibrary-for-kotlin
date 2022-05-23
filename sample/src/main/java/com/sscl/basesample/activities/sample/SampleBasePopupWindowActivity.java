@@ -20,7 +20,7 @@ public class SampleBasePopupWindowActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sample_base_popup_window);
+        setContentView(R.layout.com_sscl_basesample_activity_sample_base_popup_window);
         content = findViewById(R.id.content_sample_popupWindow);
         Button button = findViewById(R.id.show_popup_window_btn);
         button.setOnClickListener(v -> showPopupWindow());

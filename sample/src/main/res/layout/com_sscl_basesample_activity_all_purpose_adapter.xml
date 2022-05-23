@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.sample.ImageLoaderActivity">
+    tools:context=".activities.sample.AllPurposeAdapterActivity">
 
-    <ImageView
-        android:id="@+id/image"
+    <ListView
+        android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/_null" />
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

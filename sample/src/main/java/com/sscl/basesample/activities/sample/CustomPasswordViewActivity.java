@@ -11,6 +11,6 @@ public class CustomPasswordViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_custom_password_view);
+        setContentView(R.layout.com_sscl_basesample_activity_custom_password_view);
     }
 }

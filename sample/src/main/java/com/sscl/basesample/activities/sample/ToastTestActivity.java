@@ -29,19 +29,19 @@ public class ToastTestActivity extends BaseAppCompatActivity {
     private final View.OnClickListener onClickListener = v -> {
         switch (v.getId()) {
             case R.id.long_time:
-                ToastUtil.toastLong(ToastTestActivity.this, R.string.long_time);
+                ToastUtil.toastLong(ToastTestActivity.this, R.string.com_sscl_basesample_long_time);
                 break;
             case R.id.short_time:
-                ToastUtil.toastShort(ToastTestActivity.this, R.string.short_time);
+                ToastUtil.toastShort(ToastTestActivity.this, R.string.com_sscl_basesample_short_time);
                 break;
             case R.id.time_100:
-                ToastUtil.toast(ToastTestActivity.this, R.string.time_100, 100);
+                ToastUtil.toast(ToastTestActivity.this, R.string.com_sscl_basesample_time_100, 100);
                 break;
             case R.id.time_500:
-                ToastUtil.toast(ToastTestActivity.this, R.string.time_500, 500);
+                ToastUtil.toast(ToastTestActivity.this, R.string.com_sscl_basesample_time_500, 500);
                 break;
             case R.id.view_test:
-                View view = View.inflate(ToastTestActivity.this, R.layout.toast_view, null);
+                View view = View.inflate(ToastTestActivity.this, R.layout.com_sscl_basesample_toast_view, null);
                 ToastUtil.toast(ToastTestActivity.this, view, 2000);
                 break;
             default:
@@ -96,7 +96,7 @@ public class ToastTestActivity extends BaseAppCompatActivity {
      */
     @Override
     protected int setLayout() {
-        return R.layout.activity_toast_test;
+        return R.layout.com_sscl_basesample_activity_toast_test;
     }
 
     /**

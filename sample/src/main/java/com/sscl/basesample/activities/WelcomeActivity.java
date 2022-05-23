@@ -8,8 +8,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -73,7 +71,7 @@ public class WelcomeActivity extends BaseWelcomeActivity {
      */
     @Override
     protected int setImageViewSource() {
-        return R.drawable.bg_welcome;
+        return R.drawable.com_sscl_basesample_bg_welcome;
     }
 
     @Override
@@ -133,14 +131,14 @@ public class WelcomeActivity extends BaseWelcomeActivity {
 
     private void showPermissionDialog() {
         new AlertDialog.Builder(this)
-                .setTitle(R.string.no_permission)
-                .setMessage(R.string.no_permission_message)
-                .setPositiveButton(R.string.settings, (dialog, which) -> {
+                .setTitle(R.string.com_sscl_basesample_no_permission)
+                .setMessage(R.string.com_sscl_basesample_no_permission_message)
+                .setPositiveButton(R.string.com_sscl_basesample_settings, (dialog, which) -> {
                     PermissionUtil.toSettingActivity(WelcomeActivity.this);
                     needCheckPermission = true;
                 })
-                .setNegativeButton(R.string.cancel, (dialog, which) -> {
-                    ToastUtil.toastLong(WelcomeActivity.this, R.string.no_permission_exits);
+                .setNegativeButton(R.string.com_sscl_basesample_cancel, (dialog, which) -> {
+                    ToastUtil.toastLong(WelcomeActivity.this, R.string.com_sscl_basesample_no_permission_exits);
                     finish();
                 })
                 .setCancelable(false)

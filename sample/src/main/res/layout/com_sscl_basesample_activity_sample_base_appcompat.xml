@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.sample.SampleBaseAppcompatActivity">
+
+    <TextView
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="30sp"
+        android:text="See the source code for details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="HardcodedText" />
+
+    <com.sscl.baselibrary.widget.GifView
+        android:id="@+id/gif_view"
+        app:gif="@drawable/com_sscl_basesample_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

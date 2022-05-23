@@ -36,7 +36,7 @@ public class FlowLayoutActivity extends BaseAppCompatActivity {
      */
     @Override
     protected int setLayout() {
-        return R.layout.activity_flow_layout;
+        return R.layout.com_sscl_basesample_activity_flow_layout;
     }
 
     /**

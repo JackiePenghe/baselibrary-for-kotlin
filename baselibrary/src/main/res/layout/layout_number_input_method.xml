@@ -159,7 +159,7 @@
             android:layout_weight="1"
             android:background="@drawable/com_jackiepenghe_baselibrary_number_keyboard_clear_btn"
             android:gravity="center"
-            android:text="@string/clear"
+            android:text="@string/com_jackiepenghe_clear"
             android:textColor="@color/black"
             android:textSize="41dp" />
 
@@ -196,7 +196,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/delete"
+                    android:text="@string/com_jackiepenghe_delete"
                     android:textColor="@color/black"
                     android:textSize="41dp" />
 

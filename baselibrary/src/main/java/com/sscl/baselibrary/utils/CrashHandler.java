@@ -120,7 +120,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
                 @Override
                 public void run() {
                     Looper.prepare();
-                    Toast.makeText(mContext, R.string.app_run_with_error, Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, R.string.com_jackiepenghe_app_run_with_error, Toast.LENGTH_LONG).show();
                     Looper.loop();
                 }
             };

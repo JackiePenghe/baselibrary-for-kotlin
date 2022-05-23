@@ -196,7 +196,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      * 初始化本类固定的数据
      */
     private void initThisData() {
-        titleView.setText(R.string.app_title);
+        titleView.setText(R.string.com_jackiepenghe_app_title);
         setSupportActionBar(toolbar);
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AnimationSet;
-import android.view.animation.Interpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 
@@ -24,7 +23,7 @@ public class AnimationSampleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_animation_sample);
+        setContentView(R.layout.com_sscl_basesample_activity_animation_sample);
         animationView = findViewById(R.id.iv);
     }
 

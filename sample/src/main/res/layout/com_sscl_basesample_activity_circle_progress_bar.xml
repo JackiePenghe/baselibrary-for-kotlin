@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.widget.CircleProgressBarActivity">
+
+    <com.sscl.baselibrary.widget.CircleProgressBar
+        android:layout_gravity="center"
+        app:max_progress="3000"
+        app:progress_color="?attr/colorPrimary"
+        app:round_color="?attr/colorAccent"
+        app:round_width="10dp"
+        app:show_text="true"
+        app:text_color="@android:color/black"
+        app:text_size="30sp"
+        android:id="@+id/circle_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

@@ -1,9 +1,7 @@
 package com.sscl.basesample.activities.sample;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,12 +16,9 @@ import com.sscl.basesample.R;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * SD卡根目录下的文件读写测试
@@ -93,7 +88,7 @@ public class SdcardFileTestActivity extends BaseAppCompatActivity {
      */
     @Override
     protected int setLayout() {
-        return R.layout.activity_sdcard_file_test;
+        return R.layout.com_sscl_basesample_activity_sdcard_file_test;
     }
 
     /**

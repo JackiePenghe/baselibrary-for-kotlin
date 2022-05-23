@@ -42,7 +42,7 @@ public class ArcProgressBarActivity extends BaseAppCompatActivity {
      */
     @Override
     protected int setLayout() {
-        return R.layout.activity_arc_progress_bar;
+        return R.layout.com_sscl_basesample_activity_arc_progress_bar;
     }
 
     /**

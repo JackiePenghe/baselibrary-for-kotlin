@@ -144,7 +144,7 @@ public class MainActivity extends BaseAppCompatActivity {
      */
     @Override
     protected int setLayout() {
-        return R.layout.activity_main;
+        return R.layout.com_sscl_basesample_activity_main;
     }
 
     /**

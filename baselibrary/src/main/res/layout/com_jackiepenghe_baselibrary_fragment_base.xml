@@ -26,7 +26,7 @@
             android:id="@+id/title_left_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/_null"
+            android:contentDescription="@string/com_jackiepenghe_null"
             android:visibility="gone" />
 
         <TextView
@@ -72,7 +72,7 @@
             android:id="@+id/title_right_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/_null"
+            android:contentDescription="@string/com_jackiepenghe_null"
             android:visibility="gone" />
 
         <TextView

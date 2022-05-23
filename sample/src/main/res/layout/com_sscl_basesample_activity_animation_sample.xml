@@ -11,17 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="translate"
-        android:text="@string/translate" />
+        android:text="@string/com_sscl_basesample_translate" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="scale"
-        android:text="@string/scale" />
+        android:text="@string/com_sscl_basesample_scale" />
 
     <Button
         android:onClick="scaleTranslate"
-        android:text="@string/scale_translate"
+        android:text="@string/com_sscl_basesample_scale_translate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

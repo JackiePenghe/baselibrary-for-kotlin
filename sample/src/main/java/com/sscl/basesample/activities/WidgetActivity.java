@@ -25,7 +25,7 @@ public class WidgetActivity extends BaseDrawerActivity {
 
     @Override
     protected int setLayout() {
-        return R.layout.activity_widget;
+        return R.layout.com_sscl_basesample_activity_widget;
     }
 
     @Override
@@ -94,7 +94,7 @@ public class WidgetActivity extends BaseDrawerActivity {
 
     @Override
     protected int setNavigationMenuResId() {
-        return R.menu.navigation_activity_widget;
+        return R.menu.com_sscl_basesample_navigation_activity_widget;
     }
 
     @Override

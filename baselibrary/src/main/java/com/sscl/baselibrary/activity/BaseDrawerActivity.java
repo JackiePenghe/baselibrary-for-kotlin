@@ -142,7 +142,7 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         titleView = findViewById(R.id.toolbar_title);
         if (titleView != null) {
-            titleView.setText(R.string.app_title);
+            titleView.setText(R.string.com_jackiepenghe_app_title);
         }
         setSupportActionBar(toolbar);
         ActionBar supportActionBar = getSupportActionBar();
@@ -151,7 +151,7 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
             supportActionBar.setDisplayShowTitleEnabled(false);
         }
         drawerLayout = findViewById(R.id.drawer_layout);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.com_jackiepenghe_navigation_drawer_open, R.string.com_jackiepenghe_navigation_drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         drawerLayout.addDrawerListener(drawerListener);
         actionBarDrawerToggle.syncState();
