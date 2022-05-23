@@ -30,8 +30,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.sscl.baselibrary.R;
-import com.sscl.baselibrary.utils.StatusBarUtil;
-import com.sscl.baselibrary.utils.Tool;
 
 
 /**
@@ -139,7 +137,7 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         doBeforeSetLayout();
 
-        setContentView(R.layout.activity_base_drawer);
+        setContentView(R.layout.com_jackiepenghe_baselibrary_activity_base_drawer);
 
         toolbar = findViewById(R.id.toolbar);
         titleView = findViewById(R.id.toolbar_title);

@@ -40,7 +40,7 @@
         tools:ignore="ProtectedPermissions" />
 
     <application
-        android:networkSecurityConfig="@xml/network_security_config"
+        android:networkSecurityConfig="@xml/com_jackiepenghe_activity_network_security_config"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         tools:targetApi="n">
@@ -51,7 +51,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/files_path" />
+                android:resource="@xml/com_jackiepenghe_activity_files_path" />
         </provider>
     </application>
 

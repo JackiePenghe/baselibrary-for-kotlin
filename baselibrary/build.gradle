@@ -10,7 +10,7 @@ afterEvaluate {
                     from components.release
                     groupId 'com.gitee.sscl'
                     artifactId 'BaseLibrary'
-                    version '2.3.2'
+                    version '2.3.2.1'
                 }
             }
         }
@@ -24,7 +24,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 32
         versionCode 104
-        versionName "2.3.2"
+        versionName "2.3.2.1"
     }
 
     lintOptions {

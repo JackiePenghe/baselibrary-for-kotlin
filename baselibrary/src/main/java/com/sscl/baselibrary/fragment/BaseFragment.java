@@ -90,7 +90,7 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View contentView = inflater.inflate(R.layout.fragment_base, container, false);
+        View contentView = inflater.inflate(R.layout.com_jackiepenghe_baselibrary_fragment_base, container, false);
         toolBar = contentView.findViewById(R.id.toolbar);
         titleView = contentView.findViewById(R.id.toolbar_title);
         titleLeftImage = contentView.findViewById(R.id.title_left_image);

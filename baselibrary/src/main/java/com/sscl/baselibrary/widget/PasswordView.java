@@ -41,7 +41,7 @@ public class PasswordView extends AppCompatEditText {
 //        obtainStyledAttributes(attrs);
         setCursorVisible(false);
         initPaint();
-        setBackgroundResource(R.drawable.password_view_bg);
+        setBackgroundResource(R.drawable.com_jackiepenghe_baselibrary_password_view_bg);
         setLayerType(LAYER_TYPE_SOFTWARE, null);
     }
 

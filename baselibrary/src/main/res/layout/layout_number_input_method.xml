@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/background_key_board"
+    android:background="@drawable/com_jackiepenghe_baselibrary_background_key_board"
     android:orientation="vertical">
 
     <LinearLayout
@@ -18,7 +18,7 @@
             android:layout_marginStart="7dp"
             android:layout_marginEnd="7dp"
             android:layout_weight="1"
-            android:background="@drawable/number_keyboard_btn"
+            android:background="@drawable/com_jackiepenghe_baselibrary_number_keyboard_btn"
             android:gravity="center"
             android:text="1"
             android:textColor="@color/black"
@@ -31,7 +31,7 @@
             android:layout_marginStart="7dp"
             android:layout_marginEnd="7dp"
             android:layout_weight="1"
-            android:background="@drawable/number_keyboard_btn"
+            android:background="@drawable/com_jackiepenghe_baselibrary_number_keyboard_btn"
             android:gravity="center"
             android:text="2"
             android:textColor="@color/black"
@@ -44,7 +44,7 @@
             android:layout_marginStart="7dp"
             android:layout_marginEnd="7dp"
             android:layout_weight="1"
-            android:background="@drawable/number_keyboard_btn"
+            android:background="@drawable/com_jackiepenghe_baselibrary_number_keyboard_btn"
             android:gravity="center"
             android:text="3"
             android:textColor="@color/black"
@@ -64,7 +64,7 @@
             android:layout_marginStart="7dp"
             android:layout_marginEnd="7dp"
             android:layout_weight="1"
-            android:background="@drawable/number_keyboard_btn"
+            android:background="@drawable/com_jackiepenghe_baselibrary_number_keyboard_btn"
             android:gravity="center"
             android:text="4"
             android:textColor="@color/black"
@@ -77,7 +77,7 @@
             android:layout_marginStart="7dp"
             android:layout_marginEnd="7dp"
             android:layout_weight="1"
-            android:background="@drawable/number_keyboard_btn"
+            android:background="@drawable/com_jackiepenghe_baselibrary_number_keyboard_btn"
             android:gravity="center"
             android:text="5"
             android:textColor="@color/black"
@@ -90,7 +90,7 @@
             android:layout_marginStart="7dp"
             android:layout_marginEnd="7dp"
             android:layout_weight="1"
-            android:background="@drawable/number_keyboard_btn"
+            android:background="@drawable/com_jackiepenghe_baselibrary_number_keyboard_btn"
             android:gravity="center"
             android:text="6"
             android:textColor="@color/black"
@@ -110,7 +110,7 @@
             android:layout_marginStart="7dp"
             android:layout_marginEnd="7dp"
             android:layout_weight="1"
-            android:background="@drawable/number_keyboard_btn"
+            android:background="@drawable/com_jackiepenghe_baselibrary_number_keyboard_btn"
             android:gravity="center"
             android:text="7"
             android:textColor="@color/black"
@@ -123,7 +123,7 @@
             android:layout_marginStart="7dp"
             android:layout_marginEnd="7dp"
             android:layout_weight="1"
-            android:background="@drawable/number_keyboard_btn"
+            android:background="@drawable/com_jackiepenghe_baselibrary_number_keyboard_btn"
             android:gravity="center"
             android:text="8"
             android:textColor="@color/black"
@@ -136,7 +136,7 @@
             android:layout_marginStart="7dp"
             android:layout_marginEnd="7dp"
             android:layout_weight="1"
-            android:background="@drawable/number_keyboard_btn"
+            android:background="@drawable/com_jackiepenghe_baselibrary_number_keyboard_btn"
             android:gravity="center"
             android:text="9"
             android:textColor="@color/black"
@@ -157,7 +157,7 @@
             android:layout_marginStart="7dp"
             android:layout_marginEnd="7dp"
             android:layout_weight="1"
-            android:background="@drawable/number_keyboard_clear_btn"
+            android:background="@drawable/com_jackiepenghe_baselibrary_number_keyboard_clear_btn"
             android:gravity="center"
             android:text="@string/clear"
             android:textColor="@color/black"
@@ -170,7 +170,7 @@
             android:layout_marginStart="7dp"
             android:layout_marginEnd="7dp"
             android:layout_weight="1"
-            android:background="@drawable/number_keyboard_btn"
+            android:background="@drawable/com_jackiepenghe_baselibrary_number_keyboard_btn"
             android:gravity="center"
             android:text="0"
             android:textColor="@color/black"
@@ -183,7 +183,7 @@
             android:layout_marginStart="7dp"
             android:layout_marginEnd="7dp"
             android:layout_weight="1"
-            android:background="@drawable/number_keyboard_btn">
+            android:background="@drawable/com_jackiepenghe_baselibrary_number_keyboard_btn">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -206,7 +206,7 @@
                     android:layout_height="38dp"
                     android:layout_marginStart="28dp"
                     android:layout_marginLeft="28dp"
-                    android:src="@drawable/keyboard_delete" />
+                    android:src="@drawable/com_jackiepenghe_baselibrary_keyboard_delete" />
 
             </LinearLayout>
 

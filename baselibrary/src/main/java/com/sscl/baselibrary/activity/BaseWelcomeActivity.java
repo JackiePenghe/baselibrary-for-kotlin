@@ -79,7 +79,7 @@ public abstract class BaseWelcomeActivity extends BaseAppCompatActivity {
      */
     @Override
     protected int setLayout() {
-        return R.layout.activity_welcome;
+        return R.layout.com_jackiepenghe_baselibrary_activity_welcome;
     }
 
     /**

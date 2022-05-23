@@ -10,7 +10,7 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        app:navigationIcon="@drawable/back"
+        app:navigationIcon="@drawable/com_jackiepenghe_baselibrary_back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

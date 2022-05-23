@@ -77,7 +77,7 @@ public class Banner extends RelativeLayout {
     /**
      * 指示器点资源
      */
-    private final int mPointDrawableResId = R.drawable.selector_banner_point;
+    private final int mPointDrawableResId = R.drawable.com_jackiepenghe_baselibrary_selector_banner_point;
     //是否可以自动播放
     private final boolean mAutoPlayAble = true;
     //是否正在播放

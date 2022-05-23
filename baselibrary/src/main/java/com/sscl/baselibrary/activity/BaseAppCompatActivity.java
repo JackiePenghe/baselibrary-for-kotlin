@@ -78,7 +78,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
         doBeforeSetLayout();
 
-        setContentView(R.layout.activity_base_appcompat);
+        setContentView(R.layout.com_jackiepenghe_baselibrary_activity_base_appcompat);
 
         initThisView();
         initThisData();
