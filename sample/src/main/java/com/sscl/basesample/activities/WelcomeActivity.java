@@ -71,8 +71,7 @@ public class WelcomeActivity extends BaseWelcomeActivity {
      */
     @Override
     protected int setImageViewSource() {
-//        return R.drawable.com_sscl_basesample_bg_welcome;
-        return 0;
+        return R.drawable.com_sscl_basesample_bg_splash;
     }
 
 

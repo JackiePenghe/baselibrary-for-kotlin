@@ -3,6 +3,7 @@ package com.sscl.baselibrary.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -17,7 +18,7 @@ import androidx.core.splashscreen.SplashScreen;
  * @author alm
  */
 @SuppressLint("CustomSplashScreen")
-public abstract class BaseSplashActivity extends AppCompatActivity {
+public abstract class BaseSplashActivity extends Activity {
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
@@ -36,7 +37,7 @@ public abstract class BaseSplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         SplashScreen splashScreen = null;
-        if (needInstallSplash()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             splashScreen = SplashScreen.installSplashScreen(this);
         }
         super.onCreate(savedInstanceState);
@@ -44,10 +45,8 @@ public abstract class BaseSplashActivity extends AppCompatActivity {
         if (runApp()) {
             return;
         }
-        if (needInstallSplash()) {
-            if (splashScreen != null) {
-                splashScreen.setKeepVisibleCondition(() -> true);
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            splashScreen.setKeepVisibleCondition(() -> true);
         }
         onCreate();
     }
@@ -57,13 +56,6 @@ public abstract class BaseSplashActivity extends AppCompatActivity {
      * 抽象方法
      *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-    /**
-     * 是否需要手动安装为闪屏（AndroidManifest中不使用闪屏主题时，才可用）
-     *
-     * @return true表示需要手动安装为闪屏
-     */
-    protected abstract boolean needInstallSplash();
 
     /**
      * 在本界面第一次启动时执行的操作

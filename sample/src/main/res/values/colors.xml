@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="color_ff222b45">#FF222B45</color>
+    <color name="color_ff8f9bb3">#FF8F9BB3</color>
+    <color name="color_ff3366ff">#FF3366FF</color>
+    <color name="color_ffd6d6d6">#FFD6D6D6</color>
+    <color name="color_ff000000">#FF000000</color>
+    <color name="color_ff5d5d5d">#FF5D5D5D</color>
+    <color name="color_ffffffff">#FFFFFFFF</color>
+    <color name="color_ffeeeeee">#FFEEEEEE</color>
+    <color name="color_edf1f7">#EDF1F7</color>
+    <color name="color_fff6f6f6">#F6F6F6</color>
+    <color name="color_ffedf1f7">#FFEDF1F7</color>
+    <color name="color_ff0157ff">#FF0157FF</color>
+    <color name="color_ffe1e1e1">#FFE1E1E1</color>
+    <color name="color_ffff0057">#FFFF0057</color>
+    <color name="color_ff818181">#FF818181</color>
+    <color name="color_ff3a3d42">#FF3A3D42</color>
+    <color name="color_ff1dd2c1">#FF1DD2C1</color>
+    <color name="color_fff0f0f0">#FFF0F0F0</color>
+    <color name="color_ff000000_transparent_25_percent">#40000000</color>
+    <color name="color_ffc1c1c1">#FFC1C1C1</color>
+    <color name="color_ffff0000">#FFFF0000</color>
+    <color name="color_ffcbcbcb">#FFCBCBCB</color>
+    <color name="color_80ffffff">#80FFFFFF</color>
+    <color name="color_ffacacac">#FFACACAC</color>
+</resources>
