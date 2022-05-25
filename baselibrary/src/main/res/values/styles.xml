@@ -2,9 +2,7 @@
 <resources>
     <!--  Base application theme.  -->
     <!--suppress AndroidDomInspection -->
-    <style name="AppTheme" parent="Theme.BaseLibrary" >
-        <item name="postSplashScreenTheme">@style/DefaultSplashTheme</item>
-    </style>
+    <style name="AppTheme" parent="Theme.BaseLibrary" />
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

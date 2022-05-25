@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.BaseSample" >
-        <item name="postSplashScreenTheme">@style/AppSplashTheme</item>
-    </style>
-
     <style name="AppSplashTheme" parent="SplashTheme">
         <item name="android:windowBackground">@drawable/com_sscl_basesample_bg_splash</item>
-        <item name="android:windowSplashScreenAnimatedIcon">
-            @drawable/com_jackiepenghe_baselibrary_splash
-        </item>
-        <item name="android:windowSplashScreenBackground">#FF1DD2C1</item>
-        <item name="android:windowSplashScreenAnimationDuration">0</item>
     </style>
 </resources>
