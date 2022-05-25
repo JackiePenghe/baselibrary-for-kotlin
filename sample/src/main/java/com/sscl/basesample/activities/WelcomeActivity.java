@@ -71,8 +71,10 @@ public class WelcomeActivity extends BaseWelcomeActivity {
      */
     @Override
     protected int setImageViewSource() {
-        return R.drawable.com_sscl_basesample_bg_welcome;
+//        return R.drawable.com_sscl_basesample_bg_welcome;
+        return 0;
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

@@ -6,8 +6,9 @@
         <item name="android:background">@android:color/darker_gray</item>
     </style>
 
-    <style name="AppSplashTheme" parent="SplashTheme">
-        <item name="android:windowBackground">@android:color/black</item>
+    <style name="AppSplashTheme" parent="SplashTheme"/>
+
+    <style name="AppWelcomeTheme" parent="WelcomeTheme">
     </style>
 
     <style name="AppDialog" parent="@android:style/Theme.Dialog">

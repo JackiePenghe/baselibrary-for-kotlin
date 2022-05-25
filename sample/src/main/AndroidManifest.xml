@@ -9,12 +9,12 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
+        android:dataExtractionRules="@xml/com_sscl_basesample_data_extraction_rules"
         android:fullBackupContent="@xml/com_sscl_basesample_backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/com_sscl_basesample_app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme.NoActionBar"
-        android:dataExtractionRules="@xml/com_sscl_basesample_data_extraction_rules"
         tools:targetApi="s">
         <activity
             android:name=".activities.sample.SdcardFileTestActivity"
@@ -94,7 +94,7 @@
         <activity
             android:name=".activities.WelcomeActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar.FullScreen" />
+            android:theme="@style/AppWelcomeTheme" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

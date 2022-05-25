@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.splashscreen.SplashScreen;
 
 
@@ -15,7 +17,7 @@ import androidx.core.splashscreen.SplashScreen;
  * @author alm
  */
 @SuppressLint("CustomSplashScreen")
-public abstract class BaseSplashActivity extends Activity {
+public abstract class BaseSplashActivity extends AppCompatActivity {
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
