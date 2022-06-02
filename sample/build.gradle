@@ -18,9 +18,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    lintOptions {
-        abortOnError false
-    }
 
 
     compileOptions {
@@ -28,6 +25,9 @@ android {
         targetCompatibility 1.8
     }
     namespace 'com.sscl.basesample'
+    lint {
+        abortOnError false
+    }
 }
 
 dependencies {

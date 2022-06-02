@@ -9,7 +9,7 @@ afterEvaluate {
                     from components.release
                     groupId 'com.gitee.sscl'
                     artifactId 'BaseLibrary'
-                    version '2.3.3'
+                    version '2.3.4'
                 }
             }
         }
@@ -22,12 +22,6 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 106
-        versionName "2.3.3"
-    }
-
-    lintOptions {
-        abortOnError false
     }
 
 
@@ -42,6 +36,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     namespace 'com.sscl.baselibrary'
+    lint {
+        abortOnError false
+    }
 }
 
 dependencies {

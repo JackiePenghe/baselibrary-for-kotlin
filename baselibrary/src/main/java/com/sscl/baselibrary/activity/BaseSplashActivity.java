@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.view.WindowInsets;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,9 +38,16 @@ public abstract class BaseSplashActivity extends Activity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        //适配安卓12，设置为启动界面
         SplashScreen splashScreen = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             splashScreen = SplashScreen.installSplashScreen(this);
+        }
+        //隐藏导航栏（状态栏在theme中已经隐藏）
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            getWindow().getDecorView().getWindowInsetsController().hide(WindowInsets.Type.navigationBars());
+        } else {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
         super.onCreate(savedInstanceState);
         //防止本界面被多次启动

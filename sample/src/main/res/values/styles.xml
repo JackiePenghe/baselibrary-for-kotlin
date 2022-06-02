@@ -1,4 +1,5 @@
 <resources>
+
     <style name="AppTheme" parent="Theme.BaseSample" />
 
     <style name="flow_layout_test_tv">
@@ -11,8 +12,7 @@
         <item name="android:windowBackground">@drawable/com_sscl_basesample_bg_splash</item>
     </style>
 
-    <style name="AppWelcomeTheme" parent="WelcomeTheme">
-    </style>
+    <style name="AppWelcomeTheme" parent="WelcomeTheme"/>
 
     <style name="AppDialog" parent="@android:style/Theme.Dialog">
         <!--边框-->
@@ -27,6 +27,13 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <!--模糊-->
         <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="FullScreenDialog" parent="AppTheme.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/color_ff000000_transparent_25_percent</item>
+        <item name="android:navigationBarColor">@color/color_ff000000_transparent_25_percent</item>
+        <item name="android:statusBarColor">@color/color_ff000000_transparent_25_percent</item>
     </style>
 
 </resources>
