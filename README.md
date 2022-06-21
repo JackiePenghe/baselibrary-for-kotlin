@@ -16,6 +16,6 @@ dependencies {
     implementation 'com.gitee.sscl:BaseLibrary:version'
 }
 ```
-当前最新版本：2.3.2.2
+当前最新版本：[![](https://jitpack.io/v/com.gitee.sscl/BaseLibrary.svg)](https://jitpack.io/#com.gitee.sscl/BaseLibrary)
 
-lasts version now:2.3.2.2
+lasts version now:[![](https://jitpack.io/v/com.gitee.sscl/BaseLibrary.svg)](https://jitpack.io/#com.gitee.sscl/BaseLibrary)
