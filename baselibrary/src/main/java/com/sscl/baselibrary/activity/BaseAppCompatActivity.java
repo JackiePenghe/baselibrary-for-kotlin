@@ -46,13 +46,10 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     /**
      * 标题的返回按钮处的点击事件
      */
-    private View.OnClickListener mTitleBackButtonOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            boolean b = titleBackClicked();
-            if (!b) {
-                finish();
-            }
+    private View.OnClickListener mTitleBackButtonOnClickListener = v -> {
+        boolean b = titleBackClicked();
+        if (!b) {
+            finish();
         }
     };
 
@@ -369,8 +366,6 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      *
      * @param drawable 标题栏的背景
      */
-    @SuppressWarnings("unused")
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     protected void setTitleBackgroundDrawable(Drawable drawable) {
         if (toolbar == null) {
             throw new RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"");

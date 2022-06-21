@@ -206,11 +206,7 @@ public class GifView extends View {
 
     private void invalidateView() {
         if (mVisible) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                postInvalidateOnAnimation();
-            } else {
-                invalidate();
-            }
+            postInvalidateOnAnimation();
         }
     }
 

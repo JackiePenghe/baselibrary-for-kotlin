@@ -53,6 +53,7 @@ public class Banner extends RelativeLayout {
     /**
      * Banner适配器
      */
+    @SuppressWarnings("rawtypes")
     private BaseBannerAdapter adapter;
     /**
      * 自动轮播到下一个内容的延时
@@ -174,7 +175,7 @@ public class Banner extends RelativeLayout {
 
     /*--------------------------------重写父类方法--------------------------------*/
 
-    public void setAdapter(BaseBannerAdapter adapter) {
+    public void setAdapter(@SuppressWarnings("rawtypes") BaseBannerAdapter adapter) {
         this.adapter = adapter;
         initViews();
         initListener();
@@ -200,23 +201,17 @@ public class Banner extends RelativeLayout {
         stop();
 
         scheduledExecutorService = BaseManager.newScheduledExecutorService(8);
-        scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                long currentTimeMillis = System.currentTimeMillis();
-                long diffTime = currentTimeMillis - lastScrollTime;
-                long delayTimeMillis = delayTimeUnit.toMillis(delayTime);
-                if (diffTime < delayTimeMillis / 2) {
-                    return;
-                }
-                BaseManager.getHandler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mCurrentPosition++;
-                        viewPager.setCurrentItem(mCurrentPosition);
-                    }
-                });
+        scheduledExecutorService.scheduleAtFixedRate(() -> {
+            long currentTimeMillis = System.currentTimeMillis();
+            long diffTime = currentTimeMillis - lastScrollTime;
+            long delayTimeMillis = delayTimeUnit.toMillis(delayTime);
+            if (diffTime < delayTimeMillis / 2) {
+                return;
             }
+            BaseManager.getHandler().post(() -> {
+                mCurrentPosition++;
+                viewPager.setCurrentItem(mCurrentPosition);
+            });
         }, delayTime, delayTime, delayTimeUnit);
     }
 
@@ -230,7 +225,7 @@ public class Banner extends RelativeLayout {
     /**
      * 设置指示点是否可见
      *
-     * @param isVisible
+     * @param isVisible 是否可见
      */
     public void setPointsIsVisible(boolean isVisible) {
         if (mPointRealContainerLl != null) {
@@ -243,7 +238,9 @@ public class Banner extends RelativeLayout {
     }
 
     /**
-     * @param position
+     * 设置指示器位置
+     *
+     * @param position 位置
      */
     public void setPointPosition(POSITION position) {
         //设置指示器布局位置
@@ -251,14 +248,16 @@ public class Banner extends RelativeLayout {
     }
 
     /**
-     * @param position
+     * 设置扬声器布局位置
+     *
+     * @param position 位置
      */
     public void setPointLayoutPosition(POSITION position) {
         //设置指示器布局位置
         mPointLayoutPosition = position.value;
     }
 
-    public void setData(ArrayList data) {
+    public void setData(@SuppressWarnings("rawtypes") ArrayList data) {
         adapter.mData = data;
         if (data.size() > 0) {
             if (data.size() > 1) {
@@ -281,11 +280,7 @@ public class Banner extends RelativeLayout {
         }
         //设置指示器背景容器
         RelativeLayout pointContainerRl = new RelativeLayout(getContext());
-        if (Build.VERSION.SDK_INT >= 16) {
-            pointContainerRl.setBackground(mPointContainerBackgroundDrawable);
-        } else {
-            pointContainerRl.setBackgroundDrawable(mPointContainerBackgroundDrawable);
-        }
+        pointContainerRl.setBackground(mPointContainerBackgroundDrawable);
         //设置内边距
         pointContainerRl.setPadding(mIndicatorPaddingL, mIndicatorPaddingT, mIndicatorPaddingR, mIndicatorPaddingB);
         //设定指示器容器布局及位置
@@ -336,15 +331,15 @@ public class Banner extends RelativeLayout {
     /**
      * 切换指示器
      *
-     * @param currentPoint
+     * @param targetPosition 目标位置
      */
-    private void switchToPoint(final int currentPoint) {
+    private void switchToPoint(final int targetPosition) {
         int childCount = mPointRealContainerLl.getChildCount();
         for (int i = 0; i < childCount; i++) {
             mPointRealContainerLl.getChildAt(i).setEnabled(false);
         }
         if (childCount > 0) {
-            mPointRealContainerLl.getChildAt(currentPoint).setEnabled(true);
+            mPointRealContainerLl.getChildAt(targetPosition).setEnabled(true);
         }
 
     }
@@ -352,7 +347,7 @@ public class Banner extends RelativeLayout {
     /**
      * 解析自定义属性
      *
-     * @param attrs
+     * @param attrs 自定义属性
      */
     private void parseAttrs(AttributeSet attrs) {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.Banner);
@@ -378,8 +373,8 @@ public class Banner extends RelativeLayout {
     /**
      * 返回真实的位置
      *
-     * @param position
-     * @return
+     * @param position 当前位置
+     * @return  真实的位置
      */
     private int toRealPosition(int position) {
         int realPosition;
@@ -392,21 +387,17 @@ public class Banner extends RelativeLayout {
 
     public enum POSITION {
         PARENT_TOP(RelativeLayout.ALIGN_PARENT_TOP),
-        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
         PARENT_START(RelativeLayout.ALIGN_PARENT_START),
         PARENT_LEFT(RelativeLayout.ALIGN_PARENT_LEFT),
-        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
         PARENT_END(RelativeLayout.ALIGN_PARENT_END),
         PARENT_RIGHT(RelativeLayout.ALIGN_PARENT_RIGHT),
         PARENT_BOTTOM(RelativeLayout.ALIGN_PARENT_BOTTOM),
         PARENT_CENTER(RelativeLayout.CENTER_IN_PARENT),
         CENTER_VERTICAL(RelativeLayout.CENTER_VERTICAL),
         CENTER_HORIZONTAL(RelativeLayout.CENTER_HORIZONTAL),
-        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
         START(RelativeLayout.ALIGN_START),
         LEFT(RelativeLayout.ALIGN_LEFT),
         TOP(RelativeLayout.ALIGN_TOP),
-        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
         END(RelativeLayout.ALIGN_END),
         RIGHT(RelativeLayout.ALIGN_RIGHT),
         BOTTOM(RelativeLayout.ALIGN_BOTTOM);

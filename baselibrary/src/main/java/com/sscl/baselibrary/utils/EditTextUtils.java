@@ -27,28 +27,15 @@ public class EditTextUtils {
      */
     public static void hideSoftInputMethod(Activity activity, EditText editText) {
         activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        int currentVersion = android.os.Build.VERSION.SDK_INT;
-        String methodName = null;
-        if (currentVersion >= Build.VERSION_CODES.JELLY_BEAN) {
-            // 4.2'
-            methodName = "setShowSoftInputOnFocus";
-        } else if (currentVersion >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            // 4.0
-            methodName = "setSoftInputShownOnFocus";
-        }
-
-        if (methodName == null) {
-            editText.setInputType(InputType.TYPE_NULL);
-        } else {
-            Class<EditText> cls = EditText.class;
-            Method setShowSoftInputOnFocus;
-            try {
-                setShowSoftInputOnFocus = cls.getMethod(methodName, boolean.class);
-                setShowSoftInputOnFocus.setAccessible(true);
-                setShowSoftInputOnFocus.invoke(editText, false);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        String methodName = "setShowSoftInputOnFocus";
+        Class<EditText> cls = EditText.class;
+        Method setShowSoftInputOnFocus;
+        try {
+            setShowSoftInputOnFocus = cls.getMethod(methodName, boolean.class);
+            setShowSoftInputOnFocus.setAccessible(true);
+            setShowSoftInputOnFocus.invoke(editText, false);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

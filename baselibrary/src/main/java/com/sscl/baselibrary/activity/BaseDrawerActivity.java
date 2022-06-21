@@ -403,8 +403,6 @@ public abstract class BaseDrawerActivity extends AppCompatActivity {
      *
      * @param drawable 标题栏背景
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     protected void setTitleBackgroundDrawable(Drawable drawable) {
         if (toolbar == null) {
             throw new RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"");

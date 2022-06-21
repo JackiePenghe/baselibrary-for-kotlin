@@ -40,9 +40,7 @@ public class AllPurposeAdapterActivity extends BaseAppCompatActivity {
         for (int i = 0; i < 4; i++) {
             dataList.add("test" + i);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Tool.hideNavigationBar(this);
-        }
+        Tool.hideNavigationBar(this);
     }
 
     /**

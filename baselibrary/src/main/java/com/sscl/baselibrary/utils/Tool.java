@@ -17,6 +17,7 @@ import android.telephony.TelephonyManager;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.WindowMetrics;
 import android.view.inputmethod.InputMethodManager;
@@ -151,8 +152,11 @@ public class Tool {
         try {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                 Class<InputMethodManager> inputMethodManagerClass = InputMethodManager.class;
+                //noinspection JavaReflectionMemberAccess
                 @SuppressLint({"DiscouragedPrivateApi", "BlockedPrivateApi"}) Field mCurRootViewField = inputMethodManagerClass.getDeclaredField("mCurRootView");
+                //noinspection JavaReflectionMemberAccess
                 @SuppressLint("DiscouragedPrivateApi") Field mNextServedViewField = inputMethodManagerClass.getDeclaredField("mNextServedView");
+                //noinspection JavaReflectionMemberAccess
                 @SuppressLint("DiscouragedPrivateApi") Field mServedViewField = inputMethodManagerClass.getDeclaredField("mServedView");
                 mCurRootViewField.setAccessible(true);
                 mNextServedViewField.setAccessible(true);
@@ -246,15 +250,13 @@ public class Tool {
         }
         stringBuilder.append("\n");
         stringBuilder.append("suppressed:\n");
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-            Throwable[] suppressed = throwable.getSuppressed();
-            // Print suppressed exceptions, if any
-            for (Throwable se : suppressed) {
-                for (StackTraceElement traceElement : se.getStackTrace()) {
-                    stringBuilder.append("\nat ").append(traceElement.toString());
-                }
-                stringBuilder.append("\n");
+        Throwable[] suppressed = throwable.getSuppressed();
+        // Print suppressed exceptions, if any
+        for (Throwable se : suppressed) {
+            for (StackTraceElement traceElement : se.getStackTrace()) {
+                stringBuilder.append("\nat ").append(traceElement.toString());
             }
+            stringBuilder.append("\n");
         }
         stringBuilder.append("\n");
         stringBuilder.append("cause:\n");
@@ -361,12 +363,16 @@ public class Tool {
      *
      * @param activity activity
      */
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void hideNavigationBar(@NonNull Activity activity) {
-        View decorView = activity.getWindow().getDecorView();
-        int systemUiVisibility = decorView.getSystemUiVisibility();
-        //显示NavigationBar
-        decorView.setSystemUiVisibility(systemUiVisibility | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE);
+        //隐藏导航栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            activity.getWindow().getDecorView().getWindowInsetsController().hide(WindowInsets.Type.navigationBars());
+        } else {
+            WindowManager.LayoutParams params = activity.getWindow().getAttributes();
+            params.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE;
+            activity.getWindow().setAttributes(params);
+        }
     }
 
     /**
