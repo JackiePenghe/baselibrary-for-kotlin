@@ -106,18 +106,14 @@ public class SampleBannerActivity extends BaseAppCompatActivity {
      */
     @Override
     protected void doAfterAll() {
-        bannerAdapter.setOnItemClickListener(new BaseBannerAdapter.OnItemClickListener<String>() {
-            @Override
-            public void onItemClick(View itemView, String itemData, int position) {
-                DebugUtil.warnOut(TAG, "onItemClick position = " + position + ",itemData = " + itemData);
-                banner.setDelayTime(bannerDelay++);
-                if (bannerDelay > 5) {
-                    bannerDelay = 1;
-                }
-                banner.setDelayTimeUnit(TimeUnit.SECONDS);
-                banner.stop();
-                banner.start();
+        bannerAdapter.setOnItemClickListener((itemView, itemData, position) -> {
+            DebugUtil.warnOut(TAG, "onItemClick position = " + position + ",itemData = " + itemData);
+            banner.setDelayTime(bannerDelay++);
+            if (bannerDelay > 5) {
+                bannerDelay = 1;
             }
+            banner.setDelayTimeUnit(TimeUnit.SECONDS);
+            banner.startAutoPlay();
         });
     }
 
@@ -146,12 +142,18 @@ public class SampleBannerActivity extends BaseAppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        banner.start();
+        banner.startAutoPlay();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        banner.stop();
+        banner.stopAutoPlay();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        banner.destroy();
     }
 }

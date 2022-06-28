@@ -55,7 +55,7 @@ public abstract class BaseSplashActivity extends Activity {
             return;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            splashScreen.setKeepVisibleCondition(() -> true);
+            splashScreen.setKeepOnScreenCondition(() -> true);
         }
         onCreate();
     }

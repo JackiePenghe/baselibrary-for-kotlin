@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,11 +15,11 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.viewpager.widget.ViewPager;
 
 import com.sscl.baselibrary.R;
 import com.sscl.baselibrary.utils.BaseManager;
+import com.sscl.baselibrary.utils.DebugUtil;
 
 import java.util.ArrayList;
 import java.util.concurrent.ScheduledExecutorService;
@@ -38,6 +37,7 @@ public class Banner extends RelativeLayout {
      * 数字指示器
      */
     public static final int INDICATOR_NUMBER = 2;
+    private static final String TAG = Banner.class.getSimpleName();
     /**
      * ViewPager
      */
@@ -79,14 +79,18 @@ public class Banner extends RelativeLayout {
      * 指示器点资源
      */
     private final int mPointDrawableResId = R.drawable.com_jackiepenghe_baselibrary_selector_banner_point;
-    //是否可以自动播放
-    private final boolean mAutoPlayAble = true;
-    //是否正在播放
-    private final boolean mIsAutoPlaying = false;
-    //自动播放时间
-    private final int mAutoPalyTime = 5000;
-    //设置指示器容器
-    private LinearLayout mPointRealContainerLl;
+    /**
+     * 是否允许自动播放
+     */
+    private boolean autoPlayEnable = true;
+    /**
+     * 是否自动播放
+     */
+    private boolean isPlaying;
+    /**
+     * 指示器容器
+     */
+    private LinearLayout pointRealContainerLl;
     /**
      * ViewPager状态切换的监听
      */
@@ -105,7 +109,11 @@ public class Banner extends RelativeLayout {
             }
             mCurrentPosition = position % (adapter.mData.size() + 2);
             lastScrollTime = System.currentTimeMillis();
-            switchToPoint(toRealPosition(position));
+            switchToPoint(getRealPosition(position));
+            adapter.onPageSelected(getRealPosition(position));
+            if (isPlaying) {
+                autoChangeToNext();
+            }
         }
 
         @Override
@@ -156,15 +164,15 @@ public class Banner extends RelativeLayout {
         if (adapter == null) {
             return super.dispatchTouchEvent(ev);
         }
-        if (mAutoPlayAble && !adapter.mData.isEmpty()) {
+        if (autoPlayEnable && !adapter.mData.isEmpty()) {
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    stop();
+                    stopAutoPlay();
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
                 case MotionEvent.ACTION_OUTSIDE:
-                    start();
+                    startAutoPlay();
                     break;
                 default:
                     break;
@@ -179,7 +187,7 @@ public class Banner extends RelativeLayout {
         this.adapter = adapter;
         initViews();
         initListener();
-        adapter.bindToViewPager(viewPager);
+        viewPager.setAdapter(adapter);
         if (adapter.mData.size() > 1) {
             addPoints();
         }
@@ -197,29 +205,43 @@ public class Banner extends RelativeLayout {
 
     /*--------------------------------自定义公开方法--------------------------------*/
 
-    public void start() {
-        stop();
+    public void startAutoPlay() {
+        stopAutoPlay();
+        isPlaying = true;
+        autoChangeToNext();
+    }
 
-        scheduledExecutorService = BaseManager.newScheduledExecutorService(8);
-        scheduledExecutorService.scheduleAtFixedRate(() -> {
-            long currentTimeMillis = System.currentTimeMillis();
-            long diffTime = currentTimeMillis - lastScrollTime;
-            long delayTimeMillis = delayTimeUnit.toMillis(delayTime);
-            if (diffTime < delayTimeMillis / 2) {
-                return;
-            }
+    /**
+     * 自动切换到下一个
+     */
+    private void autoChangeToNext() {
+        DebugUtil.warnOut(TAG, "自动切换到下一个");
+        if (scheduledExecutorService != null) {
+            scheduledExecutorService.shutdownNow();
+
+        }
+        scheduledExecutorService = BaseManager.newScheduledExecutorService(1);
+        long millis = delayTimeUnit.toMillis(delayTime);
+        scheduledExecutorService.schedule(() -> {
             BaseManager.getHandler().post(() -> {
                 mCurrentPosition++;
                 viewPager.setCurrentItem(mCurrentPosition);
             });
-        }, delayTime, delayTime, delayTimeUnit);
+        }, millis + adapter.getDelayTime(getRealPosition(mCurrentPosition), millis), TimeUnit.MILLISECONDS);
     }
 
-    public void stop() {
-        if (scheduledExecutorService != null && !scheduledExecutorService.isShutdown()) {
+    public void stopAutoPlay() {
+        isPlaying = false;
+        if (scheduledExecutorService != null) {
             scheduledExecutorService.shutdownNow();
-            scheduledExecutorService = null;
         }
+        scheduledExecutorService = null;
+    }
+
+    public void destroy() {
+        stopAutoPlay();
+        adapter = null;
+        viewPager = null;
     }
 
     /**
@@ -228,11 +250,11 @@ public class Banner extends RelativeLayout {
      * @param isVisible 是否可见
      */
     public void setPointsIsVisible(boolean isVisible) {
-        if (mPointRealContainerLl != null) {
+        if (pointRealContainerLl != null) {
             if (isVisible) {
-                mPointRealContainerLl.setVisibility(View.VISIBLE);
+                pointRealContainerLl.setVisibility(View.VISIBLE);
             } else {
-                mPointRealContainerLl.setVisibility(View.GONE);
+                pointRealContainerLl.setVisibility(View.GONE);
             }
         }
     }
@@ -287,20 +309,20 @@ public class Banner extends RelativeLayout {
         LayoutParams pointContainerLp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         addView(pointContainerRl, pointContainerLp);
         //设置指示器容器
-        mPointRealContainerLl = new LinearLayout(getContext());
-        mPointRealContainerLl.setOrientation(LinearLayout.HORIZONTAL);
+        pointRealContainerLl = new LinearLayout(getContext());
+        pointRealContainerLl.setOrientation(LinearLayout.HORIZONTAL);
         mPointRealContainerLp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         mPointRealContainerLp.addRule(mPointLayoutPosition);
         viewPager = new ViewPager(getContext());
         viewPager.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         addView(viewPager);
-        pointContainerRl.addView(mPointRealContainerLl, mPointRealContainerLp);
+        pointContainerRl.addView(pointRealContainerLl, mPointRealContainerLp);
         //设置指示器容器是否可见
-        if (mPointRealContainerLl != null) {
+        if (pointRealContainerLl != null) {
             if (mPointsIsVisible) {
-                mPointRealContainerLl.setVisibility(View.VISIBLE);
+                pointRealContainerLl.setVisibility(View.VISIBLE);
             } else {
-                mPointRealContainerLl.setVisibility(View.GONE);
+                pointRealContainerLl.setVisibility(View.GONE);
             }
         }
         //设置指示器布局位置
@@ -313,7 +335,7 @@ public class Banner extends RelativeLayout {
      * 添加指示点
      */
     private void addPoints() {
-        mPointRealContainerLl.removeAllViews();
+        pointRealContainerLl.removeAllViews();
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         lp.setMargins(10, 10, 10, 10);
         ImageView imageView;
@@ -322,7 +344,7 @@ public class Banner extends RelativeLayout {
             imageView = new ImageView(getContext());
             imageView.setLayoutParams(lp);
             imageView.setImageResource(mPointDrawableResId);
-            mPointRealContainerLl.addView(imageView);
+            pointRealContainerLl.addView(imageView);
         }
 
         switchToPoint(0);
@@ -334,12 +356,12 @@ public class Banner extends RelativeLayout {
      * @param targetPosition 目标位置
      */
     private void switchToPoint(final int targetPosition) {
-        int childCount = mPointRealContainerLl.getChildCount();
+        int childCount = pointRealContainerLl.getChildCount();
         for (int i = 0; i < childCount; i++) {
-            mPointRealContainerLl.getChildAt(i).setEnabled(false);
+            pointRealContainerLl.getChildAt(i).setEnabled(false);
         }
         if (childCount > 0) {
-            mPointRealContainerLl.getChildAt(targetPosition).setEnabled(true);
+            pointRealContainerLl.getChildAt(targetPosition).setEnabled(true);
         }
 
     }
@@ -374,9 +396,9 @@ public class Banner extends RelativeLayout {
      * 返回真实的位置
      *
      * @param position 当前位置
-     * @return  真实的位置
+     * @return 真实的位置
      */
-    private int toRealPosition(int position) {
+    private int getRealPosition(int position) {
         int realPosition;
         realPosition = (position - 1) % adapter.mData.size();
         if (realPosition < 0) {

@@ -21,7 +21,6 @@ public abstract class BaseBannerAdapter<T> extends PagerAdapter {
 
     /*--------------------------------成员变量--------------------------------*/
 
-    private ViewPager viewPager;
     private final int layoutRes;
     private OnItemClickListener<T> mOnItemClickListener;
 
@@ -77,17 +76,13 @@ public abstract class BaseBannerAdapter<T> extends PagerAdapter {
         BannerHolder holder = new BannerHolder(view);
         bindView(holder, mData.get(realPosition), realPosition);
         final View finalView = view;
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onItemClick(finalView, mData.get(realPosition), realPosition);
-                }
+        view.setOnClickListener(v -> {
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onItemClick(finalView, mData.get(realPosition), realPosition);
             }
         });
         container.addView(view);
         return view;
-
     }
 
     /*--------------------------------重写父类方法--------------------------------*/
@@ -107,6 +102,8 @@ public abstract class BaseBannerAdapter<T> extends PagerAdapter {
         container.removeView((View) object);
     }
 
+    /*--------------------------------抽象方法--------------------------------*/
+
     /**
      * 当绑定某一个位置的布局时，进行的操作
      *
@@ -116,18 +113,26 @@ public abstract class BaseBannerAdapter<T> extends PagerAdapter {
      */
     public abstract void bindView(BannerHolder holder, T itemData, int position);
 
-    /*--------------------------------抽象方法--------------------------------*/
+    /**
+     * 有某个位置的布局被选中时，进行的操作
+     *
+     * @param position 位置
+     */
+    public abstract void onPageSelected(int position);
 
-    public void setOnItemClickListener(OnItemClickListener<T> onItemClickListener) {
-        this.mOnItemClickListener = onItemClickListener;
-    }
+    /**
+     * 获取当前位置需要附加的延时的时间
+     *
+     * @param position         位置
+     * @param defaultDelayTime 默认已有的延时时间
+     * @return 延时时间(单位 : 毫秒)
+     */
+    public abstract long getDelayTime(int position, long defaultDelayTime);
 
     /*--------------------------------setter--------------------------------*/
 
-    public void bindToViewPager(ViewPager viewPager) {
-        this.viewPager = viewPager;
-        viewPager.setAdapter(this);
-        notifyDataSetChanged();
+    public void setOnItemClickListener(OnItemClickListener<T> onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
     }
 
     /*--------------------------------自定义私有方法--------------------------------*/
@@ -136,8 +141,8 @@ public abstract class BaseBannerAdapter<T> extends PagerAdapter {
     /**
      * 返回真实的位置
      *
-     * @param position
-     * @return
+     * @param position 当前位置
+     * @return 真实的位置
      */
     private int getRealPosition(int position) {
         int realPosition = (position - 1) % mData.size();
@@ -146,8 +151,6 @@ public abstract class BaseBannerAdapter<T> extends PagerAdapter {
         }
         return realPosition;
     }
-
-    /*--------------------------------自定义公开方法--------------------------------*/
 
     public interface OnItemClickListener<T> {
 

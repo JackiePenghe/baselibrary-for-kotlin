@@ -9,7 +9,7 @@ afterEvaluate {
                     from components.release
                     groupId 'com.gitee.sscl'
                     artifactId 'BaseLibrary'
-                    version '2.3.5'
+                    version '2.3.6'
                 }
             }
         }
@@ -42,13 +42,13 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.4.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
     //design库
-    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'com.google.android.material:material:1.6.1'
     //SwipeRefreshLayout库
     api 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     //RecyclerView适配器库
     api 'androidx.recyclerview:recyclerview:1.2.1'
     //使用全新的开屏页
-    api "androidx.core:core-splashscreen:1.0.0-alpha01"
+    api "androidx.core:core-splashscreen:1.0.0-rc01"
 }
