@@ -87,6 +87,13 @@
             android:textAllCaps="false" />
 
         <Button
+            android:id="@+id/banner_new"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/com_sscl_basesample_banner_new"
+            android:textAllCaps="false" />
+
+        <Button
             android:id="@+id/web_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

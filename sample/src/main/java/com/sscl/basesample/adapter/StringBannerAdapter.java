@@ -1,7 +1,5 @@
 package com.sscl.basesample.adapter;
 
-import android.view.View;
-
 import com.sscl.baselibrary.utils.DebugUtil;
 import com.sscl.baselibrary.widget.banner.BannerHolder;
 import com.sscl.baselibrary.widget.banner.BaseBannerAdapter;
@@ -10,11 +8,11 @@ import com.sscl.basesample.R;
 /**
  * @author pengh
  */
-public class BannerAdapter extends BaseBannerAdapter<String> {
+public class StringBannerAdapter extends BaseBannerAdapter<String> {
 
-    private static final String TAG = BannerAdapter.class.getSimpleName();
+    private static final String TAG = StringBannerAdapter.class.getSimpleName();
 
-    public BannerAdapter() {
+    public StringBannerAdapter() {
         super(R.layout.com_sscl_basesample_adapter_banner);
     }
 

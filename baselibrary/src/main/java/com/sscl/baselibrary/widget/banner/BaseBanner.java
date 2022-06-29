@@ -25,7 +25,10 @@ import java.util.ArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class Banner extends RelativeLayout {
+/**
+ * @author pengh
+ */
+public abstract class BaseBanner<T> extends RelativeLayout {
 
     /**
      * 点指示器
@@ -37,7 +40,7 @@ public class Banner extends RelativeLayout {
      * 数字指示器
      */
     public static final int INDICATOR_NUMBER = 2;
-    private static final String TAG = Banner.class.getSimpleName();
+    private static final String TAG = BaseBanner.class.getSimpleName();
     /**
      * ViewPager
      */
@@ -53,8 +56,7 @@ public class Banner extends RelativeLayout {
     /**
      * Banner适配器
      */
-    @SuppressWarnings("rawtypes")
-    private BaseBannerAdapter adapter;
+    private BaseBannerAdapter<T> adapter;
     /**
      * 自动轮播到下一个内容的延时
      */
@@ -144,18 +146,18 @@ public class Banner extends RelativeLayout {
     private boolean mPointsIsVisible = true;
     private Drawable mPointContainerBackgroundDrawable;
 
-    public Banner(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public BaseBanner(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         parseAttrs(attrs);
     }
 
     /*--------------------------------构造方法--------------------------------*/
 
-    public Banner(@NonNull Context context) {
+    public BaseBanner(@NonNull Context context) {
         this(context, null);
     }
 
-    public Banner(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public BaseBanner(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
@@ -183,7 +185,7 @@ public class Banner extends RelativeLayout {
 
     /*--------------------------------重写父类方法--------------------------------*/
 
-    public void setAdapter(@SuppressWarnings("rawtypes") BaseBannerAdapter adapter) {
+    public void setAdapter( BaseBannerAdapter<T> adapter) {
         this.adapter = adapter;
         initViews();
         initListener();
@@ -279,7 +281,7 @@ public class Banner extends RelativeLayout {
         mPointLayoutPosition = position.value;
     }
 
-    public void setData(@SuppressWarnings("rawtypes") ArrayList data) {
+    public void setData(ArrayList<T> data) {
         adapter.mData = data;
         if (data.size() > 0) {
             if (data.size() > 1) {

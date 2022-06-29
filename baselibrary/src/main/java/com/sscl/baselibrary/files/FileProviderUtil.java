@@ -126,9 +126,8 @@ public class FileProviderUtil extends FileProvider {
      * @param uri 文件Uri
      * @return 文件路径
      */
-    @SuppressWarnings("unused")
     @NonNull
-    public static String getPath(@NonNull Context context,@NonNull Uri uri) {
+    static String getPath(@NonNull Context context,@NonNull Uri uri) {
         String scheme = uri.getScheme();
         if (!CONTENT_CONTENT.equals(scheme)) {
             throw new RuntimeException("Uri scheme error! Need " + CONTENT_CONTENT + ",find " + scheme + ".");
@@ -143,12 +142,6 @@ public class FileProviderUtil extends FileProvider {
         if (path.startsWith(ROOT_PATH)) {
             path = path.substring(ROOT_PATH.length());
         }
-//        boolean documentUri = DocumentFile.isDocumentUri(context, uri);
-//        String path;
-//        if (documentUri){
-//            DocumentFile documentFile = DocumentFile.fromSingleUri(context, uri);
-////            documentFile.
-//        }
         return path;
     }
 

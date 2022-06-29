@@ -34,41 +34,10 @@ public class MyApplication extends Application {
 
     public static void initCrashListener() {
         CrashHandler.getInstance().setOnExceptionListener(ex -> {
-            String message = ex.getMessage();
-            Log.e("MyApplication", "onException: 自己对异常做的额外处理！！！！--------------------\n--------------------\n--------------------\n--------------------\n--------------------\n--------------------");
-//            Tool.restartApplication(myApplication);
-
-            Toast.makeText(myApplication, "正在收集错误信息", Toast.LENGTH_LONG).show();
-
-            Kalle.post("http://penghe.xyz/?debug=true")
-                    .param("content", message)
-                    .perform(new SimpleCallback<String>() {
-                        @Override
-                        public void onResponse(SimpleResponse<String, String> response) {
-                            dismissExceptionUploadingDialog();
-                            if (response.isSucceed()) {
-                                String succeed = response.succeed();
-                                ExceptionUploadBean exceptionUploadBean = null;
-                                try {
-                                    exceptionUploadBean = GSON.fromJson(succeed, ExceptionUploadBean.class);
-                                } catch (JsonSyntaxException e) {
-                                    e.printStackTrace();
-                                }
-                                if (exceptionUploadBean != null) {
-                                    if (exceptionUploadBean.getCode() == 200) {
-                                        Toast.makeText(myApplication, "错误信息上传成功", Toast.LENGTH_LONG).show();
-                                    } else {
-                                        Toast.makeText(myApplication, "错误信息上传失败！" + exceptionUploadBean.getMsg(), Toast.LENGTH_LONG).show();
-                                    }
-                                } else {
-                                    Toast.makeText(myApplication, "错误信息上传失败！" + exceptionUploadBean.getMsg(), Toast.LENGTH_LONG).show();
-                                }
-                            } else {
-                                Toast.makeText(myApplication, "错误信息上传失败", Toast.LENGTH_LONG).show();
-                            }
-                            BaseManager.getHandler().postDelayed(() -> Tool.exitProcess(1), 1000);
-                        }
-                    });
+            if (ex != null) {
+                DebugUtil.warnOut("MyApplication",Tool.getExceptionDetailsInfo(ex));
+            }
+            Tool.restartApplication(myApplication);
         });
     }
 

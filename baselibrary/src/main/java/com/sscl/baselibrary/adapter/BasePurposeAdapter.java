@@ -237,11 +237,6 @@ public abstract class BasePurposeAdapter<T> extends BaseAdapter {
         private final int mPosition;
 
         /**
-         * 根据id将不同的View保存起来
-         */
-        private final SparseArray<View> viewSparseArray;
-
-        /**
          * 当前item的View
          */
         private final View convertView;
@@ -263,7 +258,6 @@ public abstract class BasePurposeAdapter<T> extends BaseAdapter {
          */
         private ViewHolder(@NonNull Context context, @NonNull ViewGroup parent, @LayoutRes int itemLayoutId, int position) {
             mPosition = position;
-            viewSparseArray = new SparseArray<>();
             convertView = LayoutInflater.from(context).inflate(itemLayoutId, parent, false);
             convertView.setTag(this);
             imageLoader = ImageLoader.getInstance(context);
@@ -306,13 +300,8 @@ public abstract class BasePurposeAdapter<T> extends BaseAdapter {
          * @return 对应的控件
          */
         @Nullable
-        public View getView(@IdRes int viewId) {
-            View view = viewSparseArray.get(viewId);
-            if (view == null) {
-                view = convertView.findViewById(viewId);
-                viewSparseArray.put(viewId, view);
-            }
-            return view;
+        public <T extends View> T getView(@IdRes int viewId) {
+            return convertView.findViewById(viewId);
         }
 
         /**

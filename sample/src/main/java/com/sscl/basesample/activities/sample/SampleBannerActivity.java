@@ -2,16 +2,14 @@ package com.sscl.basesample.activities.sample;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 
 import com.sscl.baselibrary.activity.BaseAppCompatActivity;
 import com.sscl.baselibrary.utils.DebugUtil;
-import com.sscl.baselibrary.widget.banner.Banner;
-import com.sscl.baselibrary.widget.banner.BaseBannerAdapter;
 import com.sscl.basesample.R;
-import com.sscl.basesample.adapter.BannerAdapter;
+import com.sscl.basesample.adapter.StringBannerAdapter;
+import com.sscl.basesample.widget.StringBanner;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -22,11 +20,11 @@ import java.util.concurrent.TimeUnit;
 public class SampleBannerActivity extends BaseAppCompatActivity {
 
     private static final String TAG = SampleBannerActivity.class.getSimpleName();
-    private Banner banner;
+    private StringBanner baseBanner;
 
     private final ArrayList<String> bannerData = new ArrayList<>();
 
-    private final BannerAdapter bannerAdapter = new BannerAdapter();
+    private final StringBannerAdapter stringBannerAdapter = new StringBannerAdapter();
 
     /**
      * 标题栏的返回按钮被按下的时候回调此方法
@@ -68,7 +66,7 @@ public class SampleBannerActivity extends BaseAppCompatActivity {
      */
     @Override
     protected void initViews() {
-        banner = findViewById(R.id.banner);
+        baseBanner = findViewById(R.id.banner);
     }
 
     /**
@@ -79,8 +77,8 @@ public class SampleBannerActivity extends BaseAppCompatActivity {
         for (int i = 0; i < 4; i++) {
             bannerData.add(String.valueOf(i + 1));
         }
-        banner.setAdapter(bannerAdapter);
-        banner.setData(bannerData);
+        baseBanner.setAdapter(stringBannerAdapter);
+        baseBanner.setData(bannerData);
     }
 
     /**
@@ -106,14 +104,14 @@ public class SampleBannerActivity extends BaseAppCompatActivity {
      */
     @Override
     protected void doAfterAll() {
-        bannerAdapter.setOnItemClickListener((itemView, itemData, position) -> {
+        stringBannerAdapter.setOnItemClickListener((itemView, itemData, position) -> {
             DebugUtil.warnOut(TAG, "onItemClick position = " + position + ",itemData = " + itemData);
-            banner.setDelayTime(bannerDelay++);
+            baseBanner.setDelayTime(bannerDelay++);
             if (bannerDelay > 5) {
                 bannerDelay = 1;
             }
-            banner.setDelayTimeUnit(TimeUnit.SECONDS);
-            banner.startAutoPlay();
+            baseBanner.setDelayTimeUnit(TimeUnit.SECONDS);
+            baseBanner.startAutoPlay();
         });
     }
 
@@ -142,18 +140,18 @@ public class SampleBannerActivity extends BaseAppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        banner.startAutoPlay();
+        baseBanner.startAutoPlay();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        banner.stopAutoPlay();
+        baseBanner.stopAutoPlay();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        banner.destroy();
+        baseBanner.destroy();
     }
 }

@@ -26,6 +26,7 @@ import com.sscl.basesample.activities.sample.SampleBaseAppcompatActivity;
 import com.sscl.basesample.activities.sample.SampleBaseDrawerActivity;
 import com.sscl.basesample.activities.sample.SampleBaseFragmentActivity;
 import com.sscl.basesample.activities.sample.SampleBasePopupWindowActivity;
+import com.sscl.basesample.activities.sample.SampleNewBannerActivity;
 import com.sscl.basesample.activities.sample.SampleWebViewActivity;
 import com.sscl.basesample.activities.sample.SdcardFileTestActivity;
 import com.sscl.basesample.activities.sample.SelectFileActivity;
@@ -51,6 +52,7 @@ public class MainActivity extends BaseAppCompatActivity {
     private Button selectFileBtn;
     private Button imageLoaderBtn;
     private Button bannerBtn;
+    private Button bannerNewBtn;
     private Button webViewBtn;
     private Button numberInputMethodBtn;
     private Button letterInputMethodBtn;
@@ -88,6 +90,8 @@ public class MainActivity extends BaseAppCompatActivity {
             intent = new Intent(MainActivity.this, ImageLoaderActivity.class);
         } else if (id == R.id.banner) {
             intent = new Intent(MainActivity.this, SampleBannerActivity.class);
+        } else if (id == R.id.banner_new) {
+            intent = new Intent(MainActivity.this, SampleNewBannerActivity.class);
         } else if (id == R.id.web_view) {
             intent = new Intent(MainActivity.this, SampleWebViewActivity.class);
         } else if (id == numberInputMethodBtn.getId()) {
@@ -96,11 +100,11 @@ public class MainActivity extends BaseAppCompatActivity {
             intent = new Intent(MainActivity.this, LetterInputMethodActivity.class);
         } else if (id == customPasswordViewBtn.getId()) {
             intent = new Intent(MainActivity.this, CustomPasswordViewActivity.class);
-        }else if (id == zipFileOperationBtn.getId()){
+        } else if (id == zipFileOperationBtn.getId()) {
             intent = new Intent(MainActivity.this, ZipFileOperationActivity.class);
-        }else if (id == animationTestBtn.getId()){
+        } else if (id == animationTestBtn.getId()) {
             intent = new Intent(MainActivity.this, AnimationSampleActivity.class);
-        }else if (id == sdcardFileTestBtn.getId()){
+        } else if (id == sdcardFileTestBtn.getId()) {
             intent = new Intent(MainActivity.this, SdcardFileTestActivity.class);
         }
         if (intent != null) {
@@ -171,6 +175,7 @@ public class MainActivity extends BaseAppCompatActivity {
         selectFileBtn = findViewById(R.id.select_file);
         imageLoaderBtn = findViewById(R.id.image_loader);
         bannerBtn = findViewById(R.id.banner);
+        bannerNewBtn = findViewById(R.id.banner_new);
         webViewBtn = findViewById(R.id.web_view);
         numberInputMethodBtn = findViewById(R.id.number_input_method_btn);
         letterInputMethodBtn = findViewById(R.id.letter_input_method_btn);
@@ -211,6 +216,7 @@ public class MainActivity extends BaseAppCompatActivity {
         selectFileBtn.setOnClickListener(onClickListener);
         imageLoaderBtn.setOnClickListener(onClickListener);
         bannerBtn.setOnClickListener(onClickListener);
+        bannerNewBtn.setOnClickListener(onClickListener);
         webViewBtn.setOnClickListener(onClickListener);
         numberInputMethodBtn.setOnClickListener(onClickListener);
         letterInputMethodBtn.setOnClickListener(onClickListener);

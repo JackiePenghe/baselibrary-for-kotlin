@@ -13,6 +13,7 @@
         android:fullBackupContent="@xml/com_sscl_basesample_backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/com_sscl_basesample_app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme.NoActionBar"
         tools:targetApi="s">
@@ -132,6 +133,7 @@
         <activity
             android:name=".activities.sample.ToastTestActivity"
             android:exported="true" />
+        <activity android:name=".activities.sample.SampleNewBannerActivity" />
     </application>
 
 </manifest>
