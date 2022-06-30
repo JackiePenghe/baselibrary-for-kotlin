@@ -1,24 +1,17 @@
 package com.sscl.baselibrary.widget.banner.news;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.sscl.baselibrary.files.FileProviderUtil;
@@ -44,6 +37,65 @@ public class Banner extends FrameLayout {
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     private static final String TAG = Banner.class.getSimpleName();
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 接口定义
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    /**
+     * 用户自定义数据处理接口
+     */
+    public interface OnCustomDataHandleListener {
+
+        /**
+         * 获取用户自定义数据的View（需要重复播放时的View，仅当只有一个数据时回调此方法）
+         *
+         * @param context    上下文
+         * @param bannerData 用户自定义数据
+         * @return 用户自定义数据的View
+         */
+        View getAutoPlayRepeatItemView(Context context, @SuppressWarnings("rawtypes") BannerData bannerData);
+
+        /**
+         * 获取用户自定义数据的View
+         *
+         * @param context    上下文
+         * @param bannerData 用户自定义数据
+         * @param position   当前数据的位置
+         * @return 用户自定义数据的View
+         */
+        View getItemView(Context context, @SuppressWarnings("rawtypes") BannerData bannerData, int position);
+
+        /**
+         * 让用户设置自定义数据的VideoView数据(设置完数据的VideoView会在显示时自动播放)
+         *
+         * @param context    上下文
+         * @param videoView  视频播放控件
+         * @param bannerData 用户自定义数据
+         */
+        void setVideoViewData(Context context, VideoView videoView, @SuppressWarnings("rawtypes") BannerData bannerData);
+
+        /**
+         * 让用户设置自定义数据的ImageView数据
+         *
+         * @param context    上下文
+         * @param imageView  图片播放控件
+         * @param bannerData 用户自定义数据
+         */
+        void setImageViewData(Context context, ImageView imageView, @SuppressWarnings("rawtypes") BannerData bannerData);
+
+        /**
+         * 让用户设置自定义数据滚动延时
+         * @param view     当前显示的View
+         * @param bannerData  用户自定义数据
+         * @param position 当前数据的位置
+         * @param defaultScrollTime 默认的滚动延时
+         * @return 返回滚动延时
+         */
+        long onGetDelayTime(View view, @SuppressWarnings("rawtypes") BannerData bannerData, int position, long defaultScrollTime);
+    }
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
@@ -79,6 +131,10 @@ public class Banner extends FrameLayout {
      * Banner是否已经开启
      */
     private boolean isStart;
+    /**
+     * 用户自定义数据处理接口
+     */
+    private OnCustomDataHandleListener onCustomDataHandleListener;
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
@@ -187,6 +243,15 @@ public class Banner extends FrameLayout {
      */
     public final void setEnableSlide(boolean enableSlide) {
         viewPager.setEnableSlide(enableSlide);
+    }
+
+    /**
+     * 设置自定义数据处理接口
+     *
+     * @param onCustomDataHandleListener 自定义数据处理接口
+     */
+    public final void setOnCustomDataHandleListener(OnCustomDataHandleListener onCustomDataHandleListener) {
+        this.onCustomDataHandleListener = onCustomDataHandleListener;
     }
 
     /**
@@ -300,10 +365,18 @@ public class Banner extends FrameLayout {
                 VideoView videoView = (VideoView) view;
                 delayedTime = Long.MAX_VALUE;
                 videoView.setOnCompletionListener(mp -> viewPager.setCurrentItem(currentPosition + 1, true));
+                videoView.setOnErrorListener((mp, what, extra) -> {
+                    DebugUtil.errorOut(TAG, "VideoView error: " + what + " " + extra);
+                    viewPager.setCurrentItem(currentPosition + 1, true);
+                    return true;
+                });
                 break;
             case CUSTOM:
-                //TODO 处理自定义数据
-                delayedTime = autoScrollTime;
+                if (onCustomDataHandleListener != null) {
+                    delayedTime = onCustomDataHandleListener.onGetDelayTime(adapter.getViews().get(position),bannerData,position,autoScrollTime);
+                } else {
+                    throw new RuntimeException("请先设置onCustomDataHandleListener接口");
+                }
                 break;
             default:
                 DebugUtil.warnOut(TAG, "未处理的Banner类型");
@@ -352,7 +425,12 @@ public class Banner extends FrameLayout {
                     adapter.getViews().add(videoView);
                     break;
                 case CUSTOM:
-                    //TODO 处理自定义数据
+                    if (onCustomDataHandleListener != null) {
+                        View itemView = onCustomDataHandleListener.getItemView(getContext(), bannerData, i);
+                        adapter.getViews().add(itemView);
+                    } else {
+                        throw new RuntimeException("请设置OnCustomDataHandleListener接口");
+                    }
                     break;
                 default:
                     DebugUtil.warnOut(TAG, "未处理的Banner类型");
@@ -393,10 +471,19 @@ public class Banner extends FrameLayout {
                     mPlayer.start();
                     mPlayer.setLooping(true);
                 });
+                videoView.setOnErrorListener((mp, what, extra) -> {
+                    DebugUtil.warnOut(TAG, "视频播放错误");
+                    return true;
+                });
                 adapter.getViews().add(videoView);
                 break;
             case CUSTOM:
-                //TODO 处理自定义数据
+                if (onCustomDataHandleListener != null) {
+                    View view = onCustomDataHandleListener.getAutoPlayRepeatItemView(getContext(), bannerData);
+                    adapter.getViews().add(view);
+                } else {
+                    throw new RuntimeException("请设置OnCustomDataHandleListener接口");
+                }
                 break;
             default:
                 DebugUtil.warnOut(TAG, "未处理的Banner类型");
@@ -449,6 +536,13 @@ public class Banner extends FrameLayout {
                 videoView.setOnFocusChangeListener(onFocusChangeListener);
             }
             break;
+            case CUSTOM:
+                if (onCustomDataHandleListener != null) {
+                    onCustomDataHandleListener.setVideoViewData(getContext(), videoView, bannerData);
+                    videoView.setOnFocusChangeListener(onFocusChangeListener);
+                } else {
+                    throw new RuntimeException("BannerDataType为CUSTOM时，请设置OnCustomDataHandleListener接口");
+                }
             default:
                 DebugUtil.warnOut(TAG, "未处理的Banner数据类型");
                 break;
@@ -462,7 +556,8 @@ public class Banner extends FrameLayout {
      * @param bannerData Banner数据
      */
     private void handleImageBannerData(ImageView imageView, @SuppressWarnings("rawtypes") BannerData bannerData) {
-        switch (bannerData.getBannerDataType()) {
+        BannerDataType bannerDataType = bannerData.getBannerDataType();
+        switch (bannerDataType) {
             case FILE:
                 File fileData = bannerData.getFileData();
                 if (fileData == null) {
@@ -479,6 +574,12 @@ public class Banner extends FrameLayout {
                 }
                 imageView.setImageURI(uriData);
                 break;
+            case CUSTOM:
+                if (onCustomDataHandleListener != null) {
+                    onCustomDataHandleListener.setImageViewData(getContext(), imageView, bannerData);
+                } else {
+                    throw new RuntimeException("BannerDataType为CUSTOM时，请设置OnCustomDataHandleListener接口");
+                }
             default:
                 DebugUtil.warnOut(TAG, "未处理的Banner数据类型");
                 break;

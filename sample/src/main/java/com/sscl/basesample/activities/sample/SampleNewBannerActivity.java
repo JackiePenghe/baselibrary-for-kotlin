@@ -1,11 +1,24 @@
 package com.sscl.basesample.activities.sample;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.VideoView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sscl.baselibrary.widget.banner.news.Banner;
+import com.sscl.baselibrary.widget.banner.news.BannerData;
+import com.sscl.baselibrary.widget.banner.news.enums.BannerDataType;
 import com.sscl.baselibrary.widget.banner.news.enums.BannerType;
 import com.sscl.basesample.R;
 import com.sscl.basesample.beans.VideoAndImageBannerData;
@@ -31,9 +44,90 @@ public class SampleNewBannerActivity extends AppCompatActivity {
      */
     private Banner banner;
     /**
-     * Banner数据集合
+     * 自定义的Banner数据处理回调接口
      */
-    private ArrayList<VideoAndImageBannerData> bannerData = new ArrayList<>();
+    private Banner.OnCustomDataHandleListener onCustomDataHandleListener = new Banner.OnCustomDataHandleListener() {
+
+        /**
+         * 获取用户自定义数据的View（需要重复播放时的View，仅当只有一个数据时回调此方法）
+         *
+         *
+         * @param context 上下文
+         * @param bannerData 用户自定义数据
+         * @return 用户自定义数据的View
+         */
+        @Override
+        public View getAutoPlayRepeatItemView(Context context, @SuppressWarnings("rawtypes") BannerData bannerData) {
+            String customData = (String) bannerData.getCustomData();
+            TextView textView = new TextView(context);
+            textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            textView.setGravity(Gravity.CENTER);
+            textView.setBackgroundColor(Color.WHITE);
+            textView.setTextColor(Color.BLACK);
+            textView.setTextSize(40);
+            textView.setText(customData);
+            return textView;
+        }
+
+        /**
+         * 获取用户自定义数据的View
+         *
+         * @param context    上下文
+         * @param bannerData 用户自定义数据
+         * @param position   当前数据的位置
+         * @return 用户自定义数据的View
+         */
+        @Override
+        public View getItemView(Context context, @SuppressWarnings("rawtypes") BannerData bannerData, int position) {
+            String customData = (String) bannerData.getCustomData();
+            TextView textView = new TextView(context);
+            textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            textView.setGravity(Gravity.CENTER);
+            textView.setBackgroundColor(Color.WHITE);
+            textView.setTextColor(Color.BLACK);
+            textView.setTextSize(40);
+            textView.setText(customData);
+            return textView;
+        }
+
+        /**
+         * 让用户设置自定义数据的VideoView数据(设置完数据的VideoView会在显示时自动播放)
+         *
+         * @param context    上下文
+         * @param videoView  视频播放控件
+         * @param bannerData 用户自定义数据
+         */
+        @Override
+        public void setVideoViewData(Context context, VideoView videoView, @SuppressWarnings("rawtypes") BannerData bannerData) {
+
+        }
+
+        /**
+         * 让用户设置自定义数据的ImageView数据
+         *
+         * @param context    上下文
+         * @param imageView  图片播放控件
+         * @param bannerData 用户自定义数据
+         */
+        @Override
+        public void setImageViewData(Context context, ImageView imageView, @SuppressWarnings("rawtypes") BannerData bannerData) {
+
+        }
+
+        /**
+         * 让用户设置自定义数据滚动延时
+         *
+         * @param view              当前显示的View
+         * @param bannerData        用户自定义数据
+         * @param position          当前数据的位置
+         * @param defaultScrollTime 默认的滚动延时
+         * @return 返回滚动延时
+         */
+        @Override
+        public long onGetDelayTime(View view, @SuppressWarnings("rawtypes") BannerData bannerData, int position, long defaultScrollTime) {
+            return defaultScrollTime;
+        }
+    };
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
@@ -45,10 +139,61 @@ public class SampleNewBannerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.com_sscl_basesample_activity_sample_new_banner);
-        initBannerData();
         banner = findViewById(R.id.banner);
-        banner.setDataList(bannerData);
+        //默认获取SD卡的根目录下”advertiseDir“文件夹下的图片与视频，没有则使用getDefaultBannerData()获取默认数据
+        ArrayList<VideoAndImageBannerData> videoAndImageBannerData = initBannerData();
+        if (videoAndImageBannerData != null) {
+            banner.setDataList(videoAndImageBannerData);
+        } else {
+            banner.setOnCustomDataHandleListener(onCustomDataHandleListener);
+            banner.setDataList(getDefaultBannerData());
+        }
         banner.setEnableSlide(true);
+    }
+
+    private ArrayList<BannerData<String>> getDefaultBannerData() {
+        ArrayList<BannerData<String>> bannerData = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            int finalI = i;
+            bannerData.add(new BannerData<String>() {
+                @NonNull
+                @Override
+                public BannerType getBannerType() {
+                    return BannerType.CUSTOM;
+                }
+
+                @NonNull
+                @Override
+                public BannerDataType getBannerDataType() {
+                    return BannerDataType.CUSTOM;
+                }
+
+                @Nullable
+                @Override
+                public File getFileData() {
+                    return null;
+                }
+
+                @Nullable
+                @Override
+                public String getUrlData() {
+                    return null;
+                }
+
+                @Nullable
+                @Override
+                public Uri getUriData() {
+                    return null;
+                }
+
+                @Nullable
+                @Override
+                public String getCustomData() {
+                    return "自定义Banner数据" + finalI;
+                }
+            });
+        }
+        return bannerData;
     }
 
     /**
@@ -90,9 +235,10 @@ public class SampleNewBannerActivity extends AppCompatActivity {
      *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-    private void initBannerData() {
+    private ArrayList<VideoAndImageBannerData> initBannerData() {
+        ArrayList<VideoAndImageBannerData> videoAndImageBannerData = new ArrayList<>();
         File externalStorageDirectory = Environment.getExternalStorageDirectory();
-        File dir = new File(externalStorageDirectory, "gongcunad");
+        File dir = new File(externalStorageDirectory, "advertiseDir");
         if (dir.exists()) {
             if (dir.isFile()) {
                 //noinspection ResultOfMethodCallIgnored
@@ -104,18 +250,19 @@ public class SampleNewBannerActivity extends AppCompatActivity {
         }
         File[] files = dir.listFiles();
         if (files == null || files.length == 0) {
-            return;
+            return null;
         }
         for (File file : files) {
             if (!file.isFile()) {
                 continue;
             }
             if (!isMp4File(file)) {
-                bannerData.add(new VideoAndImageBannerData(BannerType.IMAGE, file));
+                videoAndImageBannerData.add(new VideoAndImageBannerData(BannerType.IMAGE, file));
             } else {
-                bannerData.add(new VideoAndImageBannerData(BannerType.VIDEO, file));
+                videoAndImageBannerData.add(new VideoAndImageBannerData(BannerType.VIDEO, file));
             }
         }
+        return videoAndImageBannerData;
     }
 
     /**
