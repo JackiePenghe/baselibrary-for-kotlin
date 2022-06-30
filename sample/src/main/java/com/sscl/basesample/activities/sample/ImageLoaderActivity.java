@@ -15,7 +15,7 @@ import com.sscl.basesample.R;
  */
 public class ImageLoaderActivity extends BaseAppCompatActivity {
 
-    private static final String URL = "https://ywmdata.mohoo.club/upload/wxcode_ywm863412042671753.png";
+    private static final String URL = "http://img.sccnn.com/bimg/342/16609.jpg";
 
     private ImageView imageView;
 

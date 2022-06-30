@@ -88,9 +88,10 @@ public class Banner extends FrameLayout {
 
         /**
          * 让用户设置自定义数据滚动延时
-         * @param view     当前显示的View
-         * @param bannerData  用户自定义数据
-         * @param position 当前数据的位置
+         *
+         * @param view              当前显示的View
+         * @param bannerData        用户自定义数据
+         * @param position          当前数据的位置
          * @param defaultScrollTime 默认的滚动延时
          * @return 返回滚动延时
          */
@@ -135,6 +136,10 @@ public class Banner extends FrameLayout {
      * 用户自定义数据处理接口
      */
     private OnCustomDataHandleListener onCustomDataHandleListener;
+    /**
+     * 图片默认的ScaleType
+     */
+    private ImageView.ScaleType imageScaleType = ImageView.ScaleType.CENTER_CROP;
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
@@ -324,6 +329,15 @@ public class Banner extends FrameLayout {
     }
 
     /**
+     * 设置图片的缩放模式
+     *
+     * @param imageScaleType 图片的缩放模式
+     */
+    public void setImageScaleType(ImageView.ScaleType imageScaleType) {
+        this.imageScaleType = imageScaleType;
+    }
+
+    /**
      * 销毁
      */
     public void destroy() {
@@ -373,7 +387,7 @@ public class Banner extends FrameLayout {
                 break;
             case CUSTOM:
                 if (onCustomDataHandleListener != null) {
-                    delayedTime = onCustomDataHandleListener.onGetDelayTime(adapter.getViews().get(position),bannerData,position,autoScrollTime);
+                    delayedTime = onCustomDataHandleListener.onGetDelayTime(adapter.getViews().get(position), bannerData, position, autoScrollTime);
                 } else {
                     throw new RuntimeException("请先设置onCustomDataHandleListener接口");
                 }
@@ -413,7 +427,7 @@ public class Banner extends FrameLayout {
                 case IMAGE:
                     ImageView imageView = new ImageView(getContext());
                     imageView.setLayoutParams(layoutParams);
-                    imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                    imageView.setScaleType(imageScaleType);
                     handleImageBannerData(imageView, bannerData);
                     adapter.getViews().add(imageView);
                     break;
@@ -457,7 +471,7 @@ public class Banner extends FrameLayout {
             case IMAGE:
                 ImageView imageView = new ImageView(getContext());
                 imageView.setLayoutParams(layoutParams);
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                imageView.setScaleType(imageScaleType);
                 handleImageBannerData(imageView, bannerData);
                 adapter.getViews().add(imageView);
                 break;

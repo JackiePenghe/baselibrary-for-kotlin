@@ -149,6 +149,7 @@ public class SampleNewBannerActivity extends AppCompatActivity {
             banner.setDataList(getDefaultBannerData());
         }
         banner.setEnableSlide(true);
+        banner.setImageScaleType(ImageView.ScaleType.CENTER_INSIDE);
     }
 
     private ArrayList<BannerData<String>> getDefaultBannerData() {
