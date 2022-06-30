@@ -298,16 +298,8 @@ public class Banner extends FrameLayout {
             case VIDEO:
                 View view = adapter.getViews().get(position);
                 VideoView videoView = (VideoView) view;
-
-                int duration = videoView.getDuration();
-                DebugUtil.warnOut(TAG, "position video view duration:" + duration);
-                DebugUtil.warnOut(TAG, "position video view file :" + bannerDataList.get(position).getFileData());
-                if (duration < 0) {
-                    delayedTime = Integer.MAX_VALUE;
-                    videoView.setOnCompletionListener(mp -> viewPager.setCurrentItem(currentPosition + 1, true));
-                } else {
-                    delayedTime = duration;
-                }
+                delayedTime = Long.MAX_VALUE;
+                videoView.setOnCompletionListener(mp -> viewPager.setCurrentItem(currentPosition + 1, true));
                 break;
             case CUSTOM:
                 //TODO 处理自定义数据
@@ -357,7 +349,6 @@ public class Banner extends FrameLayout {
                     videoView.setLayoutParams(layoutParams);
                     videoView.setOnErrorListener((mp, what, extra) -> true);
                     handleVideoBannerData(videoView, bannerData);
-
                     adapter.getViews().add(videoView);
                     break;
                 case CUSTOM:
@@ -429,6 +420,14 @@ public class Banner extends FrameLayout {
      */
     private void handleVideoBannerData(VideoView videoView, @SuppressWarnings("rawtypes") BannerData bannerData) {
         BannerDataType bannerDataType = bannerData.getBannerDataType();
+        OnFocusChangeListener onFocusChangeListener = (v, hasFocus) -> {
+            if (hasFocus) {
+                videoView.start();
+                videoView.seekTo(0);
+            } else {
+                videoView.pause();
+            }
+        };
         switch (bannerDataType) {
             case FILE: {
                 File fileData = bannerData.getFileData();
@@ -437,14 +436,7 @@ public class Banner extends FrameLayout {
                     return;
                 }
                 videoView.setVideoURI(FileProviderUtil.getUriFromFile(getContext(), fileData));
-                videoView.setOnFocusChangeListener((v, hasFocus) -> {
-                    if (hasFocus) {
-                        videoView.start();
-                        videoView.seekTo(0);
-                    } else {
-                        videoView.pause();
-                    }
-                });
+                videoView.setOnFocusChangeListener(onFocusChangeListener);
             }
             break;
             case URI: {
@@ -454,14 +446,7 @@ public class Banner extends FrameLayout {
                     return;
                 }
                 videoView.setVideoURI(uriData);
-                videoView.setOnFocusChangeListener((v, hasFocus) -> {
-                    if (hasFocus) {
-                        videoView.start();
-                        videoView.seekTo(0);
-                    } else {
-                        videoView.pause();
-                    }
-                });
+                videoView.setOnFocusChangeListener(onFocusChangeListener);
             }
             break;
             default:
