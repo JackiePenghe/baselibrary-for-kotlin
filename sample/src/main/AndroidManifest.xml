@@ -133,7 +133,9 @@
         <activity
             android:name=".activities.sample.ToastTestActivity"
             android:exported="true" />
-        <activity android:name=".activities.sample.SampleNewBannerActivity" />
+        <activity
+            android:name=".activities.sample.SampleNewBannerActivity"
+            android:theme="@style/AppTheme.NoActionBar.FullScreen" />
     </application>
 
 </manifest>

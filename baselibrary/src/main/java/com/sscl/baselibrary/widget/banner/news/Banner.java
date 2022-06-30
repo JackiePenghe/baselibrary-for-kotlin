@@ -3,7 +3,10 @@ package com.sscl.baselibrary.widget.banner.news;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +75,10 @@ public class Banner extends FrameLayout {
      * 自动轮播的定时器
      */
     private ScheduledExecutorService autoScrollTimer;
+    /**
+     * Banner是否已经开启
+     */
+    private boolean isStart;
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
@@ -90,10 +97,12 @@ public class Banner extends FrameLayout {
     /**
      * banner数据缓存
      */
+    @SuppressWarnings("rawtypes")
     private final ArrayList<BannerData> bannerDataList = new ArrayList<>();
     /**
      * ViewPager滑动监听
      */
+    @SuppressWarnings("FieldCanBeLocal")
     private final ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -151,7 +160,6 @@ public class Banner extends FrameLayout {
         viewPager = new BannerViewPager(context);
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         viewPager.setLayoutParams(params);
-        viewPager.setAdapter(adapter);
         addView(viewPager);
         viewPager.setOffscreenPageLimit(0);
         viewPager.addOnPageChangeListener(onPageChangeListener);
@@ -222,15 +230,24 @@ public class Banner extends FrameLayout {
         adapter.notifyDataSetChanged();
     }
 
+    public void startBanner() {
+        if (isStart) {
+            return;
+        }
+        isStart = true;
+        viewPager.setAdapter(adapter);
+    }
+
+    public boolean isStart() {
+        return isStart;
+    }
+
     /**
      * 开启自动轮播
      */
     public void startAutoScroll() {
         enableAutoScroll = true;
-        if (bannerDataList.size() > 1) {
-            calculateCurrentDelayTime(currentPosition);
-            startAutoScrollTimer();
-        }
+        viewPager.setCurrentItem(currentPosition);
     }
 
     /**
@@ -281,13 +298,13 @@ public class Banner extends FrameLayout {
             case VIDEO:
                 View view = adapter.getViews().get(position);
                 VideoView videoView = (VideoView) view;
-                videoView.start();
-                videoView.seekTo(0);
+
                 int duration = videoView.getDuration();
-                DebugUtil.warnOut(TAG,"position video view duration:" + duration);
-                DebugUtil.warnOut(TAG,"position video view file :" + bannerDataList.get(position).getFileData());
+                DebugUtil.warnOut(TAG, "position video view duration:" + duration);
+                DebugUtil.warnOut(TAG, "position video view file :" + bannerDataList.get(position).getFileData());
                 if (duration < 0) {
-                    delayedTime = autoScrollTime;
+                    delayedTime = Integer.MAX_VALUE;
+                    videoView.setOnCompletionListener(mp -> viewPager.setCurrentItem(currentPosition + 1, true));
                 } else {
                     delayedTime = duration;
                 }
@@ -340,7 +357,7 @@ public class Banner extends FrameLayout {
                     videoView.setLayoutParams(layoutParams);
                     videoView.setOnErrorListener((mp, what, extra) -> true);
                     handleVideoBannerData(videoView, bannerData);
-                    videoView.start();
+
                     adapter.getViews().add(videoView);
                     break;
                 case CUSTOM:
@@ -366,17 +383,18 @@ public class Banner extends FrameLayout {
         //noinspection rawtypes
         BannerData bannerData = bannerDataList.get(0);
         BannerType bannerType = bannerData.getBannerType();
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         switch (bannerType) {
             case IMAGE:
                 ImageView imageView = new ImageView(getContext());
-                imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                imageView.setLayoutParams(layoutParams);
                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 handleImageBannerData(imageView, bannerData);
                 adapter.getViews().add(imageView);
                 break;
             case VIDEO:
                 VideoView videoView = new VideoView(getContext());
-                videoView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                videoView.setLayoutParams(layoutParams);
                 videoView.setOnErrorListener((mp, what, extra) -> true);
                 handleVideoBannerData(videoView, bannerData);
                 //监听视频播放完的代码
@@ -384,7 +402,6 @@ public class Banner extends FrameLayout {
                     mPlayer.start();
                     mPlayer.setLooping(true);
                 });
-                videoView.start();
                 adapter.getViews().add(videoView);
                 break;
             case CUSTOM:
@@ -419,7 +436,15 @@ public class Banner extends FrameLayout {
                     DebugUtil.warnOut(TAG, "视频文件为空");
                     return;
                 }
-                videoView.setVideoURI(FileProviderUtil.getUriFromFile(getContext(),fileData));
+                videoView.setVideoURI(FileProviderUtil.getUriFromFile(getContext(), fileData));
+                videoView.setOnFocusChangeListener((v, hasFocus) -> {
+                    if (hasFocus) {
+                        videoView.start();
+                        videoView.seekTo(0);
+                    } else {
+                        videoView.pause();
+                    }
+                });
             }
             break;
             case URI: {
@@ -429,6 +454,14 @@ public class Banner extends FrameLayout {
                     return;
                 }
                 videoView.setVideoURI(uriData);
+                videoView.setOnFocusChangeListener((v, hasFocus) -> {
+                    if (hasFocus) {
+                        videoView.start();
+                        videoView.seekTo(0);
+                    } else {
+                        videoView.pause();
+                    }
+                });
             }
             break;
             default:

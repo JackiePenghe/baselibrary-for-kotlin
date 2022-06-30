@@ -61,6 +61,9 @@ public class SampleNewBannerActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (!banner.isStart()) {
+            banner.startBanner();
+        }
         banner.startAutoScroll();
     }
 
@@ -75,6 +78,12 @@ public class SampleNewBannerActivity extends AppCompatActivity {
         banner.stopAutoScroll();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        banner.destroy();
+    }
+
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
      * 私有方法
@@ -86,9 +95,11 @@ public class SampleNewBannerActivity extends AppCompatActivity {
         File dir = new File(externalStorageDirectory, "gongcunad");
         if (dir.exists()) {
             if (dir.isFile()) {
+                //noinspection ResultOfMethodCallIgnored
                 dir.delete();
             }
         } else {
+            //noinspection ResultOfMethodCallIgnored
             dir.mkdirs();
         }
         File[] files = dir.listFiles();

@@ -134,6 +134,13 @@ class BannerAdapter extends PagerAdapter {
      * 清空数据
      */
     void clear() {
+        for (int i = 0; i < views.size(); i++) {
+            View view = views.get(i);
+            if (view instanceof VideoView) {
+                VideoView videoView = (VideoView) view;
+                videoView.stopPlayback();
+            }
+        }
         views.clear();
     }
 
