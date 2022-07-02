@@ -28,37 +28,38 @@
         <attr name="internal_line_interval" format="dimension" />
     </declare-styleable>
     <declare-styleable name="PasswordView">
-        <attr name="Password_viewBackground" format="reference|color"/>
-        <attr name="password_enableHideCode" format="boolean"/>
-        <attr name="password_enableHideBoxWhenNotInput" format="boolean"/>
-        <attr name="password_enableHideCodeSetText" format="string"/>
-        <attr name="password_enableCursor" format="boolean"/>
-        <attr name="password_enableHighLight" format="boolean"/>
-        <attr name="password_enableSoftKeyboardAutoShow" format="boolean"/>
-        <attr name="password_enableSoftKeyboardAutoClose" format="boolean"/>
-        <attr name="password_enableLockTextView" format="boolean"/>
-        <attr name="password_text_setColor" format="color"/>
-        <attr name="password_text_setSize" format="integer"/>
-        <attr name="android:inputType"/>
-        <attr name="password_text_setIsBold" format="boolean"/>
-        <attr name="password_box_setNumber" format="integer"/>
-        <attr name="password_box_setMargin" format="dimension|integer"/>
-        <attr name="password_box_setSize" format="dimension|integer"/>
-        <attr name="password_cursorHeight" format="dimension|integer"/>
-        <attr name="password_cursorWidth" format="dimension|integer"/>
-        <attr name="password_cursorFrequencyMillisecond" format="integer"/>
-        <attr name="password_cursorBackgroundDrawable" format="reference|color"/>
-        <attr name="password_cursorColor" format="reference|color"/>
-        <attr name="password_box_strokeWidth" format="reference|color"/>
-        <attr name="password_box_hasInput_setColor" format="reference|color"/>
-        <attr name="password_box_notInput_setColor" format="reference|color"/>
-        <attr name="password_box_highLight_setColor" format="reference|color"/>
-        <attr name="password_box_locked_setColor" format="reference|color"/>
-        <attr name="android:text"/>
+        <attr name="Password_viewBackground" format="reference|color" />
+        <attr name="password_enableHideCode" format="boolean" />
+        <attr name="password_enableHideBoxWhenNotInput" format="boolean" />
+        <attr name="password_enableHideCodeSetText" format="reference|string" />
+        <attr name="password_enableCursor" format="boolean" />
+        <attr name="password_enableHighLight" format="boolean" />
+        <attr name="password_enableSoftKeyboardAutoShow" format="boolean" />
+        <attr name="password_enableSoftKeyboardAutoClose" format="boolean" />
+        <attr name="password_enableLockTextView" format="boolean" />
+        <attr name="android:textColor"/>
+        <attr name="android:textSize" />
+        <attr name="android:inputType" />
+        <attr name="android:text" />
+        <attr name="password_text_setIsBold" format="boolean" />
+        <attr name="password_box_setNumber" format="integer" />
+        <attr name="password_box_setMargin" format="dimension|integer" />
+        <attr name="password_box_setSize" format="dimension|integer" />
+        <attr name="password_cursorHeight" format="dimension|integer" />
+        <attr name="password_cursorWidth" format="dimension|integer" />
+        <attr name="password_cursorFrequencyMillisecond" format="integer" />
+        <attr name="password_cursorBackgroundDrawable" format="reference|color" />
+        <attr name="password_cursorColor" format="reference|color" />
+        <attr name="password_box_strokeWidth" format="reference|color" />
+        <attr name="password_box_hasInput_setColor" format="reference|color" />
+        <attr name="password_box_notInput_setColor" format="reference|color" />
+        <attr name="password_box_highLight_setColor" format="reference|color" />
+        <attr name="password_box_locked_setColor" format="reference|color" />
+        <attr name="password_box_Radius" format="dimension|integer" />
         <!--    如果设置了以下backgroundDrawable，对应的setColor则不生效    -->
-        <attr name="password_box_notInput_backgroundDrawable" format="reference|color"/>
-        <attr name="password_box_locked_backgroundDrawable" format="reference|color"/>
-        <attr name="password_box_highLight_backgroundDrawable" format="reference|color"/>
-        <attr name="password_box_hasInput_backgroundDrawable" format="dimension|integer"/>
+        <attr name="password_box_notInput_backgroundDrawable" format="reference|color" />
+        <attr name="password_box_locked_backgroundDrawable" format="reference|color" />
+        <attr name="password_box_highLight_backgroundDrawable" format="reference|color" />
+        <attr name="password_box_hasInput_backgroundDrawable" format="dimension|integer" />
     </declare-styleable>
 </resources>
