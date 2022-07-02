@@ -1,4 +1,4 @@
-package com.sscl.baselibrary.widget.banner.news;
+package com.sscl.baselibrary.widget.bannernew;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
@@ -97,10 +97,6 @@ class BannerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         View view = (View) object;
-//        if (view instanceof VideoView) {
-//            VideoView videoView = (VideoView) view;
-//            videoView.stopPlayback();
-//        }
         container.removeView(view);
     }
 

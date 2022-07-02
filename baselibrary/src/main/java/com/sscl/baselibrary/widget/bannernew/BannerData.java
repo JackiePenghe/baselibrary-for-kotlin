@@ -1,12 +1,12 @@
-package com.sscl.baselibrary.widget.banner.news;
+package com.sscl.baselibrary.widget.bannernew;
 
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.sscl.baselibrary.widget.banner.news.enums.BannerDataType;
-import com.sscl.baselibrary.widget.banner.news.enums.BannerType;
+import com.sscl.baselibrary.widget.bannernew.enums.BannerDataType;
+import com.sscl.baselibrary.widget.bannernew.enums.BannerType;
 
 import java.io.File;
 

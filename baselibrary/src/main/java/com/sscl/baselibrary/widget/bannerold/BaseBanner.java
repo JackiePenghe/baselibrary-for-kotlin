@@ -1,4 +1,4 @@
-package com.sscl.baselibrary.widget.banner;
+package com.sscl.baselibrary.widget.bannerold;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -374,15 +374,15 @@ public abstract class BaseBanner<T> extends RelativeLayout {
      * @param attrs 自定义属性
      */
     private void parseAttrs(AttributeSet attrs) {
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.Banner);
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.BaseBanner);
 
-        mPointsIsVisible = a.getBoolean(R.styleable.Banner_points_visibility, true);
-        mPointPosition = a.getInt(R.styleable.Banner_points_position, POSITION.CENTER_HORIZONTAL.value);
+        mPointsIsVisible = a.getBoolean(R.styleable.BaseBanner_points_visibility, true);
+        mPointPosition = a.getInt(R.styleable.BaseBanner_points_position, POSITION.CENTER_HORIZONTAL.value);
         mPointContainerBackgroundDrawable
-                = a.getDrawable(R.styleable.Banner_points_container_background);
+                = a.getDrawable(R.styleable.BaseBanner_points_container_background);
         //设置指示器背景
         if (mPointContainerBackgroundDrawable == null) {
-            mPointContainerBackgroundDrawable = a.getDrawable(R.styleable.Banner_points_container_background);
+            mPointContainerBackgroundDrawable = a.getDrawable(R.styleable.BaseBanner_points_container_background);
         }
         a.recycle();
     }

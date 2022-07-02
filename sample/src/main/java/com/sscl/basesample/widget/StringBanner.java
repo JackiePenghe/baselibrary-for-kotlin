@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.sscl.baselibrary.widget.banner.BaseBanner;
+import com.sscl.baselibrary.widget.bannerold.BaseBanner;
 
 /**
  * @author pengh

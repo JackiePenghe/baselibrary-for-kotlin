@@ -1,4 +1,4 @@
-package com.sscl.baselibrary.widget.banner.news;
+package com.sscl.baselibrary.widget.bannernew;
 
 import android.view.View;
 

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.sscl.baselibrary.widget.banner.news.Banner
+    <com.sscl.baselibrary.widget.bannernew.Banner
         android:id="@+id/banner"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

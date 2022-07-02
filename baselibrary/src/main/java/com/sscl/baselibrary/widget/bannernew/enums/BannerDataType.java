@@ -1,4 +1,4 @@
-package com.sscl.baselibrary.widget.banner.news.enums;
+package com.sscl.baselibrary.widget.bannernew.enums;
 
 /**
  * Banner数据类型

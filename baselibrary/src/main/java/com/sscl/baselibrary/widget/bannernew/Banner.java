@@ -1,4 +1,4 @@
-package com.sscl.baselibrary.widget.banner.news;
+package com.sscl.baselibrary.widget.bannernew;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
@@ -17,8 +17,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.sscl.baselibrary.files.FileProviderUtil;
 import com.sscl.baselibrary.utils.BaseManager;
 import com.sscl.baselibrary.utils.DebugUtil;
-import com.sscl.baselibrary.widget.banner.news.enums.BannerDataType;
-import com.sscl.baselibrary.widget.banner.news.enums.BannerType;
+import com.sscl.baselibrary.widget.bannernew.enums.BannerDataType;
+import com.sscl.baselibrary.widget.bannernew.enums.BannerType;
 
 import java.io.File;
 import java.util.ArrayList;

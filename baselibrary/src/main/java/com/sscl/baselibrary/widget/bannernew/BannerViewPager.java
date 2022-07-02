@@ -1,5 +1,6 @@
-package com.sscl.baselibrary.widget.banner.news;
+package com.sscl.baselibrary.widget.bannernew;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -46,6 +47,7 @@ public class BannerViewPager extends ViewPager {
      *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         super.onTouchEvent(ev);

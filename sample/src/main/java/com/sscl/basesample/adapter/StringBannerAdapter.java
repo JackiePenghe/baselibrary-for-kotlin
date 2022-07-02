@@ -1,8 +1,8 @@
 package com.sscl.basesample.adapter;
 
 import com.sscl.baselibrary.utils.DebugUtil;
-import com.sscl.baselibrary.widget.banner.BannerHolder;
-import com.sscl.baselibrary.widget.banner.BaseBannerAdapter;
+import com.sscl.baselibrary.widget.bannerold.BannerHolder;
+import com.sscl.baselibrary.widget.bannerold.BaseBannerAdapter;
 import com.sscl.basesample.R;
 
 /**
