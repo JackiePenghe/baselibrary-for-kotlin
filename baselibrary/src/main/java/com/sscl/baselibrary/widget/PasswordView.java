@@ -140,16 +140,16 @@ public class PasswordView extends LinearLayout {
                 mPasswordView.mCursorDisplayingByIndex = true;
                 if (text.length() == mPasswordView.mBoxSetNumber) { //内容长度与盒子数量一致->返回回调结果
                     mPasswordView.mIsCodeFull = true;
-                    if (null != mPasswordView.mOnResultListener) {
-                        mPasswordView.mOnResultListener.finish(text.toString());
+                    if (null != mPasswordView.onResultListener) {
+                        mPasswordView.onResultListener.finish(text.toString());
                     }
-                    if (mPasswordView.mEnableSoftKeyboardAutoClose || mPasswordView.mEnableLockCodeTextIfMaxCode) {
+                    if (mPasswordView.enableSoftKeyboardAutoHide || mPasswordView.enableLockCodeTextIfMaxCode) {
                         mPasswordView.closeSoftKeyboard();
                     }
-                    mPasswordView.mIsLocked = true;
+                    mPasswordView.locked = true;
                 } else {
-                    if (null != mPasswordView.mOnResultListener) {
-                        mPasswordView.mOnResultListener.typing(text.toString());
+                    if (null != mPasswordView.onResultListener) {
+                        mPasswordView.onResultListener.typing(text.toString());
                     }
                 }
                 mPasswordView.postInvalidate();
@@ -206,31 +206,31 @@ public class PasswordView extends LinearLayout {
     /**
      * 是否隐藏输入code
      */
-    private boolean mEnableHideCode = false;
+    private boolean enableHideCode = false;
     /**
      * 是否开启高亮
      */
-    private boolean mEnableHighLight = false;
+    private boolean enableHighLight = false;
     /**
      * 是否开启光标
      */
-    private boolean mEnableCursor = false;
+    private boolean enableCursor = false;
     /**
      * 是否将没有输入内容的盒子隐藏
      */
-    private boolean mEnableHideNotInputBox = false;
+    private boolean enableHideNotInputBox = false;
     /**
      * 是否自动打开软键盘
      */
-    private boolean mEnableSoftKeyboardAutoShow = true;
+    private boolean enableSoftKeyboardAutoShow = true;
     /**
      * 是否自动关闭软键盘（输入内容长度==最大长度时会自动关闭软键盘）
      */
-    private boolean mEnableSoftKeyboardAutoClose = true;
+    private boolean enableSoftKeyboardAutoHide = true;
     /**
      * 是否限制输满后锁定view
      */
-    private boolean mEnableLockCodeTextIfMaxCode = false;
+    private boolean enableLockCodeTextIfMaxCode = false;
 
     /* * * * * * * * * * * * * * * * * * * 默认设置-盒子画笔相关 * * * * * * * * * * * * * * * * * * */
 
@@ -242,33 +242,33 @@ public class PasswordView extends LinearLayout {
      * 盒子输入过的颜色
      */
     @ColorInt
-    private int mBoxHasInputColor = BOX_DEFAULT_HAS_INPUT_COLOR;
+    private int boxHasInputColor = BOX_DEFAULT_HAS_INPUT_COLOR;
     /**
      * 盒子未输入过的颜色
      */
     @ColorInt
-    private int mBoxNotInputColor = BOX_DEFAULT_NOT_INPUT_COLOR;
+    private int boxNotInputColor = BOX_DEFAULT_NOT_INPUT_COLOR;
     /**
      * 盒子高亮的颜色
      */
     @ColorInt
-    private int mBoxHighLightColor = BOX_DEFAULT_HIGH_LIGHT_COLOR;
+    private int boxHighLightColor = BOX_DEFAULT_HIGH_LIGHT_COLOR;
     /**
      * 盒子锁定状态下的颜色
      */
     @ColorInt
-    private int mBoxLockColor = BOX_DEFAULT_LOCK_COLOR;
+    private int boxLockColor = BOX_DEFAULT_LOCK_COLOR;
     /**
      * 盒子描边的宽度
      */
-    private int mBoxStrokeWidth = BOX_DEFAULT_STROKE_WIDTH;
+    private int boxStrokeWidth = BOX_DEFAULT_STROKE_WIDTH;
 
     /* * * * * * * * * * * * * * * * * * * 输入框样式 * * * * * * * * * * * * * * * * * * */
 
     /**
      * 是否已经锁定
      */
-    private boolean mIsLocked = false;
+    private boolean locked = false;
     /**
      * 是否已经输入过
      */
@@ -284,7 +284,7 @@ public class PasswordView extends LinearLayout {
     /**
      * 隐藏输入code-显示的内容
      */
-    private String mEnableHideCodeText = BOX_DEFAULT_HIDE_TEXT;
+    private String hideCodeText = BOX_DEFAULT_HIDE_TEXT;
     /**
      * 背景
      */
@@ -403,7 +403,7 @@ public class PasswordView extends LinearLayout {
     /**
      * 文本输入完成的回调
      */
-    private OnResultListener mOnResultListener;
+    private OnResultListener onResultListener;
     /**
      * 输入法管理器
      */
@@ -477,7 +477,7 @@ public class PasswordView extends LinearLayout {
             mBoxRectF.right = mBoxRectF.left + mBoxSetSize;
             mBoxRectF.bottom = getHeight();
             //如果开启了高亮或鼠标 且 i==待输入index
-            if (mEnableHighLight || mEnableCursor) {
+            if (enableHighLight || enableCursor) {
                 if (i == mBoxNextInputIndex) {
                     //绘制盒子 - 高亮或光标
                     onDrawHighLightCursor(canvas);
@@ -499,7 +499,7 @@ public class PasswordView extends LinearLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (mEnableCursor) {
+        if (enableCursor) {
             if (null != mCursorTimer) {
                 mCursorTimer.scheduleAtFixedRate(mCursorTimerTask, 0, mCursorFrequency, TimeUnit.MILLISECONDS);
             }
@@ -522,8 +522,8 @@ public class PasswordView extends LinearLayout {
      * 锁定CodeText
      */
     public void setOnLock() {
-        mEnableLockCodeTextIfMaxCode = true;
-        mIsLocked = true;
+        enableLockCodeTextIfMaxCode = true;
+        locked = true;
     }
 
     /**
@@ -532,7 +532,7 @@ public class PasswordView extends LinearLayout {
     public void setUnLock() {
         if (mIsCodeFull) {
             openSoftKeyboard();
-            mIsLocked = false;
+            locked = false;
         }
     }
 
@@ -554,7 +554,7 @@ public class PasswordView extends LinearLayout {
      */
     public void closeSoftKeyboard() {
         if (null != mEditText) {
-            if (mEnableSoftKeyboardAutoClose || mIsLocked || mEnableLockCodeTextIfMaxCode) {
+            if (enableSoftKeyboardAutoHide || locked || enableLockCodeTextIfMaxCode) {
                 mEditText.clearFocus();
                 inputMethodManager.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
             }
@@ -562,12 +562,138 @@ public class PasswordView extends LinearLayout {
     }
 
     /**
-     * 监听接口回调
+     * 设置监听接口回调
      *
      * @param onResultListener 监听接口
      */
     public void setOnResultListener(OnResultListener onResultListener) {
-        mOnResultListener = onResultListener;
+        this.onResultListener = onResultListener;
+    }
+
+    /**
+     * 设置是否开启隐匿输入内容
+     *
+     * @param enableHideCode 是否开启隐匿输入内容
+     */
+    public void setEnableHideCode(boolean enableHideCode) {
+        this.enableHideCode = enableHideCode;
+    }
+
+    /**
+     * 设置是否开启高亮
+     *
+     * @param enableHighLight 是否开启高亮
+     */
+    public void setEnableHighLight(boolean enableHighLight) {
+        this.enableHighLight = enableHighLight;
+    }
+
+    /**
+     * 设置是否开启光标
+     *
+     * @param enableCursor 是否开启光标
+     */
+    public void setEnableCursor(boolean enableCursor) {
+        this.enableCursor = enableCursor;
+    }
+
+    /**
+     * 设置 是否隐藏未输入内容的盒子
+     *
+     * @param enableHideNotInputBox 是否隐藏未输入内容的盒子
+     */
+    public void setEnableHideNotInputBox(boolean enableHideNotInputBox) {
+        this.enableHideNotInputBox = enableHideNotInputBox;
+    }
+
+    /**
+     * 设置是否开启软键盘自动显示
+     *
+     * @param enableSoftKeyboardAutoShow 是否开启软键盘自动显示
+     */
+    public void setEnableSoftKeyboardAutoShow(boolean enableSoftKeyboardAutoShow) {
+        this.enableSoftKeyboardAutoShow = enableSoftKeyboardAutoShow;
+    }
+
+    /**
+     * 设置是否开启软键盘自动关闭
+     *
+     * @param enableSoftKeyboardAutoHide 是否开启软键盘自动关闭
+     */
+    public void setEnableSoftKeyboardAutoHide(boolean enableSoftKeyboardAutoHide) {
+        this.enableSoftKeyboardAutoHide = enableSoftKeyboardAutoHide;
+    }
+
+    /**
+     * 设置是否开户自动锁定文本（当文本输入达到最大数量之后）
+     *
+     * @param enableLockCodeTextIfMaxCode 是否开户自动锁定文本（当文本输入达到最大数量之后）
+     */
+    public void setEnableLockCodeTextIfMaxCode(boolean enableLockCodeTextIfMaxCode) {
+        this.enableLockCodeTextIfMaxCode = enableLockCodeTextIfMaxCode;
+    }
+
+    /**
+     * 设置盒子有输入内容的颜色
+     *
+     * @param boxHasInputColor 盒子有输入内容的颜色
+     */
+    public void setBoxHasInputColor(int boxHasInputColor) {
+        this.boxHasInputColor = boxHasInputColor;
+    }
+
+    /**
+     * 设置盒子无输入内容的颜色
+     *
+     * @param boxNotInputColor 盒子无输入内容的颜色
+     */
+    public void setBoxNotInputColor(int boxNotInputColor) {
+        this.boxNotInputColor = boxNotInputColor;
+    }
+
+    /**
+     * 设置盒子高亮的颜色
+     *
+     * @param boxHighLightColor 盒子高亮的颜色
+     */
+    public void setBoxHighLightColor(int boxHighLightColor) {
+        this.boxHighLightColor = boxHighLightColor;
+    }
+
+    /**
+     * 设置盒子锁定的颜色
+     *
+     * @param boxLockColor 盒子锁定的颜色
+     */
+    public void setBoxLockColor(int boxLockColor) {
+        this.boxLockColor = boxLockColor;
+    }
+
+    /**
+     * 设置盒子边线的宽度
+     *
+     * @param boxStrokeWidth 盒子边线的宽度
+     */
+    public void setBoxStrokeWidth(int boxStrokeWidth) {
+        this.boxStrokeWidth = boxStrokeWidth;
+    }
+
+    /**
+     * 获取当前盒子锁定的状态
+     *
+     * @return 盒子锁定的状态
+     */
+    public boolean isLocked() {
+        return locked;
+    }
+
+    /**
+     * 设置隐藏文本时，显示的替换文本内容
+     *
+     * @param hideCodeText 替换文本内容
+     */
+    public void setHideCodeText(String hideCodeText) {
+        this.hideCodeText = hideCodeText;
     }
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -586,21 +712,21 @@ public class PasswordView extends LinearLayout {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.PasswordView);
 
         //自动弹出键盘
-        mEnableSoftKeyboardAutoShow = typedArray.getBoolean(R.styleable.PasswordView_password_enableSoftKeyboardAutoShow, mEnableSoftKeyboardAutoShow);
+        enableSoftKeyboardAutoShow = typedArray.getBoolean(R.styleable.PasswordView_password_enableSoftKeyboardAutoShow, enableSoftKeyboardAutoShow);
         //自动隐藏键盘
-        mEnableSoftKeyboardAutoClose = typedArray.getBoolean(R.styleable.PasswordView_password_enableSoftKeyboardAutoClose, mEnableSoftKeyboardAutoClose);
+        enableSoftKeyboardAutoHide = typedArray.getBoolean(R.styleable.PasswordView_password_enableSoftKeyboardAutoClose, enableSoftKeyboardAutoHide);
         //是否隐藏输入内容
-        mEnableHideCode = typedArray.getBoolean(R.styleable.PasswordView_password_enableHideCode, mEnableHideCode);
+        enableHideCode = typedArray.getBoolean(R.styleable.PasswordView_password_enableHideCode, enableHideCode);
         //隐藏输入的内容,显示设置的文案
-        mEnableHideCodeText = typedArray.getString(R.styleable.PasswordView_password_enableHideCodeSetText);
+        hideCodeText = typedArray.getString(R.styleable.PasswordView_password_hideCodeText);
         //是否将没有输入内容的盒子隐藏
-        mEnableHideNotInputBox = typedArray.getBoolean(R.styleable.PasswordView_password_enableHideBoxWhenNotInput, mEnableHideNotInputBox);
+        enableHideNotInputBox = typedArray.getBoolean(R.styleable.PasswordView_password_enableHideBoxWhenNotInput, enableHideNotInputBox);
         //是否绘制高亮盒子
-        mEnableHighLight = typedArray.getBoolean(R.styleable.PasswordView_password_enableHighLight, mEnableHighLight);
+        enableHighLight = typedArray.getBoolean(R.styleable.PasswordView_password_enableHighLight, enableHighLight);
         //是否绘制光标
-        mEnableCursor = typedArray.getBoolean(R.styleable.PasswordView_password_enableCursor, mEnableCursor);
+        enableCursor = typedArray.getBoolean(R.styleable.PasswordView_password_enableCursor, enableCursor);
         //是否锁定组件当输入满长度后(禁止点击,可以主动setUnLock()调解除锁定)
-        mEnableLockCodeTextIfMaxCode = typedArray.getBoolean(R.styleable.PasswordView_password_enableLockTextView, mEnableLockCodeTextIfMaxCode);
+        enableLockCodeTextIfMaxCode = typedArray.getBoolean(R.styleable.PasswordView_password_enableLockTextView, enableLockCodeTextIfMaxCode);
         //View背景Drawable
         mViewBackground = typedArray.getResourceId(R.styleable.PasswordView_Password_viewBackground, Color.TRANSPARENT);
         //文字颜色
@@ -636,15 +762,15 @@ public class PasswordView extends LinearLayout {
         //设置光标背景
         mCursorBackgroundDrawable = typedArray.getDrawable(R.styleable.PasswordView_password_cursorBackgroundDrawable);
         //盒子输入过的颜色
-        mBoxHasInputColor = typedArray.getColor(R.styleable.PasswordView_password_box_hasInput_setColor, mBoxHasInputColor);
+        boxHasInputColor = typedArray.getColor(R.styleable.PasswordView_password_box_hasInput_setColor, boxHasInputColor);
         //盒子未输入过的颜色
-        mBoxNotInputColor = typedArray.getColor(R.styleable.PasswordView_password_box_notInput_setColor, mBoxNotInputColor);
+        boxNotInputColor = typedArray.getColor(R.styleable.PasswordView_password_box_notInput_setColor, boxNotInputColor);
         //盒子高亮的颜色
-        mBoxHighLightColor = typedArray.getColor(R.styleable.PasswordView_password_box_highLight_setColor, mBoxHighLightColor);
+        boxHighLightColor = typedArray.getColor(R.styleable.PasswordView_password_box_highLight_setColor, boxHighLightColor);
         //盒子锁定状态下的颜色
-        mBoxLockColor = typedArray.getColor(R.styleable.PasswordView_password_box_locked_setColor, mBoxLockColor);
+        boxLockColor = typedArray.getColor(R.styleable.PasswordView_password_box_locked_setColor, boxLockColor);
         //盒子宽度
-        mBoxStrokeWidth = typedArray.getInt(R.styleable.PasswordView_password_box_strokeWidth, mBoxStrokeWidth);
+        boxStrokeWidth = typedArray.getInt(R.styleable.PasswordView_password_box_strokeWidth, boxStrokeWidth);
         //盒子的圆角
         mBoxRadius = typedArray.getDimension(R.styleable.PasswordView_password_box_Radius, BOX_DEFAULT_RADIUS);
         //文本
@@ -668,10 +794,10 @@ public class PasswordView extends LinearLayout {
         }
         mCodeArray = new String[mBoxSetNumber];
         Arrays.fill(mCodeArray, "");
-        if (null == this.mEnableHideCodeText) {
-            this.mEnableHideCodeText = BOX_DEFAULT_HIDE_TEXT;
-        } else if (this.mEnableHideCodeText.length() > 0) {
-            this.mEnableHideCodeText = mEnableHideCodeText.substring(0, 1);
+        if (null == this.hideCodeText) {
+            this.hideCodeText = BOX_DEFAULT_HIDE_TEXT;
+        } else if (this.hideCodeText.length() > 0) {
+            this.hideCodeText = hideCodeText.substring(0, 1);
         }
 
         mCursorTimerTask = () -> {
@@ -684,7 +810,7 @@ public class PasswordView extends LinearLayout {
         initialBoxAndRectPosition();
         setOnLayoutListener();
         setOnClickListener(v -> {
-            if ((!mIsLocked || !mEnableLockCodeTextIfMaxCode)) {
+            if ((!locked || !enableLockCodeTextIfMaxCode)) {
                 openSoftKeyboard();
             }
         });
@@ -725,13 +851,13 @@ public class PasswordView extends LinearLayout {
         //文字
         this.mPaintText = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mPaintText.setStyle(Paint.Style.FILL);
-        this.mPaintText.setTextSize(mTextSize* 2);
+        this.mPaintText.setTextSize(mTextSize * 2);
         this.mPaintText.setColor(mTextColor);
         this.mPaintText.setFakeBoldText(mTextBold);
         //盒子
         this.mBoxDefaultPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mBoxDefaultPaint.setStyle(Paint.Style.STROKE);
-        this.mBoxDefaultPaint.setStrokeWidth(mBoxStrokeWidth);
+        this.mBoxDefaultPaint.setStrokeWidth(boxStrokeWidth);
     }
 
     /**
@@ -740,7 +866,7 @@ public class PasswordView extends LinearLayout {
     private void setOnLayoutListener() {
         if (null != mEditText) {
             mEditText.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
-                if (!mIsCodeFull && mIsFirstTime <= mBoxSetNumber - 1 && mEnableSoftKeyboardAutoShow) {
+                if (!mIsCodeFull && mIsFirstTime <= mBoxSetNumber - 1 && enableSoftKeyboardAutoShow) {
                     openSoftKeyboard();
                     mIsFirstTime++;
                 }
@@ -755,13 +881,13 @@ public class PasswordView extends LinearLayout {
      */
     private void onDrawNotInput(Canvas canvas) {
         //如果没有开启隐藏 未输入内容盒子
-        if (!mEnableHideNotInputBox) {
+        if (!enableHideNotInputBox) {
             //如果有设置drawable，则绘制drawable
             if (null != mBoxNotInputBackgroundDrawable) {
                 mBoxNotInputBackgroundDrawable.setBounds((int) mBoxRectF.left, (int) mBoxRectF.top, (int) mBoxRectF.right, (int) mBoxRectF.bottom);
                 mBoxNotInputBackgroundDrawable.draw(canvas);
             } else {
-                mBoxDefaultPaint.setColor(mBoxNotInputColor);
+                mBoxDefaultPaint.setColor(boxNotInputColor);
                 canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mBoxDefaultPaint);
             }
         }
@@ -775,13 +901,13 @@ public class PasswordView extends LinearLayout {
      */
     private void onDrawHasInput(Canvas canvas, int index) {
         //如果开启了输入完毕锁定内容,则绘制boxLock样式
-        if (mIsLocked && mEnableLockCodeTextIfMaxCode) {
+        if (locked && enableLockCodeTextIfMaxCode) {
             //如果有设置高亮drawable,则绘制drawable,没有则用画笔绘制
             if (null != mBoxLockedBackgroundDrawable) {
                 mBoxLockedBackgroundDrawable.setBounds((int) mBoxRectF.left, (int) mBoxRectF.top, (int) mBoxRectF.right, (int) mBoxRectF.bottom);
                 mBoxLockedBackgroundDrawable.draw(canvas);
             } else {
-                mBoxDefaultPaint.setColor(mBoxLockColor);
+                mBoxDefaultPaint.setColor(boxLockColor);
                 canvas.drawRoundRect(mBoxRectF, BOX_DEFAULT_RADIUS, BOX_DEFAULT_RADIUS, mBoxDefaultPaint);
             }
         }
@@ -792,15 +918,15 @@ public class PasswordView extends LinearLayout {
                 mBoxHasInputBackgroundDrawable.setBounds((int) mBoxRectF.left, (int) mBoxRectF.top, (int) mBoxRectF.right, (int) mBoxRectF.bottom);
                 mBoxHasInputBackgroundDrawable.draw(canvas);
             } else {
-                mBoxDefaultPaint.setColor(mBoxHasInputColor);
+                mBoxDefaultPaint.setColor(boxHasInputColor);
                 canvas.drawRoundRect(mBoxRectF, BOX_DEFAULT_RADIUS, BOX_DEFAULT_RADIUS, mBoxDefaultPaint);
             }
 
         }
 
         //绘制输入的内容文字
-        mPaintText.getTextBounds(mEnableHideCode ? mEnableHideCodeText : mCodeArray[index], 0, mCodeArray[index].length(), mTextRect);
-        canvas.drawText(mEnableHideCode ? mEnableHideCodeText : mCodeArray[index], (mBoxRectF.left + mBoxRectF.right) / 2 - (mTextRect.left + mTextRect.right) / 2.0f, (mBoxRectF.top + mBoxRectF.bottom) / 2 - (mTextRect.top + mTextRect.bottom) / 2.0f, mPaintText);
+        mPaintText.getTextBounds(enableHideCode ? hideCodeText : mCodeArray[index], 0, mCodeArray[index].length(), mTextRect);
+        canvas.drawText(enableHideCode ? hideCodeText : mCodeArray[index], (mBoxRectF.left + mBoxRectF.right) / 2 - (mTextRect.left + mTextRect.right) / 2.0f, (mBoxRectF.top + mBoxRectF.bottom) / 2 - (mTextRect.top + mTextRect.bottom) / 2.0f, mPaintText);
 
     }
 
@@ -815,11 +941,11 @@ public class PasswordView extends LinearLayout {
             mBoxHighLightBackgroundDrawable.setBounds((int) mBoxRectF.left, (int) mBoxRectF.top, (int) mBoxRectF.right, (int) mBoxRectF.bottom);
             mBoxHighLightBackgroundDrawable.draw(canvas);
         } else {
-            mBoxDefaultPaint.setColor(mBoxHighLightColor);
+            mBoxDefaultPaint.setColor(boxHighLightColor);
             canvas.drawRoundRect(mBoxRectF, BOX_DEFAULT_RADIUS, BOX_DEFAULT_RADIUS, mBoxDefaultPaint);
         }
         //如果开启了光标,则绘制光标
-        if (mEnableCursor) {
+        if (enableCursor) {
             onDrawCursor(canvas, mBoxDefaultPaint, mBoxRectF);
         }
     }

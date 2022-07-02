@@ -31,7 +31,7 @@
         <attr name="Password_viewBackground" format="reference|color" />
         <attr name="password_enableHideCode" format="boolean" />
         <attr name="password_enableHideBoxWhenNotInput" format="boolean" />
-        <attr name="password_enableHideCodeSetText" format="reference|string" />
+        <attr name="password_hideCodeText" format="string|reference" />
         <attr name="password_enableCursor" format="boolean" />
         <attr name="password_enableHighLight" format="boolean" />
         <attr name="password_enableSoftKeyboardAutoShow" format="boolean" />
