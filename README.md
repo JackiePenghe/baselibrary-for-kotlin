@@ -13,7 +13,7 @@ allprojects {
 ```xml
 dependencies {
 	//version is release tag
-    implementation 'com.gitee.sscl:baselibrary-for-kotlin:Tag'
+    implementation 'com.gitee.sscl:baselibrary-for-kotlin:version'
 }
 ```
 
