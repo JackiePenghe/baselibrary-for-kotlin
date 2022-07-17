@@ -35,7 +35,6 @@
     <string name="com_sscl_basesample_flow_layout">flow layout</string>
     <string name="com_sscl_basesample_select_image_file">Select Image file</string>
     <string name="com_sscl_basesample_number_input_method">Number InputMethod</string>
-    <string name="com_sscl_basesample_letter_input_method">Letter InputMethod</string>
     <string name="com_sscl_basesample_custom_password_view">custom password view</string>
     <string name="com_sscl_basesample_zip_file_operation">zip file operation</string>
     <string name="com_sscl_basesample_file_name_colon">File name:</string>
@@ -53,5 +52,4 @@
     <string name="com_sscl_basesample_sdcard_file_test">sd card root dir read/wrte test</string>
     <string name="com_sscl_basesample_read_file">read file</string>
     <string name="com_sscl_basesample_write_file">write file</string>
-    <string name="com_sscl_basesample_banner_new" translatable="false">Banner(New)</string>
 </resources>

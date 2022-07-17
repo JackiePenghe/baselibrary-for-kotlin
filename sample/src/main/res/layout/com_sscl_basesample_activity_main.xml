@@ -87,13 +87,6 @@
             android:textAllCaps="false" />
 
         <Button
-            android:id="@+id/banner_new"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/com_sscl_basesample_banner_new"
-            android:textAllCaps="false" />
-
-        <Button
             android:id="@+id/web_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -105,13 +98,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/com_sscl_basesample_number_input_method"
-            android:textAllCaps="false" />
-
-        <Button
-            android:id="@+id/letter_input_method_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/com_sscl_basesample_letter_input_method"
             android:textAllCaps="false" />
 
         <Button

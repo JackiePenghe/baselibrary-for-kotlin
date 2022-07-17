@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
 
 afterEvaluate {
@@ -8,7 +9,7 @@ afterEvaluate {
                 release(MavenPublication) {
                     from components.release
                     groupId 'com.gitee.sscl'
-                    artifactId 'BaseLibrary'
+                    artifactId 'BaseLibraryForKotlin'
                     version '2.3.6'
                 }
             }
@@ -17,11 +18,11 @@ afterEvaluate {
 }
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 33
     }
 
 
@@ -51,4 +52,8 @@ dependencies {
     api 'androidx.recyclerview:recyclerview:1.2.1'
     //使用全新的开屏页
     api "androidx.core:core-splashscreen:1.0.0-rc01"
+    implementation "androidx.core:core-ktx:1.8.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
 }

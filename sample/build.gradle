@@ -1,12 +1,13 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.sscl.basesample"
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 46
         versionName "1.1.0"
 
@@ -42,5 +43,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
     //基础库
     implementation project(':baselibrary')
+    implementation "androidx.core:core-ktx:1.6.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 //    implementation 'com.gitee.sscl:BaseLibrary:2.3.6'
 }
