@@ -24,7 +24,6 @@
     <string name="com_sscl_basesample_confirm">确认</string>
     <string name="com_sscl_basesample_select_text_file">选择文本文件</string>
     <string name="com_sscl_basesample_select_binary_file">选择二进制</string>
-    <string name="com_sscl_basesample_image_loader">图片加载</string>
     <string name="com_sscl_basesample_flow_layout">流式布局</string>
     <string name="com_sscl_basesample_select_image_file">选择图片文件</string>
     <string name="com_sscl_basesample_number_input_method">自定义数字键盘</string>

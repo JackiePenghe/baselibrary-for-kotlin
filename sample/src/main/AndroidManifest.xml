@@ -30,9 +30,6 @@
             android:name=".activities.sample.CustomPasswordViewActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.sample.LetterInputMethodActivity"
-            android:exported="true" />
-        <activity
             android:name=".activities.sample.NumberInputMethodActivity"
             android:exported="true" />
         <activity
@@ -43,12 +40,6 @@
             android:exported="true"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar.FullScreen" />
-        <activity
-            android:name=".activities.sample.SampleBannerActivity"
-            android:exported="true" />
-        <activity
-            android:name=".activities.sample.ImageLoaderActivity"
-            android:exported="true" />
         <activity
             android:name=".activities.sample.SelectFileActivity"
             android:exported="true">

@@ -73,13 +73,6 @@
             android:textAllCaps="false" />
 
         <Button
-            android:id="@+id/image_loader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/com_sscl_basesample_image_loader"
-            android:textAllCaps="false" />
-
-        <Button
             android:id="@+id/banner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

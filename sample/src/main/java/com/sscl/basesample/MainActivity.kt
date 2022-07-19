@@ -6,7 +6,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import com.sscl.baselibrary.activity.BaseAppCompatActivity
-import com.sscl.baselibrary.receiver.ScreenStatusReceiver
 import com.sscl.baselibrary.receiver.ScreenStatusReceiver.OnScreenStatusChangedListener
 import com.sscl.baselibrary.utils.DebugUtil
 import com.sscl.baselibrary.utils.SharedPreferencesTools
@@ -27,7 +26,6 @@ class MainActivity : BaseAppCompatActivity() {
     private lateinit var toastTestBtn: Button
     private lateinit var widgetBtn: Button
     private lateinit var selectFileBtn: Button
-    private lateinit var imageLoaderBtn: Button
     private lateinit var bannerBtn: Button
     private lateinit var webViewBtn: Button
     private lateinit var numberInputMethodBtn: Button
@@ -38,45 +36,61 @@ class MainActivity : BaseAppCompatActivity() {
 
     private val onClickListener = View.OnClickListener { view: View ->
         var intent: Intent? = null
-        val id = view.id
-        if (id == R.id.all_purpose_adapter) {
-            intent = Intent(this@MainActivity, AllPurposeAdapterActivity::class.java)
-        } else if (id == R.id.base_appcompat_activity) {
-            intent = Intent(this@MainActivity, SampleBaseAppcompatActivity::class.java)
-        } else if (id == R.id.base_drawer_activity) {
-            intent = Intent(this@MainActivity, SampleBaseDrawerActivity::class.java)
-        } else if (id == R.id.base_fragment) {
-            intent = Intent(this@MainActivity, SampleBaseFragmentActivity::class.java)
-        } else if (id == R.id.base_popup_window) {
-            intent = Intent(this@MainActivity, SampleBasePopupWindowActivity::class.java)
-        } else if (id == R.id.home_watcher) {
-            intent = Intent(this@MainActivity, HomeWatcherActivity::class.java)
-        } else if (id == R.id.toast_test) {
-            intent = Intent(this@MainActivity, ToastTestActivity::class.java)
-        } else if (id == R.id.title_left_text) {
-            DebugUtil.warnOut(TAG, "文字左被点击")
-        } else if (id == R.id.title_right_text) {
-            DebugUtil.warnOut(TAG, "文字右被点击")
-        } else if (id == R.id.widget) {
-            intent = Intent(this@MainActivity, WidgetActivity::class.java)
-        } else if (id == R.id.select_file) {
-            intent = Intent(this@MainActivity, SelectFileActivity::class.java)
-        } else if (id == R.id.image_loader) {
-            intent = Intent(this@MainActivity, ImageLoaderActivity::class.java)
-        } else if (id == R.id.banner) {
-            intent = Intent(this@MainActivity, SampleNewBannerActivity::class.java)
-        } else if (id == R.id.web_view) {
-            intent = Intent(this@MainActivity, SampleWebViewActivity::class.java)
-        } else if (id == numberInputMethodBtn.id) {
-            intent = Intent(this@MainActivity, NumberInputMethodActivity::class.java)
-        }  else if (id == customPasswordViewBtn.id) {
-            intent = Intent(this@MainActivity, CustomPasswordViewActivity::class.java)
-        } else if (id == zipFileOperationBtn.id) {
-            intent = Intent(this@MainActivity, ZipFileOperationActivity::class.java)
-        } else if (id == animationTestBtn.id) {
-            intent = Intent(this@MainActivity, AnimationSampleActivity::class.java)
-        } else if (id == sdcardFileTestBtn.id) {
-            intent = Intent(this@MainActivity, SdcardFileTestActivity::class.java)
+        when (view.id) {
+            R.id.all_purpose_adapter -> {
+                intent = Intent(this@MainActivity, AllPurposeAdapterActivity::class.java)
+            }
+            R.id.base_appcompat_activity -> {
+                intent = Intent(this@MainActivity, SampleBaseAppcompatActivity::class.java)
+            }
+            R.id.base_drawer_activity -> {
+                intent = Intent(this@MainActivity, SampleBaseDrawerActivity::class.java)
+            }
+            R.id.base_fragment -> {
+                intent = Intent(this@MainActivity, SampleBaseFragmentActivity::class.java)
+            }
+            R.id.base_popup_window -> {
+                intent = Intent(this@MainActivity, SampleBasePopupWindowActivity::class.java)
+            }
+            R.id.home_watcher -> {
+                intent = Intent(this@MainActivity, HomeWatcherActivity::class.java)
+            }
+            R.id.toast_test -> {
+                intent = Intent(this@MainActivity, ToastTestActivity::class.java)
+            }
+            R.id.title_left_text -> {
+                DebugUtil.warnOut(TAG, "文字左被点击")
+            }
+            R.id.title_right_text -> {
+                DebugUtil.warnOut(TAG, "文字右被点击")
+            }
+            R.id.widget -> {
+                intent = Intent(this@MainActivity, WidgetActivity::class.java)
+            }
+            R.id.select_file -> {
+                intent = Intent(this@MainActivity, SelectFileActivity::class.java)
+            }
+            R.id.banner -> {
+                intent = Intent(this@MainActivity, SampleNewBannerActivity::class.java)
+            }
+            R.id.web_view -> {
+                intent = Intent(this@MainActivity, SampleWebViewActivity::class.java)
+            }
+            numberInputMethodBtn.id -> {
+                intent = Intent(this@MainActivity, NumberInputMethodActivity::class.java)
+            }
+            customPasswordViewBtn.id -> {
+                intent = Intent(this@MainActivity, CustomPasswordViewActivity::class.java)
+            }
+            zipFileOperationBtn.id -> {
+                intent = Intent(this@MainActivity, ZipFileOperationActivity::class.java)
+            }
+            animationTestBtn.id -> {
+                intent = Intent(this@MainActivity, AnimationSampleActivity::class.java)
+            }
+            sdcardFileTestBtn.id -> {
+                intent = Intent(this@MainActivity, SdcardFileTestActivity::class.java)
+            }
         }
         if (intent != null) {
             startActivity(intent)
@@ -135,7 +149,6 @@ class MainActivity : BaseAppCompatActivity() {
         toastTestBtn = findViewById(R.id.toast_test)
         widgetBtn = findViewById(R.id.widget)
         selectFileBtn = findViewById(R.id.select_file)
-        imageLoaderBtn = findViewById(R.id.image_loader)
         bannerBtn = findViewById(R.id.banner)
         webViewBtn = findViewById(R.id.web_view)
         numberInputMethodBtn = findViewById(R.id.number_input_method_btn)
@@ -168,7 +181,6 @@ class MainActivity : BaseAppCompatActivity() {
         toastTestBtn.setOnClickListener(onClickListener)
         widgetBtn.setOnClickListener(onClickListener)
         selectFileBtn.setOnClickListener(onClickListener)
-        imageLoaderBtn.setOnClickListener(onClickListener)
         bannerBtn.setOnClickListener(onClickListener)
         webViewBtn.setOnClickListener(onClickListener)
         numberInputMethodBtn.setOnClickListener(onClickListener)

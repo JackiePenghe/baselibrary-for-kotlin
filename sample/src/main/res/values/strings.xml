@@ -28,7 +28,6 @@
     <string name="com_sscl_basesample_open_file_manager_failed">File manager failed to open</string>
     <string name="com_sscl_basesample_confirm">确认</string>
     <string name="com_sscl_basesample_select_text_file">Select text file</string>
-    <string name="com_sscl_basesample_image_loader">Image loader</string>
     <string name="com_sscl_basesample_banner" translatable="false">banner</string>
     <string name="com_sscl_basesample_web_view" translatable="false">WebView</string>
     <string name="com_sscl_basesample_select_binary_file">select binary file</string>

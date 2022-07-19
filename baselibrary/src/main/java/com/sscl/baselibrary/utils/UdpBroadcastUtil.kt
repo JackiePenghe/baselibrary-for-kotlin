@@ -56,38 +56,37 @@ class UdpBroadcastUtil constructor(
             //判断wifi热点是否打开
             if (isWifiApEnabled(context)) {
                 //直接返回
-                return InetAddress.getByName("192.168.43.255")
-            }
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                val connectivityManager =
-                    context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-                        ?: return InetAddress.getByName("255.255.255.255")
-                val activeNetwork = connectivityManager.activeNetwork
-                    ?: return InetAddress.getByName("255.255.255.255")
-                val linkProperties = connectivityManager.getLinkProperties(activeNetwork)
-                    ?: return InetAddress.getByName("255.255.255.255")
-                val linkAddresses = linkProperties.linkAddresses
-                for (linkAddress in linkAddresses) {
-                    //TODO
-                    if (linkAddress.address is Inet4Address) {
-                        DebugUtil.warnOut(TAG, "linkAddress.address = ${linkAddress.address}")
-                    }
-                }
                 return InetAddress.getByName("255.255.255.255")
-            } else {
-                val wifiManager: WifiManager = context.applicationContext
-                    .getSystemService(Context.WIFI_SERVICE) as WifiManager?
-                    ?: return InetAddress.getByName("255.255.255.255")
-                val dhcp: DhcpInfo =
-                    wifiManager.dhcpInfo ?: return InetAddress.getByName("255.255.255.255")
-                val broadcast: Int = (dhcp.ipAddress and dhcp.netmask) or (dhcp.netmask.inv())
-                val quads = ByteArray(4)
-                for (k in 0..3) {
-                    quads[k] = ((broadcast shr k * 8) and 0xFF).toByte()
-                }
-                return InetAddress.getByAddress(quads)
             }
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+//                val connectivityManager =
+//                    context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+//                        ?: return InetAddress.getByName("255.255.255.255")
+//                val activeNetwork = connectivityManager.activeNetwork
+//                    ?: return InetAddress.getByName("255.255.255.255")
+//                val linkProperties = connectivityManager.getLinkProperties(activeNetwork)
+//                    ?: return InetAddress.getByName("255.255.255.255")
+//                val linkAddresses = linkProperties.linkAddresses
+//                for (linkAddress in linkAddresses) {
+//                    //TODO
+//                    if (linkAddress.address is Inet4Address) {
+//                        DebugUtil.warnOut(TAG, "linkAddress.address = ${linkAddress.address}")
+//                    }
+//                }
+//                return InetAddress.getByName("255.255.255.255")
+//            } else {
+            val wifiManager: WifiManager = context.applicationContext
+                .getSystemService(Context.WIFI_SERVICE) as WifiManager?
+                ?: return InetAddress.getByName("255.255.255.255")
+            val dhcp: DhcpInfo =
+                wifiManager.dhcpInfo ?: return InetAddress.getByName("255.255.255.255")
+            val broadcast: Int = (dhcp.ipAddress and dhcp.netmask) or (dhcp.netmask.inv())
+            val quads = ByteArray(4)
+            for (k in 0..3) {
+                quads[k] = ((broadcast shr k * 8) and 0xFF).toByte()
+            }
+            return InetAddress.getByAddress(quads)
+//            }
         }
 
         /**

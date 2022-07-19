@@ -1,17 +1,12 @@
 package com.sscl.baselibrary.adapter
 
-import android.content.*
-import android.view.*
-import android.widget.*
-import java.util.ArrayList
-
+import android.content.Context
 import android.graphics.Bitmap
-import androidx.annotation.DrawableRes
-import com.sscl.baselibrary.image.ImageLoader
-import androidx.annotation.StringRes
-import androidx.annotation.ColorInt
-import androidx.annotation.IdRes
-import androidx.annotation.LayoutRes
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.*
+import androidx.annotation.*
 
 /**
  * ListView万能适配器
@@ -194,11 +189,7 @@ abstract class BasePurposeAdapter<T> constructor(
         val position: Int
     ) {
         /*--------------------------------成员变量--------------------------------*/
-        /**
-         * 获取当前位置
-         *
-         * @return 当前位置
-         */
+
         /**
          * 获取item的整个布局控件
          *
@@ -209,10 +200,6 @@ abstract class BasePurposeAdapter<T> constructor(
          */
         val convertView: View
 
-        /**
-         * 图片加载工具
-         */
-        private val imageLoader: ImageLoader?
         /*--------------------------------公开函数--------------------------------*/
         /**
          * 根据控件的Id获取控件(先从缓存中获取，如果没有则findViewById,然后保存到缓存)
@@ -320,27 +307,6 @@ abstract class BasePurposeAdapter<T> constructor(
         }
 
         /**
-         * 为ImageView设置图片
-         *
-         * @param viewId   控件的Id
-         * @param url      图片的网络地址
-         * @param isCircle 是否将图片显示为圆形
-         * @return ViewHolder本类
-         */
-        @Suppress("unused")
-        fun setImageByUrl(
-            @IdRes viewId: Int,
-            url: String,
-            isCircle: Boolean
-        ): ViewHolder {
-            val view: View = (getView<View>(viewId)) ?: return this
-            if (view is ImageView) {
-                imageLoader?.displayImage(url, view, isCircle)
-            }
-            return this
-        }
-
-        /**
          * 给view设置背景色
          *
          * @param viewId 控件的Id
@@ -388,7 +354,6 @@ abstract class BasePurposeAdapter<T> constructor(
         init {
             convertView = LayoutInflater.from(context).inflate(itemLayoutId, parent, false)
             convertView.tag = this
-            imageLoader = ImageLoader.getInstance(context)
         }
     }
     /*--------------------------------构造方法--------------------------------*/

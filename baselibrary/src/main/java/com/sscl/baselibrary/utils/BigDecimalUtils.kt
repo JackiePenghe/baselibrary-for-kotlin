@@ -1,6 +1,7 @@
 package com.sscl.baselibrary.utils
 
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 /**
  * Android 精确算法
@@ -21,7 +22,7 @@ object BigDecimalUtils {
         }
         val b1 = BigDecimal(addend1)
         val b2 = BigDecimal(addend2)
-        return b1.add(b2).setScale(scale, BigDecimal.ROUND_HALF_UP).toString()
+        return b1.add(b2).setScale(scale, RoundingMode.HALF_UP).toString()
     }
 
     /**
@@ -36,9 +37,9 @@ object BigDecimalUtils {
         if (scale < 0) {
             throw RuntimeException("scale value must be greater or equal to 0")
         }
-        val b1: BigDecimal = BigDecimal(subtracted)
-        val b2: BigDecimal = BigDecimal(minus)
-        return b1.subtract(b2).setScale(scale, BigDecimal.ROUND_HALF_UP).toString()
+        val b1 = BigDecimal(subtracted)
+        val b2 = BigDecimal(minus)
+        return b1.subtract(b2).setScale(scale, RoundingMode.HALF_UP).toString()
     }
 
     /**
@@ -53,9 +54,9 @@ object BigDecimalUtils {
         if (scale < 0) {
             throw RuntimeException("scale value must be greater or equal to 0")
         }
-        val b1: BigDecimal = BigDecimal(multiplier1)
-        val b2: BigDecimal = BigDecimal(multiplier2)
-        return b1.multiply(b2).setScale(scale, BigDecimal.ROUND_HALF_UP).toString()
+        val b1 = BigDecimal(multiplier1)
+        val b2 = BigDecimal(multiplier2)
+        return b1.multiply(b2).setScale(scale, RoundingMode.HALF_UP).toString()
     }
 
     /**
@@ -70,9 +71,9 @@ object BigDecimalUtils {
         if (scale < 0) {
             throw RuntimeException("scale value must be greater or equal to 0")
         }
-        val b1: BigDecimal = BigDecimal(dividend)
-        val b2: BigDecimal = BigDecimal(divisor)
-        return b1.divide(b2, scale, BigDecimal.ROUND_HALF_UP).toString()
+        val b1 = BigDecimal(dividend)
+        val b2 = BigDecimal(divisor)
+        return b1.divide(b2, scale, RoundingMode.HALF_UP).toString()
     }
 
     /**
@@ -86,8 +87,8 @@ object BigDecimalUtils {
         if (scale < 0) {
             throw RuntimeException("scale value must be greater or equal to 0")
         }
-        val b: BigDecimal = BigDecimal(value)
-        return b.setScale(scale, BigDecimal.ROUND_HALF_UP).toDouble()
+        val b = BigDecimal(value)
+        return b.setScale(scale, RoundingMode.HALF_UP).toDouble()
     }
 
     /**
@@ -101,8 +102,8 @@ object BigDecimalUtils {
         if (scale < 0) {
             throw RuntimeException("scale value must be greater or equal to 0")
         }
-        val b: BigDecimal = BigDecimal(value)
-        return b.setScale(scale, BigDecimal.ROUND_HALF_UP).toString()
+        val b = BigDecimal(value)
+        return b.setScale(scale, RoundingMode.HALF_UP).toString()
     }
 
     /**
@@ -117,9 +118,9 @@ object BigDecimalUtils {
         if (scale < 0) {
             throw RuntimeException("scale value must be greater or equal to 0")
         }
-        val b1: BigDecimal = BigDecimal(dividend)
-        val b2: BigDecimal = BigDecimal(divisor)
-        return b1.remainder(b2).setScale(scale, BigDecimal.ROUND_HALF_UP).toString()
+        val b1 = BigDecimal(dividend)
+        val b2 = BigDecimal(divisor)
+        return b1.remainder(b2).setScale(scale, RoundingMode.HALF_UP).toString()
     }
 
     /**
@@ -130,8 +131,8 @@ object BigDecimalUtils {
      * @return 如果v1 大于v2 则 返回true 否则false
      */
     fun compare(value1: String?, value2: String?): Boolean {
-        val b1: BigDecimal = BigDecimal(value1)
-        val b2: BigDecimal = BigDecimal(value2)
+        val b1 = BigDecimal(value1)
+        val b2 = BigDecimal(value2)
         val bj: Int = b1.compareTo(b2)
         return bj > 0
     }
@@ -144,8 +145,8 @@ object BigDecimalUtils {
      * @return 如果v1 大于或等于 v2 则 返回true 否则false
      */
     fun compareWithEqual(value1: String?, value2: String?): Boolean {
-        val b1: BigDecimal = BigDecimal(value1)
-        val b2: BigDecimal = BigDecimal(value2)
+        val b1 = BigDecimal(value1)
+        val b2 = BigDecimal(value2)
         val bj: Int = b1.compareTo(b2)
         return bj >= 0
     }
