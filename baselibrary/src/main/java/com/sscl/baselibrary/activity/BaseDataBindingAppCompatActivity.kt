@@ -54,10 +54,6 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
     }
 
     /*--------------------------------抽象方法--------------------------------*/
-    /**
-     * 标题栏的返回按钮被按下的时候回调此方法
-     */
-    abstract fun titleBackClicked(): Boolean
 
     /**
      * 在设置布局之前需要进行的操作
