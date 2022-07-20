@@ -51,4 +51,5 @@
     <string name="com_sscl_basesample_sdcard_file_test">sd card root dir read/wrte test</string>
     <string name="com_sscl_basesample_read_file">read file</string>
     <string name="com_sscl_basesample_write_file">write file</string>
+    <string name="com_sscl_basesample_sample_data_binging" translatable="false">sample data binging</string>
 </resources>

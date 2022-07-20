@@ -33,6 +33,7 @@ class MainActivity : BaseAppCompatActivity() {
     private lateinit var zipFileOperationBtn: Button
     private lateinit var animationTestBtn: Button
     private lateinit var sdcardFileTestBtn: Button
+    private lateinit var sampleDataBindingBtn: Button
 
     private val onClickListener = View.OnClickListener { view: View ->
         var intent: Intent? = null
@@ -90,6 +91,9 @@ class MainActivity : BaseAppCompatActivity() {
             }
             sdcardFileTestBtn.id -> {
                 intent = Intent(this@MainActivity, SdcardFileTestActivity::class.java)
+            }
+            sampleDataBindingBtn.id->{
+                intent = Intent(this@MainActivity, SampleDataBindingActivity::class.java)
             }
         }
         if (intent != null) {
@@ -156,6 +160,7 @@ class MainActivity : BaseAppCompatActivity() {
         zipFileOperationBtn = findViewById(R.id.zip_file_operation_btn)
         animationTestBtn = findViewById(R.id.animation_test_btn)
         sdcardFileTestBtn = findViewById(R.id.sdcard_file_test_btn)
+        sampleDataBindingBtn = findViewById(R.id.sample_data_binding_btn)
     }
 
     /**
@@ -188,6 +193,7 @@ class MainActivity : BaseAppCompatActivity() {
         zipFileOperationBtn.setOnClickListener(onClickListener)
         animationTestBtn.setOnClickListener(onClickListener)
         sdcardFileTestBtn.setOnClickListener(onClickListener)
+        sampleDataBindingBtn.setOnClickListener(onClickListener)
     }
 
     /**

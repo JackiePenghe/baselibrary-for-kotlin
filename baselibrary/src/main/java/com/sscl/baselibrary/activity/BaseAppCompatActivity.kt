@@ -22,7 +22,8 @@ import com.sscl.baselibrary.R
  */
 abstract class BaseAppCompatActivity : AppCompatActivity() {
     /*--------------------------------静态常量--------------------------------*/
-    protected val TAG: String = javaClass.getSimpleName()
+    @Suppress("PropertyName")
+    protected val TAG: String = javaClass.simpleName
     /*--------------------------------成员变量--------------------------------*/
     /**
      * 标题
@@ -43,7 +44,8 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
     /**
      * 子类继承此类之后，设置的布局都在FrameLayout中
      */
-    private var content: FrameLayout? = null
+    @Suppress("MemberVisibilityCanBePrivate")
+    protected var contentView: FrameLayout? = null
 
     /**
      * 标题栏的文字
@@ -57,6 +59,7 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
     /**
      * 整个BaseActivity的根布局（setContentLayout传入的布局）
      */
+    @Suppress("MemberVisibilityCanBePrivate")
     protected var rootView: LinearLayout? = null
         private set
 
@@ -76,34 +79,34 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
         doAfterAll()
     }
 
-    public override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         //创建菜单选项
         return createOptionsMenu(menu)
     }
 
-    public override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         //菜单的选项被点击时的处理
         return optionsItemSelected(item)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        toolbar!!.setNavigationOnClickListener(null)
+        toolbar?.setNavigationOnClickListener(null)
         toolbar = null
         mTitleBackButtonOnClickListener = null
-        content!!.removeAllViews()
-        content = null
+        contentView?.removeAllViews()
+        contentView = null
     }
     /*--------------------------------抽象方法--------------------------------*/
     /**
      * 标题栏的返回按钮被按下的时候回调此方法
      */
-    protected abstract fun titleBackClicked(): Boolean
+    abstract fun titleBackClicked(): Boolean
 
     /**
      * 在设置布局之前需要进行的操作
      */
-    protected abstract fun doBeforeSetLayout()
+    abstract fun doBeforeSetLayout()
 
     /**
      * 设置布局
@@ -111,37 +114,37 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @return 布局id
      */
     @LayoutRes
-    protected abstract fun setLayout(): Int
+    abstract fun setLayout(): Int
 
     /**
      * 在设置布局之后，进行其他操作之前，所需要初始化的数据
      */
-    protected abstract fun doBeforeInitOthers()
+    abstract fun doBeforeInitOthers()
 
     /**
      * 初始化布局控件
      */
-    protected abstract fun initViews()
+    abstract fun initViews()
 
     /**
      * 初始化控件数据
      */
-    protected abstract fun initViewData()
+    abstract fun initViewData()
 
     /**
      * 初始化其他数据
      */
-    protected abstract fun initOtherData()
+    abstract fun initOtherData()
 
     /**
      * 初始化事件
      */
-    protected abstract fun initEvents()
+    abstract fun initEvents()
 
     /**
      * 在最后进行的操作
      */
-    protected abstract fun doAfterAll()
+    abstract fun doAfterAll()
 
     /**
      * 设置菜单
@@ -149,7 +152,7 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param menu 菜单
      * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
      */
-    protected abstract fun createOptionsMenu(menu: Menu): Boolean
+    abstract fun createOptionsMenu(menu: Menu): Boolean
 
     /**
      * 设置菜单监听
@@ -157,7 +160,7 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param item 菜单的item
      * @return true表示处理了监听事件
      */
-    protected abstract fun optionsItemSelected(item: MenuItem): Boolean
+    abstract fun optionsItemSelected(item: MenuItem): Boolean
     /*--------------------------------私有方法--------------------------------*/
     /**
      * 初始化本类固定的控件
@@ -165,7 +168,7 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
     private fun initThisView() {
         toolbar = findViewById(R.id.toolbar)
         titleView = findViewById(R.id.toolbar_title)
-        content = findViewById(R.id.base_frame_content)
+        contentView = findViewById(R.id.base_frame_content)
         rootView = findViewById(R.id.base_root_view)
     }
 
@@ -173,9 +176,9 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * 初始化本类固定的数据
      */
     private fun initThisData() {
-        titleView!!.setText(R.string.com_jackiepenghe_app_title)
+        titleView?.setText(R.string.com_jackiepenghe_app_title)
         setSupportActionBar(toolbar)
-        val supportActionBar: ActionBar? = getSupportActionBar()
+        val supportActionBar: ActionBar? = supportActionBar
         if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true)
             //设置返回键可用
@@ -187,15 +190,15 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
         if (layoutResId == 0) {
             throw RuntimeException("setLayout with wrong layout resource id")
         }
-        val view: View = getLayoutInflater().inflate(layoutResId, null)
-        content!!.addView(view)
+        val view: View = layoutInflater.inflate(layoutResId, null)
+        contentView?.addView(view)
     }
 
     /**
      * 初始化本类固定的事件
      */
     private fun initThisEvents() {
-        toolbar!!.setNavigationOnClickListener(mTitleBackButtonOnClickListener)
+        toolbar?.setNavigationOnClickListener(mTitleBackButtonOnClickListener)
     }
     /*--------------------------------子类可用方法--------------------------------*/
     /**
@@ -211,28 +214,24 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * 隐藏标题栏的返回按钮
      */
     protected fun hideTitleBackButton() {
-        val supportActionBar: ActionBar? = getSupportActionBar()
-        if (null == supportActionBar) {
-            throw RuntimeException("toolbar is null!Please invoke this method after method \"setLayout()\"")
-        }
+        val supportActionBar: ActionBar = supportActionBar
+            ?: throw RuntimeException("toolbar is null!Please invoke this method after method \"setLayout()\"")
         //左侧不添加默认的返回图标
         supportActionBar.setDisplayHomeAsUpEnabled(false)
         //设置返回键不可用
-        getSupportActionBar()!!.setHomeButtonEnabled(false)
+        getSupportActionBar()?.setHomeButtonEnabled(false)
     }
 
     /**
      * 显示标题栏的返回按钮
      */
     protected fun showTitleBackButton() {
-        val supportActionBar: ActionBar? = getSupportActionBar()
-        if (null == supportActionBar) {
-            throw RuntimeException("toolbar is null!Please invoke this method after method \"setLayout()\"")
-        }
+        val supportActionBar: ActionBar = supportActionBar
+            ?: throw RuntimeException("toolbar is null!Please invoke this method after method \"setLayout()\"")
         //左侧添加一个默认的返回图标
         supportActionBar.setDisplayHomeAsUpEnabled(true)
         //设置返回键可用
-        getSupportActionBar()!!.setHomeButtonEnabled(true)
+        getSupportActionBar()?.setHomeButtonEnabled(true)
     }
 
     /**
@@ -241,7 +240,7 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param drawableRes 背景色
      */
     protected fun setRootBackGroundResource(@DrawableRes drawableRes: Int) {
-        rootView!!.setBackgroundResource(drawableRes)
+        rootView?.setBackgroundResource(drawableRes)
     }
 
     /**
@@ -250,17 +249,15 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param color 背景色
      */
     protected fun setRootBackGroundColor(@ColorInt color: Int) {
-        rootView!!.setBackgroundColor(color)
+        rootView?.setBackgroundColor(color)
     }
 
     /**
      * 隐藏标题栏
      */
     protected fun hideTitleBar() {
-        val supportActionBar: ActionBar? = getSupportActionBar()
-        if (null == supportActionBar) {
-            throw RuntimeException("supportActionBar is null!Please invoke this method after method \"setLayout()\"")
-        }
+        val supportActionBar: ActionBar = supportActionBar
+            ?: throw RuntimeException("toolbar is null!Please invoke this method after method \"setLayout()\"")
         supportActionBar.hide()
     }
 
@@ -268,10 +265,9 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * 显示标题栏
      */
     protected fun showTitleBar() {
-        val supportActionBar: ActionBar? = getSupportActionBar()
-        if (supportActionBar != null) {
-            supportActionBar.show()
-        }
+        val supportActionBar: ActionBar = supportActionBar
+            ?: throw RuntimeException("toolbar is null!Please invoke this method after method \"setLayout()\"")
+        supportActionBar.show()
     }
 
     /**
@@ -280,10 +276,9 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param titleRes 标题栏的资源id
      */
     protected fun setTitleText(@StringRes titleRes: Int) {
-        if (null == titleView) {
-            throw RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"")
-        }
-        titleView!!.setText(titleRes)
+        val titleView = titleView
+            ?: throw RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"")
+        titleView.setText(titleRes)
     }
 
     /**
@@ -292,10 +287,9 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param titleText 标题栏的文本
      */
     protected fun setTitleText(titleText: String?) {
-        if (null == titleView) {
-            throw RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"")
-        }
-        titleView!!.setText(titleText)
+        val titleView = titleView
+            ?: throw RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"")
+        titleView.text = titleText
     }
 
     /**
@@ -304,10 +298,9 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param color 文本颜色
      */
     protected fun setTitleTextColor(@ColorInt color: Int) {
-        if (titleView == null) {
-            throw RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"")
-        }
-        titleView!!.setTextColor(color)
+        val titleView = titleView
+            ?: throw RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"")
+        titleView.setTextColor(color)
     }
 
     /**
@@ -316,10 +309,9 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param color 标题栏的背景色
      */
     protected fun setTitleBackgroundColor(@ColorInt color: Int) {
-        if (titleView == null) {
-            throw RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"")
-        }
-        titleView!!.setBackgroundColor(color)
+        val titleView = titleView
+            ?: throw RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"")
+        titleView.setBackgroundColor(color)
     }
 
     /**
@@ -328,10 +320,9 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param drawable 标题栏的背景
      */
     protected fun setTitleBackgroundDrawable(drawable: Drawable?) {
-        if (toolbar == null) {
-            throw RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"")
-        }
-        toolbar!!.setBackground(drawable)
+        val toolbar = toolbar
+            ?: throw RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"")
+        toolbar.background = drawable
     }
 
     /**
@@ -340,10 +331,9 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param drawableRes 标题栏的背景
      */
     protected fun setTitleBackgroundResource(@DrawableRes drawableRes: Int) {
-        if (toolbar == null) {
-            throw RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"")
-        }
-        toolbar!!.setBackgroundResource(drawableRes)
+        val toolbar = toolbar
+            ?: throw RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"")
+        toolbar.setBackgroundResource(drawableRes)
     }
 
     /**
@@ -362,16 +352,8 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param drawableId 标题栏左边的图片资源id
      */
     protected fun setTitleBackIcon(@DrawableRes drawableId: Int) {
-        toolbar!!.setNavigationIcon(drawableId)
+        val toolbar = toolbar
+            ?: throw RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"")
+        toolbar.setNavigationIcon(drawableId)
     }
-
-    /**
-     * 获取Activity布局的整个布局
-     *
-     * @return Activity布局的整个布局
-     */
-    protected val contentView: FrameLayout
-        protected get() {
-            return (content)!!
-        }
 }

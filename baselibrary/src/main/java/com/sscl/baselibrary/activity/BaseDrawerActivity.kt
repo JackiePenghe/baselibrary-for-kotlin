@@ -23,6 +23,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import com.google.android.material.navigation.NavigationView
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.GravityCompat
 import androidx.annotation.MenuRes
 
@@ -35,6 +36,7 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
 
     /*--------------------------------静态常量--------------------------------*/
 
+    @Suppress("PropertyName")
     protected val TAG: String = javaClass.simpleName
 
     /*--------------------------------成员变量--------------------------------*/
@@ -86,6 +88,7 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
     /**
      * 子类继承此类之后，设置的布局都在FrameLayout中
      */
+    @Suppress("MemberVisibilityCanBePrivate")
     protected lateinit var contentView: FrameLayout
         private set
 
@@ -186,14 +189,15 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
         initOtherData()
         initEvents()
         doAfterAll()
-    }
-
-    override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
+        onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                } else {
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
     }
 
     override fun onDestroy() {
@@ -219,7 +223,7 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
     /**
      * 在设置布局之前需要进行的操作
      */
-    protected abstract fun doBeforeSetLayout()
+    abstract fun doBeforeSetLayout()
 
     /**
      * 设置布局
@@ -227,37 +231,37 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
      * @return 布局id
      */
     @LayoutRes
-    protected abstract fun setLayout(): Int
+    abstract fun setLayout(): Int
 
     /**
      * 在设置布局之后，进行其他操作之前，所需要初始化的数据
      */
-    protected abstract fun doBeforeInitOthers()
+    abstract fun doBeforeInitOthers()
 
     /**
      * 初始化布局控件
      */
-    protected abstract fun initViews()
+    abstract fun initViews()
 
     /**
      * 初始化控件数据
      */
-    protected abstract fun initViewData()
+    abstract fun initViewData()
 
     /**
      * 初始化其他数据
      */
-    protected abstract fun initOtherData()
+    abstract fun initOtherData()
 
     /**
      * 初始化事件
      */
-    protected abstract fun initEvents()
+    abstract fun initEvents()
 
     /**
      * 在最后执行的操作
      */
-    protected abstract fun doAfterAll()
+    abstract fun doAfterAll()
 
     /**
      * 设置菜单
@@ -265,7 +269,7 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
      * @param menu 菜单
      * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
      */
-    protected abstract fun createOptionsMenu(menu: Menu): Boolean
+    abstract fun createOptionsMenu(menu: Menu): Boolean
 
     /**
      * 设置菜单监听
@@ -273,7 +277,7 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
      * @param item 菜单的item
      * @return true表示处理了监听事件
      */
-    protected abstract fun optionsItemSelected(item: MenuItem): Boolean
+    abstract fun optionsItemSelected(item: MenuItem): Boolean
 
     /**
      * DrawerLayout的滑动监听
@@ -281,28 +285,28 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
      * @param drawerView  侧边栏
      * @param slideOffset 滑动距离
      */
-    protected abstract fun drawerSlide(drawerView: View?, slideOffset: Float)
+    abstract fun drawerSlide(drawerView: View?, slideOffset: Float)
 
     /**
      * DrawerLayout已经完全打开了
      *
      * @param drawerView 侧边栏
      */
-    protected abstract fun drawerOpened(drawerView: View?)
+    abstract fun drawerOpened(drawerView: View?)
 
     /**
      * DrawerLayout已经完全关闭了
      *
      * @param drawerView 侧边栏
      */
-    protected abstract fun drawerClosed(drawerView: View?)
+    abstract fun drawerClosed(drawerView: View?)
 
     /**
      * DrawerLayout的状态改变了
      *
      * @param newState 新的状态
      */
-    protected abstract fun drawerStateChanged(newState: Int)
+    abstract fun drawerStateChanged(newState: Int)
 
     /**
      * 获取侧边栏的头部的资源id，如果不设置此选项，会以默认的头部布局进行填充
@@ -310,7 +314,7 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
      * @return 侧边栏的头部的资源id
      */
     @LayoutRes
-    protected abstract fun setNavigationViewHeaderViewLayoutResId(): Int
+    abstract fun setNavigationViewHeaderViewLayoutResId(): Int
 
     /**
      * 获取侧边栏的菜单的资源id，如果不设置此选项，会以默认的菜单进行填充
@@ -318,14 +322,14 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
      * @return 侧边栏的菜单的资源id
      */
     @MenuRes
-    protected abstract fun setNavigationMenuResId(): Int
+    abstract fun setNavigationMenuResId(): Int
 
     /**
      * 侧边栏选项被选中时执行的回调
      *
      * @param menuItemId 被选中的侧边栏选项ID
      */
-    protected abstract fun navigationItemSelected(@IdRes menuItemId: Int)
+    abstract fun navigationItemSelected(@IdRes menuItemId: Int)
     /*--------------------------------子类可用方法--------------------------------*/
     /**
      * 关闭侧边栏
