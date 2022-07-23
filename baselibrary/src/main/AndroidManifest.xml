@@ -40,11 +40,12 @@
         android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
 
+    <!--suppress AndroidUnknownAttribute -->
     <application
-        android:networkSecurityConfig="@xml/com_jackiepenghe_activity_network_security_config"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         tools:targetApi="n">
+        <!--suppress AndroidUnknownAttribute -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
