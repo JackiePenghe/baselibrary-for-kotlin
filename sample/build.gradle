@@ -3,12 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 33
+    compileSdk 31
 
     defaultConfig {
         applicationId "com.sscl.basesample"
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdk 31
         versionCode 46
         versionName "1.1.0"
 

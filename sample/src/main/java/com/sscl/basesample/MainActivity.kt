@@ -92,7 +92,7 @@ class MainActivity : BaseAppCompatActivity() {
             sdcardFileTestBtn.id -> {
                 intent = Intent(this@MainActivity, SdcardFileTestActivity::class.java)
             }
-            sampleDataBindingBtn.id->{
+            sampleDataBindingBtn.id -> {
                 intent = Intent(this@MainActivity, SampleDataBindingActivity::class.java)
             }
         }

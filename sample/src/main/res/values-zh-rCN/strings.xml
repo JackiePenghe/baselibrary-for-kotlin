@@ -44,4 +44,6 @@
     <string name="com_sscl_basesample_sdcard_file_test">SD卡根目录读写测试</string>
     <string name="com_sscl_basesample_read_file">读文件</string>
     <string name="com_sscl_basesample_write_file">写文件</string>
+    <string name="com_sscl_basesample_sample_data_binging">data binging示例</string>
+    <string name="change_text">更改文本内容</string>
 </resources>

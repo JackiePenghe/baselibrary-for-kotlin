@@ -11,7 +11,7 @@ afterEvaluate {
                     from components.release
                     groupId 'com.gitee.sscl'
                     artifactId 'BaseLibraryForKotlin'
-                    version '2.3.8'
+                    version '2.3.9'
                 }
             }
         }
@@ -19,17 +19,22 @@ afterEvaluate {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdk 31
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 33
+        minSdk 21
+        targetSdk 31
     }
 
     dataBinding {
         enabled = true
     }
-
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
