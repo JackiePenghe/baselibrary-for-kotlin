@@ -2,14 +2,14 @@ package com.sscl.basesample.activities.sample
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
-import com.sscl.baselibrary.adapter.FragmentViewPagerAdapter
+import com.google.android.material.tabs.TabLayoutMediator
 import com.sscl.baselibrary.utils.Tool
 import com.sscl.basesample.R
 import com.sscl.basesample.fragment.SampleFragment1
@@ -23,7 +23,7 @@ class SampleBaseFragmentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.com_sscl_basesample_activity_sample_base_fragment)
-        val viewPager: ViewPager = findViewById(R.id.view_pager)
+        val viewPager2: ViewPager2 = findViewById(R.id.view_pager2)
         val tabLayout: TabLayout = findViewById(R.id.tab_layout)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.setTitle(R.string.com_jackiepenghe_app_title)
@@ -40,10 +40,24 @@ class SampleBaseFragmentActivity : AppCompatActivity() {
         val sampleFragment2 = SampleFragment2()
         val fragments = arrayOf<Fragment>(sampleFragment1, sampleFragment2)
         val titles = arrayOf("fragment1", "fragment2")
-        val fragmentViewPagerAdapter =
-            FragmentViewPagerAdapter(supportFragmentManager, fragments, titles)
-        viewPager.adapter = fragmentViewPagerAdapter
-        tabLayout.setupWithViewPager(viewPager)
+        val fragmentViewPagerAdapter = object :FragmentStateAdapter(this){
+
+            override fun getItemCount(): Int {
+               return fragments.size
+            }
+            override fun createFragment(position: Int): Fragment {
+                return fragments[position]
+            }
+
+        }
+        viewPager2.adapter = fragmentViewPagerAdapter
+        initTabLayout(tabLayout, titles, viewPager2)
+    }
+
+    private fun initTabLayout(tabLayout: TabLayout, titles: Array<String>, viewPager2: ViewPager2) {
+        TabLayoutMediator(tabLayout,viewPager2){tab, position ->
+            tab.text = titles[position]
+        }.attach()
     }
 
     companion object {

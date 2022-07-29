@@ -56,17 +56,9 @@ dependencies {
     //design库
     implementation 'com.google.android.material:material:1.6.1'
     //SwipeRefreshLayout库
-    api 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    //RecyclerView适配器库
-    api 'androidx.recyclerview:recyclerview:1.2.1'
+    compileOnly 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     //使用全新的开屏页
-    api "androidx.core:core-splashscreen:1.0.0-rc01"
+    compileOnly "androidx.core:core-splashscreen:1.0.0-rc01"
     implementation "androidx.core:core-ktx:1.8.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    /* * * * * * * * * * * * * * * * * * * ViewModel库开始 * * * * * * * * * * * * * * * * * * */
-    //ViewModel库基本
-    api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
-    //ViewModel库高级
-    api "androidx.activity:activity-ktx:1.3.1"
-    /* * * * * * * * * * * * * * * * * * * ViewModel库结束 * * * * * * * * * * * * * * * * * * */
 }

@@ -9,7 +9,9 @@ import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import com.sscl.baselibrary.activity.BaseAppCompatActivity
 import com.sscl.baselibrary.files.FileSystemUtil
-import com.sscl.baselibrary.files.FileSystemUtil.OnFileSelectedListener
+import com.sscl.baselibrary.files.FileSystemUtil.onStartActivity
+import com.sscl.baselibrary.files.FileSystemUtil.openSystemFile
+import com.sscl.baselibrary.files.FileSystemUtil.setOnFileSelectedListener
 import com.sscl.baselibrary.utils.DebugUtil
 import com.sscl.baselibrary.utils.ToastUtil
 import com.sscl.basesample.R
@@ -53,8 +55,14 @@ class SelectFileActivity : BaseAppCompatActivity() {
             }
         }
     }
-    private val onFileSelectedListener: OnFileSelectedListener = object : OnFileSelectedListener {
-            override fun fileSelected(requestCode: Int, uri: Uri?, filePath: String?) {
+    private var requestCode = 0
+    private val onFileSelectedListener: FileSystemUtil.OnFragmentActivityFileSelectedListener =
+        object : FileSystemUtil.OnFragmentActivityFileSelectedListener {
+            override fun fileSelected(
+                resultCode: Int,
+                uri: Uri?,
+                filePath: String?
+            ) {
                 when (requestCode) {
                     SELECT_ANY_FILE -> showDialog(
                         getString(R.string.com_sscl_basesample_select_any_file),
@@ -89,15 +97,14 @@ class SelectFileActivity : BaseAppCompatActivity() {
     /**
      * 标题栏的返回按钮被按下的时候回调此方法
      */
-   override fun titleBackClicked(): Boolean {
-        onBackPressed()
-        return true
+    override fun titleBackClicked(): Boolean {
+        return false
     }
 
     /**
      * 在设置布局之前需要进行的操作
      */
-   override fun doBeforeSetLayout() {
+    override fun doBeforeSetLayout() {
         intentData
     }
 
@@ -106,19 +113,19 @@ class SelectFileActivity : BaseAppCompatActivity() {
      *
      * @return 布局id
      */
-   override fun setLayout(): Int {
+    override fun setLayout(): Int {
         return R.layout.com_sscl_basesample_activity_select_file
     }
 
     /**
      * 在设置布局之后，进行其他操作之前，所需要初始化的数据
      */
-   override fun doBeforeInitOthers() {}
+    override fun doBeforeInitOthers() {}
 
     /**
      * 初始化布局控件
      */
-   override fun initViews() {
+    override fun initViews() {
         selectAnyFileBtn = findViewById(R.id.select_any_file)
         selectTextFileBtn = findViewById(R.id.select_text_file)
         selectBinaryFileBtn = findViewById(R.id.select_binary_file)
@@ -128,28 +135,28 @@ class SelectFileActivity : BaseAppCompatActivity() {
     /**
      * 初始化控件数据
      */
-   override fun initViewData() {}
+    override fun initViewData() {}
 
     /**
      * 初始化其他数据
      */
-   override fun initOtherData() {}
+    override fun initOtherData() {}
 
     /**
      * 初始化事件
      */
-   override fun initEvents() {
+    override fun initEvents() {
         selectAnyFileBtn!!.setOnClickListener(onClickListener)
         selectTextFileBtn!!.setOnClickListener(onClickListener)
         selectBinaryFileBtn!!.setOnClickListener(onClickListener)
         selectImageFileBtn!!.setOnClickListener(onClickListener)
-        FileSystemUtil.setOnFileSelectedListener(onFileSelectedListener)
+        setOnFileSelectedListener(onFileSelectedListener)
     }
 
     /**
      * 在最后进行的操作
      */
-   override fun doAfterAll() {}
+    override fun doAfterAll() {}
 
     /**
      * 设置菜单
@@ -157,7 +164,7 @@ class SelectFileActivity : BaseAppCompatActivity() {
      * @param menu 菜单
      * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
      */
-   override fun createOptionsMenu(menu: Menu): Boolean {
+    override fun createOptionsMenu(menu: Menu): Boolean {
         return false
     }
 
@@ -167,58 +174,46 @@ class SelectFileActivity : BaseAppCompatActivity() {
      * @param item 菜单的item
      * @return true表示处理了监听事件
      */
-   override fun optionsItemSelected(item: MenuItem): Boolean {
+    override fun optionsItemSelected(item: MenuItem): Boolean {
         return false
     }
 
-    /**
-     * Dispatch incoming result to the correct fragment.
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
-     * @param requestCode requestCode
-     * @param resultCode  resultCode
-     * @param data        data
-     */
-   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        FileSystemUtil.onActivityResult(this, requestCode, resultCode, data)
-    }
+     * 重写方法
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-    /**
-     * Handle onNewIntent() to inform the fragment manager that the
-     * state is not saved.  If you are handling new intents and may be
-     * making changes to the fragment state, you want to be sure to call
-     * through to the super-class here first.  Otherwise, if your state
-     * is saved but the activity is not stopped, you could get an
-     * onNewIntent() call which happens before onResume() and trying to
-     * perform fragment operations at that point will throw IllegalStateException
-     * because the fragment manager thinks the state is still saved.
-     *
-     * @param intent Intent
-     */
-   override fun onNewIntent(intent: Intent) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         getIntentData(intent)
     }
 
+    override fun onStart() {
+        onStartActivity()
+        super.onStart()
+    }
+
     private fun selectAnyFile() {
-        val succeed: Boolean = FileSystemUtil.openSystemFile(this, SELECT_ANY_FILE)
+        requestCode = SELECT_ANY_FILE
+        val succeed: Boolean = openSystemFile()
         if (!succeed) {
             ToastUtil.toastLong(this, R.string.com_sscl_basesample_open_file_manager_failed)
         }
     }
 
     private fun selectTextFile() {
+        requestCode = SELECT_TEXT_FILE
         val succeed: Boolean =
-            FileSystemUtil.openSystemFile(this, SELECT_TEXT_FILE, FileSystemUtil.FileType.TEXT_FILE)
+            openSystemFile(FileSystemUtil.FileType.TEXT_FILE)
         if (!succeed) {
             ToastUtil.toastLong(this, R.string.com_sscl_basesample_open_file_manager_failed)
         }
     }
 
     private fun selectBinaryFile() {
-        val succeed: Boolean = FileSystemUtil.openSystemFile(
-            this,
-            SELECT_BINARY_FILE,
+        requestCode = SELECT_BINARY_FILE
+        val succeed: Boolean = openSystemFile(
             FileSystemUtil.FileType.OCTET_STREAM_FILE
         )
         if (!succeed) {
@@ -227,11 +222,8 @@ class SelectFileActivity : BaseAppCompatActivity() {
     }
 
     private fun selectImageFile() {
-        val succeed: Boolean = FileSystemUtil.openSystemFile(
-            this,
-            SELECT_BINARY_FILE,
-            FileSystemUtil.FileType.IMAGE_FILE
-        )
+        requestCode = SELECT_IMAGE_FILE
+        val succeed: Boolean = openSystemFile(FileSystemUtil.FileType.IMAGE_FILE)
         if (!succeed) {
             ToastUtil.toastLong(this, R.string.com_sscl_basesample_open_file_manager_failed)
         }
@@ -286,6 +278,5 @@ class SelectFileActivity : BaseAppCompatActivity() {
         private const val SELECT_TEXT_FILE = 2
         private const val SELECT_BINARY_FILE = 3
         private const val SELECT_IMAGE_FILE = 4
-        private val TAG = SelectFileActivity::class.java.simpleName
     }
 }

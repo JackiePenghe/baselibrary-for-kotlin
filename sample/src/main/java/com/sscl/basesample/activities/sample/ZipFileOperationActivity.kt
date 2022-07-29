@@ -1,6 +1,5 @@
 package com.sscl.basesample.activities.sample
 
-import android.content.Intent
 import android.net.Uri
 import android.view.Menu
 import android.view.MenuItem
@@ -10,14 +9,15 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.sscl.baselibrary.activity.BaseAppCompatActivity
 import com.sscl.baselibrary.files.FileSystemUtil
-import com.sscl.baselibrary.files.FileSystemUtil.OnFileSelectedListener
+import com.sscl.baselibrary.files.FileSystemUtil.onStartActivity
+import com.sscl.baselibrary.files.FileSystemUtil.openSystemFile
+import com.sscl.baselibrary.files.FileSystemUtil.setOnFileSelectedListener
 import com.sscl.baselibrary.files.FileUtil
 import com.sscl.baselibrary.utils.DebugUtil
 import com.sscl.baselibrary.utils.ToastUtil
 import com.sscl.baselibrary.utils.ZipUtils
 import com.sscl.basesample.R
 import java.io.File
-import java.util.ArrayList
 
 /**
  * zip文件操作界面
@@ -71,10 +71,14 @@ class ZipFileOperationActivity : BaseAppCompatActivity() {
     /**
      * 文件
      */
-    private val onFileSelectedListener: OnFileSelectedListener = object : OnFileSelectedListener {
-        override fun fileSelected(requestCode: Int, uri: Uri?, filePath: String?) {
-            if (requestCode == REQUEST_CODE_ZIP) {
-                DebugUtil.warnOut(TAG, "fileSelected $filePath")
+    private val onFileSelectedListener: FileSystemUtil.OnFragmentActivityFileSelectedListener =
+        object :
+            FileSystemUtil.OnFragmentActivityFileSelectedListener {
+            override fun fileSelected(
+                resultCode: Int,
+                uri: Uri?,
+                filePath: String?
+            ) {
                 if (uri == null || filePath == null) {
                     ToastUtil.toastLong(
                         this@ZipFileOperationActivity,
@@ -82,12 +86,11 @@ class ZipFileOperationActivity : BaseAppCompatActivity() {
                     )
                     return
                 }
-                fileNameTv.setText(filePath)
+                fileNameTv.text = filePath
                 fileUri = uri
                 this@ZipFileOperationActivity.filePath = filePath
             }
         }
-    }
 
     /**
      * 点击事件的处理
@@ -155,7 +158,7 @@ class ZipFileOperationActivity : BaseAppCompatActivity() {
         selectFileBtn.setOnClickListener(onClickListener)
         listFilesBtn.setOnClickListener(onClickListener)
         unzipFileBtn.setOnClickListener(onClickListener)
-        FileSystemUtil.setOnFileSelectedListener(onFileSelectedListener)
+        setOnFileSelectedListener(onFileSelectedListener)
     }
 
     /**
@@ -187,21 +190,15 @@ class ZipFileOperationActivity : BaseAppCompatActivity() {
      * 重写方法
      *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-    /**
-     * Dispatch incoming result to the correct fragment.
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        FileSystemUtil.onActivityResult(this, requestCode, resultCode, data)
+
+    override fun onStart() {
+        onStartActivity()
+        super.onStart()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        FileSystemUtil.setOnFileSelectedListener(null)
+        setOnFileSelectedListener(null as FileSystemUtil.OnFragmentActivityFileSelectedListener?)
     }
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
@@ -213,7 +210,7 @@ class ZipFileOperationActivity : BaseAppCompatActivity() {
      */
     private fun selectFile() {
         val b: Boolean =
-            FileSystemUtil.openSystemFile(this, REQUEST_CODE_ZIP, FileSystemUtil.FileType.ZIP_FILE)
+            openSystemFile(FileSystemUtil.FileType.ZIP_FILE)
         if (!b) {
             ToastUtil.toastLong(this, R.string.com_sscl_basesample_open_file_manager_failed)
         }
@@ -223,10 +220,17 @@ class ZipFileOperationActivity : BaseAppCompatActivity() {
      * 列出压缩包中的文件列表
      */
     private fun listFiles() {
-        if (fileUri == null || filePath == null) {
+        if (fileUri == null) {
             ToastUtil.toastLong(this, R.string.com_sscl_basesample_no_file_selected)
             return
         }
+        if (filePath == null) {
+            ToastUtil.toastLong(this, R.string.com_sscl_basesample_no_file_selected)
+            return
+        }
+        val fileUri = fileUri ?: return
+        DebugUtil.warnOut(TAG, "fileUri:$fileUri")
+        val filePath = filePath ?: return
         val entriesNames = ZipUtils.getEntriesNamesNew(File(filePath))
         showFileListDialog(entriesNames)
     }
@@ -237,8 +241,7 @@ class ZipFileOperationActivity : BaseAppCompatActivity() {
      * @param entriesNames 文件列表
      */
     private fun showFileListDialog(entriesNames: ArrayList<String>?) {
-        val items: Array<String?>
-        items = if (entriesNames != null) {
+        val items: Array<String?> = if (entriesNames != null) {
             val cache = arrayOfNulls<String>(entriesNames.size)
             entriesNames.toArray(cache)
         } else {
@@ -256,10 +259,17 @@ class ZipFileOperationActivity : BaseAppCompatActivity() {
      * 解压文件
      */
     private fun unzipFile() {
-        if (fileUri == null || filePath == null) {
+        if (fileUri == null) {
             ToastUtil.toastLong(this, R.string.com_sscl_basesample_no_file_selected)
             return
         }
+        if (filePath == null) {
+            ToastUtil.toastLong(this, R.string.com_sscl_basesample_no_file_selected)
+            return
+        }
+        val fileUri = fileUri ?: return
+        DebugUtil.warnOut(TAG, "fileUri $fileUri")
+        val filePath = filePath ?: return
         val file = File(filePath)
         DebugUtil.warnOut(TAG, "开始解压")
         ZipUtils.unzip(
@@ -272,7 +282,6 @@ class ZipFileOperationActivity : BaseAppCompatActivity() {
                         this@ZipFileOperationActivity,
                         R.string.com_sscl_basesample_unzip_file_succeed
                     )
-                    //                FileUtil.deleteDirFiles(new File(unzipDir));
                     DebugUtil.warnOut(TAG, "file dir $unzipDir")
                 }
 

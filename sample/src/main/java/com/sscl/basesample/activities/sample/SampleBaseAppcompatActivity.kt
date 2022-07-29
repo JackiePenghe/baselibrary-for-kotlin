@@ -21,9 +21,7 @@ class SampleBaseAppcompatActivity : BaseAppCompatActivity() {
      * 标题栏的返回按钮被按下的时候回调此函数
      */
     override fun titleBackClicked(): Boolean {
-        //一般情况下直接调用onBackPressed即可
-        onBackPressed()
-        return true
+        return false
     }
 
     /**

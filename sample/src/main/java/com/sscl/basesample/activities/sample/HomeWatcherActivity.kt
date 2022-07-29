@@ -28,8 +28,7 @@ class HomeWatcherActivity : BaseAppCompatActivity() {
      * 标题栏的返回按钮被按下的时候回调此函数
      */
     override fun titleBackClicked(): Boolean {
-        onBackPressed()
-        return true
+       return false
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.sscl.baselibrary.files
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
 import android.database.Cursor
@@ -7,6 +8,9 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.FragmentActivity
 import com.sscl.baselibrary.R
 import com.sscl.baselibrary.utils.DebugUtil
 import com.sscl.baselibrary.utils.ToastUtil
@@ -20,6 +24,7 @@ import java.io.IOException
  *
  * @author ALM
  */
+@Suppress("unused", "MemberVisibilityCanBePrivate")
 object FileSystemUtil {
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -274,15 +279,18 @@ object FileSystemUtil {
      *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-    interface OnFileSelectedListener {
-        /**
-         * 选择的文件的路径
-         *
-         * @param requestCode 请求码
-         * @param uri         文件URI
-         * @param filePath    文件路径
-         */
-        fun fileSelected(requestCode: Int, uri: Uri?, filePath: String?)
+    interface OnFragmentActivityFileSelectedListener {
+
+        fun fileSelected(resultCode: Int, uri: Uri?, filePath: String?)
+    }
+
+    interface OnActivityFileSelectedListener {
+        fun fileSelected(
+            requestCode: Int,
+            resultCode: Int,
+            uri: Uri?,
+            filePath: String?
+        )
     }
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -292,7 +300,6 @@ object FileSystemUtil {
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     /* * * * * * * * * * * * * * * * * * * 私有常量 * * * * * * * * * * * * * * * * * * */
-
     private const val PRIMARY = "primary"
     private const val IMAGE = "image"
     private const val VIDEO = "video"
@@ -306,7 +313,15 @@ object FileSystemUtil {
     /**
      * 文件选择路径
      */
-    private var onFileSelectedListener: OnFileSelectedListener? = null
+    private var onActivityFileSelectedListener: OnActivityFileSelectedListener? = null
+
+    private var onFragmentActivityFileSelectedListener: OnFragmentActivityFileSelectedListener? =
+        null
+
+    /**
+     * FragmentActivity 的 startActivityForResult 替代方案
+     */
+    private var intentActivityResultLauncher: ActivityResultLauncher<Intent>? = null
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
@@ -325,12 +340,47 @@ object FileSystemUtil {
      * @param fileType    文件类型
      * @return true表示打开成功
      */
-    fun openSystemFile(
+    fun Activity.openSystemFile(
         activity: Activity,
         requestCode: Int,
         fileType: FileType = FileType.FILE_TYPE_ALL
     ): Boolean {
         return openSystemFile(activity, requestCode, fileType.value)
+    }
+
+    /**
+     * 打开文件管理(需要根据请求码在onActivityResult中获取数据
+     * if(requestCode == your requestCode && resultCode == Activity.RESULT_OK)){
+     * Uri uri = intent.getData;//获取文件uri
+     * }
+     *
+     * @param activity    对应的Activity
+     * @param requestCode 请求码
+     * @param fileType    文件类型
+     * @return true表示打开成功
+     */
+    @Deprecated("FragmentActivity不支持", ReplaceWith("FragmentActivity.openSystemFile(FileType)"))
+    fun FragmentActivity.openSystemFile(
+        activity: Activity,
+        requestCode: Int,
+        fileType: FileType = FileType.FILE_TYPE_ALL
+    ): Boolean {
+        throw IllegalArgumentException("FragmentActivity已弃用此方法")
+    }
+
+    /**
+     * 打开文件管理(需要根据请求码在onActivityResult中获取数据
+     * if(requestCode == your requestCode && resultCode == Activity.RESULT_OK)){
+     * Uri uri = intent.getData;//获取文件uri
+     * }
+     *
+     * @param fileType    文件类型
+     * @return true表示打开成功
+     */
+    fun FragmentActivity.openSystemFile(
+        fileType: FileType = FileType.FILE_TYPE_ALL
+    ): Boolean {
+        return openSystemFile(fileType.value)
     }
 
     /**
@@ -340,6 +390,7 @@ object FileSystemUtil {
      * @param uri     uri
      * @return 文件路径
      */
+    @SuppressLint("SdCardPath")
     fun getPath(context: Context, uri: Uri): String? {
         DebugUtil.warnOut(TAG, "getPath uri $uri")
         if (DocumentsContract.isDocumentUri(context, uri)) {
@@ -351,10 +402,12 @@ object FileSystemUtil {
                 DebugUtil.warnOut(TAG, "file docId $docId")
                 DebugUtil.warnOut(TAG, "file type $type")
                 if (PRIMARY.equals(type, ignoreCase = true)) {
-                    return Environment.getExternalStorageDirectory().toString() + "/" + split[1]
+                    return (context.getExternalFilesDir("")?.absolutePath
+                        ?: "/sdcard") + "/" + split[1]
                 } else {
                     if (type.split("-".toRegex()).toTypedArray().size == 2) {
-                        return Environment.getExternalStorageDirectory().toString() + "/" + split[1]
+                        return (context.getExternalFilesDir("")?.absolutePath
+                            ?: "/sdcard") + "/" + split[1]
                     }
                 }
             } else if (isDownloadsDocument(uri)) {
@@ -404,7 +457,7 @@ object FileSystemUtil {
      * @param fileType    文件类型
      * @return true表示打开成功
      */
-    fun openSystemFile(activity: Activity, requestCode: Int, fileType: String): Boolean {
+    fun Activity.openSystemFile(activity: Activity, requestCode: Int, fileType: String): Boolean {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = fileType
         return try {
@@ -417,6 +470,30 @@ object FileSystemUtil {
     }
 
     /**
+     * 打开文件管理(需要根据请求码在onActivityResult中获取数据
+     * if(requestCode == your requestCode && resultCode == Activity.RESULT_OK)){
+     * Uri uri = intent.getData;//获取文件uri
+     * }
+     *
+     * @param fileType    文件类型
+     * @return true表示打开成功
+     */
+    fun FragmentActivity.openSystemFile(
+        fileType: String
+    ): Boolean {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = fileType
+        return try {
+            intentActivityResultLauncher?.launch(intent)
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+
+    }
+
+    /**
      * 需要将此方法放在onActivityResult中调用
      *
      * @param context     上下文
@@ -424,14 +501,37 @@ object FileSystemUtil {
      * @param resultCode  结果码
      * @param data        数据
      */
-    fun onActivityResult(context: Context, requestCode: Int, resultCode: Int, data: Intent?) {
+    fun Activity.onActivityResult(
+        context: Context,
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
         val uri = getSelectFileUri(data)
         if (uri == null) {
-            onFileSelectedListener?.fileSelected(requestCode, null, null)
+            onActivityFileSelectedListener?.fileSelected(requestCode, resultCode, null, null)
             return
         }
         val filePath = getSelectFilePath(context, uri)
-        onFileSelectedListener?.fileSelected(requestCode, uri, filePath)
+        onActivityFileSelectedListener?.fileSelected(requestCode, resultCode, uri, filePath)
+    }
+
+    /**
+     * 需要将此方法放在onActivityResult中调用
+     *
+     * @param context     上下文
+     * @param requestCode 请求码
+     * @param resultCode  结果码
+     * @param data        数据
+     */
+    @Deprecated("FragmentActivity不支持", ReplaceWith("onStartActivity"))
+    fun FragmentActivity.onActivityResult(
+        context: Context,
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        throw UnsupportedOperationException("onActivityResult 在 FragmentActivity中被废弃了，请使用 onStartActivity 替代")
     }
 
     /**
@@ -448,6 +548,41 @@ object FileSystemUtil {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.setDataAndType(uriFromFile, fileType.value)
         context.startActivity(intent)
+    }
+
+    /**
+     * 在FragmentActivity的 super.onStart 之前调用,注册监听器
+     */
+    fun FragmentActivity.onStartActivity() {
+        //startActivityForResult被弃用，改用ActivityResultLauncher
+        intentActivityResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                DebugUtil.warnOut(TAG, "manage result code " + result.resultCode)
+                val data = result.data
+                val uri = getSelectFileUri(data)
+                if (uri == null) {
+                    onFragmentActivityFileSelectedListener?.fileSelected(
+                        result.resultCode,
+                        null,
+                        null
+                    )
+                    return@registerForActivityResult
+                }
+                val filePath = getSelectFilePath(this, uri)
+                onFragmentActivityFileSelectedListener?.fileSelected(
+                    result.resultCode,
+                    uri,
+                    filePath
+                )
+            }
+    }
+
+    /**
+     * 在FragmentActivity的 super.onStart 之前调用,注册监听器
+     */
+    @Deprecated("Activity 不支持", ReplaceWith("Activity.onActivityResult"))
+    fun Activity.onStartActivity() {
+        throw UnsupportedOperationException("Activity 不支持")
     }
 
     /**
@@ -492,8 +627,7 @@ object FileSystemUtil {
             val file = File(filePath)
             try {
                 fileInputStream = FileInputStream(file)
-                val buffer: ByteArray
-                buffer = if (byteLength == 0) {
+                val buffer: ByteArray = if (byteLength == 0) {
                     val fileSize = fileInputStream.available()
                     ByteArray(fileSize)
                 } else {
@@ -556,8 +690,28 @@ object FileSystemUtil {
         return 0
     }
 
-    fun setOnFileSelectedListener(onFileSelectedListener: OnFileSelectedListener?) {
-        FileSystemUtil.onFileSelectedListener = onFileSelectedListener
+    fun Activity.setOnFileSelectedListener(onFileSelectedListener: OnActivityFileSelectedListener?) {
+        onActivityFileSelectedListener = onFileSelectedListener
+    }
+
+    @Deprecated(
+        "FragmentActivity 不支持",
+        ReplaceWith("FragmentActivity.setOnFileSelectedListener(onFileSelectedListener: OnFragmentActivityFileSelectedListener?)")
+    )
+    fun FragmentActivity.setOnFileSelectedListener(onFileSelectedListener: OnActivityFileSelectedListener?) {
+        throw UnsupportedOperationException("FragmentActivity 不支持")
+    }
+
+    fun FragmentActivity.setOnFileSelectedListener(onFileSelectedListener: OnFragmentActivityFileSelectedListener?) {
+        onFragmentActivityFileSelectedListener = onFileSelectedListener
+    }
+
+    @Deprecated(
+        "Activity 不支持",
+        ReplaceWith("Activity.setOnFileSelectedListener(onFileSelectedListener: OnActivityFileSelectedListener?)")
+    )
+    fun Activity.setOnFileSelectedListener(onFileSelectedListener: OnFragmentActivityFileSelectedListener?) {
+        throw UnsupportedOperationException("Activity 不支持")
     }
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

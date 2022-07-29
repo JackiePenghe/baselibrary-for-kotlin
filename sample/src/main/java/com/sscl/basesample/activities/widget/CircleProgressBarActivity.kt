@@ -19,8 +19,7 @@ class CircleProgressBarActivity : BaseAppCompatActivity() {
      * 标题栏的返回按钮被按下的时候回调此方法
      */
    override fun titleBackClicked(): Boolean {
-        onBackPressed()
-        return true
+        return false
     }
 
     /**
@@ -73,8 +72,7 @@ class CircleProgressBarActivity : BaseAppCompatActivity() {
         val maxProgress: Double = circleProgressBar.maxProgress
         DebugUtil.warnOut(TAG, "maxProgress = $maxProgress")
         circleProgressBar.setProgress(1000.0)
-        BaseManager.handler.postDelayed(
-            Runnable { circleProgressBar.setProgressWithAnimate(3000.0) },
+        BaseManager.handler.postDelayed({ circleProgressBar.setProgressWithAnimate(3000.0) },
             2000
         )
     }
