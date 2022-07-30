@@ -1,5 +1,6 @@
 package com.sscl.baselibrary.files
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Context
 import android.content.Intent
@@ -95,6 +96,7 @@ object FileProviderUtil : FileProvider() {
      * @param uri      文件Uri
      * @param canWrite 是否可写
      */
+    @SuppressLint("QueryPermissionsNeeded")
     fun grantPermissions(context: Context, intent: Intent, uri: Uri, canWrite: Boolean) {
         var flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
         if (canWrite) {
@@ -114,10 +116,10 @@ object FileProviderUtil : FileProvider() {
      * @param uri 文件Uri
      * @return 文件路径
      */
-    fun getPath(context: Context, uri: Uri): String {
+    fun getPath(uri: Uri): String {
         val scheme = uri.scheme
         if (CONTENT_CONTENT != scheme) {
-            throw RuntimeException("Uri scheme error! Need " + CONTENT_CONTENT + ",find " + scheme + ".")
+            throw RuntimeException("Uri scheme error! Need $CONTENT_CONTENT,find $scheme.")
         }
         if (!uri.isAbsolute) {
             throw RuntimeException("Uri must be absolute")
