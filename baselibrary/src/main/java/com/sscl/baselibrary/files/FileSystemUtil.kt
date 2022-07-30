@@ -443,7 +443,7 @@ object FileSystemUtil {
         } else if (FILE.equals(uri.scheme, ignoreCase = true)) {
             return uri.path
         }
-        return FileProviderUtil.getPath(context, uri)
+        return FileProviderUtil.getPath(uri)
     }
 
     /**
@@ -753,10 +753,10 @@ object FileSystemUtil {
                 val columnIndex = cursor.getColumnIndexOrThrow(column)
                 cursor.getString(columnIndex)
             } else {
-                FileProviderUtil.getPath(context, uri)
+                FileProviderUtil.getPath(uri)
             }
         } catch (e: Exception) {
-            result = FileProviderUtil.getPath(context, uri)
+            result = FileProviderUtil.getPath(uri)
         } finally {
             cursor?.close()
         }
