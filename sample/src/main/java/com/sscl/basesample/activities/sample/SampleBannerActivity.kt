@@ -1,36 +1,38 @@
 package com.sscl.basesample.activities.sample
 
-import com.sscl.baselibrary.widget.banner.enums.BannerType
-import com.sscl.baselibrary.widget.banner.BannerData
-import com.sscl.baselibrary.widget.banner.enums.BannerDataType
-import com.sscl.basesample.R
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.os.Environment
-import com.sscl.baselibrary.widget.banner.Banner
-import com.sscl.baselibrary.widget.banner.Banner.OnCustomDataHandleListener
-import android.view.ViewGroup
-import android.view.Gravity
-import com.sscl.basesample.beans.VideoAndImageBannerData
 import android.content.Context
 import android.graphics.Color
 import android.net.Uri
+import android.os.Bundle
+import android.view.Gravity
 import android.view.View
-import android.widget.*
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.VideoView
+import androidx.appcompat.app.AppCompatActivity
+import com.sscl.baselibrary.widget.banner.Banner
+import com.sscl.baselibrary.widget.banner.Banner.OnCustomDataHandleListener
+import com.sscl.baselibrary.widget.banner.BannerData
+import com.sscl.baselibrary.widget.banner.enums.BannerDataType
+import com.sscl.baselibrary.widget.banner.enums.BannerType
+import com.sscl.basesample.R
+import com.sscl.basesample.beans.VideoAndImageBannerData
 import java.io.File
-import java.util.ArrayList
 
 /**
  * 新Banner的使用
  *
  * @author pengh
  */
-class SampleNewBannerActivity : AppCompatActivity() {
+class SampleBannerActivity : AppCompatActivity() {
+
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
      * 私有成员变量
      *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
     /**
      * Banner
      */
@@ -146,6 +148,7 @@ class SampleNewBannerActivity : AppCompatActivity() {
      * 重写方法
      *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.com_sscl_basesample_activity_sample_new_banner)
@@ -221,9 +224,10 @@ class SampleNewBannerActivity : AppCompatActivity() {
      * 私有方法
      *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
     private fun initBannerData(): ArrayList<VideoAndImageBannerData>? {
         val videoAndImageBannerData = ArrayList<VideoAndImageBannerData>()
-        val externalStorageDirectory = Environment.getExternalStorageDirectory()
+        val externalStorageDirectory = getExternalFilesDir("")
         val dir = File(externalStorageDirectory, "advertiseDir")
         if (dir.exists()) {
             if (dir.isFile) {

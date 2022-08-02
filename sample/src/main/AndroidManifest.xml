@@ -125,7 +125,7 @@
             android:name=".activities.sample.ToastTestActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.sample.SampleNewBannerActivity"
+            android:name=".activities.sample.SampleBannerActivity"
             android:theme="@style/AppTheme.NoActionBar.FullScreen" />
         <activity android:name=".activities.sample.SampleDataBindingActivity" />
     </application>

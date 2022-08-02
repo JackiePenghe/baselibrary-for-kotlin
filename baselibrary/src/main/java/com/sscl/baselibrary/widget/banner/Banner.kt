@@ -357,19 +357,21 @@ class Banner @JvmOverloads constructor(
             //noinspection rawtypes
             val bannerData = bannerDataList[lastPosition]
             if (bannerData.bannerType == BannerType.VIDEO) {
-                val videoView: VideoView = adapter.views[lastPosition] as VideoView
+                val view = adapter.views[lastPosition] as RelativeLayout
+                val videoView = view.getChildAt(0) as VideoView
                 videoView.pause()
             }
         }
         //noinspection rawtypes
         val bannerData = bannerDataList[position]
+        @Suppress("REDUNDANT_ELSE_IN_WHEN")
         when (bannerData.bannerType) {
             BannerType.IMAGE -> {
                 delayedTime = autoScrollTime
             }
             BannerType.VIDEO -> {
-                val view = adapter.views[position]
-                val videoView = view as VideoView
+                val view = adapter.views[position] as RelativeLayout
+                val videoView = view.getChildAt(0) as VideoView
                 delayedTime = Long.MAX_VALUE
                 videoView.setOnCompletionListener {
                     viewPager?.setCurrentItem(position + 1, true)
@@ -379,7 +381,8 @@ class Banner @JvmOverloads constructor(
                     viewPager?.setCurrentItem(currentPosition + 1, true)
                     true
                 }
-
+                videoView.seekTo(0)
+                videoView.start()
             }
             BannerType.CUSTOM -> {
                 delayedTime = onCustomDataHandleListener?.onGetDelayTime(
@@ -387,13 +390,13 @@ class Banner @JvmOverloads constructor(
                     bannerData,
                     position,
                     autoScrollTime
-                ) ?: throw RuntimeException("请先设置onCustomDataHandleListener接口");
+                ) ?: throw RuntimeException("请先设置onCustomDataHandleListener接口")
 
             }
             //所有case都已经处理，else不会执行
             else -> {
-                DebugUtil.warnOut(TAG, "未处理的Banner类型");
-                delayedTime = autoScrollTime;
+                DebugUtil.warnOut(TAG, "未处理的Banner类型")
+                delayedTime = autoScrollTime
             }
         }
     }
@@ -427,6 +430,7 @@ class Banner @JvmOverloads constructor(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
+            @Suppress("REDUNDANT_ELSE_IN_WHEN")
             when (bannerData.bannerType) {
                 BannerType.IMAGE -> {
                     val imageView = ImageView(context)
@@ -436,11 +440,18 @@ class Banner @JvmOverloads constructor(
                     adapter.views.add(imageView)
                 }
                 BannerType.VIDEO -> {
+                    val relativeLayout = RelativeLayout(context)
+                    relativeLayout.layoutParams = layoutParams
                     val videoView = VideoView(context)
                     videoView.layoutParams = layoutParams
                     videoView.setOnErrorListener { _, _, _ -> true }
                     handleVideoBannerData(videoView, bannerData)
-                    adapter.views.add(videoView)
+                    relativeLayout.addView(videoView)
+                    val layoutParamsRelativeLayout: RelativeLayout.LayoutParams =
+                        videoView.layoutParams as RelativeLayout.LayoutParams
+                    layoutParamsRelativeLayout.addRule(RelativeLayout.CENTER_IN_PARENT)
+                    videoView.layoutParams = layoutParamsRelativeLayout
+                    adapter.views.add(relativeLayout)
                 }
                 BannerType.CUSTOM -> {
                     val itemView: View =
@@ -469,15 +480,18 @@ class Banner @JvmOverloads constructor(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
+        @Suppress("REDUNDANT_ELSE_IN_WHEN")
         when (bannerType) {
             BannerType.IMAGE -> {
-                val imageView: ImageView = ImageView(context)
+                val imageView = ImageView(context)
                 imageView.layoutParams = layoutParams
                 imageView.scaleType = imageScaleType
                 handleImageBannerData(imageView, bannerData)
                 adapter.views.add(imageView)
             }
             BannerType.VIDEO -> {
+                val relativeLayout = RelativeLayout(context)
+                relativeLayout.layoutParams = layoutParams
                 val videoView = VideoView(context)
                 videoView.layoutParams = layoutParams
                 videoView.setOnErrorListener { _, _, _ -> true }
@@ -491,7 +505,12 @@ class Banner @JvmOverloads constructor(
                     DebugUtil.warnOut(TAG, "视频播放错误")
                     true
                 }
-                adapter.views.add(videoView)
+                relativeLayout.addView(videoView)
+                val layoutParamsRelativeLayout =  videoView.layoutParams as RelativeLayout.LayoutParams
+                layoutParamsRelativeLayout.addRule(RelativeLayout.CENTER_IN_PARENT)
+                videoView.layoutParams = layoutParamsRelativeLayout
+                adapter.views.add(relativeLayout)
+                videoView.start()
             }
             BannerType.CUSTOM -> {
                 val view: View =
@@ -523,13 +542,15 @@ class Banner @JvmOverloads constructor(
         val bannerDataType: BannerDataType = bannerData.bannerDataType
         val onFocusChangeListener =
             OnFocusChangeListener { _, hasFocus: Boolean ->
-                if (hasFocus) {
-                    videoView.start()
-                    videoView.seekTo(0)
-                } else {
+                if (!hasFocus) {
+//                    videoView.start()
+//                    videoView.seekTo(0)
+//                } else {
                     videoView.pause()
+//                }
                 }
             }
+        @Suppress("REDUNDANT_ELSE_IN_WHEN")
         when (bannerDataType) {
             BannerDataType.FILE -> {
                 val fileData: File? = bannerData.fileData
@@ -570,6 +591,7 @@ class Banner @JvmOverloads constructor(
      * @param bannerData Banner数据
      */
     private fun handleImageBannerData(imageView: ImageView, bannerData: BannerData<*>) {
+        @Suppress("REDUNDANT_ELSE_IN_WHEN")
         when (bannerData.bannerDataType) {
             BannerDataType.FILE -> {
                 val fileData: File? = bannerData.fileData

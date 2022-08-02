@@ -72,7 +72,7 @@ class MainActivity : BaseAppCompatActivity() {
                 intent = Intent(this@MainActivity, SelectFileActivity::class.java)
             }
             R.id.banner -> {
-                intent = Intent(this@MainActivity, SampleNewBannerActivity::class.java)
+                intent = Intent(this@MainActivity, SampleBannerActivity::class.java)
             }
             R.id.web_view -> {
                 intent = Intent(this@MainActivity, SampleWebViewActivity::class.java)
