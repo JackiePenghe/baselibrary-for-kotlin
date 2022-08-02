@@ -11,7 +11,7 @@ afterEvaluate {
                     from components.release
                     groupId 'com.gitee.sscl'
                     artifactId 'BaseLibraryForKotlin'
-                    version '2.3.9'
+                    version '2.3.10'
                 }
             }
         }
