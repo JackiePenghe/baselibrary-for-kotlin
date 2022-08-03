@@ -356,7 +356,7 @@ class Banner @JvmOverloads constructor(
         if (viewPager?.currentItem != currentPosition) {
             viewPager?.currentItem = currentPosition
         } else {
-            calculateCurrentDelayTime(viewPager?.currentItem ?: 0, true)
+            calculateCurrentDelayTime(viewPager?.currentItem ?: 0)
         }
     }
 
@@ -421,7 +421,7 @@ class Banner @JvmOverloads constructor(
      *
      * @param position 当前位置
      */
-    private fun calculateCurrentDelayTime(position: Int, playVideo: Boolean = false) {
+    private fun calculateCurrentDelayTime(position: Int) {
         if (lastPosition >= 0 && adapter.views.isNotEmpty() && adapter.views.size > lastPosition && lastPosition != position) {
             //noinspection rawtypes
             val bannerData = bannerDataList[lastPosition]
@@ -450,10 +450,8 @@ class Banner @JvmOverloads constructor(
                     viewPager?.setCurrentItem(currentPosition + 1, true)
                     true
                 }
-                if (playVideo) {
                     DebugUtil.warnOut(TAG, "计算视频时间并播放")
                     playVideo(videoView)
-                }
             }
             BannerType.CUSTOM -> {
                 delayedTime = onCustomDataHandleListener?.onGetDelayTime(
@@ -616,7 +614,6 @@ class Banner @JvmOverloads constructor(
                 if (hasFocus) {
                     DebugUtil.warnOut(TAG, "视频获取到焦点，开始播放")
                     playVideo(videoView)
-                    videoView.seekTo(0)
                 } else {
                     DebugUtil.warnOut(TAG, "视频失去焦点，暂停播放")
                     pauseVideo(videoView)
@@ -670,6 +667,7 @@ class Banner @JvmOverloads constructor(
     private fun playVideo(videoView: VideoView) {
         if (!videoView.isPlaying) {
             videoView.start()
+            videoView.seekTo(0)
         } else {
             DebugUtil.warnOut(TAG, "视频已经播放，不需要播放")
         }
