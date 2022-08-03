@@ -107,6 +107,11 @@ class Banner @JvmOverloads constructor(
             position: Int,
             defaultScrollTime: Long
         ): Long
+
+        /**
+         * 暂停当前显示的View的播放
+         */
+        fun pauseCurrent(currentPosition: Int, bannerData: BannerData<*>, view: View)
     }
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -348,7 +353,11 @@ class Banner @JvmOverloads constructor(
      */
     fun startAutoScroll() {
         enableAutoScroll = true
-        viewPager?.currentItem = currentPosition
+        if (viewPager?.currentItem != currentPosition) {
+            viewPager?.currentItem = currentPosition
+        } else {
+            calculateCurrentDelayTime(viewPager?.currentItem ?: 0, true)
+        }
     }
 
     /**
@@ -357,6 +366,7 @@ class Banner @JvmOverloads constructor(
     fun stopAutoScroll() {
         enableAutoScroll = false
         stopAutoScrollTimer()
+        pauseCurrent()
     }
 
     /**
@@ -411,14 +421,14 @@ class Banner @JvmOverloads constructor(
      *
      * @param position 当前位置
      */
-    private fun calculateCurrentDelayTime(position: Int) {
-        if (lastPosition >= 0 && adapter.views.isNotEmpty() && adapter.views.size > lastPosition) {
+    private fun calculateCurrentDelayTime(position: Int, playVideo: Boolean = false) {
+        if (lastPosition >= 0 && adapter.views.isNotEmpty() && adapter.views.size > lastPosition && lastPosition != position) {
             //noinspection rawtypes
             val bannerData = bannerDataList[lastPosition]
             if (bannerData.bannerType == BannerType.VIDEO) {
                 val view = adapter.views[lastPosition] as RelativeLayout
                 val videoView = view.getChildAt(0) as VideoView
-                videoView.pause()
+                pauseVideo(videoView)
             }
         }
         //noinspection rawtypes
@@ -440,8 +450,10 @@ class Banner @JvmOverloads constructor(
                     viewPager?.setCurrentItem(currentPosition + 1, true)
                     true
                 }
-                videoView.seekTo(0)
-                videoView.start()
+                if (playVideo) {
+                    DebugUtil.warnOut(TAG, "计算视频时间并播放")
+                    playVideo(videoView)
+                }
             }
             BannerType.CUSTOM -> {
                 delayedTime = onCustomDataHandleListener?.onGetDelayTime(
@@ -570,7 +582,6 @@ class Banner @JvmOverloads constructor(
                 layoutParamsRelativeLayout.addRule(RelativeLayout.CENTER_IN_PARENT)
                 videoView.layoutParams = layoutParamsRelativeLayout
                 adapter.views.add(relativeLayout)
-                videoView.start()
             }
             BannerType.CUSTOM -> {
                 val view: View =
@@ -602,13 +613,17 @@ class Banner @JvmOverloads constructor(
         val bannerDataType: BannerDataType = bannerData.bannerDataType
         val onFocusChangeListener =
             OnFocusChangeListener { _, hasFocus: Boolean ->
-                if (!hasFocus) {
-//                    videoView.start()
-//                    videoView.seekTo(0)
-//                } else {
-                    videoView.pause()
-//                }
+                if (hasFocus) {
+                    DebugUtil.warnOut(TAG, "视频获取到焦点，开始播放")
+                    playVideo(videoView)
+                    videoView.seekTo(0)
+                } else {
+                    DebugUtil.warnOut(TAG, "视频失去焦点，暂停播放")
+                    pauseVideo(videoView)
                 }
+//                if (!hasFocus) {
+//                    videoView.pause()
+//                }
             }
         @Suppress("REDUNDANT_ELSE_IN_WHEN")
         when (bannerDataType) {
@@ -641,6 +656,22 @@ class Banner @JvmOverloads constructor(
                 DebugUtil.warnOut(TAG, "未处理的Banner数据类型")
             }
             else -> DebugUtil.warnOut(TAG, "未处理的Banner数据类型")
+        }
+    }
+
+    private fun pauseVideo(videoView: VideoView) {
+        if (videoView.isPlaying) {
+            videoView.pause()
+        } else {
+            DebugUtil.warnOut(TAG, "视频没有播放，不需要暂停")
+        }
+    }
+
+    private fun playVideo(videoView: VideoView) {
+        if (!videoView.isPlaying) {
+            videoView.start()
+        } else {
+            DebugUtil.warnOut(TAG, "视频已经播放，不需要播放")
         }
     }
 
@@ -780,10 +811,37 @@ class Banner @JvmOverloads constructor(
      * 停止自动轮播定时器
      */
     private fun stopAutoScrollTimer() {
-        if (autoScrollTimer != null) {
-            autoScrollTimer!!.shutdownNow()
-        }
+        autoScrollTimer?.shutdownNow()
         autoScrollTimer = null
         DebugUtil.warnOut(TAG, "停止自动轮播定时器")
+    }
+
+    /**
+     * 暂停当前banner
+     */
+    private fun pauseCurrent() {
+        val bannerData = bannerDataList[currentPosition]
+        @Suppress("REDUNDANT_ELSE_IN_WHEN")
+        when (bannerData.bannerType) {
+            BannerType.VIDEO -> {
+                val relativeLayout = adapter.views[currentPosition] as RelativeLayout
+                val videoView = relativeLayout.getChildAt(0) as VideoView
+                DebugUtil.warnOut(TAG, "暂停当前banner videoView")
+                pauseVideo(videoView)
+            }
+            BannerType.CUSTOM -> {
+                onCustomDataHandleListener?.pauseCurrent(
+                    currentPosition,
+                    bannerDataList[currentPosition],
+                    adapter.views[currentPosition]
+                )
+            }
+            BannerType.IMAGE -> {
+                DebugUtil.warnOut(TAG, "当前为图片类型，不需要暂停")
+            }
+            else -> {
+                DebugUtil.warnOut(TAG, "未处理的Banner数据类型")
+            }
+        }
     }
 }

@@ -146,6 +146,13 @@ class SampleBannerActivity : AppCompatActivity() {
             ): Long {
                 return defaultScrollTime
             }
+
+            /**
+             * 暂停当前显示的View的播放
+             */
+            override fun pauseCurrent(currentPosition: Int, bannerData: BannerData<*>, view: View) {
+                DebugUtil.warnOut(TAG,"处理暂停播放的逻辑")
+            }
         }
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -228,8 +235,8 @@ class SampleBannerActivity : AppCompatActivity() {
      * Dispatch onPause() to fragments.
      */
     override fun onPause() {
-        super.onPause()
         banner.stopAutoScroll()
+        super.onPause()
     }
 
     override fun onDestroy() {
