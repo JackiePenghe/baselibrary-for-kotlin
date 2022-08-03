@@ -1,11 +1,15 @@
 package com.sscl.baselibrary.widget.banner
 
-import android.content.*
+import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.util.AttributeSet
-import android.view.*
+import android.view.View
 import android.view.View.OnFocusChangeListener
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.*
 import android.widget.ImageView.ScaleType
 import androidx.viewpager.widget.ViewPager
@@ -15,9 +19,12 @@ import com.sscl.baselibrary.utils.BaseManager
 import com.sscl.baselibrary.utils.DebugUtil
 import com.sscl.baselibrary.widget.banner.enums.BannerDataType
 import com.sscl.baselibrary.widget.banner.enums.BannerType
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
+
 
 /**
  * @author pengh
@@ -132,6 +139,21 @@ class Banner @JvmOverloads constructor(
      * 当前显示位置
      */
     private var currentPosition: Int = 0
+
+    /**
+     * 是否压缩图片
+     */
+    private var needCompressPicture: Boolean = false
+
+    /**
+     * 是否压缩到指定大小
+     */
+    private var compressPictureWithMaxSize: Boolean = false
+
+    /**
+     * 最大的图片大小,单位为KB
+     */
+    private var maxCompressPictureSize: Long = 20
 
     /**
      * 自动轮播的定时器
@@ -333,6 +355,26 @@ class Banner @JvmOverloads constructor(
     }
 
     /**
+     * 设置是否压缩图片
+     */
+    fun setNeedCompressImage(needCompressPicture: Boolean) {
+        this.needCompressPicture = needCompressPicture
+    }
+
+    /**
+     * 设置是否以指定大小压缩图片
+     */
+    fun setCompressPictureWithMaxSize(compressPictureWithMaxSize: Boolean) {
+        this.compressPictureWithMaxSize = compressPictureWithMaxSize
+    }
+
+    /**
+     * 设置压缩图片的指定大小,单位为KB
+     */
+    fun setMaxCompressPictureSize(maxCompressPictureSize: Long) {
+        this.maxCompressPictureSize = maxCompressPictureSize
+    }
+    /**
      * 销毁
      */
     fun destroy() {
@@ -341,6 +383,8 @@ class Banner @JvmOverloads constructor(
         bannerDataList.clear()
         adapter.clear()
     }
+
+
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
      * 私有成员方法
@@ -506,7 +550,8 @@ class Banner @JvmOverloads constructor(
                     true
                 }
                 relativeLayout.addView(videoView)
-                val layoutParamsRelativeLayout =  videoView.layoutParams as RelativeLayout.LayoutParams
+                val layoutParamsRelativeLayout =
+                    videoView.layoutParams as RelativeLayout.LayoutParams
                 layoutParamsRelativeLayout.addRule(RelativeLayout.CENTER_IN_PARENT)
                 videoView.layoutParams = layoutParamsRelativeLayout
                 adapter.views.add(relativeLayout)
@@ -599,7 +644,7 @@ class Banner @JvmOverloads constructor(
                     DebugUtil.warnOut(TAG, "图片文件为空")
                     return
                 }
-                imageView.setImageBitmap(BitmapFactory.decodeFile(fileData.absolutePath))
+                loadFileToImageView(imageView, fileData)
             }
             BannerDataType.URI -> {
                 val uriData: Uri? = bannerData.uriData
@@ -621,6 +666,82 @@ class Banner @JvmOverloads constructor(
             }
             else -> DebugUtil.warnOut(TAG, "未处理的Banner数据类型")
         }
+    }
+
+    private fun loadFileToImageView(imageView: ImageView, fileData: File) {
+        val filePath = fileData.absolutePath
+        if (!needCompressPicture) {
+            imageView.setImageBitmap(BitmapFactory.decodeFile(filePath))
+        } else {
+            val options = BitmapFactory.Options()
+            //inJustDecodeBounds=true代表仅仅获取图片信息而不直接加载进入内存
+            options.inJustDecodeBounds = true
+            BitmapFactory.decodeFile(filePath, options)
+            // 获取图片的宽高
+            val imgWidth: Int = options.outWidth
+
+            val imgHeight: Int = options.outHeight
+            // 获取当前手机屏幕的宽高
+            val screenWidth: Int
+            val screenHeight: Int
+            val windowManager =
+                context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                screenWidth = windowManager.currentWindowMetrics.bounds.width()
+                screenHeight = windowManager.currentWindowMetrics.bounds.height()
+            } else {
+                @Suppress("DEPRECATION")
+                screenWidth = windowManager.defaultDisplay.width
+                @Suppress("DEPRECATION")
+                screenHeight = windowManager.defaultDisplay.height
+            }
+            // 设置默认缩放比为1
+            var scale = 1
+            // 计算图片宽高与屏幕宽高比例，即计算宽缩放比，高缩放比
+            val scaleWidth = imgWidth / screenWidth
+            val scaleHeight = imgHeight / screenHeight
+            // 选择缩放比例，如果图片比屏幕小，就不进行缩放.如果图片比屏幕大，但是宽高缩放比例不同，选择缩放比大
+            if (scaleWidth >= scaleHeight && scaleWidth > 1) {
+                scale = scaleWidth
+            } else if (scaleWidth < scaleHeight && scaleHeight > 1) {
+                scale = scaleHeight
+            }
+            // 在Options的对象中设置缩放比例
+            options.inSampleSize = scale
+            // 一定要把inJustDecodeBound该字段设置为false，实际上默认值是false，
+            // 但是在前面的代码中已经改为了true，所以要更改过来。当然，也可以重新new 一个Option是对象
+            options.inJustDecodeBounds = false
+            val bm = BitmapFactory.decodeFile(filePath, options)
+            if (!compressPictureWithMaxSize) {
+                imageView.setImageBitmap(bm)
+            } else {
+                val compressImage = compressImage(bm)
+                imageView.setImageBitmap(compressImage)
+            }
+        }
+    }
+
+    /**
+     * 质量压缩方法
+     * @param image
+     * @return
+     */
+    fun compressImage(image: Bitmap): Bitmap? {
+        val baos = ByteArrayOutputStream()
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos) // 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        var options = 100
+        while (baos.toByteArray().size / 1024 > maxCompressPictureSize) { // 循环判断如果压缩后图片是否大于100kb,大于继续压缩
+            baos.reset() // 重置baos即清空baos
+            image.compress(
+                Bitmap.CompressFormat.JPEG,
+                options,
+                baos
+            ) // 这里压缩options%，把压缩后的数据存放到baos中
+            options -= 1 // 每次都减少1
+        }
+        val isBm =
+            ByteArrayInputStream(baos.toByteArray()) // 把压缩后的数据baos存放到ByteArrayInputStream中
+        return BitmapFactory.decodeStream(isBm, null, null)
     }
 
     /**

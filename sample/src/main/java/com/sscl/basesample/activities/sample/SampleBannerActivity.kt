@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
+import com.sscl.baselibrary.files.FileUtil
 import com.sscl.baselibrary.widget.banner.Banner
 import com.sscl.baselibrary.widget.banner.Banner.OnCustomDataHandleListener
 import com.sscl.baselibrary.widget.banner.BannerData
@@ -36,7 +37,7 @@ class SampleBannerActivity : AppCompatActivity() {
     /**
      * Banner
      */
-    private  lateinit var banner: Banner
+    private lateinit var banner: Banner
 
     /**
      * 自定义的Banner数据处理回调接口
@@ -153,6 +154,16 @@ class SampleBannerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.com_sscl_basesample_activity_sample_new_banner)
         banner = findViewById(R.id.banner)
+        //允许手动滚动
+        banner.isEnableSlide = true
+        //设置图片缩放
+        banner.setImageScaleType(ImageView.ScaleType.CENTER_INSIDE)
+        //设置是否开启图片压缩
+        banner.setNeedCompressImage(true)
+        //设置是否按指定大小压缩
+        banner.setCompressPictureWithMaxSize(true)
+        //设置图片压缩的最大值，200KB
+        banner.setMaxCompressPictureSize(200)
         //默认获取SD卡的根目录下”advertiseDir“文件夹下的图片与视频，没有则使用getDefaultBannerData()获取默认数据
         val videoAndImageBannerData = initBannerData()
         if (videoAndImageBannerData != null) {
@@ -161,8 +172,6 @@ class SampleBannerActivity : AppCompatActivity() {
             banner.setOnCustomDataHandleListener(onCustomDataHandleListener)
             banner.setDataList(defaultBannerData)
         }
-        banner.isEnableSlide = true
-        banner.setImageScaleType(ImageView.ScaleType.CENTER_INSIDE)
     }
 
     private val defaultBannerData: ArrayList<BannerData<String>>
@@ -227,8 +236,7 @@ class SampleBannerActivity : AppCompatActivity() {
 
     private fun initBannerData(): ArrayList<VideoAndImageBannerData>? {
         val videoAndImageBannerData = ArrayList<VideoAndImageBannerData>()
-        val externalStorageDirectory = getExternalFilesDir("")
-        val dir = File(externalStorageDirectory, "advertiseDir")
+        val dir = File(FileUtil.sdCardAppDir, "advertiseDir")
         if (dir.exists()) {
             if (dir.isFile) {
                 dir.delete()
