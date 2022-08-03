@@ -188,6 +188,11 @@ class Banner @JvmOverloads constructor(
     private var viewPager: BannerViewPager? = null
 
     /**
+     * banner选项点击事件监听器
+     */
+    private var onItemClickListener: OnItemClickListener? = null
+
+    /**
      * Banner适配器
      */
     private val adapter: BannerAdapter = BannerAdapter()
@@ -251,6 +256,11 @@ class Banner @JvmOverloads constructor(
         addView(viewPager)
         viewPager?.offscreenPageLimit = 0
         viewPager?.addOnPageChangeListener(onPageChangeListener)
+        adapter.setOnItemClickListener(object : BannerAdapter.OnItemClickListener {
+            override fun onItemClick() {
+                onItemClickListener?.onItemClick(currentPosition)
+            }
+        })
     }
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -287,6 +297,10 @@ class Banner @JvmOverloads constructor(
      */
     fun setAutoScrollTime(autoScrollTime: Long) {
         this.autoScrollTime = autoScrollTime
+    }
+
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener?) {
+        this.onItemClickListener = onItemClickListener
     }
 
     /**
@@ -374,6 +388,7 @@ class Banner @JvmOverloads constructor(
     fun setMaxCompressPictureSize(maxCompressPictureSize: Long) {
         this.maxCompressPictureSize = maxCompressPictureSize
     }
+
     /**
      * 销毁
      */

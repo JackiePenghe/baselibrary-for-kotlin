@@ -12,9 +12,11 @@ import android.widget.TextView
 import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
 import com.sscl.baselibrary.files.FileUtil
+import com.sscl.baselibrary.utils.DebugUtil
 import com.sscl.baselibrary.widget.banner.Banner
 import com.sscl.baselibrary.widget.banner.Banner.OnCustomDataHandleListener
 import com.sscl.baselibrary.widget.banner.BannerData
+import com.sscl.baselibrary.widget.banner.OnItemClickListener
 import com.sscl.baselibrary.widget.banner.enums.BannerDataType
 import com.sscl.baselibrary.widget.banner.enums.BannerType
 import com.sscl.basesample.R
@@ -38,6 +40,8 @@ class SampleBannerActivity : AppCompatActivity() {
      * Banner
      */
     private lateinit var banner: Banner
+
+    private val TAG:String = SampleBannerActivity::class.java.simpleName
 
     /**
      * 自定义的Banner数据处理回调接口
@@ -164,6 +168,11 @@ class SampleBannerActivity : AppCompatActivity() {
         banner.setCompressPictureWithMaxSize(true)
         //设置图片压缩的最大值，200KB
         banner.setMaxCompressPictureSize(200)
+        banner.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                DebugUtil.warnOut(TAG, "onItemClick position:$position")
+            }
+        })
         //默认获取SD卡的根目录下”advertiseDir“文件夹下的图片与视频，没有则使用getDefaultBannerData()获取默认数据
         val videoAndImageBannerData = initBannerData()
         if (videoAndImageBannerData != null) {
