@@ -26,7 +26,7 @@ class SampleBaseFragmentActivity : AppCompatActivity() {
         val viewPager2: ViewPager2 = findViewById(R.id.view_pager2)
         val tabLayout: TabLayout = findViewById(R.id.tab_layout)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
-        toolbar.setTitle(R.string.com_jackiepenghe_app_title)
+        toolbar.setTitle(R.string.app_name)
         toolbar.setBackgroundColor(Tool.getColorPrimary(this))
         toolbar.setTitleTextColor(Color.WHITE)
         setSupportActionBar(toolbar)
@@ -58,9 +58,5 @@ class SampleBaseFragmentActivity : AppCompatActivity() {
         TabLayoutMediator(tabLayout,viewPager2){tab, position ->
             tab.text = titles[position]
         }.attach()
-    }
-
-    companion object {
-        private val TAG = SampleBaseFragmentActivity::class.java.simpleName
     }
 }

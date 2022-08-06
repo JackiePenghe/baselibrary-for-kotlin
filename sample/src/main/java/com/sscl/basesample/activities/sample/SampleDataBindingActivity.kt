@@ -73,13 +73,6 @@ class SampleDataBindingActivity :
     }
 
     /**
-     * 初始化布局控件
-     */
-    override fun initViews() {
-
-    }
-
-    /**
      * 初始化控件数据
      */
     override fun initViewData() {
@@ -98,8 +91,8 @@ class SampleDataBindingActivity :
      * 初始化事件
      */
     override fun initEvents() {
-        binding?.changeTextBtn?.setOnClickListener{
-            val text = binding?.sampleEt?.text?.toString()?:"这是默认的文本"
+        binding.changeTextBtn.setOnClickListener{
+            val text = binding.sampleEt.text?.toString()?:"这是默认的文本"
             sampleDataBindingActivityViewModel.text.value = text
         }
     }
