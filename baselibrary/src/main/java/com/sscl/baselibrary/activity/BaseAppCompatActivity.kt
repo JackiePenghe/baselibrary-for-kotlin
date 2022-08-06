@@ -176,7 +176,7 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * 初始化本类固定的数据
      */
     private fun initThisData() {
-        titleView?.setText(R.string.com_jackiepenghe_app_title)
+        titleView?.setText(R.string.app_name)
         setSupportActionBar(toolbar)
         val supportActionBar: ActionBar? = supportActionBar
         if (supportActionBar != null) {

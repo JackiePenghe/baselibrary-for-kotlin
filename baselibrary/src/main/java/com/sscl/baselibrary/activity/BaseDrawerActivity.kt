@@ -141,7 +141,7 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
         setContentView(R.layout.com_jackiepenghe_baselibrary_activity_base_drawer)
         toolbar = findViewById(R.id.toolbar)
         titleView = findViewById(R.id.toolbar_title)
-        titleView?.setText(R.string.com_jackiepenghe_app_title)
+        titleView?.setText(R.string.app_name)
         setSupportActionBar(toolbar)
         val supportActionBar: ActionBar? = supportActionBar
         if (supportActionBar != null) {
