@@ -21,14 +21,45 @@ import com.sscl.baselibrary.R
  * @author alm
  */
 abstract class BaseAppCompatActivity : AppCompatActivity() {
-    /*--------------------------------静态常量--------------------------------*/
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 属性声明
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    /* * * * * * * * * * * * * * * * * * * 静态属性 * * * * * * * * * * * * * * * * * * */
+
     @Suppress("PropertyName")
     protected val TAG: String = javaClass.simpleName
-    /*--------------------------------成员变量--------------------------------*/
+
+    /* * * * * * * * * * * * * * * * * * * 延时初始化属性 * * * * * * * * * * * * * * * * * * */
+
     /**
      * 标题
      */
-    private var toolbar: Toolbar? = null
+    private lateinit var toolbar: Toolbar
+
+    /**
+     * 子类继承此类之后，设置的布局都在FrameLayout中
+     */
+    @Suppress("MemberVisibilityCanBePrivate")
+    protected lateinit var contentView: FrameLayout
+        private set
+
+    /**
+     * 标题栏的文字
+     */
+    private lateinit var titleView: TextView
+
+    /**
+     * 整个BaseActivity的根布局（setContentLayout传入的布局）
+     */
+    @Suppress("MemberVisibilityCanBePrivate")
+    protected lateinit var rootView: LinearLayout
+        private set
+
+    /* * * * * * * * * * * * * * * * * * * 可空属性 * * * * * * * * * * * * * * * * * * */
 
     /**
      * 标题的返回按钮处的点击事件
@@ -40,28 +71,6 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
                 finish()
             }
         }
-
-    /**
-     * 子类继承此类之后，设置的布局都在FrameLayout中
-     */
-    @Suppress("MemberVisibilityCanBePrivate")
-    protected var contentView: FrameLayout? = null
-
-    /**
-     * 标题栏的文字
-     */
-    private var titleView: TextView? = null
-    /**
-     * 获取此界面的根布局
-     *
-     * @return 此界面的根布局
-     */
-    /**
-     * 整个BaseActivity的根布局（setContentLayout传入的布局）
-     */
-    @Suppress("MemberVisibilityCanBePrivate")
-    protected var rootView: LinearLayout? = null
-        private set
 
     /*--------------------------------重写父类方法--------------------------------*/
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,11 +100,9 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        toolbar?.setNavigationOnClickListener(null)
-        toolbar = null
+        toolbar.setNavigationOnClickListener(null)
         mTitleBackButtonOnClickListener = null
-        contentView?.removeAllViews()
-        contentView = null
+        contentView.removeAllViews()
     }
     /*--------------------------------抽象方法--------------------------------*/
     /**
@@ -176,7 +183,7 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * 初始化本类固定的数据
      */
     private fun initThisData() {
-        titleView?.setText(R.string.app_name)
+        titleView.setText(R.string.app_name)
         setSupportActionBar(toolbar)
         val supportActionBar: ActionBar? = supportActionBar
         if (supportActionBar != null) {
@@ -191,14 +198,14 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
             throw RuntimeException("setLayout with wrong layout resource id")
         }
         val view: View = layoutInflater.inflate(layoutResId, null)
-        contentView?.addView(view)
+        contentView.addView(view)
     }
 
     /**
      * 初始化本类固定的事件
      */
     private fun initThisEvents() {
-        toolbar?.setNavigationOnClickListener(mTitleBackButtonOnClickListener)
+        toolbar.setNavigationOnClickListener(mTitleBackButtonOnClickListener)
     }
     /*--------------------------------子类可用方法--------------------------------*/
     /**
@@ -219,7 +226,7 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
         //左侧不添加默认的返回图标
         supportActionBar.setDisplayHomeAsUpEnabled(false)
         //设置返回键不可用
-        getSupportActionBar()?.setHomeButtonEnabled(false)
+        supportActionBar.setHomeButtonEnabled(false)
     }
 
     /**
@@ -231,7 +238,7 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
         //左侧添加一个默认的返回图标
         supportActionBar.setDisplayHomeAsUpEnabled(true)
         //设置返回键可用
-        getSupportActionBar()?.setHomeButtonEnabled(true)
+        supportActionBar.setHomeButtonEnabled(true)
     }
 
     /**
@@ -240,7 +247,7 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param drawableRes 背景色
      */
     protected fun setRootBackGroundResource(@DrawableRes drawableRes: Int) {
-        rootView?.setBackgroundResource(drawableRes)
+        rootView.setBackgroundResource(drawableRes)
     }
 
     /**
@@ -249,7 +256,7 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param color 背景色
      */
     protected fun setRootBackGroundColor(@ColorInt color: Int) {
-        rootView?.setBackgroundColor(color)
+        rootView.setBackgroundColor(color)
     }
 
     /**
@@ -276,8 +283,6 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param titleRes 标题栏的资源id
      */
     protected fun setTitleText(@StringRes titleRes: Int) {
-        val titleView = titleView
-            ?: throw RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"")
         titleView.setText(titleRes)
     }
 
@@ -287,8 +292,6 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param titleText 标题栏的文本
      */
     protected fun setTitleText(titleText: String?) {
-        val titleView = titleView
-            ?: throw RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"")
         titleView.text = titleText
     }
 
@@ -298,8 +301,6 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param color 文本颜色
      */
     protected fun setTitleTextColor(@ColorInt color: Int) {
-        val titleView = titleView
-            ?: throw RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"")
         titleView.setTextColor(color)
     }
 
@@ -309,8 +310,6 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param color 标题栏的背景色
      */
     protected fun setTitleBackgroundColor(@ColorInt color: Int) {
-        val titleView = titleView
-            ?: throw RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"")
         titleView.setBackgroundColor(color)
     }
 
@@ -320,8 +319,6 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param drawable 标题栏的背景
      */
     protected fun setTitleBackgroundDrawable(drawable: Drawable?) {
-        val toolbar = toolbar
-            ?: throw RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"")
         toolbar.background = drawable
     }
 
@@ -331,8 +328,6 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param drawableRes 标题栏的背景
      */
     protected fun setTitleBackgroundResource(@DrawableRes drawableRes: Int) {
-        val toolbar = toolbar
-            ?: throw RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"")
         toolbar.setBackgroundResource(drawableRes)
     }
 
@@ -352,8 +347,6 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      * @param drawableId 标题栏左边的图片资源id
      */
     protected fun setTitleBackIcon(@DrawableRes drawableId: Int) {
-        val toolbar = toolbar
-            ?: throw RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"")
         toolbar.setNavigationIcon(drawableId)
     }
 }
