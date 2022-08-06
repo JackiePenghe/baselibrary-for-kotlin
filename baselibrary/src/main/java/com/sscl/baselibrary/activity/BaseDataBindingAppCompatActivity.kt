@@ -76,7 +76,7 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
      * 数据绑定的对象
      */
     @Suppress("MemberVisibilityCanBePrivate")
-    protected var binding: B? = null
+    protected lateinit var binding: B
         private set
 
     /*--------------------------------重写父类方法--------------------------------*/
@@ -88,7 +88,6 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
         initThisData()
         initThisEvents()
         doBeforeInitOthers()
-        initViews()
         initViewData()
         initOtherData()
         initEvents()
@@ -142,11 +141,6 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
     abstract fun doBeforeInitOthers()
 
     /**
-     * 初始化布局控件
-     */
-    abstract fun initViews()
-
-    /**
      * 初始化控件数据
      */
     abstract fun initViewData()
@@ -181,6 +175,7 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
      * @return true表示处理了监听事件
      */
     abstract fun optionsItemSelected(item: MenuItem): Boolean
+
     /*--------------------------------私有方法--------------------------------*/
     /**
      * 初始化本类固定的控件
