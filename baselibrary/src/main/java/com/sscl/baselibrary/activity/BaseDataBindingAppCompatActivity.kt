@@ -47,29 +47,29 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
             }
         }
 
-    /* * * * * * * * * * * * * * * * * * * 可空属性 * * * * * * * * * * * * * * * * * * */
+    /* * * * * * * * * * * * * * * * * * * 延时初始化属性 * * * * * * * * * * * * * * * * * * */
 
     /**
      * 标题
      */
-    private var toolbar: Toolbar? = null
+    private lateinit var toolbar: Toolbar
 
     /**
      * 子类继承此类之后，设置的布局都在FrameLayout中
      */
     @Suppress("MemberVisibilityCanBePrivate")
-    protected var contentView: FrameLayout? = null
+    protected lateinit var contentView: FrameLayout
 
     /**
      * 标题栏的文字
      */
-    private var titleView: TextView? = null
+    private lateinit var titleView: TextView
 
     /**
      * 整个BaseActivity的根布局（setContentLayout传入的布局）
      */
     @Suppress("MemberVisibilityCanBePrivate")
-    protected var rootView: LinearLayout? = null
+    protected lateinit var rootView: LinearLayout
         private set
 
     /**
@@ -79,7 +79,12 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
     protected lateinit var binding: B
         private set
 
-    /*--------------------------------重写父类方法--------------------------------*/
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 重写方法
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         doBeforeSetLayout()
@@ -106,10 +111,9 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
 
     override fun onDestroy() {
         super.onDestroy()
-        toolbar?.setNavigationOnClickListener(null)
-        toolbar = null
-        contentView?.removeAllViews()
-        contentView = null
+        toolbar.setNavigationOnClickListener(null)
+        contentView.removeAllViews()
+        binding.unbind()
     }
     /*--------------------------------抽象方法--------------------------------*/
     /**
@@ -191,7 +195,7 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
      * 初始化本类固定的数据
      */
     private fun initThisData() {
-        titleView?.setText(R.string.com_jackiepenghe_app_title)
+        titleView.setText(R.string.app_name)
         setSupportActionBar(toolbar)
         val supportActionBar: ActionBar? = supportActionBar
         if (supportActionBar != null) {
@@ -206,7 +210,7 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
             throw RuntimeException("setLayout with wrong layout resource id")
         }
         val view: View = View.inflate(this,layoutResId,null)
-        contentView?.addView(view)
+        contentView.addView(view)
         binding = initDataBinding(view)
     }
 
@@ -214,7 +218,7 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
      * 初始化本类固定的事件
      */
     private fun initThisEvents() {
-        toolbar?.setNavigationOnClickListener(mTitleBackButtonOnClickListener)
+        toolbar.setNavigationOnClickListener(mTitleBackButtonOnClickListener)
     }
     /*--------------------------------子类可用方法--------------------------------*/
     /**
@@ -235,7 +239,7 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
         //左侧不添加默认的返回图标
         supportActionBar.setDisplayHomeAsUpEnabled(false)
         //设置返回键不可用
-        getSupportActionBar()?.setHomeButtonEnabled(false)
+        supportActionBar.setHomeButtonEnabled(false)
     }
 
     /**
@@ -247,7 +251,7 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
         //左侧添加一个默认的返回图标
         supportActionBar.setDisplayHomeAsUpEnabled(true)
         //设置返回键可用
-        getSupportActionBar()?.setHomeButtonEnabled(true)
+        supportActionBar.setHomeButtonEnabled(true)
     }
 
     /**
@@ -256,7 +260,7 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
      * @param drawableRes 背景色
      */
     protected fun setRootBackGroundResource(@DrawableRes drawableRes: Int) {
-        rootView?.setBackgroundResource(drawableRes)
+        rootView.setBackgroundResource(drawableRes)
     }
 
     /**
@@ -265,7 +269,7 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
      * @param color 背景色
      */
     protected fun setRootBackGroundColor(@ColorInt color: Int) {
-        rootView?.setBackgroundColor(color)
+        rootView.setBackgroundColor(color)
     }
 
     /**
@@ -292,8 +296,6 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
      * @param titleRes 标题栏的资源id
      */
     protected fun setTitleText(@StringRes titleRes: Int) {
-        val titleView = titleView
-            ?: throw RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"")
         titleView.setText(titleRes)
     }
 
@@ -303,8 +305,6 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
      * @param titleText 标题栏的文本
      */
     protected fun setTitleText(titleText: String?) {
-        val titleView = titleView
-            ?: throw RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"")
         titleView.text = titleText
     }
 
@@ -314,8 +314,6 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
      * @param color 文本颜色
      */
     protected fun setTitleTextColor(@ColorInt color: Int) {
-        val titleView = titleView
-            ?: throw RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"")
         titleView.setTextColor(color)
     }
 
@@ -325,8 +323,6 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
      * @param color 标题栏的背景色
      */
     protected fun setTitleBackgroundColor(@ColorInt color: Int) {
-        val titleView = titleView
-            ?: throw RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"")
         titleView.setBackgroundColor(color)
     }
 
@@ -336,8 +332,6 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
      * @param drawable 标题栏的背景
      */
     protected fun setTitleBackgroundDrawable(drawable: Drawable?) {
-        val toolbar = toolbar
-            ?: throw RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"")
         toolbar.background = drawable
     }
 
@@ -347,8 +341,6 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
      * @param drawableRes 标题栏的背景
      */
     protected fun setTitleBackgroundResource(@DrawableRes drawableRes: Int) {
-        val toolbar = toolbar
-            ?: throw RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"")
         toolbar.setBackgroundResource(drawableRes)
     }
 
@@ -368,8 +360,6 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
      * @param drawableId 标题栏左边的图片资源id
      */
     protected fun setTitleBackIcon(@DrawableRes drawableId: Int) {
-        val toolbar = toolbar
-            ?: throw RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"")
         toolbar.setNavigationIcon(drawableId)
     }
 }

@@ -1,11 +1,11 @@
 <resources>
     <string name="com_jackiepenghe_navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="com_jackiepenghe_navigation_drawer_close" translatable="false">Close navigation drawer</string>
-    <string name="com_jackiepenghe_app_title">Default Title</string>
     <string name="com_jackiepenghe_null" translatable="false" />
     <string name="com_jackiepenghe_app_run_with_error">An unknown exception occurs.</string>
     <string name="com_jackiepenghe_file_not_found_or_use_unrecognized_characters">Wrong file path or file USES unrecognized characters</string>
     <string name="com_jackiepenghe_clear">Clear</string>
     <string name="com_jackiepenghe_delete">Delete</string>
     <string name="com_jackiepenghe_caps_lock">Caps</string>
+    <string name="app_name">Default Title</string>
 </resources>
