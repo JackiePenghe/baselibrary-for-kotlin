@@ -1,5 +1,5 @@
 <resources>
-    <string name="com_sscl_basesample_app_name" translatable="false">BaseSample</string>
+    <string name="app_name" translatable="false">BaseSample</string>
     <string name="com_sscl_basesample_press_home_btn_test">Press home button test</string>
     <string name="com_sscl_basesample_all_purpose_adapter">AllPurposeAdapter</string>
     <string name="com_sscl_basesample_base_appcompat_activity" translatable="false">BaseAppcompatActivity</string>
