@@ -219,12 +219,7 @@ class Banner @JvmOverloads constructor(
         }
 
         override fun onPageSelected(position: Int) {
-            lastPosition = currentPosition
-            currentPosition = position
-            calculateCurrentDelayTime(position)
-            if (enableAutoScroll) {
-                startAutoScrollTimer()
-            }
+            selectPage(position)
         }
 
         override fun onPageScrollStateChanged(state: Int) {
@@ -356,7 +351,7 @@ class Banner @JvmOverloads constructor(
         if (viewPager?.currentItem != currentPosition) {
             viewPager?.currentItem = currentPosition
         } else {
-            calculateCurrentDelayTime(viewPager?.currentItem ?: 0)
+            selectPage(viewPager?.currentItem ?: 0)
         }
     }
 
@@ -467,6 +462,18 @@ class Banner @JvmOverloads constructor(
                 DebugUtil.warnOut(TAG, "未处理的Banner类型")
                 delayedTime = autoScrollTime
             }
+        }
+    }
+
+    /**
+     * 选中了某个页面
+     */
+    private fun selectPage(position: Int) {
+        lastPosition = currentPosition
+        currentPosition = position
+        calculateCurrentDelayTime(position)
+        if (enableAutoScroll) {
+            startAutoScrollTimer()
         }
     }
 
