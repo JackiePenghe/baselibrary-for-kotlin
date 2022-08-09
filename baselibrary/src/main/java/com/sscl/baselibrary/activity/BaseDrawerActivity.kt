@@ -210,14 +210,6 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener(null)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        return createOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return optionsItemSelected(item)
-    }
-
     /*--------------------------------抽象方法--------------------------------*/
 
     /**

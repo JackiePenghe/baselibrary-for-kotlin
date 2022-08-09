@@ -16,11 +16,13 @@ import com.sscl.baselibrary.utils.Tool
  */
 @SuppressLint("CustomSplashScreen")
 abstract class BaseSplashActivity : Activity() {
+
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
      * 静态常量
      *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
     @Suppress("PropertyName")
     protected val TAG: String = javaClass.simpleName
 

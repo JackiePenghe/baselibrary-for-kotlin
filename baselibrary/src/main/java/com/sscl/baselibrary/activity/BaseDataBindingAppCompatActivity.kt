@@ -99,16 +99,6 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
         doAfterAll()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        //创建菜单选项
-        return createOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        //菜单的选项被点击时的处理
-        return optionsItemSelected(item)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         toolbar.setNavigationOnClickListener(null)
@@ -163,22 +153,6 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
      * 在最后进行的操作
      */
     abstract fun doAfterAll()
-
-    /**
-     * 设置菜单
-     *
-     * @param menu 菜单
-     * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
-     */
-    abstract fun createOptionsMenu(menu: Menu): Boolean
-
-    /**
-     * 设置菜单监听
-     *
-     * @param item 菜单的item
-     * @return true表示处理了监听事件
-     */
-    abstract fun optionsItemSelected(item: MenuItem): Boolean
 
     /*--------------------------------私有方法--------------------------------*/
     /**

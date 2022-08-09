@@ -107,26 +107,6 @@ class SdcardFileTestActivity : BaseAppCompatActivity() {
      * 在最后进行的操作
      */
    override fun doAfterAll() {}
-
-    /**
-     * 设置菜单
-     *
-     * @param menu 菜单
-     * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
-     */
-   override fun createOptionsMenu(menu: Menu): Boolean {
-        return false
-    }
-
-    /**
-     * 设置菜单监听
-     *
-     * @param item 菜单的item
-     * @return true表示处理了监听事件
-     */
-   override fun optionsItemSelected(item: MenuItem): Boolean {
-        return false
-    }
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
      * 私有成员方法
@@ -137,11 +117,11 @@ class SdcardFileTestActivity : BaseAppCompatActivity() {
      */
     private fun writeFile() {
         //获取SD卡的根目录
-        val externalStorageDirectory: File = Environment.getExternalStorageDirectory()
+        @Suppress("DEPRECATION") val externalStorageDirectory: File = Environment.getExternalStorageDirectory()
         //获取SD卡的根目录的路径
         val externalStorageDirectoryPath = externalStorageDirectory.path
-        //在SD卡中创建一个文件夹，文件夹的名字为“gc_ad”
-        val file = File(externalStorageDirectoryPath + File.separator + "gc_ad")
+        //在SD卡中创建一个文件夹，文件夹的名字为“test”
+        val file = File(externalStorageDirectoryPath + File.separator + "test")
         //判断文件是否为文件夹
         if (file.exists()) {
             if (file.isFile) {
@@ -188,11 +168,11 @@ class SdcardFileTestActivity : BaseAppCompatActivity() {
      */
     private fun readFile() {
         //获取SD卡的根目录
-        val externalStorageDirectory: File = Environment.getExternalStorageDirectory()
+        @Suppress("DEPRECATION") val externalStorageDirectory: File = Environment.getExternalStorageDirectory()
         //获取SD卡的根目录的路径
         val externalStorageDirectoryPath = externalStorageDirectory.path
         //指定文件夹路径
-        val file = File(externalStorageDirectoryPath + File.separator + "gc_ad")
+        val file = File(externalStorageDirectoryPath + File.separator + "test")
         //判断文件是否为文件夹
         if (!file.isDirectory) {
             ToastUtil.toastLong(this, "指定路径不是文件夹")

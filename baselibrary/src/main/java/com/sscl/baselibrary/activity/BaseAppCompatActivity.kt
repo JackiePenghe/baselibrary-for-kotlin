@@ -73,6 +73,7 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
         }
 
     /*--------------------------------重写父类方法--------------------------------*/
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         doBeforeSetLayout()
@@ -86,16 +87,6 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
         initOtherData()
         initEvents()
         doAfterAll()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        //创建菜单选项
-        return createOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        //菜单的选项被点击时的处理
-        return optionsItemSelected(item)
     }
 
     override fun onDestroy() {
@@ -153,21 +144,6 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      */
     abstract fun doAfterAll()
 
-    /**
-     * 设置菜单
-     *
-     * @param menu 菜单
-     * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
-     */
-    abstract fun createOptionsMenu(menu: Menu): Boolean
-
-    /**
-     * 设置菜单监听
-     *
-     * @param item 菜单的item
-     * @return true表示处理了监听事件
-     */
-    abstract fun optionsItemSelected(item: MenuItem): Boolean
     /*--------------------------------私有方法--------------------------------*/
     /**
      * 初始化本类固定的控件

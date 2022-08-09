@@ -69,26 +69,6 @@ class ArcProgressBarActivity : BaseAppCompatActivity() {
    override fun doAfterAll() {}
 
     /**
-     * 设置菜单
-     *
-     * @param menu 菜单
-     * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
-     */
-   override fun createOptionsMenu(menu: Menu): Boolean {
-        return false
-    }
-
-    /**
-     * 设置菜单监听
-     *
-     * @param item 菜单的item
-     * @return true表示处理了监听事件
-     */
-   override fun optionsItemSelected(item: MenuItem): Boolean {
-        return false
-    }
-
-    /**
      * Dispatch onResume() to fragments.  Note that for better inter-operation
      * with older versions of the platform, at the point of this call the
      * fragments attached to the activity are *not* resumed.

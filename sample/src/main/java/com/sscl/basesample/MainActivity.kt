@@ -208,26 +208,6 @@ class MainActivity : BaseAppCompatActivity() {
         DebugUtil.warnOut(TAG, "value = $value")
     }
 
-    /**
-     * 设置菜单
-     *
-     * @param menu 菜单
-     * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
-     */
-    override fun createOptionsMenu(menu: Menu): Boolean {
-        return false
-    }
-
-    /**
-     * 设置菜单监听
-     *
-     * @param item 菜单的item
-     * @return true表示处理了监听事件
-     */
-    override fun optionsItemSelected(item: MenuItem): Boolean {
-        return false
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         Tool.stopScreenStatusListener(this)
