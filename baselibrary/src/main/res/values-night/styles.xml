@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/com_jackiepenghe_baselibrary_dark_splash</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:navigationBarColor">#80000000</item>
+    </style>
+
+    <style name="WelcomeTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/com_jackiepenghe_baselibrary_dark_splash</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:navigationBarColor">#80000000</item>
+    </style>
+
+    <style name="FullScreenDialog" parent="AppTheme.NoActionBar.FullScreen">
+        <item name="android:windowBackground">#40000000</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+</resources>

@@ -84,10 +84,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.WelcomeActivity"
-            android:exported="true"
-            android:theme="@style/AppWelcomeTheme" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

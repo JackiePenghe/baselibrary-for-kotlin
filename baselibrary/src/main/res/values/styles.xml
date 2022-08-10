@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!--  Base application theme.  -->
     <!--suppress AndroidDomInspection -->
     <style name="AppTheme" parent="Theme.BaseLibrary" />
@@ -22,7 +23,7 @@
     </style>
 
     <style name="SplashTheme" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/com_jackiepenghe_baselibrary_splash</item>
+        <item name="android:windowBackground">@drawable/com_jackiepenghe_baselibrary_light_splash</item>
         <item name="android:windowFullscreen">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -30,7 +31,7 @@
     </style>
 
     <style name="WelcomeTheme" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/com_jackiepenghe_baselibrary_splash</item>
+        <item name="android:windowBackground">@drawable/com_jackiepenghe_baselibrary_light_splash</item>
         <item name="android:windowFullscreen">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -54,5 +55,8 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
-    <style name="DefaultSplashTheme" parent="SplashTheme"/>
+    <style name="FullScreenDialog" parent="AppTheme.NoActionBar.FullScreen">
+        <item name="android:windowBackground">#40FFFFFF</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 </resources>
