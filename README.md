@@ -43,11 +43,12 @@ dependencies {//version is release tagimplementation 'com.gitee.sscl:baselibrary
 ## BaseAppCompatActivity
 
 封装Activity一些基本的使用流程，使用com.google.android.material.appbar.AppBarLayout +
-androidx.appcompat.widget.Toolbar替代Activity默认的ActionBar 使用时需要注意在style文件中配置以下属性 具体使用方法请下载源码参考
+androidx.appcompat.widget.Toolbar替代Activity默认的ActionBar 使用时需要注意在style文件中配置以下属性
+具体使用方法请下载源码参考
 
 ```xml
-
-<item name="windowActionBar">false</item><item name="windowNoTitle">true</item>
+<item name="windowActionBar">false</item>
+<item name="windowNoTitle">true</item>
 ```
 
 ![BaseAppCompatActivity示例](samplePicture/SampleBaseAppcompatActivity.png)
