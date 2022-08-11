@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.sscl.baselibrary.utils.SystemUtil
 import com.sscl.baselibrary.utils.Tool
 
 /**
@@ -38,7 +39,7 @@ abstract class BaseSplashActivity : Activity() {
             splashScreen = installSplashScreen()
         }
         //隐藏导航栏（状态栏在theme中已经隐藏）
-       Tool.hideNavigationBar(this)
+       SystemUtil.hideNavigationBar(this)
         super.onCreate(savedInstanceState)
         //防止本界面被多次启动
         if (runApp()) {

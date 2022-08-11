@@ -9,6 +9,7 @@ import com.sscl.baselibrary.activity.BaseAppCompatActivity
 import com.sscl.baselibrary.receiver.ScreenStatusReceiver.OnScreenStatusChangedListener
 import com.sscl.baselibrary.utils.DebugUtil
 import com.sscl.baselibrary.utils.SharedPreferencesTools
+import com.sscl.baselibrary.utils.SystemUtil
 import com.sscl.baselibrary.utils.Tool
 import com.sscl.basesample.activities.WidgetActivity
 import com.sscl.basesample.activities.sample.*
@@ -200,8 +201,8 @@ class MainActivity : BaseAppCompatActivity() {
      * 在最后进行的操作
      */
     override fun doAfterAll() {
-        Tool.startScreenStatusListener(this)
-        Tool.setOnScreenStatusChangedListener(onScreenStatusChangedListener)
+        SystemUtil.startScreenStatusListener(this)
+        SystemUtil.setOnScreenStatusChangedListener(onScreenStatusChangedListener)
         SharedPreferencesTools.getInstance(this, "Test").putValueApply("boolean", true)
         val value: Boolean =
             SharedPreferencesTools.getInstance(this, "Test").getValue("booleana", false)
@@ -210,7 +211,7 @@ class MainActivity : BaseAppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Tool.stopScreenStatusListener(this)
+        SystemUtil.stopScreenStatusListener(this)
     }
 
     companion object {

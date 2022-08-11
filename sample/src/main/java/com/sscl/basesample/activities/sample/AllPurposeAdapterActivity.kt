@@ -4,6 +4,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ListView
 import com.sscl.baselibrary.activity.BaseAppCompatActivity
+import com.sscl.baselibrary.utils.SystemUtil
 import com.sscl.baselibrary.utils.Tool
 import com.sscl.basesample.R
 import com.sscl.basesample.adapter.SampleAdapter
@@ -29,7 +30,7 @@ class AllPurposeAdapterActivity : BaseAppCompatActivity() {
         for (i in 0..3) {
             dataList.add("test$i")
         }
-        Tool.hideNavigationBar(this)
+        SystemUtil.hideNavigationBar(this)
     }
 
     /**

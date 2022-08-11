@@ -324,7 +324,6 @@ object SystemUtil {
      *
      * @param context 上下文
      */
-    @kotlin.jvm.JvmStatic
     fun stopScreenStatusListener(context: Context) {
         context.unregisterReceiver(SCREEN_STATUS_RECEIVER)
     }

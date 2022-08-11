@@ -284,7 +284,7 @@ class CrashHandler private constructor() : Thread.UncaughtExceptionHandler {
             }
             //使用Toast来显示异常信息
             scheduledThreadPoolExecutor.schedule(runnable, 0, TimeUnit.MILLISECONDS)
-            BaseManager.handler.postDelayed({ Tool.exitProcess(1) }, 2000)
+            BaseManager.handler.postDelayed({ SystemUtil.exitProcess(1) }, 2000)
         }
         return true
     }
@@ -300,7 +300,7 @@ class CrashHandler private constructor() : Thread.UncaughtExceptionHandler {
             val pi: PackageInfo =
                 pm.getPackageInfo(context.packageName, PackageManager.GET_ACTIVITIES) ?: return
             val versionName: String = if (pi.versionName == null) "null" else pi.versionName
-            val versionCode: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            @Suppress("DEPRECATION") val versionCode: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 pi.longVersionCode.toString()
             } else {
                 pi.versionCode.toString()
