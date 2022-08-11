@@ -96,6 +96,7 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
         contentView.removeAllViews()
     }
     /*--------------------------------抽象方法--------------------------------*/
+
     /**
      * 标题栏的返回按钮被按下的时候回调此方法
      */
@@ -281,6 +282,16 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
     }
 
     /**
+     * 设置标题栏文本颜色
+     *
+     * @param colorRes 文本颜色
+     */
+    protected fun setTitleTextColorRes(@ColorRes colorRes: Int) {
+        val color: Int = ContextCompat.getColor(this, colorRes)
+        setTitleTextColor(color)
+    }
+
+    /**
      * 设置标题栏的背景色
      *
      * @param color 标题栏的背景色
@@ -305,16 +316,6 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      */
     protected fun setTitleBackgroundResource(@DrawableRes drawableRes: Int) {
         toolbar.setBackgroundResource(drawableRes)
-    }
-
-    /**
-     * 设置标题栏文本颜色
-     *
-     * @param colorRes 文本颜色
-     */
-    protected fun setTitleTextColorRes(@ColorRes colorRes: Int) {
-        val color: Int = ContextCompat.getColor(this, colorRes)
-        setTitleTextColor(color)
     }
 
     /**
