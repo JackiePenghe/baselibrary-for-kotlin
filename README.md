@@ -8,11 +8,24 @@ lasts version
 now:[![](https://jitpack.io/v/com.gitee.sscl/baselibrary-for-kotlin.svg)](https://jitpack.io/#com.gitee.sscl/baselibrary-for-kotlin)
 
 ```xml
-allprojects {    repositories {        ...maven { url 'https://jitpack.io' }    }}
+allprojects {
+    repositories {
+        ...
+        maven {
+             url 'https://jitpack.io'
+       }  
+    }
+}
 ```
 
 ```xml
-dependencies {//version is release tagimplementation 'com.gitee.sscl:baselibrary-for-kotlin:version'//用到AutoSwipeRefreshLayout时需要附加依赖库implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'//BaseSplashActivity需要引入SplashScreen库implementation 'androidx.core:core-splashscreen:1.0.0'}
+dependencies {
+    //version is release tag
+    implementation 'com.gitee.sscl:baselibrary-for-kotlin:version'
+    //用到AutoSwipeRefreshLayout时需要引入swiperefreshlayout依赖库
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    //BaseSplashActivity需要引入SplashScreen库
+    implementation 'androidx.core:core-splashscreen:1.0.0'}
 ```
 
 用到BaseDataBindingAppCompatActivity时需要在主module的buid.gradle中开启dataBinding
@@ -31,7 +44,11 @@ dependencies {//version is release tagimplementation 'com.gitee.sscl:baselibrary
 使用DataBinding一般会同时使用ViewModel
 
 ```xml
-     /* * * * * * * * * * * * * * * * * * * ViewModel库开始 * * * * * * * * * * * * * * * * * * *///ViewModel库基本implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'//ViewModel库高级implementation "androidx.activity:activity-ktx:1.3.1"/* * * * * * * * * * * * * * * * * * * ViewModel库结束 * * * * * * * * * * * * * * * * * * */
+     /* * * * * * * * * * * * * * * * * * * ViewModel库开始 * * * * * * * * * * * * * * * * * * */
+    //ViewModel库基本
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
+    //ViewModel库高级implementation "androidx.activity:activity-ktx:1.3.1"
+    /* * * * * * * * * * * * * * * * * * * ViewModel库结束 * * * * * * * * * * * * * * * * * * */
 ```
 
 # 使用说明
@@ -43,11 +60,12 @@ dependencies {//version is release tagimplementation 'com.gitee.sscl:baselibrary
 ## BaseAppCompatActivity
 
 封装Activity一些基本的使用流程，使用com.google.android.material.appbar.AppBarLayout +
-androidx.appcompat.widget.Toolbar替代Activity默认的ActionBar 使用时需要注意在style文件中配置以下属性 具体使用方法请下载源码参考
+androidx.appcompat.widget.Toolbar替代Activity默认的ActionBar 使用时需要注意在style文件中配置以下属性
+具体使用方法请下载源码参考
 
 ```xml
-
-<item name="windowActionBar">false</item><item name="windowNoTitle">true</item>
+<item name="windowActionBar">false</item>
+<item name="windowNoTitle">true</item>
 ```
 
 ![BaseAppCompatActivity示例](samplePicture/SampleBaseAppcompatActivity.png)
@@ -180,13 +198,13 @@ ApkController.uninstall()
 
 ```kotlin
     //全局唯一Handler
-BaseManager.handler
-//全局唯一threadFactory
-BaseManager.threadFactory
-//新建一个threadFactory
-BaseManager.newThreadFactory()
-//新建一个定时任务执行器（定时器不推荐使用，这是可以替代定时器的类）
-BaseManager.newScheduledExecutorService()
+    BaseManager.handler
+    //全局唯一threadFactory
+    BaseManager.threadFactory
+    //新建一个threadFactory
+    BaseManager.newThreadFactory()
+    //新建一个定时任务执行器（定时器不推荐使用，这是可以替代定时器的类）
+    BaseManager.newScheduledExecutorService()
 ```
 
 ## BigDecimalUtils
@@ -199,65 +217,65 @@ BaseManager.newScheduledExecutorService()
 
 ```kotlin
     //字符串转换成十六进制字符串(字符串转ASCII码)
-ConversionUtil.strToHexStr()
-//将IP v4的字符串转为byte数组
-ConversionUtil.ipv4StringToByteArray()
-//字符串转换成byte数组
-ConversionUtil.getByteArray()
-//符串转换成byte数组，自动判断中文简体语言环境，在中文简体下，自动以GBK方式转换（数组长度最长为byteArrayLength）
-ConversionUtil.getByteArrayAutoGbk()
-//十六进制转换字符串（ASCII码字符串转为可读字符串）
-ConversionUtil.hexStrToStr()
-//byteArray转换成十六进制字符串，Byte值之间空格分隔
-ConversionUtil.byteArrayToHexStr()
-//将长整形转为byte数组
-ConversionUtil.longToByteArray()
-//将long类型数（0~0x0000FFFFFFFFFFFF之间）转为6字节byte数组
-ConversionUtil.longToByteArrayLength6()
-//将 long 类型数转为指定长度的 byte 数组
-ConversionUtil.longToByteArray()
-//十六进制字符串转换为Byte数组（十六进制字符串之间没有分隔符）
-ConversionUtil.hexStrToByteArray()
-//byte数组转为long
-ConversionUtil.byteArrayToLong()
-//String的字符串转换成unicode的String
-ConversionUtil.strToUnicode()
-//unicode的String转换成String的字符串
-ConversionUtil.unicodeToString()
-//将一个byte数组拼接为一个int型数
-ConversionUtil.byteArrayToInt()
-//格式化数字为千分位显示
-ConversionUtil.formatMicrometer()
-//将一个整数转换成2个字节的byte数组
-ConversionUtil.intToByteArrayLength2()
-//将一个整数转换成4个字节的byte数组
-ConversionUtil.intToByteArrayLength4()
-//将整数转换成16进制字符串
-ConversionUtil.intToHexStr()
-//将字节型数据转换为0~255(无符号数)
-ConversionUtil.getUnsignedByte()
-//将字节型数据转换为0~65535(无符号数)
-ConversionUtil.getUnsignedShort()
-//将带空格的十六进制字符串转为byte数组
-ConversionUtil.hexStringToByteArray()
-//将int数据转换为0~4294967295（无符号数）
-ConversionUtil.getUnsignedInt()
-//将int转为boolean(0 = false ,1 = true)
-ConversionUtil.intToBoolean()
-//将boolean转为int(true = 1,false = 0)
-ConversionUtil.booleanToInt()
-//将任意对象转为byte数组（Serializable接口或Parcelable接口的对象）
-ConversionUtil.objectToByteArray()
-//将数组类型转为指定的对象（Serializable接口或Parcelable接口的对象）
-ConversionUtil.byteArrayToObject()
-//将蓝牙MAC地址转为byte数组
-ConversionUtil.macAddressStringToByteArray()
-//将MAC地址数组转为设备地址字符串
-ConversionUtil.macAddressByteArrayToString()
-//将一个int型的Ip地址转为点分式地址字符串
-ConversionUtil.intIp4ToStringIp4()
-//将一个int型的Ip地址转为点分式地址字符串（逆序转换）
-ConversionUtil.intIp4ToReverseStringIp4()
+    ConversionUtil.strToHexStr()
+    //将IP v4的字符串转为byte数组
+    ConversionUtil.ipv4StringToByteArray()
+    //字符串转换成byte数组
+    ConversionUtil.getByteArray()
+    //符串转换成byte数组，自动判断中文简体语言环境，在中文简体下，自动以GBK方式转换（数组长度最长为byteArrayLength）
+    ConversionUtil.getByteArrayAutoGbk()
+    //十六进制转换字符串（ASCII码字符串转为可读字符串）
+    ConversionUtil.hexStrToStr()
+    //byteArray转换成十六进制字符串，Byte值之间空格分隔
+    ConversionUtil.byteArrayToHexStr()
+    //将长整形转为byte数组
+    ConversionUtil.longToByteArray()
+    //将long类型数（0~0x0000FFFFFFFFFFFF之间）转为6字节byte数组
+    ConversionUtil.longToByteArrayLength6()
+    //将 long 类型数转为指定长度的 byte 数组
+    ConversionUtil.longToByteArray()
+    //十六进制字符串转换为Byte数组（十六进制字符串之间没有分隔符）
+    ConversionUtil.hexStrToByteArray()
+    //byte数组转为long
+    ConversionUtil.byteArrayToLong()
+    //String的字符串转换成unicode的String
+    ConversionUtil.strToUnicode()
+    //unicode的String转换成String的字符串
+    ConversionUtil.unicodeToString()
+    //将一个byte数组拼接为一个int型数
+    ConversionUtil.byteArrayToInt()
+    //格式化数字为千分位显示
+    ConversionUtil.formatMicrometer()
+    //将一个整数转换成2个字节的byte数组
+    ConversionUtil.intToByteArrayLength2()
+    //将一个整数转换成4个字节的byte数组
+    ConversionUtil.intToByteArrayLength4()
+    //将整数转换成16进制字符串
+    ConversionUtil.intToHexStr()
+    //将字节型数据转换为0~255(无符号数)
+    ConversionUtil.getUnsignedByte()
+    //将字节型数据转换为0~65535(无符号数)
+    ConversionUtil.getUnsignedShort()
+    //将带空格的十六进制字符串转为byte数组
+    ConversionUtil.hexStringToByteArray()
+    //将int数据转换为0~4294967295（无符号数）
+    ConversionUtil.getUnsignedInt()
+    //将int转为boolean(0 = false ,1 = true)
+    ConversionUtil.intToBoolean()
+    //将boolean转为int(true = 1,false = 0)
+    ConversionUtil.booleanToInt()
+    //将任意对象转为byte数组（Serializable接口或Parcelable接口的对象）
+    ConversionUtil.objectToByteArray()
+    //将数组类型转为指定的对象（Serializable接口或Parcelable接口的对象）
+    ConversionUtil.byteArrayToObject()
+    //将蓝牙MAC地址转为byte数组
+    ConversionUtil.macAddressStringToByteArray()
+    //将MAC地址数组转为设备地址字符串
+    ConversionUtil.macAddressByteArrayToString()
+    //将一个int型的Ip地址转为点分式地址字符串
+    ConversionUtil.intIp4ToStringIp4()
+    //将一个int型的Ip地址转为点分式地址字符串（逆序转换）
+    ConversionUtil.intIp4ToReverseStringIp4()
 ```
 
 ## CrashHandler
@@ -266,9 +284,9 @@ ConversionUtil.intIp4ToReverseStringIp4()
 
 ```kotlin
     //设置自定义的异常处理回调（上报异常信息或重启程序等）
-CrashHandler.getInstance().setOnExceptionListener()
-//初始化CrashHandler(调用此方法时一定要确保已经获取到了SD卡的权限，并且此工具类依赖于FileUtil工具类,请确保已经调用了FileUtil的init方法)
-CrashHandler.getInstance().init()
+    CrashHandler.getInstance().setOnExceptionListener()
+    //初始化CrashHandler(调用此方法时一定要确保已经获取到了SD卡的权限，并且此工具类依赖于FileUtil工具类,请确保已经调用了FileUtil的init方法)
+    CrashHandler.getInstance().init()
 ```
 
 ## DebugUtil
@@ -277,19 +295,19 @@ CrashHandler.getInstance().init()
 
 ```kotlin
     //开启日志打印
-DebugUtil.setDebugFlag(true)
-//设置打印TAG，默认为"BaseLibrary->"
-DebugUtil.setDefaultTAG()
-//info级别打印
-DebugUtil.infoOut()
-//error级别打印
-DebugUtil.errorOut()
-//warn级别打印
-DebugUtil.warnOut()
-//debug级别打印
-DebugUtil.debugOut()
-//verbose级别打印
-DebugUtil.verOut()
+    DebugUtil.setDebugFlag(true)
+    //设置打印TAG，默认为"BaseLibrary->"
+    DebugUtil.setDefaultTAG()
+    //info级别打印
+    DebugUtil.infoOut()
+    //error级别打印
+    DebugUtil.errorOut()
+    //warn级别打印
+    DebugUtil.warnOut()
+    //debug级别打印
+    DebugUtil.debugOut()
+    //verbose级别打印
+    DebugUtil.verOut()
 ```
 
 ## DefaultItemDecoration
@@ -324,7 +342,7 @@ override fun onDestroy() {
 
 ```kotlin
     //初始化(调用此方法时一定要确保已经获取到了SD卡的权限，并且此工具类依赖于FileUtil工具类,请确保已经调用了FileUtil的init方法)
-LogCatHelper.getInstance().init()
+    LogCatHelper.getInstance().init()
 ```
 
 ## PermissionUtil
@@ -332,7 +350,7 @@ LogCatHelper.getInstance().init()
 权限请求工具类，用于android 6.0(API 23)以上的动态权限请求
 
 ```kotlin
-    //权限请求回调
+//权限请求回调
 private val onPermissionRequestResult: PermissionUtil.OnPermissionRequestResult =
     object : PermissionUtil.OnPermissionRequestResult {
         /**
@@ -413,7 +431,7 @@ val testResult = sp.getValue("test", "")
 系统工具类
 
 ```kotlin
-    //是否为Flyme系统
+//是否为Flyme系统
 SystemUtil.isFlyme()
 //是否为EMUI
 SystemUtil.isEmui()
@@ -457,7 +475,7 @@ SystemUtil.getDefaultScreenSize()
 吐司工具类，可自定义时长与复用toast，可使用View进行Toast
 
 ```kotlin
-    //长时间的吐司
+//长时间的吐司
 ToastUtil.toastLong()
 //短时间的吐司
 ToastUtil.toastShort()
