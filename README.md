@@ -66,13 +66,13 @@ dependencies {
      <item name="windowNoTitle">true</item>
 ```
 
-![BaseAppCompatActivity示例](SampleBaseAppcompatActivity.png)
+![BaseAppCompatActivity示例](samplePicture/SampleBaseAppcompatActivity.png)
 
 
 ## BaseDataBindingAppCompatActivity
 
 用法与 BaseAppCompatActivity 完全相同，但加入的关于databinding的特性，具体使用方法请下载源码参考，加上ViewModel与LiveData组合实现通过输入框的内容更改文本内容
-![SampleDataBindingActivity](SampleDataBindingActivity.mp4)
+![SampleDataBindingActivity](samplePicture/SampleDataBindingActivity.mp4)
 
 ## BaseDrawerActivity
 
