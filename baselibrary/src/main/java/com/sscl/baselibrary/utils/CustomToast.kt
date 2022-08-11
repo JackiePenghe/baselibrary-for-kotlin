@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
 /**
  * 自定义Toast，可实现自定义显示时间,兼容至安卓N及以上版本
  */
-internal class CustomToast {
+class CustomToast {
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *

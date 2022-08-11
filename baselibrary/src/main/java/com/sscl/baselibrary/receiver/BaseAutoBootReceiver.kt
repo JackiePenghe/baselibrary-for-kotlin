@@ -21,7 +21,7 @@ abstract class BaseAutoBootReceiver : BroadcastReceiver() {
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     override fun onReceive(context: Context, intent: Intent) {
-        val action: String? = intent.getAction()
+        val action: String? = intent.action
         if ((Intent.ACTION_BOOT_COMPLETED == action)) {
             doBootComplete(context, intent)
         }
@@ -33,5 +33,5 @@ abstract class BaseAutoBootReceiver : BroadcastReceiver() {
      *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-    protected abstract fun doBootComplete(context: Context?, receivedIntent: Intent?)
+    protected abstract fun doBootComplete(context: Context, receivedIntent: Intent)
 }

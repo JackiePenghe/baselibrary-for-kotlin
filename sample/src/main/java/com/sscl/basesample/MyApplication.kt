@@ -3,13 +3,13 @@ package com.sscl.basesample
 import android.app.Application
 import androidx.appcompat.app.AlertDialog
 import com.google.gson.Gson
-import com.sscl.baselibrary.files.FileUtil.init
+import com.sscl.baselibrary.files.FileUtil
 import com.sscl.baselibrary.utils.CrashHandler
 import com.sscl.baselibrary.utils.CrashHandler.OnExceptionListener
 import com.sscl.baselibrary.utils.DebugUtil.setDebugFlag
 import com.sscl.baselibrary.utils.DebugUtil.warnOut
+import com.sscl.baselibrary.utils.SystemUtil.restartApplication
 import com.sscl.baselibrary.utils.Tool.getExceptionDetailsInfo
-import com.sscl.baselibrary.utils.Tool.restartApplication
 
 /**
  * @author alm
@@ -30,7 +30,8 @@ class MyApplication : Application() {
         super.onCreate()
         myApplication = this
         setDebugFlag(true)
-        init(this)
+        FileUtil.init(this)
+
     }
 
     companion object {
@@ -47,6 +48,7 @@ class MyApplication : Application() {
                     restartApplication(myApplication?:return)
                 }
             })
+            CrashHandler.getInstance().init(myApplication?:return)
         }
 
         private fun showExceptionUploadingDialog() {

@@ -22,7 +22,8 @@ class HomeWatcher constructor(
     /**
      * 广播过滤器
      */
-    private val mFilter: IntentFilter
+    @Suppress("DEPRECATION")
+    private val mFilter: IntentFilter = IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)
 
     /**
      * home键监听的广播接收者
@@ -55,13 +56,12 @@ class HomeWatcher constructor(
             mContext.unregisterReceiver(mReceiver)
         }
     }
-    /*--------------------------------构造方法--------------------------------*/ /**
+    /*--------------------------------构造方法--------------------------------*/
+
+    /**
      * 构造方法
-     *
-     * @param context 上下文
      */
     init {
-        mFilter = IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)
         mReceiver = HomeWatcherReceiver(this)
     }
 }

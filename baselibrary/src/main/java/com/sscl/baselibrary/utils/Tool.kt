@@ -11,6 +11,9 @@ import android.os.Build
 import android.os.Process
 import android.provider.Settings
 import android.telephony.TelephonyManager
+import android.text.InputType
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.TypedValue
 import android.view.View
 import android.view.WindowInsets
@@ -22,7 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sscl.baselibrary.R
 import com.sscl.baselibrary.bean.PhoneInfo
-import com.sscl.baselibrary.receiver.ScreenStatusReceiver
 import com.sscl.baselibrary.receiver.ScreenStatusReceiver.OnScreenStatusChangedListener
 import java.lang.reflect.Method
 import java.util.*
@@ -35,41 +37,37 @@ import java.util.regex.Pattern
  */
 object Tool {
     /*--------------------------------静态常量--------------------------------*/
-    /**
-     * 屏幕状态的监听广播接收者
-     */
-    private val SCREEN_STATUS_RECEIVER = ScreenStatusReceiver()
+
     private const val IP_V4_REGEX =
         "^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$"
     /*--------------------------------公开方法--------------------------------*/
-    /**
-     * 开始监听屏幕状态
-     *
-     * @param context 上下文
-     */
-    @kotlin.jvm.JvmStatic
-    fun startScreenStatusListener(context: Context): Intent? {
-        return context.registerReceiver(SCREEN_STATUS_RECEIVER, screenStatusReceiverIntentFilter)
-    }
 
     /**
-     * 停止监听屏幕状态
+     * 检测byte数组中的内容有效性（全0为无效）
      *
-     * @param context 上下文
+     * @param byteArray byte数组
+     * @return true表示有效
      */
-    @kotlin.jvm.JvmStatic
-    fun stopScreenStatusListener(context: Context) {
-        context.unregisterReceiver(SCREEN_STATUS_RECEIVER)
+    fun checkByteValid(byteArray: ByteArray): Boolean {
+        for (aByte: Byte in byteArray) {
+            if (aByte.toInt() != 0) {
+                return true
+            }
+        }
+        return false
     }
 
-    /**
-     * 设置屏幕状态更改的监听
-     *
-     * @param onScreenStatusChangedListener 屏幕状态更改的监听
-     */
-    @kotlin.jvm.JvmStatic
-    fun setOnScreenStatusChangedListener(onScreenStatusChangedListener: OnScreenStatusChangedListener) {
-        SCREEN_STATUS_RECEIVER.setOnScreenStatusChangedListener(onScreenStatusChangedListener)
+    fun showEditTextPassword(passwordEt: EditText, showPassword: Boolean) {
+        if (showPassword) {
+            passwordEt.inputType = InputType.TYPE_CLASS_TEXT
+            //setTransformationMethod 支持将输入的字符转换，包括清除换行符、转换为掩码
+            passwordEt.transformationMethod =
+                HideReturnsTransformationMethod.getInstance()
+        } else {
+            passwordEt.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
+            passwordEt.transformationMethod = PasswordTransformationMethod.getInstance()
+        }
+        passwordEt.setSelection(passwordEt.text.toString().length)
     }
 
     /**
@@ -86,19 +84,6 @@ object Tool {
         }
 
     /**
-     * 重启应用程序
-     *
-     * @param context 上下文
-     */
-    @kotlin.jvm.JvmStatic
-    fun restartApplication(context: Context) {
-        val intent = context.packageManager.getLaunchIntentForPackage(context.packageName) ?: return
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        context.startActivity(intent)
-        Process.killProcess(Process.myPid())
-    }
-
-    /**
      * 设置输入框输入类型
      *
      * @param activity  Activity
@@ -113,8 +98,7 @@ object Tool {
         editText.inputType = inputType
         try {
             val cls = EditText::class.java
-            val setShowSoftInputOnFocus: Method
-            setShowSoftInputOnFocus = cls.getMethod(
+            val setShowSoftInputOnFocus: Method = cls.getMethod(
                 "setShowSoftInputOnFocus", Boolean::class.javaPrimitiveType
             )
             setShowSoftInputOnFocus.isAccessible = true
@@ -200,7 +184,6 @@ object Tool {
     fun setDataToClipboard(context: Context, label: String, data: String): Boolean {
         val clipboardManager =
             context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                ?: return false
         val clipData = ClipData.newPlainText(label, data)
         clipboardManager.setPrimaryClip(clipData)
         return true
@@ -264,7 +247,6 @@ object Tool {
     fun getDataFromClipboard(context: Context, index: Int): String? {
         val clipboardManager =
             context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                ?: return null
         val primaryClip = clipboardManager.primaryClip ?: return null
         val itemAt = primaryClip.getItemAt(index)
         return itemAt.text.toString()
@@ -287,9 +269,7 @@ object Tool {
         }
         val telephonyManager =
             context.applicationContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-                ?: return null
-        val deviceId: String
-        deviceId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        @Suppress("DEPRECATION") val deviceId: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             Settings.System.getString(
                 context.contentResolver,
                 Settings.Secure.ANDROID_ID
@@ -330,24 +310,6 @@ object Tool {
     }
 
     /**
-     * 隐藏导航栏
-     *
-     * @param activity activity
-     */
-    @kotlin.jvm.JvmStatic
-    fun hideNavigationBar(activity: Activity) {
-        //隐藏导航栏
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            activity.window.decorView.windowInsetsController!!.hide(WindowInsets.Type.navigationBars())
-        } else {
-            val params = activity.window.attributes
-            params.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE
-            activity.window.attributes = params
-        }
-    }
-
-    /**
      * 获取RecyclerView第一个可见的选项位置
      *
      * @param recyclerView RecyclerView
@@ -384,51 +346,6 @@ object Tool {
             ?: throw IllegalStateException("RecyclerView has no layoutManager set!")
         check(layoutManager is LinearLayoutManager) { "getFirstVisibleItemPosition only support when layoutManager is LinearLayoutManager" }
         return layoutManager.findLastCompletelyVisibleItemPosition()
-    }
-
-    /**
-     * 设置软键状态
-     *
-     * @param activity 上下文
-     * @param show     是否显示
-     */
-    fun setInputMethodState(activity: Activity, show: Boolean) {
-        setInputMethodState(activity, show, false)
-    }
-
-    /**
-     * 设置软键状态
-     *
-     * @param activity 上下文
-     * @param show     是否显示
-     */
-    fun setInputMethodState(activity: Activity, show: Boolean, needFocus: Boolean) {
-        val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            ?: return
-        if (show) {
-            if (activity.currentFocus != null) {
-                //有焦点打开
-                imm.showSoftInput(activity.currentFocus, 0)
-            } else {
-                if (!needFocus) {
-                    //无焦点打开
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-                }
-            }
-        } else {
-            if (activity.currentFocus != null) {
-                //有焦点关闭
-                imm.hideSoftInputFromWindow(
-                    activity.currentFocus!!.windowToken,
-                    InputMethodManager.HIDE_NOT_ALWAYS
-                )
-            } else {
-                if (!needFocus) {
-                    //无焦点关闭
-                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
-                }
-            }
-        }
     }
 
     /**
@@ -502,38 +419,4 @@ object Tool {
         context.theme.resolveAttribute(android.R.attr.statusBarColor, typedValue, true)
         return typedValue.data
     }
-
-    fun exitProcess(status: Int) {
-        //退出程序
-        Process.killProcess(Process.myPid())
-        System.exit(status)
-    }
-
-    /**
-     * 获取默认的屏幕大小
-     *
-     * @param context 上下文
-     */
-    fun getDefaultScreenSize(context: Context): Point {
-        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val defaultDisplay = windowManager.defaultDisplay
-        val point = Point()
-        defaultDisplay.getSize(point)
-        return point
-    }
-    /*--------------------------------私有方法--------------------------------*/
-    /**
-     * 获取监听屏幕状态的广播接收者
-     *
-     * @return 监听屏幕状态的广播接收者
-     */
-    private val screenStatusReceiverIntentFilter: IntentFilter
-        private get() {
-            val intentFilter = IntentFilter()
-            intentFilter.priority = Int.MAX_VALUE
-            intentFilter.addAction(Intent.ACTION_SCREEN_OFF)
-            intentFilter.addAction(Intent.ACTION_SCREEN_ON)
-            intentFilter.addAction(Intent.ACTION_USER_PRESENT)
-            return intentFilter
-        }
 }

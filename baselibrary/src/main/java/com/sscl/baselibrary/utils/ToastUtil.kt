@@ -63,8 +63,6 @@ object ToastUtil {
      */
     /**
      * 设置是否重用未消失的Toast
-     *
-     * @param reuse true表示开启重用
      */
     @kotlin.jvm.JvmStatic
     var isToastReuse: Boolean
@@ -87,7 +85,7 @@ object ToastUtil {
      * 取消Toast
      */
     fun cancel() {
-        CustomToast.Companion.handlerCancelToast()
+        CustomToast.handlerCancelToast()
     }
 
     /**
@@ -98,7 +96,7 @@ object ToastUtil {
      */
     @kotlin.jvm.JvmStatic
     fun toastShort(context: Context, @StringRes messageRes: Int) {
-        showToast(context, messageRes, CustomToast.Companion.LENGTH_SHORT)
+        showToast(context, messageRes, CustomToast.LENGTH_SHORT)
     }
 
     /**
@@ -132,6 +130,8 @@ object ToastUtil {
         showToast(context, view, duration)
     }
 
+    /*--------------------------------私有方法--------------------------------*/
+
     /**
      * 弹出Toast
      *
@@ -140,9 +140,9 @@ object ToastUtil {
      * @param duration 持续时间
      */
     private fun showToast(context: Context, message: String, duration: Int) {
-        CustomToast.Companion.makeText(context, message, duration).show()
+        CustomToast.makeText(context, message, duration).show()
     }
-    /*--------------------------------私有方法--------------------------------*/
+
     /**
      * 弹出Toast
      *
@@ -151,7 +151,7 @@ object ToastUtil {
      * @param duration   持续时间
      */
     private fun showToast(context: Context, @StringRes messageRes: Int, duration: Int) {
-        CustomToast.Companion.makeText(context, messageRes, duration).show()
+        CustomToast.makeText(context, messageRes, duration).show()
     }
 
     /**
@@ -162,6 +162,6 @@ object ToastUtil {
      * @param duration 持续时间
      */
     private fun showToast(context: Context, view: View, duration: Int) {
-        CustomToast.Companion.makeText(context, view, duration).show()
+        CustomToast.makeText(context, view, duration).show()
     }
 }

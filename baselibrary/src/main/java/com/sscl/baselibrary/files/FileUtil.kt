@@ -39,9 +39,9 @@ object FileUtil {
     /**
      * 应用程序名(在文件管理器中的程序文件夹名)
      */
-    private var INTERNAL_APP_NAME: String? = UNNAMED_APP_DIR
+    private var INTERNAL_APP_NAME: String = UNNAMED_APP_DIR
 
-    private var SD_APP_NAME: String? = UNNAMED_APP_DIR
+    private var SD_APP_NAME: String = UNNAMED_APP_DIR
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
@@ -78,7 +78,7 @@ object FileUtil {
             if (!init) {
                 throw NullPointerException("FileUtil not init")
             }
-            if (null == INTERNAL_APP_NAME || "" == INTERNAL_APP_NAME) {
+            if (INTERNAL_APP_NAME.isEmpty()) {
                 throw ExceptionInInitializerError("File name invalid")
             }
             val file = File(INTERNAL_APP_NAME)
@@ -104,7 +104,7 @@ object FileUtil {
             if (!init) {
                 throw NullPointerException("FileUtil not init")
             }
-            if (null == SD_APP_NAME || "" == SD_APP_NAME) {
+            if (SD_APP_NAME.isEmpty()) {
                 throw ExceptionInInitializerError("File name invalid")
             }
             val file = File(SD_APP_NAME)
@@ -313,21 +313,6 @@ object FileUtil {
             }
             return file
         }
-
-    /**
-     * 安装apk
-     *
-     * @param context 上下文
-     * @param apkFile 文件
-     */
-    fun installApk(context: Context, apkFile: File) {
-        val intent = Intent()
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.action = Intent.ACTION_VIEW
-        val type = "application/vnd.android.package-archive"
-        intent.setDataAndType(Uri.fromFile(apkFile), type)
-        context.startActivity(intent)
-    }
 
     /**
      * 获取项目数据目录

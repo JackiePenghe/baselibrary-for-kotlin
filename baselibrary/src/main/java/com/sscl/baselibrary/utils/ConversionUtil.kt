@@ -547,34 +547,6 @@ object ConversionUtil {
     }
 
     /**
-     * 使用代码触发home键的效果
-     *
-     * @param context 上下文
-     */
-    fun pressHomeButton(context: Context) {
-        val intent = Intent(Intent.ACTION_MAIN)
-        // 注意:必须加上这句代码，否则就不是单例了
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.addCategory(Intent.CATEGORY_HOME)
-        context.startActivity(intent)
-    }
-
-    /**
-     * 检测byte数组中的内容有效性（全0为无效）
-     *
-     * @param byteArray byte数组
-     * @return true表示有效
-     */
-    fun checkByteValid(byteArray: ByteArray): Boolean {
-        for (aByte: Byte in byteArray) {
-            if (aByte.toInt() != 0) {
-                return true
-            }
-        }
-        return false
-    }
-
-    /**
      * 将任意对象转为byte数组
      *
      * @param o 任意对象
@@ -617,6 +589,7 @@ object ConversionUtil {
         var o: T? = null
         val byteArrayInputStream = ByteArrayInputStream(byteArray)
         var objectInputStream: ObjectInputStream? = null
+        @Suppress("UNCHECKED_CAST")
         try {
             objectInputStream = ObjectInputStream(byteArrayInputStream)
             val readObject = objectInputStream.readObject()
@@ -648,7 +621,7 @@ object ConversionUtil {
      * @param address 设备地址
      * @return byte数组
      */
-    fun bluetoothAddressStringToByteArray(address: String): ByteArray? {
+    fun macAddressStringToByteArray(address: String): ByteArray? {
         if (!BluetoothAdapter.checkBluetoothAddress(address)) {
             return null
         }
@@ -674,7 +647,7 @@ object ConversionUtil {
      * @param addressByteArray 设备地址数组
      * @return 设备地址字符串（AA:AA:AA:AA:AA:AA）
      */
-    fun bluetoothAddressByteArrayToString(addressByteArray: ByteArray): String? {
+    fun macAddressByteArrayToString(addressByteArray: ByteArray): String? {
         if (addressByteArray.size != ADDRESS_BYTE_LENGTH) {
             return null
         }
