@@ -66,8 +66,7 @@ dependencies {
      <item name="windowNoTitle">true</item>
 ```
 
-示例图片
-
+![BaseAppCompatActivity示例](SampleBaseAppcompatActivity.png)
 
 
 ## BaseDataBindingAppCompatActivity
