@@ -53,10 +53,9 @@ class ScreenStatusReceiver : BroadcastReceiver() {
 
     /*---------------------------------------实现父类方法---------------------------------------*/
 
-    override fun onReceive(context: Context?, intent: Intent?) {
-        val intent1 = intent ?: return
+    override fun onReceive(context: Context, intent: Intent) {
 
-        val action: String = intent1.action ?: return
+        val action: String = intent.action ?: return
         when (action) {
             Intent.ACTION_SCREEN_ON -> {
                 onScreenStatusChangedListener?.onScreenOn()

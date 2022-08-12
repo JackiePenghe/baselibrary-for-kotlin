@@ -14,26 +14,29 @@
 
         <Button
             android:id="@+id/back"
-            android:text="后退"
+            android:text="@string/com_sscl_basesample_back"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            tools:ignore="ButtonStyle" />
 
         <Button
+            tools:ignore="ButtonStyle"
             android:id="@+id/forward"
-            android:text="前进"
+            android:text="@string/com_sscl_basesample_forward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <Button
+            tools:ignore="ButtonStyle"
             android:id="@+id/refresh"
-            android:text=" 刷新"
+            android:text="@string/com_sscl_basesample_refresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <Button
+            tools:ignore="ButtonStyle"
             android:id="@+id/stop"
-            android:text="停止加载"
-
+            android:text="@string/com_sscl_basesample_stop_load"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
@@ -43,9 +46,12 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:id="@+id/url"
-        android:hint="请输入网址"
+        android:hint="@string/com_sscl_basesample_please_input_net_address"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        tools:ignore="TextFields"
+        android:importantForAutofill="no" />
 
     <com.sscl.baselibrary.widget.LollipopFixedWebView
         android:id="@+id/web_view"

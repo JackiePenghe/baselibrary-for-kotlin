@@ -45,5 +45,14 @@
     <string name="com_sscl_basesample_read_file">读文件</string>
     <string name="com_sscl_basesample_write_file">写文件</string>
     <string name="com_sscl_basesample_sample_data_binging">data binging示例</string>
-    <string name="change_text">更改文本内容</string>
+    <string name="com_sscl_basesample_sample_change_text">更改文本内容</string>
+    <string name="com_sscl_basesample_usb_listener">USB监听</string>
+    <string name="com_sscl_basesample_back">后退</string>
+    <string name="com_sscl_basesample_forward">前进</string>
+    <string name="com_sscl_basesample_refresh">刷新</string>
+    <string name="com_sscl_basesample_stop_load">停止加载</string>
+    <string name="com_sscl_basesample_please_input_net_address">请输入网址</string>
+    <string name="com_sscl_basesample_get_usb_path">获取USB路径</string>
+    <string name="com_sscl_basesample_get_usb_file_list">获取USB文件列表</string>
+    <string name="udisk_path_colon">U盘路径：</string>
 </resources>

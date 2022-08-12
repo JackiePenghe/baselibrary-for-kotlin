@@ -70,15 +70,15 @@ class HomeWatcherReceiver constructor(homeWatcher: HomeWatcher) : BroadcastRecei
      *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-    override fun onReceive(context: Context?, intent: Intent?) {
-        val intent1 = intent ?: return
-        val action: String? = intent1.action
+    override fun onReceive(context: Context, intent: Intent) {
+        val action: String? = intent.action
         homeWatcherWeakReference.get() ?: return
         if (action == null) {
             return
         }
+        @Suppress("DEPRECATION")
         if ((action == Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
-            val reason: String? = intent1.getStringExtra(SYSTEM_DIALOG_REASON_KEY)
+            val reason: String? = intent.getStringExtra(SYSTEM_DIALOG_REASON_KEY)
             if (reason != null) {
                 if ((reason == SYSTEM_DIALOG_REASON_HOME_KEY)) {
                     // 短按home键
@@ -100,10 +100,11 @@ class HomeWatcherReceiver constructor(homeWatcher: HomeWatcher) : BroadcastRecei
     fun setOnHomePressedListener(listener: OnHomePressedListener?) {
         mListener = listener
     }
-    /*--------------------------------构造方法--------------------------------*/ /**
+
+    /*--------------------------------构造方法--------------------------------*/
+
+    /**
      * 构造方法
-     *
-     * @param homeWatcher HomeWatcher对象
      */
     init {
         homeWatcherWeakReference = WeakReference(homeWatcher)

@@ -1,8 +1,6 @@
 package com.sscl.basesample
 
 import android.content.Intent
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import com.sscl.baselibrary.activity.BaseAppCompatActivity
@@ -10,7 +8,6 @@ import com.sscl.baselibrary.receiver.ScreenStatusReceiver.OnScreenStatusChangedL
 import com.sscl.baselibrary.utils.DebugUtil
 import com.sscl.baselibrary.utils.SharedPreferencesTools
 import com.sscl.baselibrary.utils.SystemUtil
-import com.sscl.baselibrary.utils.Tool
 import com.sscl.basesample.activities.WidgetActivity
 import com.sscl.basesample.activities.sample.*
 
@@ -35,6 +32,7 @@ class MainActivity : BaseAppCompatActivity() {
     private lateinit var animationTestBtn: Button
     private lateinit var sdcardFileTestBtn: Button
     private lateinit var sampleDataBindingBtn: Button
+    private lateinit var usbListenerBtn: Button
 
     private val onClickListener = View.OnClickListener { view: View ->
         var intent: Intent? = null
@@ -95,6 +93,9 @@ class MainActivity : BaseAppCompatActivity() {
             }
             sampleDataBindingBtn.id -> {
                 intent = Intent(this@MainActivity, SampleDataBindingActivity::class.java)
+            }
+            usbListenerBtn.id -> {
+                intent = Intent(this@MainActivity, USBListenerActivity::class.java)
             }
         }
         if (intent != null) {
@@ -162,6 +163,7 @@ class MainActivity : BaseAppCompatActivity() {
         animationTestBtn = findViewById(R.id.animation_test_btn)
         sdcardFileTestBtn = findViewById(R.id.sdcard_file_test_btn)
         sampleDataBindingBtn = findViewById(R.id.sample_data_binding_btn)
+        usbListenerBtn = findViewById(R.id.usb_listener_btn)
     }
 
     /**
@@ -195,6 +197,7 @@ class MainActivity : BaseAppCompatActivity() {
         animationTestBtn.setOnClickListener(onClickListener)
         sdcardFileTestBtn.setOnClickListener(onClickListener)
         sampleDataBindingBtn.setOnClickListener(onClickListener)
+        usbListenerBtn.setOnClickListener(onClickListener)
     }
 
     /**
@@ -205,7 +208,7 @@ class MainActivity : BaseAppCompatActivity() {
         SystemUtil.setOnScreenStatusChangedListener(onScreenStatusChangedListener)
         SharedPreferencesTools.getInstance(this, "Test").putValueApply("boolean", true)
         val value: Boolean =
-            SharedPreferencesTools.getInstance(this, "Test").getValue("booleana", false)
+            SharedPreferencesTools.getInstance(this, "Test").getValue("boolean", false)
         DebugUtil.warnOut(TAG, "value = $value")
     }
 

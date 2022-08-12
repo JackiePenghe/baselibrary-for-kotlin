@@ -5,15 +5,6 @@
     <!--suppress AndroidDomInspection -->
     <style name="AppTheme" parent="Theme.BaseLibrary" />
 
-    <!--  更改3点菜单的图标颜色  -->
-<!--    <item name="actionOverflowButtonStyle">@style/MyOverflowButtonStyle</item>-->
-
-<!--    <style name="MyOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">-->
-<!--        <item name="android:tint">@color/black</item>-->
-<!--    </style>-->
-
-<!--    app:backgroundTint="@null"-->
-
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

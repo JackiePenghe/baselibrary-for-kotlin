@@ -556,6 +556,23 @@ TTsUtils.init(context,object : TTsUtils.OnInitListener{
 TTsUtils.speak(text,false)
 ```
 
+## UsbUtil
+
+USB工具类
+
+```kotlin
+//开始监听USB
+USBUtil.startUsbListener()
+//停止监听USB
+USBUtil.stopUsbListener()
+//设置USB的监听
+USBUtil.setOnUSBListener()
+//判断USB设备类型
+USBUtil.checkDeviceClass()
+//获取U盘文件路径
+USBUtil.getUDiskPath()
+```
+
 ## ZipUtils
 
 zip文件解压工具类

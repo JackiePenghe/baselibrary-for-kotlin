@@ -40,6 +40,8 @@
         android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
 
+    <uses-feature android:name="android.hardware.usb.host" />
+
     <!--suppress AndroidUnknownAttribute -->
     <application
         android:requestLegacyExternalStorage="true"

@@ -1,4 +1,4 @@
-package com.sscl.basesample.viewbinding
+package com.sscl.basesample.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

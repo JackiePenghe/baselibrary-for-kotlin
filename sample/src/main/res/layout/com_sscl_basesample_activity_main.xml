@@ -129,6 +129,13 @@
             android:text="@string/com_sscl_basesample_sample_data_binging"
             app:textAllCaps="false" />
 
+        <Button
+            android:id="@+id/usb_listener_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/com_sscl_basesample_usb_listener"
+            app:textAllCaps="false" />
+
     </LinearLayout>
 
 </ScrollView>

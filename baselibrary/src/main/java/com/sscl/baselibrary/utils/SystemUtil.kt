@@ -9,12 +9,15 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.Point
+import android.hardware.usb.UsbConstants
+import android.hardware.usb.UsbDevice
 import android.util.Log
 import kotlin.Throws
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import com.sscl.baselibrary.receiver.ScreenStatusReceiver
+import com.sscl.baselibrary.receiver.USBListenerReceiver
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException

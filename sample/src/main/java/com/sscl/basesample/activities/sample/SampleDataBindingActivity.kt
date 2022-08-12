@@ -1,13 +1,10 @@
 package com.sscl.basesample.activities.sample
 
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.LayoutInflater
 import androidx.activity.viewModels
 import com.sscl.baselibrary.activity.BaseDataBindingAppCompatActivity
-import com.sscl.basesample.R
 import com.sscl.basesample.databinding.ComSsclBasesampleActivitySampleDataBindingBinding
-import com.sscl.basesample.viewbinding.SampleDataBindingActivityViewModel
+import com.sscl.basesample.viewmodel.SampleDataBindingActivityViewModel
 
 class SampleDataBindingActivity :
     BaseDataBindingAppCompatActivity<ComSsclBasesampleActivitySampleDataBindingBinding>() {
@@ -47,22 +44,12 @@ class SampleDataBindingActivity :
     }
 
     /**
-     * 设置布局
-     *
-     * @return 布局id
-     */
-    override fun setLayout(): Int {
-        return R.layout.com_sscl_basesample_activity_sample_data_binding
-    }
-
-    /**
      * 初始化数据绑定
      */
-    override fun initDataBinding(view: View): ComSsclBasesampleActivitySampleDataBindingBinding {
-        val bind = ComSsclBasesampleActivitySampleDataBindingBinding.bind(view)
-        bind.lifecycleOwner = this
-        bind.viewModel = sampleDataBindingActivityViewModel
-        return bind
+    override fun inflateLayout(layoutInflater: LayoutInflater): ComSsclBasesampleActivitySampleDataBindingBinding {
+        val binding = ComSsclBasesampleActivitySampleDataBindingBinding.inflate(layoutInflater)
+        binding.viewModel = sampleDataBindingActivityViewModel
+        return binding
     }
 
     /**

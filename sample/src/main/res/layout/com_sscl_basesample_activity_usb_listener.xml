@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.sscl.basesample.viewmodel.USBListenerActivityViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".activities.sample.USBListenerActivity">
+
+        <Button
+            android:id="@+id/get_usb_path_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/com_sscl_basesample_get_usb_path" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/udisk_path_colon" />
+
+            <TextView
+                android:id="@+id/u_disk_path_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.uDiskPath}" />
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/get_usb_list_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/com_sscl_basesample_get_usb_file_list" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/usb_file_list_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</layout>

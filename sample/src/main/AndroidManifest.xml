@@ -124,6 +124,7 @@
             android:name=".activities.sample.SampleBannerActivity"
             android:theme="@style/AppTheme.NoActionBar.FullScreen" />
         <activity android:name=".activities.sample.SampleDataBindingActivity" />
+        <activity android:name=".activities.sample.USBListenerActivity" />
     </application>
 
 </manifest>

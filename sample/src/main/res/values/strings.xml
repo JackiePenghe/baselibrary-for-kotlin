@@ -52,5 +52,14 @@
     <string name="com_sscl_basesample_read_file">read file</string>
     <string name="com_sscl_basesample_write_file">write file</string>
     <string name="com_sscl_basesample_sample_data_binging">sample data binging</string>
-    <string name="change_text">change text</string>
+    <string name="com_sscl_basesample_sample_change_text">change text</string>
+    <string name="com_sscl_basesample_usb_listener">usb_listener</string>
+    <string name="com_sscl_basesample_back">back</string>
+    <string name="com_sscl_basesample_forward">forward</string>
+    <string name="com_sscl_basesample_refresh">refresh</string>
+    <string name="com_sscl_basesample_stop_load">stop load</string>
+    <string name="com_sscl_basesample_please_input_net_address">please input net address</string>
+    <string name="com_sscl_basesample_get_usb_path">get usb disk path</string>
+    <string name="com_sscl_basesample_get_usb_file_list">get usb disk file list</string>
+    <string name="udisk_path_colon">udisk path:</string>
 </resources>
