@@ -2,8 +2,7 @@ package com.sscl.baselibrary.activity
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -105,7 +104,13 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
         contentView.removeAllViews()
         binding.unbind()
     }
-    /*--------------------------------抽象方法--------------------------------*/
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 抽象方法
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
     /**
      * 标题栏的返回按钮被按下的时候回调此方法
      */
@@ -117,17 +122,9 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
     abstract fun doBeforeSetLayout()
 
     /**
-     * 设置布局
-     *
-     * @return 布局id
-     */
-    @LayoutRes
-    abstract fun setLayout(): Int
-
-    /**
      * 初始化数据绑定
      */
-    abstract fun initDataBinding(view: View): B
+    abstract fun inflateLayout(layoutInflater: LayoutInflater): B
 
     /**
      * 在设置布局之后，进行其他操作之前，所需要初始化的数据
@@ -154,47 +151,12 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
      */
     abstract fun doAfterAll()
 
-    /*--------------------------------私有方法--------------------------------*/
-    /**
-     * 初始化本类固定的控件
-     */
-    private fun initThisView() {
-        toolbar = findViewById(R.id.toolbar)
-        titleView = findViewById(R.id.toolbar_title)
-        contentView = findViewById(R.id.base_frame_content)
-        rootView = findViewById(R.id.base_root_view)
-    }
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 子类可用方法
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-    /**
-     * 初始化本类固定的数据
-     */
-    private fun initThisData() {
-        titleView.setText(R.string.app_name)
-        setSupportActionBar(toolbar)
-        val supportActionBar: ActionBar? = supportActionBar
-        if (supportActionBar != null) {
-            supportActionBar.setDisplayHomeAsUpEnabled(true)
-            //设置返回键可用
-            supportActionBar.setHomeButtonEnabled(true)
-            //            //不显示标题
-            supportActionBar.setDisplayShowTitleEnabled(false)
-        }
-        val layoutResId: Int = setLayout()
-        if (layoutResId == 0) {
-            throw RuntimeException("setLayout with wrong layout resource id")
-        }
-        val view: View = View.inflate(this,layoutResId,null)
-        contentView.addView(view)
-        binding = initDataBinding(view)
-    }
-
-    /**
-     * 初始化本类固定的事件
-     */
-    private fun initThisEvents() {
-        toolbar.setNavigationOnClickListener(mTitleBackButtonOnClickListener)
-    }
-    /*--------------------------------子类可用方法--------------------------------*/
     /**
      * 设置title返回按钮的处理事件
      *
@@ -335,5 +297,47 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
      */
     protected fun setTitleBackIcon(@DrawableRes drawableId: Int) {
         toolbar.setNavigationIcon(drawableId)
+    }
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 私有方法
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    /**
+     * 初始化本类固定的控件
+     */
+    private fun initThisView() {
+        toolbar = findViewById(R.id.toolbar)
+        titleView = findViewById(R.id.toolbar_title)
+        contentView = findViewById(R.id.base_frame_content)
+        rootView = findViewById(R.id.base_root_view)
+    }
+
+    /**
+     * 初始化本类固定的数据
+     */
+    private fun initThisData() {
+        titleView.setText(R.string.app_name)
+        setSupportActionBar(toolbar)
+        val supportActionBar: ActionBar? = supportActionBar
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true)
+            //设置返回键可用
+            supportActionBar.setHomeButtonEnabled(true)
+            //            //不显示标题
+            supportActionBar.setDisplayShowTitleEnabled(false)
+        }
+        binding = inflateLayout(layoutInflater)
+        binding.lifecycleOwner = this
+        contentView.addView(binding.root)
+    }
+
+    /**
+     * 初始化本类固定的事件
+     */
+    private fun initThisEvents() {
+        toolbar.setNavigationOnClickListener(mTitleBackButtonOnClickListener)
     }
 }
