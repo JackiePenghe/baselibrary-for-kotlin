@@ -1,8 +1,8 @@
 package com.sscl.basesample.activities.sample
 
-import android.view.LayoutInflater
 import androidx.activity.viewModels
 import com.sscl.baselibrary.activity.BaseDataBindingAppCompatActivity
+import com.sscl.basesample.R
 import com.sscl.basesample.databinding.ComSsclBasesampleActivitySampleDataBindingBinding
 import com.sscl.basesample.viewmodel.SampleDataBindingActivityViewModel
 
@@ -44,12 +44,10 @@ class SampleDataBindingActivity :
     }
 
     /**
-     * 初始化数据绑定
+     * 设置布局
      */
-    override fun inflateLayout(layoutInflater: LayoutInflater): ComSsclBasesampleActivitySampleDataBindingBinding {
-        val binding = ComSsclBasesampleActivitySampleDataBindingBinding.inflate(layoutInflater)
-        binding.viewModel = sampleDataBindingActivityViewModel
-        return binding
+    override fun setLayout(): Int {
+        return R.layout.com_sscl_basesample_activity_sample_data_binding
     }
 
     /**
@@ -57,6 +55,7 @@ class SampleDataBindingActivity :
      */
     override fun doBeforeInitOthers() {
         setTitleText("这是测试DataBinding的示例")
+        binding.viewModel = sampleDataBindingActivityViewModel
     }
 
     /**
@@ -78,8 +77,8 @@ class SampleDataBindingActivity :
      * 初始化事件
      */
     override fun initEvents() {
-        binding.changeTextBtn.setOnClickListener{
-            val text = binding.sampleEt.text?.toString()?:"这是默认的文本"
+        binding.changeTextBtn.setOnClickListener {
+            val text = binding.sampleEt.text?.toString() ?: "这是默认的文本"
             sampleDataBindingActivityViewModel.text.value = text
         }
     }

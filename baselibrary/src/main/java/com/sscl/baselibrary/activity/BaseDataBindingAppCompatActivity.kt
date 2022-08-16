@@ -12,6 +12,7 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.sscl.baselibrary.R
 
@@ -122,9 +123,9 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
     abstract fun doBeforeSetLayout()
 
     /**
-     * 初始化数据绑定
+     * 设置布局
      */
-    abstract fun inflateLayout(layoutInflater: LayoutInflater): B
+    abstract fun setLayout(): Int
 
     /**
      * 在设置布局之后，进行其他操作之前，所需要初始化的数据
@@ -326,10 +327,10 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
             supportActionBar.setDisplayHomeAsUpEnabled(true)
             //设置返回键可用
             supportActionBar.setHomeButtonEnabled(true)
-            //            //不显示标题
+            //不显示标题
             supportActionBar.setDisplayShowTitleEnabled(false)
         }
-        binding = inflateLayout(layoutInflater)
+        binding = DataBindingUtil.inflate(layoutInflater, setLayout(), contentView, false)
         binding.lifecycleOwner = this
         contentView.addView(binding.root)
     }

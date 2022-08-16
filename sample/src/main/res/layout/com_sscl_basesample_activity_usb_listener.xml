@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.sscl.basesample.viewmodel.USBListenerActivityViewModel" />
@@ -37,7 +36,6 @@
                 android:layout_height="wrap_content"
                 android:text="@{viewModel.uDiskPath}" />
         </LinearLayout>
-
 
         <Button
             android:id="@+id/get_usb_list_btn"

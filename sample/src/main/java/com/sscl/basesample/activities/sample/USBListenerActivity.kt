@@ -102,18 +102,17 @@ class USBListenerActivity :
     }
 
     /**
-     * 初始化数据绑定
+     * 设置布局
      */
-    override fun inflateLayout(layoutInflater: LayoutInflater): ComSsclBasesampleActivityUsbListenerBinding {
-        val binding = ComSsclBasesampleActivityUsbListenerBinding.inflate(layoutInflater)
-        binding.viewModel = usbListenerActivityViewModel
-        return binding
+    override fun setLayout(): Int {
+        return R.layout.com_sscl_basesample_activity_usb_listener
     }
 
     /**
      * 在设置布局之后，进行其他操作之前，所需要初始化的数据
      */
     override fun doBeforeInitOthers() {
+        binding.viewModel = usbListenerActivityViewModel
         initFileListRvList()
     }
 
