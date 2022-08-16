@@ -32,7 +32,6 @@ android {
     publishing {
         singleVariant('release') {
             withSourcesJar()
-            withJavadocJar()
         }
     }
     buildTypes {
@@ -53,9 +52,9 @@ dependencies {
     //design库
     implementation 'com.google.android.material:material:1.6.1'
     //SwipeRefreshLayout库
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    compileOnly 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     //使用全新的开屏页
-    implementation "androidx.core:core-splashscreen:1.0.0"
+    compileOnly "androidx.core:core-splashscreen:1.0.0"
     implementation "androidx.core:core-ktx:1.8.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
