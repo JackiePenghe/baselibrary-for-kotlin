@@ -25,17 +25,10 @@ class WidgetActivity : BaseDrawerActivity() {
     override fun initOtherData() {}
     override fun initEvents() {}
     override fun doAfterAll() {}
-    override fun createOptionsMenu(menu: Menu): Boolean {
-        return false
-    }
 
-    override fun optionsItemSelected(item: MenuItem): Boolean {
-        return false
-    }
-
-    override fun drawerSlide(drawerView: View?, slideOffset: Float) {}
-    override fun drawerOpened(drawerView: View?) {}
-    override fun drawerClosed(drawerView: View?) {}
+    override fun drawerSlide(drawerView: View, slideOffset: Float) {}
+    override fun drawerOpened(drawerView: View) {}
+    override fun drawerClosed(drawerView: View) {}
     override fun drawerStateChanged(newState: Int) {}
     override fun setNavigationViewHeaderViewLayoutResId(): Int {
         return 0

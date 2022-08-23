@@ -70,25 +70,6 @@ class SampleBaseDrawerActivity : BaseDrawerActivity() {
      */
     override fun doAfterAll() {}
 
-    /**
-     * 设置菜单
-     *
-     * @param menu 菜单
-     * @return 只是重写 public boolean onCreateOptionsMenu(Menu menu)
-     */
-    override fun createOptionsMenu(menu: Menu): Boolean {
-        return false
-    }
-
-    /**
-     * 设置菜单监听
-     *
-     * @param item 菜单的item
-     * @return true表示处理了监听事件
-     */
-    override fun optionsItemSelected(item: MenuItem): Boolean {
-        return false
-    }
     //想要更改侧边栏的显示内容，方法如下:
     //1.在res目录下新建menu文件夹
     //2.在menu文件夹中新建文件 activity_main_drawer.xml，文件内容参考sample模块下同目录的同名文件
@@ -98,7 +79,7 @@ class SampleBaseDrawerActivity : BaseDrawerActivity() {
      * @param drawerView  侧边栏
      * @param slideOffset 滑动距离
      */
-    override fun drawerSlide(drawerView: View?, slideOffset: Float) {
+    override fun drawerSlide(drawerView: View, slideOffset: Float) {
         DebugUtil.warnOut(TAG, "slideOffset = $slideOffset")
     }
 
@@ -107,7 +88,7 @@ class SampleBaseDrawerActivity : BaseDrawerActivity() {
      *
      * @param drawerView 侧边栏
      */
-    override fun drawerOpened(drawerView: View?) {
+    override fun drawerOpened(drawerView: View) {
         ToastUtil.toastLong(this, "侧边栏完全打开了")
     }
 
@@ -116,7 +97,7 @@ class SampleBaseDrawerActivity : BaseDrawerActivity() {
      *
      * @param drawerView 侧边栏
      */
-    override fun drawerClosed(drawerView: View?) {
+    override fun drawerClosed(drawerView: View) {
         ToastUtil.toastLong(this, "侧边栏完全关闭了")
     }
 

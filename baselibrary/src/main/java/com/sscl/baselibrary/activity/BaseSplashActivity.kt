@@ -61,6 +61,7 @@ abstract class BaseSplashActivity : Activity() {
      * 在本界面第一次启动时执行的操作
      */
     protected abstract fun onCreate()
+
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
      * 私有方法
@@ -72,7 +73,7 @@ abstract class BaseSplashActivity : Activity() {
      * @return true表示已经在运行了
      */
     private fun runApp(): Boolean {
-        if ((getIntent().getFlags() and Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) > 0) {
+        if ((intent.flags and Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) > 0) {
             //为了防止重复启动多个闪屏页
             finish()
             return true

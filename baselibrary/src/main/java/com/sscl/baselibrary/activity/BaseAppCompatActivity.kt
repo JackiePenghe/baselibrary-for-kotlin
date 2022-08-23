@@ -95,17 +95,38 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
         mTitleBackButtonOnClickListener = null
         contentView.removeAllViews()
     }
+
     /*--------------------------------抽象方法--------------------------------*/
 
     /**
-     * 标题栏的返回按钮被按下的时候回调此方法
+     * 在最后进行的操作
      */
-    abstract fun titleBackClicked(): Boolean
+    abstract fun doAfterAll()
 
     /**
-     * 在设置布局之前需要进行的操作
+     * 初始化事件
      */
-    abstract fun doBeforeSetLayout()
+    abstract fun initEvents()
+
+    /**
+     * 初始化其他数据
+     */
+    abstract fun initOtherData()
+
+    /**
+     * 初始化控件数据
+     */
+    abstract fun initViewData()
+
+    /**
+     * 初始化布局控件
+     */
+    abstract fun initViews()
+
+    /**
+     * 在设置布局之后，进行其他操作之前，所需要初始化的数据
+     */
+    abstract fun doBeforeInitOthers()
 
     /**
      * 设置布局
@@ -116,34 +137,14 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
     abstract fun setLayout(): Int
 
     /**
-     * 在设置布局之后，进行其他操作之前，所需要初始化的数据
+     * 在设置布局之前需要进行的操作
      */
-    abstract fun doBeforeInitOthers()
+    abstract fun doBeforeSetLayout()
 
     /**
-     * 初始化布局控件
+     * 标题栏的返回按钮被按下的时候回调此方法
      */
-    abstract fun initViews()
-
-    /**
-     * 初始化控件数据
-     */
-    abstract fun initViewData()
-
-    /**
-     * 初始化其他数据
-     */
-    abstract fun initOtherData()
-
-    /**
-     * 初始化事件
-     */
-    abstract fun initEvents()
-
-    /**
-     * 在最后进行的操作
-     */
-    abstract fun doAfterAll()
+    abstract fun titleBackClicked(): Boolean
 
     /*--------------------------------私有方法--------------------------------*/
     /**

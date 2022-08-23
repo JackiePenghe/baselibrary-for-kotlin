@@ -113,34 +113,9 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     /**
-     * 标题栏的返回按钮被按下的时候回调此方法
+     * 在最后进行的操作
      */
-    abstract fun titleBackClicked(): Boolean
-
-    /**
-     * 在设置布局之前需要进行的操作
-     */
-    abstract fun doBeforeSetLayout()
-
-    /**
-     * 设置布局
-     */
-    abstract fun setLayout(): Int
-
-    /**
-     * 在设置布局之后，进行其他操作之前，所需要初始化的数据
-     */
-    abstract fun doBeforeInitOthers()
-
-    /**
-     * 初始化控件数据
-     */
-    abstract fun initViewData()
-
-    /**
-     * 初始化其他数据
-     */
-    abstract fun initOtherData()
+    abstract fun doAfterAll()
 
     /**
      * 初始化事件
@@ -148,9 +123,34 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
     abstract fun initEvents()
 
     /**
-     * 在最后进行的操作
+     * 初始化其他数据
      */
-    abstract fun doAfterAll()
+    abstract fun initOtherData()
+
+    /**
+     * 初始化控件数据
+     */
+    abstract fun initViewData()
+
+    /**
+     * 在设置布局之后，进行其他操作之前，所需要初始化的数据
+     */
+    abstract fun doBeforeInitOthers()
+
+    /**
+     * 设置布局
+     */
+    abstract fun setLayout(): Int
+
+    /**
+     * 在设置布局之前需要进行的操作
+     */
+    abstract fun doBeforeSetLayout()
+
+    /**
+     * 标题栏的返回按钮被按下的时候回调此方法
+     */
+    abstract fun titleBackClicked(): Boolean
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
