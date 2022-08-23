@@ -47,7 +47,8 @@ dependencies {
      /* * * * * * * * * * * * * * * * * * * ViewModel库开始 * * * * * * * * * * * * * * * * * * */
     //ViewModel库基本
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
-    //ViewModel库高级implementation "androidx.activity:activity-ktx:1.3.1"
+    //ViewModel库高级
+    implementation "androidx.activity:activity-ktx:1.3.1"
     /* * * * * * * * * * * * * * * * * * * ViewModel库结束 * * * * * * * * * * * * * * * * * * */
 ```
 
