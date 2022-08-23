@@ -825,6 +825,9 @@ class Banner @JvmOverloads constructor(
      * 暂停当前banner
      */
     private fun pauseCurrent() {
+        if (currentPosition >= bannerDataList.size){
+            return
+        }
         val bannerData = bannerDataList[currentPosition]
         @Suppress("REDUNDANT_ELSE_IN_WHEN")
         when (bannerData.bannerType) {
