@@ -13,4 +13,4 @@ class BluetoothAddressTextWatch
  *
  * @param editText the editText to edit text.
  */
-constructor(editText: EditText) : HexTextAutoAddCharInputWatcher(editText, 6, ":")
+constructor(editText: EditText) : HexTextAutoAddCharInputWatcher(editText, 6, ':')

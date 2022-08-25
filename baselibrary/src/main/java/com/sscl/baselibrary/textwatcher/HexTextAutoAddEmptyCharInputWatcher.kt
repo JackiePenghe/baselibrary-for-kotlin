@@ -15,4 +15,4 @@ class HexTextAutoAddEmptyCharInputWatcher
  * @param maxInput 最大输入字节数
  */
 constructor(editText: EditText, maxInput: Int) :
-    HexTextAutoAddCharInputWatcher(editText, maxInput, " ")
+    HexTextAutoAddCharInputWatcher(editText, maxInput,  ' ')

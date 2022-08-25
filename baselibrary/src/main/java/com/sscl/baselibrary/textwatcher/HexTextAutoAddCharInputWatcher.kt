@@ -19,7 +19,7 @@ open class HexTextAutoAddCharInputWatcher constructor(
     /**
      * The editText to edit text.
      */
-    private val mEditText: EditText, maxInput: Int, @Size(1) character: String
+    private val mEditText: EditText, maxInput: Int, @Size(1) character: Char
 ) : TextWatcher {
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -84,7 +84,7 @@ open class HexTextAutoAddCharInputWatcher constructor(
     /**
      * the characters
      */
-    private val character: String
+    private val character: Char
 
     /**
      * 每一个代表字节的字符串的长度 即每一个字节的长度，固定值为3，包含最后的一个空格
@@ -157,7 +157,7 @@ open class HexTextAutoAddCharInputWatcher constructor(
                     mSelection -= 1
                 } else {
                     if (((mSelection >= 1) && (temp.length > mSelection - 1)
-                                && ((temp[mSelection - 1]) == ' '))
+                                && ((temp[mSelection - 1]) == character))
                     ) {
                         mSelection += 1
                     }
@@ -178,7 +178,7 @@ open class HexTextAutoAddCharInputWatcher constructor(
             // Delete operation.
             if (count == 0) {
                 if (((mSelection >= 1) && (temp.length > mSelection - 1)
-                            && ((temp.get(mSelection - 1)) == ' '))
+                            && ((temp[mSelection - 1]) == character))
                 ) {
                     mSelection -= 1
                 }
