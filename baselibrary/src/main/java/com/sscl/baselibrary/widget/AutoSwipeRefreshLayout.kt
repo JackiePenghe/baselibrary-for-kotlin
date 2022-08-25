@@ -15,18 +15,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
  *
  * @author jackie
  */
-class AutoSwipeRefreshLayout
-/**
- * 构造方法
- * @param context 上下文
- * @param attrs 控件属性
- */
-/*--------------------------------构造方法--------------------------------*/
-/**
- * 构造方法
- * @param context 上下文
- */
-@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
+class AutoSwipeRefreshLayout  @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
     SwipeRefreshLayout(context, attrs) {
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

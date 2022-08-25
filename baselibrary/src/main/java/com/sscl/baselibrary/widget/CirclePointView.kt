@@ -11,7 +11,12 @@ import android.view.*
  * 自定义圆形控件
  * @author pengh
  */
-class CirclePointView constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 0): View(context, attrs, defStyleAttr) {
+class CirclePointView @JvmOverloads constructor(
+    context: Context?,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0,
+    defStyleRes: Int = 0
+) : View(context, attrs, defStyleAttr, defStyleRes) {
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
@@ -45,26 +50,31 @@ class CirclePointView constructor(context: Context?, attrs: AttributeSet? = null
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     init {
-        val defaultDisplay = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            context?.display
+        val windowManager: WindowManager? =
+        context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager?
+        @Suppress("DEPRECATION")
+        screenWidth = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val float = windowManager?.currentWindowMetrics?.bounds?.width()?.toFloat()
+            if (float != null){
+                float
+            }else{
+                val point = Point()
+                windowManager?.defaultDisplay?.getSize(point)
+                point.x.toFloat()
+            }
         } else {
-            val windowManager: WindowManager? =
-                context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager?
-            windowManager?.defaultDisplay
-        }
-        if (defaultDisplay!=null) {
             val point = Point()
-            defaultDisplay.getSize(point)
-            screenWidth = point.x.toFloat()
-            color = Color.RED
+            windowManager?.defaultDisplay?.getSize(point)
+            point.x.toFloat()
         }
+        color = Color.RED
     }
 
-   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-    *
-    * 重写方法
-    *
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 重写方法
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     /**
      * 在onDraw方法中画一个圆
