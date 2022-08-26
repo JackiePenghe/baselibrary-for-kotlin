@@ -98,13 +98,20 @@ fun String?.toIpV4ByteArray(): ByteArray? {
  * 字节数组转十六进制字符串，每个字节间用空格分割
  */
 fun ByteArray?.toHexStringWithSpace(): String? {
+    return toHexStringWithDelimiter(" ")
+}
+
+/**
+ * 字节数组转十六进制字符串，每个字节间用指定分隔符分割
+ */
+fun ByteArray?.toHexStringWithDelimiter(delimiter: String): String? {
     this ?: return null
     var stmp: String
     val sb = StringBuilder()
     for (aByte in this) {
         stmp = Integer.toHexString(aByte.toInt() and 0xFF)
         sb.append(if (stmp.length == 1) "0$stmp" else stmp)
-        sb.append(" ")
+        sb.append(delimiter)
     }
     return sb.toString().uppercase(Locale.getDefault()).trim()
 }
@@ -119,6 +126,15 @@ fun ByteArray?.toMacAddressString(): String? {
     val toHexStringWithSpace = toHexStringWithSpace() ?: return null
     val addressCache = toHexStringWithSpace.replace(" ", ":")
     return addressCache.uppercase(Locale.getDefault())
+}
+
+/**
+ * 将带分隔符的十六进制字符串转为byte数组
+ *
+ * @return byte数组
+ */
+fun String?.fromHexStringWithSpaceToByteArray(): ByteArray? {
+    return fromHexStringWithDelimiterToByteArray(" ")
 }
 
 /**
