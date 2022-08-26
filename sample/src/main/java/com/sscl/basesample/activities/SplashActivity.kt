@@ -9,9 +9,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.Settings
 import com.sscl.baselibrary.activity.BaseSplashActivity
-import com.sscl.baselibrary.utils.BaseManager
-import com.sscl.baselibrary.utils.PermissionUtil
-import com.sscl.baselibrary.utils.ToastUtil
+import com.sscl.baselibrary.utils.*
 import com.sscl.basesample.MainActivity
 import com.sscl.basesample.R
 

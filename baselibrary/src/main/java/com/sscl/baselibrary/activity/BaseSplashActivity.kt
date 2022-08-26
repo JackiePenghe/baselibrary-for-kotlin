@@ -32,6 +32,7 @@ abstract class BaseSplashActivity : Activity() {
      * 重写父类方法
      *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
     override fun onCreate(savedInstanceState: Bundle?) {
         //适配安卓12，设置为启动界面
         var splashScreen: SplashScreen? = null

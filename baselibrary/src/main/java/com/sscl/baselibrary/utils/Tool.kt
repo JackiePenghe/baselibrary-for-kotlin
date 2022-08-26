@@ -36,10 +36,7 @@ import java.util.regex.Pattern
  * @author alm
  */
 object Tool {
-    /*--------------------------------静态常量--------------------------------*/
 
-    private const val IP_V4_REGEX =
-        "^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$"
     /*--------------------------------公开方法--------------------------------*/
 
     /**
@@ -69,19 +66,6 @@ object Tool {
         }
         passwordEt.setSelection(passwordEt.text.toString().length)
     }
-
-    /**
-     * 检测系统环境是否是中文简体
-     *
-     * @return true表示为中文简体
-     */
-    val isZhCn: Boolean
-        get() {
-            val aDefault = Locale.getDefault()
-            val aDefaultStr = aDefault.toString()
-            val zhCn = "zh_CN"
-            return zhCn.lowercase() == aDefaultStr.lowercase()
-        }
 
     /**
      * 设置输入框输入类型
@@ -282,18 +266,6 @@ object Tool {
         val manufacturer = Build.MANUFACTURER
         val model = Build.MODEL
         return PhoneInfo(manufacturer, model, deviceId)
-    }
-
-    /**
-     * 检查是否符合IPv4格式文本
-     *
-     * @param ipv4String 字符串
-     * @return true表示符合
-     */
-    fun checkIpv4String(ipv4String: String): Boolean {
-        val pattern = Pattern.compile(IP_V4_REGEX)
-        val matcher = pattern.matcher(ipv4String)
-        return matcher.matches()
     }
 
     /**

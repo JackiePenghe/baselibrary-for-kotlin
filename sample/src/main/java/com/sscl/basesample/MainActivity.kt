@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Button
 import com.sscl.baselibrary.activity.BaseAppCompatActivity
 import com.sscl.baselibrary.receiver.ScreenStatusReceiver.OnScreenStatusChangedListener
+import com.sscl.baselibrary.utils.ConversionUtil
 import com.sscl.baselibrary.utils.DebugUtil
 import com.sscl.baselibrary.utils.SharedPreferencesTools
 import com.sscl.baselibrary.utils.SystemUtil
@@ -206,10 +207,6 @@ class MainActivity : BaseAppCompatActivity() {
     override fun doAfterAll() {
         SystemUtil.startScreenStatusListener(this)
         SystemUtil.setOnScreenStatusChangedListener(onScreenStatusChangedListener)
-        SharedPreferencesTools.getInstance(this, "Test").putValueApply("boolean", true)
-        val value: Boolean =
-            SharedPreferencesTools.getInstance(this, "Test").getValue("boolean", false)
-        DebugUtil.warnOut(TAG, "value = $value")
     }
 
     override fun onDestroy() {
