@@ -6,6 +6,8 @@ import android.view.*
 import android.widget.PopupWindow
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import com.sscl.baselibrary.utils.BaseManager
 
 /**
@@ -13,7 +15,7 @@ import com.sscl.baselibrary.utils.BaseManager
  *
  * @author pengh
  */
-abstract class BasePopupWindow @JvmOverloads constructor(
+abstract class BaseDataBindingPopupWindow<T : ViewDataBinding> @JvmOverloads constructor(
     protected val context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
@@ -36,6 +38,11 @@ abstract class BasePopupWindow @JvmOverloads constructor(
     @Suppress("PropertyName")
     protected val TAG: String = javaClass.simpleName
 
+    /* * * * * * * * * * * * * * * * * * * 延时初始化属性 * * * * * * * * * * * * * * * * * * */
+
+    @Suppress("MemberVisibilityCanBePrivate")
+    protected val binding: T
+
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
      * 构造方法
@@ -48,6 +55,7 @@ abstract class BasePopupWindow @JvmOverloads constructor(
             throw IllegalArgumentException("setLayout returned 0")
         }
         val contentView: View = View.inflate(context, layoutRes, null)
+        binding = DataBindingUtil.bind(contentView)!!
         this.contentView = contentView
         this.width = width
         this.height = height
@@ -61,6 +69,7 @@ abstract class BasePopupWindow @JvmOverloads constructor(
             doAfterAll()
         }
     }
+
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
@@ -128,7 +137,10 @@ abstract class BasePopupWindow @JvmOverloads constructor(
     /**
      * 显示popup window
      *
-     * @param parent 父布局
+     * @param parent  父布局
+     * @param gravity Gravity
+     * @param x       x坐标
+     * @param y       y坐标
      */
     @JvmOverloads
     fun show(parent: View, gravity: Int = Gravity.CENTER, x: Int = 0, y: Int = 0) {

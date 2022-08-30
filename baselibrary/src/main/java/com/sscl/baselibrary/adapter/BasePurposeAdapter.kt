@@ -9,7 +9,7 @@ import android.widget.*
 import androidx.annotation.*
 
 /**
- * ListView万能适配器
+ * ListView或Spinner的万能适配器
  *
  * @author alm
  */

@@ -6,9 +6,7 @@ import android.app.Activity
 import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Resources
-import android.graphics.Point
 import android.os.Build
-import android.os.Process
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.text.InputType
@@ -16,7 +14,6 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.TypedValue
 import android.view.View
-import android.view.WindowInsets
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -24,11 +21,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sscl.baselibrary.R
-import com.sscl.baselibrary.bean.PhoneInfo
-import com.sscl.baselibrary.receiver.ScreenStatusReceiver.OnScreenStatusChangedListener
+import com.sscl.baselibrary.bean.DeviceInfo
 import java.lang.reflect.Method
-import java.util.*
-import java.util.regex.Pattern
 
 /**
  * 工具类
@@ -243,7 +237,7 @@ object Tool {
      * @return 本机信息
      */
     @SuppressLint("HardwareIds")
-    fun getPhoneInfo(context: Context): PhoneInfo? {
+    fun getPhoneInfo(context: Context): DeviceInfo? {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val selfPermission =
                 ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE)
@@ -265,7 +259,7 @@ object Tool {
         }
         val manufacturer = Build.MANUFACTURER
         val model = Build.MODEL
-        return PhoneInfo(manufacturer, model, deviceId)
+        return DeviceInfo(manufacturer, model, deviceId)
     }
 
     /**

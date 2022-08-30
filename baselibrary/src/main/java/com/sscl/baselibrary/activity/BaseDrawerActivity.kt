@@ -34,63 +34,16 @@ import androidx.annotation.MenuRes
  */
 abstract class BaseDrawerActivity : AppCompatActivity() {
 
-    /*--------------------------------静态常量--------------------------------*/
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 属性声明
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    /* * * * * * * * * * * * * * * * * * * 常量属性 * * * * * * * * * * * * * * * * * * */
 
     @Suppress("PropertyName")
     protected val TAG: String = javaClass.simpleName
-
-    /*--------------------------------成员变量--------------------------------*/
-
-    /**
-     * 标题
-     */
-    private var toolbar: Toolbar? = null
-
-    /**
-     * 抽屉布局
-     */
-    private lateinit var drawerLayout: DrawerLayout
-
-    /**
-     * 左上角可展示侧边栏状态的小控件
-     */
-    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
-
-    /**
-     * 侧边栏
-     */
-    private lateinit var navigationView: NavigationView
-
-    /**
-     * 侧边栏被选中的ID
-     */
-    private var menuItemId: Int = 0
-
-    /**
-     * 标题文字
-     */
-    private  var titleView: TextView? = null
-    /**
-     * 获取当前侧边栏的打开状态
-     *
-     * @return 当前侧边栏的打开状态
-     */
-    /**
-     * 记录当前侧边栏的打开状态
-     */
-    protected var isDrawerOpen: Boolean = false
-        private set
-    /**
-     * 获取Activity布局的整个布局
-     *
-     * @return Activity布局的整个布局
-     */
-    /**
-     * 子类继承此类之后，设置的布局都在FrameLayout中
-     */
-    @Suppress("MemberVisibilityCanBePrivate")
-    protected lateinit var contentView: FrameLayout
-        private set
 
     /**
      * 抽屉布局侧边栏的相关监听
@@ -134,14 +87,67 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
             true
         }
 
-    /*--------------------------------重写父类方法--------------------------------*/
+    /* * * * * * * * * * * * * * * * * * * 延时初始化属性 * * * * * * * * * * * * * * * * * * */
+
+    /**
+     * 标题
+     */
+    private lateinit var toolbar: Toolbar
+
+    /**
+     * 抽屉布局
+     */
+    private lateinit var drawerLayout: DrawerLayout
+
+    /**
+     * 左上角可展示侧边栏状态的小控件
+     */
+    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
+
+    /**
+     * 侧边栏
+     */
+    private lateinit var navigationView: NavigationView
+
+    /**
+     * 标题文字
+     */
+    private lateinit var titleView: TextView
+
+    /**
+     * 子类继承此类之后，设置的布局都在FrameLayout中
+     */
+    @Suppress("MemberVisibilityCanBePrivate")
+    protected lateinit var contentView: FrameLayout
+        private set
+
+    /* * * * * * * * * * * * * * * * * * * 可变属性 * * * * * * * * * * * * * * * * * * */
+
+    /**
+     * 侧边栏被选中的ID
+     */
+    private var menuItemId: Int = 0
+
+    /**
+     * 记录当前侧边栏的打开状态
+     */
+    protected var isDrawerOpen: Boolean = false
+        private set
+
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 重写方法
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         doBeforeSetLayout()
         setContentView(R.layout.com_jackiepenghe_baselibrary_activity_base_drawer)
         toolbar = findViewById(R.id.toolbar)
         titleView = findViewById(R.id.toolbar_title)
-        titleView?.setText(R.string.app_name)
+        titleView.setText(R.string.app_name)
         setSupportActionBar(toolbar)
         val supportActionBar: ActionBar? = supportActionBar
         if (supportActionBar != null) {
@@ -194,7 +200,7 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                     drawerLayout.closeDrawer(GravityCompat.START)
                 } else {
-                   finish()
+                    finish()
                 }
             }
         })
@@ -202,97 +208,19 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        toolbar?.setNavigationOnClickListener(null)
-        toolbar?.navigationIcon = null
+        toolbar.setNavigationOnClickListener(null)
+        toolbar.navigationIcon = null
         drawerLayout.removeAllViews()
         drawerLayout.removeDrawerListener(drawerListener)
         drawerLayout.removeDrawerListener(actionBarDrawerToggle)
         navigationView.setNavigationItemSelectedListener(null)
     }
 
-    /*--------------------------------抽象方法--------------------------------*/
-
-    /**
-     * 侧边栏选项被选中时执行的回调
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *
-     * @param menuItemId 被选中的侧边栏选项ID
-     */
-    abstract fun navigationItemSelected(@IdRes menuItemId: Int)
-
-    /**
-     * 获取侧边栏的菜单的资源id，如果不设置此选项，会以默认的菜单进行填充
+     * 抽象方法
      *
-     * @return 侧边栏的菜单的资源id
-     */
-    @MenuRes
-    abstract fun setNavigationMenuResId(): Int
-
-    /**
-     * 获取侧边栏的头部的资源id，如果不设置此选项，会以默认的头部布局进行填充
-     *
-     * @return 侧边栏的头部的资源id
-     */
-    @LayoutRes
-    abstract fun setNavigationViewHeaderViewLayoutResId(): Int
-
-    /**
-     * DrawerLayout的状态改变了
-     *
-     * @param newState 新的状态
-     */
-    abstract fun drawerStateChanged(newState: Int)
-
-    /**
-     * DrawerLayout已经完全关闭了
-     *
-     * @param drawerView 侧边栏
-     */
-    abstract fun drawerClosed(drawerView: View)
-
-    /**
-     * DrawerLayout已经完全打开了
-     *
-     * @param drawerView 侧边栏
-     */
-    abstract fun drawerOpened(drawerView: View)
-
-    /**
-     * DrawerLayout的滑动监听
-     *
-     * @param drawerView  侧边栏
-     * @param slideOffset 滑动距离
-     */
-    abstract fun drawerSlide(drawerView: View, slideOffset: Float)
-
-    /**
-     * 在最后执行的操作
-     */
-    abstract fun doAfterAll()
-
-    /**
-     * 初始化事件
-     */
-    abstract fun initEvents()
-
-    /**
-     * 初始化其他数据
-     */
-    abstract fun initOtherData()
-
-    /**
-     * 初始化控件数据
-     */
-    abstract fun initViewData()
-
-    /**
-     * 初始化布局控件
-     */
-    abstract fun initViews()
-
-    /**
-     * 在设置布局之后，进行其他操作之前，所需要初始化的数据
-     */
-    abstract fun doBeforeInitOthers()
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     /**
      * 设置布局
@@ -307,10 +235,46 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
      */
     abstract fun doBeforeSetLayout()
 
-    /*--------------------------------子类可用方法--------------------------------*/
+    /**
+     * 在设置布局之后，进行其他操作之前，所需要初始化的数据
+     */
+    abstract fun doBeforeInitOthers()
+
+    /**
+     * 初始化布局控件
+     */
+    abstract fun initViews()
+
+    /**
+     * 初始化控件数据
+     */
+    abstract fun initViewData()
+
+    /**
+     * 初始化其他数据
+     */
+    abstract fun initOtherData()
+
+    /**
+     * 初始化事件
+     */
+    abstract fun initEvents()
+
+    /**
+     * 在最后执行的操作
+     */
+    abstract fun doAfterAll()
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 子类可用方法
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
     /**
      * 关闭侧边栏
      */
+    @Suppress("MemberVisibilityCanBePrivate")
     protected fun closeDrawer() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -323,7 +287,7 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
      * @param titleResId 标题栏的资源id
      */
     protected fun setTitleText(@StringRes titleResId: Int) {
-        titleView?.setText(titleResId)
+        titleView.setText(titleResId)
     }
 
     /**
@@ -332,7 +296,7 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
      * @param titleText 标题栏内容
      */
     protected fun setTitleText(titleText: String?) {
-        titleView?.text = titleText
+        titleView.text = titleText
     }
 
     /**
@@ -340,11 +304,9 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
      *
      * @param color 文本颜色
      */
+    @Suppress("MemberVisibilityCanBePrivate")
     protected fun setTitleTextColor(@ColorInt color: Int) {
-        if (titleView == null) {
-            throw RuntimeException("titleView is null!Please invoke this method after method \"setLayout()\"")
-        }
-        titleView?.setTextColor(color)
+        titleView.setTextColor(color)
     }
 
     /**
@@ -363,10 +325,7 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
      * @param color 标题栏背景色
      */
     protected fun setTitleBackgroundColor(@ColorInt color: Int) {
-        if (toolbar == null) {
-            throw RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"")
-        }
-        toolbar?.setBackgroundColor(color)
+        toolbar.setBackgroundColor(color)
     }
 
     /**
@@ -375,10 +334,7 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
      * @param drawable 标题栏背景
      */
     protected fun setTitleBackgroundDrawable(drawable: Drawable?) {
-        if (toolbar == null) {
-            throw RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"")
-        }
-        toolbar?.background = drawable
+        toolbar.background = drawable
     }
 
     /**
@@ -387,10 +343,7 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
      * @param drawableRes 标题栏背景
      */
     protected fun setTitleBackgroundResource(@DrawableRes drawableRes: Int) {
-        if (toolbar == null) {
-            throw RuntimeException("appBarLayout is null!Please invoke this method after method \"setLayout()\"")
-        }
-        toolbar?.setBackgroundResource(drawableRes)
+        toolbar.setBackgroundResource(drawableRes)
     }
 
     /**
@@ -409,5 +362,78 @@ abstract class BaseDrawerActivity : AppCompatActivity() {
      */
     protected fun getNavigationView(): NavigationView {
         return findViewById(R.id.nav_view)
+    }
+
+    /**
+     * 获取侧边栏的头部的资源id，如果不设置此选项，会以默认的头部布局进行填充
+     * 可重写此方法设置自定义的侧边栏的头部的资源id
+     *
+     * @return 侧边栏的头部的资源id
+     */
+    @LayoutRes
+    protected fun setNavigationViewHeaderViewLayoutResId(): Int {
+        return 0
+    }
+
+    /**
+     * DrawerLayout的状态改变了
+     * 可重写此方法处理DrawerLayout的状态改变事件
+     *
+     * @param newState 新的状态
+     */
+    protected fun drawerStateChanged(@Suppress("UNUSED_PARAMETER") newState: Int) {
+
+    }
+
+    /**
+     * DrawerLayout已经完全关闭了
+     * 可重写此方法处理 DrawerLayout完全关闭的事件
+     *
+     * @param drawerView 侧边栏
+     */
+    protected fun drawerClosed(@Suppress("UNUSED_PARAMETER") drawerView: View) {
+
+    }
+
+    /**
+     * DrawerLayout已经完全打开了
+     * 可重写此方法处理 DrawerLayout完全打开的事件
+     *
+     * @param drawerView 侧边栏
+     */
+    protected fun drawerOpened(@Suppress("UNUSED_PARAMETER") drawerView: View) {
+
+    }
+
+    /**
+     * DrawerLayout的滑动监听
+     * 可重写此方法处理 DrawerLayout的滑动监听
+     *
+     * @param drawerView  侧边栏
+     * @param slideOffset 滑动距离
+     */
+    protected fun drawerSlide(@Suppress("UNUSED_PARAMETER") drawerView: View, @Suppress("UNUSED_PARAMETER") slideOffset: Float) {
+
+    }
+
+    /**
+     * 获取侧边栏的菜单的资源id，如果不设置此选项，会以默认的菜单进行填充
+     * 可重写此方法设置自定义的侧边栏的菜单的资源id
+     *
+     * @return 侧边栏的菜单的资源id
+     */
+    @MenuRes
+    protected fun setNavigationMenuResId(): Int {
+        return 0
+    }
+
+    /**
+     * 侧边栏选项被选中时执行的回调
+     * 可重写此方法处理侧边栏选项被选中的事件
+     *
+     * @param menuItemId 被选中的侧边栏选项ID
+     */
+    protected fun navigationItemSelected(@Suppress("UNUSED_PARAMETER") @IdRes menuItemId: Int) {
+
     }
 }

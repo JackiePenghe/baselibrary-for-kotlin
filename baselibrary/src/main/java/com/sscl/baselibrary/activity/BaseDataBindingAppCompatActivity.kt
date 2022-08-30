@@ -2,7 +2,6 @@ package com.sscl.baselibrary.activity
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -92,6 +91,7 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
         initThisView()
         initThisData()
         initThisEvents()
+        setBinding()
         doBeforeInitOthers()
         initViewData()
         initOtherData()
@@ -113,34 +113,14 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     /**
-     * 在最后进行的操作
-     */
-    abstract fun doAfterAll()
-
-    /**
-     * 初始化事件
-     */
-    abstract fun initEvents()
-
-    /**
-     * 初始化其他数据
-     */
-    abstract fun initOtherData()
-
-    /**
-     * 初始化控件数据
-     */
-    abstract fun initViewData()
-
-    /**
-     * 在设置布局之后，进行其他操作之前，所需要初始化的数据
-     */
-    abstract fun doBeforeInitOthers()
-
-    /**
      * 设置布局
      */
     abstract fun setLayout(): Int
+
+    /**
+     * 标题栏的返回按钮被按下的时候回调此方法
+     */
+    abstract fun titleBackClicked(): Boolean
 
     /**
      * 在设置布局之前需要进行的操作
@@ -148,9 +128,35 @@ abstract class BaseDataBindingAppCompatActivity<B : ViewDataBinding> : AppCompat
     abstract fun doBeforeSetLayout()
 
     /**
-     * 标题栏的返回按钮被按下的时候回调此方法
+     * 设置DataBinding
+     * 可在此处设置binding的viewModel或观察者等操作
      */
-    abstract fun titleBackClicked(): Boolean
+    abstract fun setBinding()
+
+    /**
+     * 在设置布局之后，进行其他操作之前，所需要初始化的数据
+     */
+    abstract fun doBeforeInitOthers()
+
+    /**
+     * 初始化控件数据
+     */
+    abstract fun initViewData()
+
+    /**
+     * 初始化其他数据
+     */
+    abstract fun initOtherData()
+
+    /**
+     * 初始化事件
+     */
+    abstract fun initEvents()
+
+    /**
+     * 在最后进行的操作
+     */
+    abstract fun doAfterAll()
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *

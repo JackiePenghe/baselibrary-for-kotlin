@@ -72,7 +72,11 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
             }
         }
 
-    /*--------------------------------重写父类方法--------------------------------*/
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 重写方法
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,37 +100,11 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
         contentView.removeAllViews()
     }
 
-    /*--------------------------------抽象方法--------------------------------*/
-
-    /**
-     * 在最后进行的操作
-     */
-    abstract fun doAfterAll()
-
-    /**
-     * 初始化事件
-     */
-    abstract fun initEvents()
-
-    /**
-     * 初始化其他数据
-     */
-    abstract fun initOtherData()
-
-    /**
-     * 初始化控件数据
-     */
-    abstract fun initViewData()
-
-    /**
-     * 初始化布局控件
-     */
-    abstract fun initViews()
-
-    /**
-     * 在设置布局之后，进行其他操作之前，所需要初始化的数据
-     */
-    abstract fun doBeforeInitOthers()
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 抽象方法
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     /**
      * 设置布局
@@ -137,55 +115,51 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
     abstract fun setLayout(): Int
 
     /**
+     * 标题栏的返回按钮被按下的时候回调此方法
+     */
+    abstract fun titleBackClicked(): Boolean
+
+    /**
      * 在设置布局之前需要进行的操作
      */
     abstract fun doBeforeSetLayout()
 
     /**
-     * 标题栏的返回按钮被按下的时候回调此方法
+     * 在设置布局之后，进行其他操作之前，所需要初始化的数据
      */
-    abstract fun titleBackClicked(): Boolean
-
-    /*--------------------------------私有方法--------------------------------*/
-    /**
-     * 初始化本类固定的控件
-     */
-    private fun initThisView() {
-        toolbar = findViewById(R.id.toolbar)
-        titleView = findViewById(R.id.toolbar_title)
-        contentView = findViewById(R.id.base_frame_content)
-        rootView = findViewById(R.id.base_root_view)
-    }
+    abstract fun doBeforeInitOthers()
 
     /**
-     * 初始化本类固定的数据
+     * 初始化布局控件
      */
-    private fun initThisData() {
-        titleView.setText(R.string.app_name)
-        setSupportActionBar(toolbar)
-        val supportActionBar: ActionBar? = supportActionBar
-        if (supportActionBar != null) {
-            supportActionBar.setDisplayHomeAsUpEnabled(true)
-            //设置返回键可用
-            supportActionBar.setHomeButtonEnabled(true)
-            //            //不显示标题
-            supportActionBar.setDisplayShowTitleEnabled(false)
-        }
-        val layoutResId: Int = setLayout()
-        if (layoutResId == 0) {
-            throw RuntimeException("setLayout with wrong layout resource id")
-        }
-        val view: View = layoutInflater.inflate(layoutResId, null)
-        contentView.addView(view)
-    }
+    abstract fun initViews()
 
     /**
-     * 初始化本类固定的事件
+     * 初始化控件数据
      */
-    private fun initThisEvents() {
-        toolbar.setNavigationOnClickListener(mTitleBackButtonOnClickListener)
-    }
-    /*--------------------------------子类可用方法--------------------------------*/
+    abstract fun initViewData()
+
+    /**
+     * 初始化其他数据
+     */
+    abstract fun initOtherData()
+
+    /**
+     * 初始化事件
+     */
+    abstract fun initEvents()
+
+    /**
+     * 在最后进行的操作
+     */
+    abstract fun doAfterAll()
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * protected方法
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
     /**
      * 设置title返回按钮的处理事件
      *
@@ -278,6 +252,7 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      *
      * @param color 文本颜色
      */
+    @Suppress("MemberVisibilityCanBePrivate")
     protected fun setTitleTextColor(@ColorInt color: Int) {
         titleView.setTextColor(color)
     }
@@ -326,5 +301,50 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
      */
     protected fun setTitleBackIcon(@DrawableRes drawableId: Int) {
         toolbar.setNavigationIcon(drawableId)
+    }
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 私有方法
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    /**
+     * 初始化本类固定的控件
+     */
+    private fun initThisView() {
+        toolbar = findViewById(R.id.toolbar)
+        titleView = findViewById(R.id.toolbar_title)
+        contentView = findViewById(R.id.base_frame_content)
+        rootView = findViewById(R.id.base_root_view)
+    }
+
+    /**
+     * 初始化本类固定的数据
+     */
+    private fun initThisData() {
+        titleView.setText(R.string.app_name)
+        setSupportActionBar(toolbar)
+        val supportActionBar: ActionBar? = supportActionBar
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true)
+            //设置返回键可用
+            supportActionBar.setHomeButtonEnabled(true)
+            //            //不显示标题
+            supportActionBar.setDisplayShowTitleEnabled(false)
+        }
+        val layoutResId: Int = setLayout()
+        if (layoutResId == 0) {
+            throw RuntimeException("setLayout with wrong layout resource id")
+        }
+        val view: View = layoutInflater.inflate(layoutResId, null)
+        contentView.addView(view)
+    }
+
+    /**
+     * 初始化本类固定的事件
+     */
+    private fun initThisEvents() {
+        toolbar.setNavigationOnClickListener(mTitleBackButtonOnClickListener)
     }
 }
