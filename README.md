@@ -7,6 +7,10 @@ BaseSample
 lasts version
 now:[![](https://jitpack.io/v/com.gitee.sscl/baselibrary-for-kotlin.svg)](https://jitpack.io/#com.gitee.sscl/baselibrary-for-kotlin)
 
+由于网络原因，github总会不方便访问，此仓库的后续维护将在码云中继续
+
+[传送门(quick link)](https://gitee.com/sscl/baselibrary-for-kotlin)
+
 ```xml
 allprojects {
     repositories {
